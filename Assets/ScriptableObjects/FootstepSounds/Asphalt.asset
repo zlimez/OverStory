@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cccf40cb26024344b749eda41bfa2c8, type: 3}
+  m_Name: Asphalt
+  m_EditorClassIdentifier: Assembly-CSharp::FootStepMapping
+  materials:
+  - {fileID: 2100000, guid: 4b355fb689fe447d1ae10172c428b05c, type: 2}
+  - {fileID: 2100000, guid: a398c3c5fc65e4645966749a9fc7c21f, type: 2}
+  - {fileID: 2100000, guid: 7b48372108d08314d8943a74d9646c90, type: 2}
+  - {fileID: 2100000, guid: 11f8cc5e7f578414aa4ef58d91821f78, type: 2}
+  sounds:
+  - {fileID: 8300000, guid: 8beb6a965d2464242956f3798f011459, type: 3}
+  - {fileID: 8300000, guid: 6382cc592ae19f24fb132ab35b4144d0, type: 3}
+  - {fileID: 8300000, guid: 6387b86e3ba539747b3b58c10b92a90f, type: 3}
+  - {fileID: 8300000, guid: 81765f6060a50c648a0ebf576a9933c7, type: 3}
+  - {fileID: 8300000, guid: 4affc17b522798d4fbd4e7c3d159888c, type: 3}
+  - {fileID: 8300000, guid: 7cccf54f3180fee44b5f1d6dd6650981, type: 3}
+  - {fileID: 8300000, guid: e52ef8f394ede2f48b5cf7502b4f143f, type: 3}
+  - {fileID: 8300000, guid: 9907ffd13447cbf4fb6893f9f04f5039, type: 3}
+  - {fileID: 8300000, guid: 22c7ebdf321dd9b488634eb81afa2ef5, type: 3}
+  - {fileID: 8300000, guid: 2b4a0cfae0f73224389eacb7346475af, type: 3}

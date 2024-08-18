@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cccf40cb26024344b749eda41bfa2c8, type: 3}
+  m_Name: Carpet
+  m_EditorClassIdentifier: Assembly-CSharp::FootStepMapping
+  materials:
+  - {fileID: 2100000, guid: dfa5e7e1e6127ce47845b5d738989ee4, type: 2}
+  - {fileID: 2100000, guid: 6573941a125b6134d90435d5657c5dc2, type: 2}
+  - {fileID: 2100000, guid: 917326a0c7513e647b6a890d7db9cc4f, type: 2}
+  sounds:
+  - {fileID: 8300000, guid: 874152c63a891af429a54301d3955774, type: 3}
+  - {fileID: 8300000, guid: 9e8568f4471db6c46930850b735bf719, type: 3}
+  - {fileID: 8300000, guid: 34a76fd7cef4d1742a26950d222d343c, type: 3}
+  - {fileID: 8300000, guid: 8a51d5d914e55d7478c96ee9a71dbed2, type: 3}
+  - {fileID: 8300000, guid: 17550eacd23f391418280b333392fd64, type: 3}
+  - {fileID: 8300000, guid: e8b1faed8e9522a428830a5d44d04656, type: 3}
+  - {fileID: 8300000, guid: b7c1aaad0f0ab9b46a438b7372ab29df, type: 3}
+  - {fileID: 8300000, guid: 920d7fd2b7130fa41bb615ceb290e423, type: 3}
+  - {fileID: 8300000, guid: 0df45e6c7f548dd409c72b316813041f, type: 3}
+  - {fileID: 8300000, guid: 56f22645d05fb4c4c86066e1ed620e72, type: 3}

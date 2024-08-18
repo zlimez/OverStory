@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cccf40cb26024344b749eda41bfa2c8, type: 3}
+  m_Name: Concrete
+  m_EditorClassIdentifier: Assembly-CSharp::FootStepMapping
+  materials:
+  - {fileID: 2100000, guid: 87a33d758856b0d478de9fa3e26a6fb6, type: 2}
+  - {fileID: 2100000, guid: 5f9c4225251d94041a524ca1b9c228f8, type: 2}
+  - {fileID: 2100000, guid: b38cb9997954ae94b8b573621cb9ec81, type: 2}
+  - {fileID: 2100000, guid: 8c81ee7753947604d8d8c8e74c8827c1, type: 2}
+  - {fileID: 2100000, guid: a401399be3126874eabce177d905815f, type: 2}
+  - {fileID: 2100000, guid: aa611acf69777d441913c7f58ccd8fe6, type: 2}
+  - {fileID: 2100000, guid: ba8a1dce104bcb64e995cdfaec795d1e, type: 2}
+  - {fileID: 2100000, guid: 7e785b0591b49234da8cbf6bc73fdc69, type: 2}
+  sounds:
+  - {fileID: 8300000, guid: c67b3200381f26746bdc71e387310acb, type: 3}
+  - {fileID: 8300000, guid: 8712c2eef0c9dcc4ea0d0899294b6c04, type: 3}
+  - {fileID: 8300000, guid: 85d65900f24d17b40979c1f31123086b, type: 3}
+  - {fileID: 8300000, guid: 8af7d63445f8a82449e5ed91575141b3, type: 3}
+  - {fileID: 8300000, guid: a826e8466926c1e42adb066d244610e0, type: 3}
+  - {fileID: 8300000, guid: 76142406930b8f343843dbabb2b7aa89, type: 3}
+  - {fileID: 8300000, guid: 7ffd46d85076e4d4e850ce4a7205f1a9, type: 3}
+  - {fileID: 8300000, guid: 52e741d80683e534da694176faab5bb5, type: 3}
+  - {fileID: 8300000, guid: b1e65c6770925f841a74804c47769553, type: 3}
+  - {fileID: 8300000, guid: c25ca4ea96a5a8046afdca71e6dea0b0, type: 3}

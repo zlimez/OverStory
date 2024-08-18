@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fd9bf9ca7674ccf9fbb58cbe9468e4, type: 3}
+  m_Name: Final_4
+  m_EditorClassIdentifier: 
+  endWithChoice: 0
+  isBlackBackground: 0
+  textSpeed: 1
+  startingLeftSpeaker: {fileID: 11400000, guid: cf32e5e506b754884a156496ffd9ca58,
+    type: 2}
+  startingRightSpeaker: {fileID: 11400000, guid: 7539a0c7a54415340a520c4d7aa459e6,
+    type: 2}
+  allLines:
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e0284ce36a9404c50be75d9638aa298b, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Heeheehee!
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e0284ce36a9404c50be75d9638aa298b, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: That was a neat piece of trick right?
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 11400000, guid: 0126e8d1217e3462ca7765dff31529af, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: What did you do to them!
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e057f53d8e99249bb96197968216cbd2, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: I enlisted them in my circus show of course!
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e057f53d8e99249bb96197968216cbd2, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Who am I?
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e0284ce36a9404c50be75d9638aa298b, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: I'm glad you asked.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e057f53d8e99249bb96197968216cbd2, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: I'm Chuckle the Clown, the greatest showman of all!
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e057f53d8e99249bb96197968216cbd2, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Consider yourself lucky to catch me in bones and flesh. Not many do.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e057f53d8e99249bb96197968216cbd2, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Hmm.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e0284ce36a9404c50be75d9638aa298b, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: You wouldn't mind if I borrow your family for a while right?
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 11400000, guid: 0126e8d1217e3462ca7765dff31529af, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Wha-
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e057f53d8e99249bb96197968216cbd2, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Well thank you! Gotta head back, the show can't start without its lead.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 11400000, guid: e0284ce36a9404c50be75d9638aa298b, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Come visit sometime, a family of the crew gets a free ticket!
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 11400000, guid: 2626430c0095f41afafde5f93ea7d7ef, type: 2}
+    name: 
+    isCentered: 1
+    textSpeed: 0
+    audio: {fileID: 0}
+    dialogue: Wait!
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
