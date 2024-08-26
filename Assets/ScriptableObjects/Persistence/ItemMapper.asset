@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106f3c2962cf1461d9afb6fada3423b7, type: 3}
   m_Name: ItemMapper
   m_EditorClassIdentifier: 
-  allItems:
-  - {fileID: 11400000, guid: 0d58b0e5da24d41b0bf770f0caf9fe52, type: 2}
+  allItems: []
