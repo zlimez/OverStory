@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 public class Curtain : MonoBehaviour
 {

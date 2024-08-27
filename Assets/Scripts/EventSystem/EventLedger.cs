@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using Chronellium.Utils;
+using Abyss.Utils;
 using DataStructures;
 
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     /// <summary>
     /// Stores a list of events that have occurred thus far for the flattened time travel inclusive timeline and the commonly defined past.

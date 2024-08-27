@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Chronellium.EventSystem;
-using Chronellium.Utils;
+using Abyss.EventSystem;
+using Abyss.Utils;
 
 public class AudioController : MonoBehaviour
 {

@@ -1,7 +1,7 @@
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 using UnityEngine;
-using Chronellium.Utils;
-using Chronellium.SceneSystem;
+using Abyss.Utils;
+using Abyss.SceneSystem;
 
 /// <summary>
 /// Manages game-related data and states that persist throughout the session.
@@ -11,7 +11,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// The last scene visited.
     /// </summary>
-    public ChronelliumScene LastScene;
+    public AbyssScene LastScene;
 
     /// <summary>
     /// The last position of the player. Tied to SpawnController.

@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using Chronellium.TimeManagers;
+using Abyss.TimeManagers;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class DigitalClockDisplay : MonoBehaviour

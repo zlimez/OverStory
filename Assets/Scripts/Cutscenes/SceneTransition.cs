@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Chronellium.EventSystem;
-using Chronellium.SceneSystem;
-using Chronellium.Utils;
+using Abyss.EventSystem;
+using Abyss.SceneSystem;
+using Abyss.Utils;
 
 public class SceneTransition : MonoBehaviour
 {
-    [SerializeField] private ChronelliumScene sceneName;
+    [SerializeField] private AbyssScene sceneName;
     [SerializeField] private Conversation finalConversation;
 
     private GameEvent sceneStart = new GameEvent("Scene start");
@@ -22,25 +22,25 @@ public class SceneTransition : MonoBehaviour
         AddConvoAndTransit();
     }
 
-    public void SceneTransit(ChronelliumScene targetScene)
+    public void SceneTransit(AbyssScene targetScene)
     {
         AddConvoAndTransit(targetScene);
     }
 
     public void SceneTransit(string targetSceneName)
     {
-        AddConvoAndTransit((ChronelliumScene)Enum.Parse(typeof(ChronelliumScene), targetSceneName));
+        AddConvoAndTransit((AbyssScene)Enum.Parse(typeof(AbyssScene), targetSceneName));
     }
 
     public void TransitToLastScene()
     {
-        Debug.Assert(GameManager.Instance.LastScene != ChronelliumScene.None);
+        Debug.Assert(GameManager.Instance.LastScene != AbyssScene.None);
         SceneTransit(GameManager.Instance.LastScene);
     }
 
-    private void AddConvoAndTransit(ChronelliumScene targetScene = ChronelliumScene.None)
+    private void AddConvoAndTransit(AbyssScene targetScene = AbyssScene.None)
     {
-        ChronelliumScene nextScene = (targetScene == ChronelliumScene.None) ? sceneName : targetScene;
+        AbyssScene nextScene = (targetScene == AbyssScene.None) ? sceneName : targetScene;
 
         GameManager.Instance.LastScene = Parser.getSceneFromText(SceneManager.GetActiveScene().name);
 

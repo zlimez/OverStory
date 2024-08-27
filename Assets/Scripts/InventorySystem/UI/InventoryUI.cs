@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using Chronellium.Utils;
+using Abyss.Utils;
 
 // Must be placed under a singleton parent.
 public class InventoryUI : Singleton<InventoryUI>

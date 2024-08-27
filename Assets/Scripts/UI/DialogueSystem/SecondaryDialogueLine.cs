@@ -1,5 +1,5 @@
 using UnityEngine;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 /// <summary>
 /// Represents a line of dialogue spoken by a character.

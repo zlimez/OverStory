@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class secondaryDialogTest : MonoBehaviour
@@ -9,11 +7,5 @@ public class secondaryDialogTest : MonoBehaviour
     void Start()
     {
         SecondaryDialogueManager.Instance.StartAutomaticConversation(convo);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     public class EventTestSuiteWindow : EditorWindow
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     public class EventTestSuite : MonoBehaviour
     {

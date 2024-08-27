@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Chronellium.EventSystem;
-using Chronellium.Utils;
+using Abyss.EventSystem;
+using Abyss.Utils;
 
 public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 {

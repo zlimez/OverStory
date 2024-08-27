@@ -35,7 +35,7 @@ public class Follower : MonoBehaviour
         Vector3 targetPosition = target.transform.position - offsetToTarget;
         while (timeElapsed < creatBufferTime) {
             timeElapsed += Time.deltaTime;
-            transform.position = VectorUtils.CubicLerpVector(initialPosition, targetPosition, timeElapsed / creatBufferTime);
+            transform.position = VectorCurves.CubicLerpVector(initialPosition, targetPosition, timeElapsed / creatBufferTime);
             yield return null;
         }
         bufferRoutine = null;

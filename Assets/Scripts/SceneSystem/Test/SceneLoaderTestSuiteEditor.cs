@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-namespace Chronellium.SceneSystem
+namespace Abyss.SceneSystem
 {
     [CustomEditor(typeof(SceneLoaderTestSuite))]
     public class SceneLoaderTestSuiteEditor : Editor

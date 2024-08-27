@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Chronellium.SceneSystem
+namespace Abyss.SceneSystem
 {
     public class LoaderCallback : MonoBehaviour
     {

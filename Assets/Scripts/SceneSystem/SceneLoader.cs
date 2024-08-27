@@ -1,4 +1,3 @@
-using KinematicCharacterController.PlayerCameraCharacterSetup;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,10 +5,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-using Chronellium.EventSystem;
-using Chronellium.Utils;
+using Abyss.EventSystem;
+using Abyss.Utils;
 
-namespace Chronellium.SceneSystem
+namespace Abyss.SceneSystem
 {
     /// <summary>
     /// Manages the loading and unloading of scenes.
@@ -23,8 +22,8 @@ namespace Chronellium.SceneSystem
         private AsyncOperation loadingAsyncOperation;
         private UnityAction<object> currLoaderWithMaster;
 
-        private HashSet<ChronelliumScene> loadedScenes = new HashSet<ChronelliumScene>();
-        public ChronelliumScene ActiveScene { get; private set; }
+        private HashSet<AbyssScene> loadedScenes = new HashSet<AbyssScene>();
+        public AbyssScene ActiveScene { get; private set; }
 
         /// <summary>
         /// Initializes the SceneLoader.
@@ -36,14 +35,14 @@ namespace Chronellium.SceneSystem
             Debug.Log(SceneManager.GetActiveScene().name);
             ActiveScene = Parser.getSceneFromText(SceneManager.GetActiveScene().name);
             loadedScenes.Add(ActiveScene);
-            loadedScenes.Add(ChronelliumScene.Master);
+            loadedScenes.Add(AbyssScene.Master);
             InTransition = false;
         }
 
         /// <summary>
         /// Adds a new entry scene.
         /// </summary>
-        public void AddEntryScene(ChronelliumScene sceneName)
+        public void AddEntryScene(AbyssScene sceneName)
         {
             loadedScenes.Add(sceneName);
         }
@@ -65,8 +64,8 @@ namespace Chronellium.SceneSystem
         /// </summary>
         private void RecordLastScene()
         {
-            ChronelliumScene lastScene = ActiveScene;
-            if (lastScene != ChronelliumScene.Master)
+            AbyssScene lastScene = ActiveScene;
+            if (lastScene != AbyssScene.Master)
             {
                 GameManager.Instance.LastScene = lastScene;
             }
@@ -75,7 +74,7 @@ namespace Chronellium.SceneSystem
         /// <summary>
         /// Prepares the loading of a new scene with Master.
         /// </summary>
-        public void PrepLoadWithMaster(ChronelliumScene newScene, bool removeMasterAftTransit = false, ChronelliumScene[] discardedScenes = null)
+        public void PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
         {
             InTransition = true;
             GameManager.Instance.PauseGame();
@@ -104,7 +103,7 @@ namespace Chronellium.SceneSystem
         /// </summary>
         public void PrepLoadWithMaster(string newScene, bool removeMasterAftTransit = false, string[] discardedScenes = null)
         {
-            ChronelliumScene parsedScene = Parser.getSceneFromText(newScene);
+            AbyssScene parsedScene = Parser.getSceneFromText(newScene);
 
             PrepLoadWithMaster(
                 parsedScene,
@@ -124,11 +123,11 @@ namespace Chronellium.SceneSystem
         /// <summary>
         /// Unloads the specified scenes.
         /// </summary>
-        private void UnloadScenes(ChronelliumScene[] discardedScenes)
+        private void UnloadScenes(AbyssScene[] discardedScenes)
         {
             if (discardedScenes == null)
             {
-                foreach (ChronelliumScene scene in loadedScenes)
+                foreach (AbyssScene scene in loadedScenes)
                 {
                     UnloadScene(scene);
                 }
@@ -136,9 +135,9 @@ namespace Chronellium.SceneSystem
             }
             else
             {
-                foreach (ChronelliumScene scene in discardedScenes)
+                foreach (AbyssScene scene in discardedScenes)
                 {
-                    if (scene == ChronelliumScene.Master)
+                    if (scene == AbyssScene.Master)
                     {
                         Debug.LogWarning("Unloading master scene risks disabling core functionalities hence ignored");
                     }
@@ -154,7 +153,7 @@ namespace Chronellium.SceneSystem
         /// <summary>
         /// Loads a new scene asynchronously with the Master scene.
         /// </summary>
-        private IEnumerator LoadSceneAsync(ChronelliumScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool isQueued = true)
+        private IEnumerator LoadSceneAsync(AbyssScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool isQueued = true)
         {
             ActiveScene = scene;
 
@@ -200,7 +199,7 @@ namespace Chronellium.SceneSystem
         /// <summary>
         /// Loads a new scene with the Master scene.
         /// </summary>
-        public void LoadWithMaster(ChronelliumScene newScene, ChronelliumScene[] discardedScenes = null)
+        public void LoadWithMaster(AbyssScene newScene, AbyssScene[] discardedScenes = null)
         {
             RecordPlayerPosition();
             RecordLastScene();
@@ -242,13 +241,13 @@ namespace Chronellium.SceneSystem
         /// </summary>
         private void UnloadMaster()
         {
-            UnloadScene(ChronelliumScene.Master);
+            UnloadScene(AbyssScene.Master);
         }
 
         /// <summary>
         /// Unloads the specified scene.
         /// </summary>
-        private void UnloadScene(ChronelliumScene scene)
+        private void UnloadScene(AbyssScene scene)
         {
             if (loadedScenes.Contains(scene))
             {

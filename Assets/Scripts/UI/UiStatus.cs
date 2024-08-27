@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Chronellium.SceneSystem;
+using Abyss.SceneSystem;
 
 /// <summary>
 /// Represents the state and events related to the UI.

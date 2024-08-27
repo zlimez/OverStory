@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Tuples;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
-[CreateAssetMenu(fileName = "EventSet", menuName = "Chronellium/EventSet")]
+[CreateAssetMenu(fileName = "EventSet", menuName = "Abyss/EventSet")]
 public class EventSetAsset : ScriptableObject
 {
     [SerializeField]

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 public class InventorySlot : MonoBehaviour
 {

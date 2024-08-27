@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Chronellium.EventSystem;
-using Chronellium.Utils;
+using Abyss.EventSystem;
+using Abyss.Utils;
 
 /// <summary>
 /// Manages the display and functionality of choice buttons during dialogues.

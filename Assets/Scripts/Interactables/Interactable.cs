@@ -1,5 +1,5 @@
 using UnityEngine;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 public abstract class Interactable : MonoBehaviour
 {

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 // Hide GameControl Hint button when in cutscene
 public class CutsceneGameControl : MonoBehaviour

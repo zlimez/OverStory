@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Chronellium.SceneSystem
+namespace Abyss.SceneSystem
 {
     public class DropdownScenes : MonoBehaviour
     {

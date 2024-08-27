@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using System;
 using System.Collections;
 
-namespace Chronellium.TimeManagers
+namespace Abyss.TimeManagers
 {
     /// <summary>
     /// A custom UnityEvent that takes hours, minutes, and seconds as arguments.

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Chronellium.Utils;
+using Abyss.Utils;
 
 public class ScreenshotTaker : StaticInstance<ScreenshotTaker>
 {

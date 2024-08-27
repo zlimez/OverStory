@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System;
 using DataStructures;
-namespace Chronellium.TimeManagers
+namespace Abyss.TimeManagers
 {
     /// <summary>
     /// A Timer class that provides functionality for starting, stopping, resetting, and modifying a timer in a Unity game.
@@ -15,12 +15,12 @@ namespace Chronellium.TimeManagers
         /// <summary>
         /// Total duration of the timer in seconds.
         /// </summary>
-        [SerializeField] public float TotalDuration = 60f;
+        public float TotalDuration = 60f;
 
         [System.NonSerialized] public UnityEvent<float> OnTimerChange = new UnityEvent<float>();
         [System.NonSerialized] public UnityEvent OnTimerStart = new UnityEvent();
         [System.NonSerialized] public UnityEvent OnTimerExpire = new UnityEvent();
-        private PriorityQueue<TimeSensitiveAction> scheduledActions = new PriorityQueue<TimeSensitiveAction>();
+        private readonly PriorityQueue<TimeSensitiveAction> scheduledActions = new PriorityQueue<TimeSensitiveAction>();
 
         private IEnumerator _timerCoroutine;
 

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     [Serializable]
     public struct GameEvent
@@ -14,7 +14,7 @@ namespace Chronellium.EventSystem
 
         public string EventName
         {
-            get { return RelatedStaticEvent != StaticEvent.NoEvent ? RelatedStaticEvent.ToString() : _eventName; }
+            readonly get { return RelatedStaticEvent != StaticEvent.NoEvent ? RelatedStaticEvent.ToString() : _eventName; }
             set { _eventName = value; }
         }
         [Tooltip("Specify this only if it is a dynamic event. Otherwise, it will be ignored.")]
@@ -35,12 +35,12 @@ namespace Chronellium.EventSystem
             this._eventName = relatedStaticEvent.ToString();
         }
 
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is GameEvent otherEvent && EventName.Equals(otherEvent.EventName);
         }
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return EventName.GetHashCode();
         }
@@ -55,7 +55,7 @@ namespace Chronellium.EventSystem
             return left.EventName != right.EventName;
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             if (RelatedStaticEvent != StaticEvent.NoEvent)
             {

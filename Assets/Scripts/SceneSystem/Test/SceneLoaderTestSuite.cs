@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Chronellium.SceneSystem
+namespace Abyss.SceneSystem
 {
     public class SceneLoaderTestSuite : MonoBehaviour
     {
-        public ChronelliumScene selectedScene;
+        public AbyssScene selectedScene;
 
         public void LoadSelectedScene()
         {

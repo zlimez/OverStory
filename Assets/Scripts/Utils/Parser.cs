@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-using Chronellium.SceneSystem;
-using Chronellium.EventSystem;
+using Abyss.SceneSystem;
+using Abyss.EventSystem;
 
-namespace Chronellium.Utils
+namespace Abyss.Utils
 {
     class Parser
     {
@@ -20,16 +20,16 @@ namespace Chronellium.Utils
             }
         }
 
-        public static ChronelliumScene getSceneFromText(String text)
+        public static AbyssScene getSceneFromText(String text)
         {
-            if (Enum.TryParse(text, out ChronelliumScene parsedScene))
+            if (Enum.TryParse(text, out AbyssScene parsedScene))
             {
                 return parsedScene;
             }
             else
             {
                 Debug.Log("Invalid scene text: " + text);
-                return ChronelliumScene.None;
+                return AbyssScene.None;
             }
         }
     }

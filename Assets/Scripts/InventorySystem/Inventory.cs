@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 public class Inventory
 {

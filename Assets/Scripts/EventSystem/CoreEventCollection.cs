@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     public static class CoreEventCollection
     {

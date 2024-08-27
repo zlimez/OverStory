@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Playables;
 
-namespace Chronellium.TimeManagers
+namespace Abyss.TimeManagers
 {
     public class TimerSliderManager : MonoBehaviour
     {

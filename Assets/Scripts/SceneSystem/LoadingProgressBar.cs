@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Chronellium.SceneSystem
+namespace Abyss.SceneSystem
 {
     public class LoadingProgressBar : MonoBehaviour
     {

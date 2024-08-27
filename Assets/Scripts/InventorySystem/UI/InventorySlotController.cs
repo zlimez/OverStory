@@ -1,6 +1,6 @@
 using UnityEngine.EventSystems;
 using UnityEngine;
-using Chronellium.EventSystem;
+using Abyss.EventSystem;
 
 // This class is responsible for controlleing setting the inventory slots which are it's children.
 public class InventorySlotController : MonoBehaviour

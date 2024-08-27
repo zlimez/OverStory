@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     /// <summary>
     /// Manages core events such as mode and character switch, game-wide events, save game, etc.
@@ -33,6 +33,7 @@ namespace Chronellium.EventSystem
                 eventListenerCountTable.Add(gameEvent, 1);
             }
         }
+        
         public static void StartListening(StaticEvent gameEvent, UnityAction<object> listener)
         {
             StartListening(new GameEvent(gameEvent.ToString()), listener);

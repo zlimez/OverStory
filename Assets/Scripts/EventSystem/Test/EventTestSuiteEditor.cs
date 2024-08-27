@@ -5,12 +5,12 @@ using System;
 using System.Reflection;
 using System.IO;
 using Tuples;
-using Chronellium.SceneSystem;
+using Abyss.SceneSystem;
 using System.Linq;
 
 #if UNITY_EDITOR
 
-namespace Chronellium.EventSystem
+namespace Abyss.EventSystem
 {
     [CustomEditor(typeof(EventTestSuite))]
     public class EventTestSuiteEditor : Editor
