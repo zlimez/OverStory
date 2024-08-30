@@ -57,8 +57,8 @@ namespace Algorithms
             for (int i = 0; i < probDist.Count; i++) probDist[i] /= sum;
             sum = 1f;
 
-            System.Random ran = new ();
-            List<float> accProbDist = new ();
+            System.Random ran = new();
+            List<float> accProbDist = new();
             for (int i = 0; i < target.Count - 1; i++) {
                 float rval = (float)ran.NextDouble() * sum;
                 for (int j = i; j < probDist.Count; j++) accProbDist.Add(j == i ? 0 : accProbDist[j - i - 1] + probDist[j - 1]);

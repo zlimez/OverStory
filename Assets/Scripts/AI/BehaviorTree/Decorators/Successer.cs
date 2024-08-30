@@ -6,8 +6,8 @@ namespace BehaviorTree
 
         public override void OnChildComplete(Node child, State childState)
         {
+            child.Done();
             State = State.SUCCESS;
-            base.OnChildComplete(child, childState);
         }
     }
 }

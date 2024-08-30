@@ -4,11 +4,11 @@ namespace Tuples {
     [Serializable]
     public struct Pair<U, T> {
         public Pair(U head, T tail) {
-            this.head = head;
-            this.tail = tail;
+            this.Head = head;
+            this.Tail = tail;
         }
-        public U head;
-        public T tail;
+        public U Head;
+        public T Tail;
     }
 
     [Serializable]

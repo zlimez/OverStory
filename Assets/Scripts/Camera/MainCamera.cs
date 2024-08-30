@@ -119,9 +119,9 @@ public class MainCamera : MonoBehaviour
 
     private float ZoomDistanceToFit(Pair<float, float> dimension)
     {
-        Assert.IsFalse(dimension.head == 0 && dimension.tail == 0);
-        var halfWidth = dimension.head / 2;
-        var halfHeight = dimension.tail / 2;
+        Assert.IsFalse(dimension.Head == 0 && dimension.Tail == 0);
+        var halfWidth = dimension.Head / 2;
+        var halfHeight = dimension.Tail / 2;
 
         bool isWidthDirected = halfHeight == 0 || halfWidth / halfHeight >= Camera.aspect;
         if (isWidthDirected)

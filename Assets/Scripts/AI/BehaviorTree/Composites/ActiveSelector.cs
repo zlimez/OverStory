@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+
 
 namespace BehaviorTree
 {
@@ -13,6 +15,7 @@ namespace BehaviorTree
 
         public override void OnChildComplete(Node child, State childState)
         {
+            child.Done();
             if (childState == State.SUCCESS)
             {
                 State = State.SUCCESS;
@@ -25,13 +28,12 @@ namespace BehaviorTree
                 {
                     // Do not want to push a child in running state onto the scheduler to have it ticked again
                     if (!Restarted || (Restarted && _prevChild != Children[_currChildInd + 1]))
-                        Tree.Scheduled.PushFront(Children[++_currChildInd]);
+                        Tree.Scheduled.AddFirst(Children[++_currChildInd]);
                     else ++_currChildInd;
                     return;
                 }
                 else State = State.FAILURE;
             }
-            child.Done();
         }
 
         // INVARIANT: Restarted is false end of each turn

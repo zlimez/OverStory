@@ -14,7 +14,7 @@ namespace BehaviorTree
 
         protected override void OnInit()
         {
-            Tree.Scheduled.PushFront(Child);
+            Tree.Scheduled.AddFirst(Child);
             base.OnInit();
         }
 

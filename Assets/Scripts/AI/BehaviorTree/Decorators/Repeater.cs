@@ -17,6 +17,7 @@ namespace BehaviorTree
 
         public override void OnChildComplete(Node child, State childState)
         {
+            child.Done();
             _repeatedStates.Add(childState);
             if (++_timesExecuted == _times)
             {
@@ -25,8 +26,7 @@ namespace BehaviorTree
                 else State = State.SUCCESS;
 
             }
-            else Tree.Scheduled.PushFront(Child);
-            base.OnChildComplete(child, childState);
+            else Tree.Scheduled.AddFirst(Child);
         }
 
         protected override void OnInit()

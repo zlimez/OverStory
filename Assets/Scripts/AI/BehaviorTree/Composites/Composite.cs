@@ -10,7 +10,6 @@ namespace BehaviorTree
         public List<Node> Children { get; private set; }
 
         public Composite(List<Node> children) {
-            Assert.IsNotNull(Parent);
             Children = children;
             foreach (var child in children) child.Parent = this;
         }

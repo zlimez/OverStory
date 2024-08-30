@@ -80,88 +80,6 @@ namespace DataStructures
         }
     }
 
-    public class Deque<T>
-    {
-        private readonly List<T> deque = new();
-        private int frontPointer;
-        private int backPointer;
-
-        public void PushFront(T item)
-        {
-            if (frontPointer == 0)
-            {
-                if (backPointer == 0)
-                {
-                    deque.Add(item);
-                }
-                else
-                {
-                    for (int i = 0; i < backPointer; i++)
-                        deque.Add(deque[i]);
-                    frontPointer = backPointer - 1;
-                    deque[frontPointer] = item;
-                    backPointer *= 2;
-                }
-            }
-            else
-            {
-                frontPointer -= 1;
-                deque[frontPointer] = item;
-            }
-        }
-
-        public void PushBack(T item)
-        {
-            if (backPointer == deque.Count)
-            {
-                deque.Add(item);
-            }
-            else deque[backPointer] = item;
-
-            backPointer += 1;
-        }
-
-        public T PopFront()
-        {
-            if (frontPointer == backPointer) return default(T);
-
-            T item = deque[frontPointer];
-            frontPointer += 1;
-            return item;
-        }
-
-        public T PopBack()
-        {
-            if (frontPointer == backPointer) return default(T);
-
-            backPointer -= 1;
-            T item = deque[backPointer];
-            deque.RemoveAt(backPointer);
-            return item;
-        }
-
-        public T PeekFront()
-        {
-            if (frontPointer == backPointer) return default(T);
-            return deque[frontPointer];
-        }
-
-        public T PeekBack()
-        {
-            if (frontPointer == backPointer) return default(T);
-            return deque[backPointer - 1];
-        }
-
-        public int Count => backPointer - frontPointer;
-
-        public void Clear()
-        {
-            deque.Clear();
-            frontPointer = 0;
-            backPointer = 0;
-        }
-    }
-
     // Doubly linked circular linked list
     public class CircularLinkedList<T>
     {
@@ -177,9 +95,11 @@ namespace DataStructures
             }
             else
             {
-                var addedNode = new LinkedNode<T>(item);
-                addedNode.Next = currentNode.Next;
-                addedNode.Previous = currentNode;
+                var addedNode = new LinkedNode<T>(item)
+                {
+                    Next = currentNode.Next,
+                    Previous = currentNode
+                };
                 currentNode.Next.Previous = addedNode;
                 currentNode.Next = addedNode;
                 currentNode = addedNode;

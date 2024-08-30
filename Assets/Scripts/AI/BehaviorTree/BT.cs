@@ -1,38 +1,45 @@
+using System;
 using System.Collections.Generic;
 using DataStructures;
+using Tuples;
 using UnityEngine;
 using UnityEngine.Events;
 
+// TODO: Remove reliance on Unity
 namespace BehaviorTree
 {
     public class BT
     {
-        protected Node _root;
-        public readonly Deque<Node> Scheduled = new();
-        // NOTE: Directly listening to blackboard events prohibited to prevent mid tick changes and multiple reevaluates per composite,
-        // a buffer is used to store events and then processed at the start of the next tick
-        public Dictionary<string, UnityEvent> TrackedEvents = new(); // One event string should be from one blackboard
-        // Write from sources are done to back buffer, front buffer is processed at the start of next tick
-        private Queue<UnityEvent> _eventFrontBuffer = new(), _eventBackBuffer = new();
-        private Queue<UnityEvent> _eventWriteBuffer;
-        private List<Blackboard> _blackboards;
-        public Dictionary<string, object> HeadBlackboard { get; private set; } = new();
+        // For debugging
+        private int _idCounter = 0;
 
-        public BT(Node root, List<Blackboard> blackboards)
+        protected Node _root;
+        public readonly LinkedList<Node> Scheduled = new();
+        // NOTE: Directly subscription to blackboard events prohibited to prevent mid tick changes and multiple reevaluates per composite,
+        // a buffer is used to store events and then processed at the start of the next tick
+        readonly Dictionary<string, UnityEvent> _trackedVars = new();
+        Queue<UnityEvent> _eventFrontBuffer = new(), _eventBackBuffer = new();
+        Queue<UnityEvent> _eventWriteBuffer;
+        readonly Blackboard[] _blackboards; // By contract should possess or have reference to vars that are tracked by this BT whose changes can cause composite restarts
+        Dictionary<string, object> _headBoard = new();
+
+        public BT(Node firstNode, Pair<string, object>[] charParams, Blackboard[] blackboards = null)
         {
-            Setup(root);
-            _root = root;
+            _root = new Root(firstNode);
             _blackboards = blackboards;
             _eventWriteBuffer = _eventBackBuffer;
+            foreach (var charParam in charParams) _headBoard[charParam.Head] = charParam.Tail;
+            Setup();
         }
 
-        void Setup(Node root)
+        void Setup()
         {
             Queue<Node> q = new();
-            q.Enqueue(root);
+            q.Enqueue(_root);
             while (q.Count > 0)
             {
                 Node node = q.Dequeue();
+                node.Id = _idCounter++;
                 node.Setup(this);
                 var children = node.GetChildren();
                 if (children == null) continue;
@@ -40,24 +47,34 @@ namespace BehaviorTree
                     q.Enqueue(child);
             }
 
-            foreach (var observedData in HeadBlackboard.Keys)
+            if (_blackboards == null && _trackedVars.Count > 0) throw new UnityException($"No blackboard configured to be observed");
+            foreach (var varTEvent in _trackedVars)
             {
+                var varName = varTEvent.Key;
+                var changeEvent = varTEvent.Value;
                 bool sourceFound = false;
                 foreach (var blackboard in _blackboards)
                 {
-                    if (blackboard.DataEvents.ContainsKey(observedData))
+                    if (blackboard.DataEvents.ContainsKey(varName))
                     {
                         sourceFound = true;
-                        blackboard.DataEvents[observedData].AddListener((obj) =>
+                        blackboard.DataEvents[varName].AddListener((obj) =>
                         {
-                            HeadBlackboard[observedData] = obj;
-                            _eventWriteBuffer.Enqueue(TrackedEvents[observedData]);
+                            _headBoard[varName] = obj;
+                            _eventWriteBuffer.Enqueue(changeEvent);
                         });
                         break;
                     }
                 }
-                if (!sourceFound) throw new UnityException($"No source found for {observedData}");
+                if (!sourceFound) throw new UnityException($"No source found for tracked {varName}");
             }
+        }
+
+        public void AddTracker(string observedVar, UnityAction func)
+        {
+            if (!_trackedVars.ContainsKey(observedVar))
+                _trackedVars[observedVar] = new();
+            _trackedVars[observedVar].AddListener(func);
         }
 
         public State Tick()
@@ -67,11 +84,14 @@ namespace BehaviorTree
             (_eventFrontBuffer, _eventBackBuffer) = (_eventBackBuffer, _eventFrontBuffer);
             _eventWriteBuffer = _eventBackBuffer;
 
-            if (Scheduled.Count == 0) Scheduled.PushFront(_root);
-            Scheduled.PushBack(null); // End of turn marker, last element should be root
+            if (Scheduled.Count == 0) Scheduled.AddFirst(_root);
+            Scheduled.AddLast((Node)null); // End of turn marker, last element should be root
             while (Step()) ;
+            Scheduled.RemoveFirst(); // Remove null marker
+
             State execState = _root.State;
             if (execState != State.RUNNING) _root.Done();
+            Debug.Log($"Executed with state {execState}");
             return execState;
         }
 
@@ -79,8 +99,9 @@ namespace BehaviorTree
         // from children many alt routes in children subtree may be taken only for parent to restart and abort the alt path
         bool Step()
         {
-            Node node = Scheduled.PeekFront();
+            Node node = Scheduled.First.Value;
             if (node == null) return false;
+            Debug.Log($"Processing {node.Id}");
 
             State ogState = node.State;
             State state = node.Tick();
@@ -93,10 +114,14 @@ namespace BehaviorTree
             ) return true;
             if (node is not Action && ogState == State.INACTIVE) return true;
 
-            Scheduled.PopFront();
+            Scheduled.RemoveFirst();
+            Debug.Log($"Popped {node.Id}");
             // INVARIANT: End of each turn, only running nodes / running but aborted by parent are in Scheduled 
             if (state == State.RUNNING)
-                Scheduled.PushBack(node);
+            {
+                Scheduled.AddLast(node);
+                Debug.Log($"Pushed {node.Id}");
+            }
             else if (node.Completed) node.Parent?.OnChildComplete(node, state);
 
             return true;
@@ -106,9 +131,28 @@ namespace BehaviorTree
         {
             List<object> data = new();
             foreach (var n in name)
-                data.Add(HeadBlackboard[n]);
+            {
+                if (!_headBoard.ContainsKey(n)) throw new UnityException($"Var {n} not found in board");
+                data.Add(_headBoard[n]);
+            }
             return data;
         }
-    }
 
+        public T GetDatum<T>(string name, bool isGenerated = false)
+        {
+            if (!_headBoard.ContainsKey(name)) {
+                if (isGenerated) return default;
+                throw new UnityException($"Var {name} not found in board");
+            }
+            return (T)_headBoard[name];
+        }
+
+        public void SetDatum(string name, object val)
+        {
+            if (!_headBoard.ContainsKey(name)) _headBoard.Add(name, val);
+            else _headBoard[name] = val;
+        }
+
+        public void ClearDatum(string name) { _headBoard[name] = null; }
+    }
 }

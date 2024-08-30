@@ -14,9 +14,11 @@ namespace BehaviorTree
 
     public abstract class Node
     {
+        // For Debugging
+        public int Id;
+        
         public State State { get; protected set; } = State.INACTIVE;
         public BT Tree;
-        // 1st tick triggers push of child to front of Scheduled, 2nd tick is final all children must have been processed state determined, used to cater for first turn
         public Node Parent;
 
         public virtual State Tick()

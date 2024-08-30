@@ -9,31 +9,28 @@ namespace BehaviorTree
     {
         public bool Restarted { get; private set; } = false;
         Node _prevChild;
-        readonly List<string> _observedVals;
+        readonly List<string> _observedVars;
         bool _shouldReevaluate = false;
         readonly Func<object, bool> _restartCondition;
 
-        public ObserveSelector(List<Node> children, List<string> observedVals) : base(children)
+        public ObserveSelector(List<Node> children, List<string> observedVars) : base(children)
         {
-            _observedVals = observedVals;
+            _observedVars = observedVars;
         }
 
         public override void Setup(BT tree)
         {
             base.Setup(tree);
-            foreach (var observedVal in _observedVals)
-            {
-                if (!Tree.TrackedEvents.ContainsKey(observedVal))
-                    Tree.TrackedEvents[observedVal] = new UnityEvent();
-                Tree.TrackedEvents[observedVal].AddListener(() =>
+            foreach (var observedVar in _observedVars)
+                Tree.AddTracker(observedVar, () =>
                 {
                     if (State == State.RUNNING) _shouldReevaluate = true;
                 });
-            }
         }
 
         public override void OnChildComplete(Node child, State childState)
         {
+            child.Done();
             if (childState == State.SUCCESS)
             {
                 State = State.SUCCESS;
@@ -46,13 +43,12 @@ namespace BehaviorTree
                 {
                     // Do not want to push a child in running state onto the scheduler to have it ticked again
                     if (!Restarted || (Restarted && _prevChild != Children[_currChildInd + 1]))
-                        Tree.Scheduled.PushFront(Children[++_currChildInd]);
+                        Tree.Scheduled.AddFirst(Children[++_currChildInd]);
                     else ++_currChildInd;
                     return;
                 }
                 else State = State.FAILURE;
             }
-            child.Done();
         }
 
         public override State Tick()
@@ -64,7 +60,7 @@ namespace BehaviorTree
                 if (_shouldReevaluate)
                 {
                     _shouldReevaluate = false;
-                    Restarted = _restartCondition(Tree.GetData(_observedVals));
+                    Restarted = _restartCondition(Tree.GetData(_observedVars));
                     if (Restarted)
                     {
                         _prevChild = Children[_currChildInd];

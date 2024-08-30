@@ -2,11 +2,16 @@ using System.Collections.Generic;
 
 namespace BehaviorTree
 {
-    public class Action : Node
+    public abstract class Action : Node
     {
-        public override List<Node> GetChildren()
+        public override State Tick()
         {
-            return null;
+            if (State == State.SUSPENDED) Done();
+            if (State == State.INACTIVE) OnInit();
+            if (State == State.RUNNING) Update();
+            return State;
         }
+        public abstract void Update();
+        public override List<Node> GetChildren() { return null; }
     }
 }

@@ -10,6 +10,7 @@ namespace BehaviorTree
 
         public override void OnChildComplete(Node child, State childState)
         {
+            child.Done();
             if (childState == State.SUCCESS)
             {
                 State = State.SUCCESS;
@@ -20,18 +21,17 @@ namespace BehaviorTree
             {
                 if (_currChildInd + 1 < Children.Count)
                 {
-                    Tree.Scheduled.PushFront(Children[++_currChildInd]);
+                    Tree.Scheduled.AddFirst(Children[++_currChildInd]);
                     return;
                 }
                 else State = State.FAILURE;
             }
-            base.OnChildComplete(child, childState);
         }
 
         protected override void OnInit()
         {
             _currChildInd = 0;
-            Tree.Scheduled.PushFront(Children[_currChildInd]);
+            Tree.Scheduled.AddFirst(Children[_currChildInd]);
             base.OnInit();
         }
 
