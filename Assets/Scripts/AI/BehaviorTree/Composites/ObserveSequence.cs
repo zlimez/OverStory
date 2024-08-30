@@ -13,9 +13,10 @@ namespace BehaviorTree
         bool _shouldReevaluate = false;
         readonly Func<object, bool> _restartCondition;
 
-        public ObserveSequence(List<Node> children, List<string> observedVars) : base(children)
+        public ObserveSequence(List<Node> children, List<string> observedVars, Func<object, bool> restartCondition) : base(children)
         {
             _observedVars = observedVars;
+            _restartCondition = restartCondition;
         }
 
         public override void Setup(BT tree)
@@ -53,9 +54,15 @@ namespace BehaviorTree
 
         public override State Tick()
         {
-            if (State == State.SUSPENDED) Done();
-            if (State == State.INACTIVE) OnInit();
-            if (State == State.RUNNING)
+            if (State == State.SUSPENDED)
+            {
+                Done();
+            }
+            else if (State == State.INACTIVE)
+            {
+                OnInit();
+            }
+            else if (State == State.RUNNING)
             {
                 if (_shouldReevaluate)
                 {
@@ -64,15 +71,16 @@ namespace BehaviorTree
                     if (Restarted)
                     {
                         _prevChild = Children[_currChildInd];
-                        if (_currChildInd != 0) OnInit();
+                        if (_currChildInd != 0) 
+                            OnInit();
+                        else Restarted = false;
                     }
                 }
-                else if (Restarted && _prevChild != Children[_currChildInd])
+                else
                 {
-                    _prevChild.Abort();
+                    if (Restarted && _prevChild != Children[_currChildInd]) _prevChild.Abort();
                     Restarted = false;
                 }
-
             }
             else if (Restarted)
             {

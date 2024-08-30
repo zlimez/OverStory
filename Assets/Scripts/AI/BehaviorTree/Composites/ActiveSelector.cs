@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Assertions;
 
 
@@ -39,13 +37,16 @@ namespace BehaviorTree
         // INVARIANT: Restarted is false end of each turn
         public override State Tick()
         {
-            if (State == State.SUSPENDED) Done();
-            if (State == State.INACTIVE)
+            if (State == State.SUSPENDED)
+            {
+                Done();
+            }
+            else if (State == State.INACTIVE)
             {
                 _startedFromInactive = true;
                 OnInit();
             }
-            if (State == State.RUNNING) // if final status acquired no running children require abort
+            else if (State == State.RUNNING) // if final status acquired no running children require abort
             {
                 if (_startedFromInactive)
                 {
@@ -57,11 +58,13 @@ namespace BehaviorTree
                 {
                     Restarted = true;
                     _prevChild = Children[_currChildInd];
-                    if (_currChildInd != 0) OnInit();
+                    if (_currChildInd != 0)
+                        OnInit();
+                    else Restarted = false;
                 }
-                else if (_prevChild != Children[_currChildInd])
+                else
                 {
-                    _prevChild.Abort();
+                    if (_prevChild != Children[_currChildInd]) _prevChild.Abort();
                     Restarted = false;
                 }
             }

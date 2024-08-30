@@ -24,7 +24,7 @@ namespace BehaviorTree
         public virtual State Tick()
         {
             if (State == State.SUSPENDED) Done();
-            if (State == State.INACTIVE) OnInit();
+            else if (State == State.INACTIVE) OnInit();
             return State;
         }
 

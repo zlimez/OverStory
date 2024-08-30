@@ -112,7 +112,7 @@ namespace BehaviorTree
                 || (node is ObserveSelector observeSelector && observeSelector.Restarted)
                 || (node is ObserveSequence observeSequence && observeSequence.Restarted)
             ) return true;
-            if (node is not Action && ogState == State.INACTIVE) return true;
+            if (ogState == State.INACTIVE) return true;
 
             Scheduled.RemoveFirst();
             Debug.Log($"Popped {node.Id}");

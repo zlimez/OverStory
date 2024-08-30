@@ -7,8 +7,8 @@ namespace BehaviorTree
         public override State Tick()
         {
             if (State == State.SUSPENDED) Done();
-            if (State == State.INACTIVE) OnInit();
-            if (State == State.RUNNING) Update();
+            else if (State == State.INACTIVE) OnInit();
+            else if (State == State.RUNNING) Update();
             return State;
         }
         public abstract void Update();
