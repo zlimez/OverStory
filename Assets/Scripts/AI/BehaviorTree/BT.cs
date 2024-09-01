@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using DataStructures;
 using Tuples;
 using UnityEngine;
 using UnityEngine.Events;
@@ -91,7 +89,7 @@ namespace BehaviorTree
 
             State execState = _root.State;
             if (execState != State.RUNNING) _root.Done();
-            Debug.Log($"Executed with state {execState}");
+            // Debug.Log($"Executed with state {execState}");
             return execState;
         }
 
@@ -101,7 +99,7 @@ namespace BehaviorTree
         {
             Node node = Scheduled.First.Value;
             if (node == null) return false;
-            Debug.Log($"Processing {node.Id}");
+            // Debug.Log($"Processing {node.Id}");
 
             State ogState = node.State;
             State state = node.Tick();
@@ -115,12 +113,12 @@ namespace BehaviorTree
             if (ogState == State.INACTIVE) return true;
 
             Scheduled.RemoveFirst();
-            Debug.Log($"Popped {node.Id}");
+            // Debug.Log($"Popped {node.Id}");
             // INVARIANT: End of each turn, only running nodes / running but aborted by parent are in Scheduled 
             if (state == State.RUNNING)
             {
                 Scheduled.AddLast(node);
-                Debug.Log($"Pushed {node.Id}");
+                // Debug.Log($"Pushed {node.Id}");
             }
             else if (node.Completed) node.Parent?.OnChildComplete(node, state);
 

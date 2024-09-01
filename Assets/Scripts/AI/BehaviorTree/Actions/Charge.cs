@@ -62,9 +62,9 @@ public class Charge : CfAction
 
             float t = chargeTimer / chargeTime;
             _transform.position = _chargeCurve.Evaluate(t) * _chargeDist * _transform.forward + startPos;
-            
+
             // Consider collision into wall
-            if (Physics.Raycast(startPos, _transform.forward, 0.5f, _obstacleLayerMask))
+            if (Physics2D.Raycast(_transform.position, _transform.forward, 2.0f, _obstacleLayerMask))
             {
                 isResting = true;
                 chargeTimer = 0;

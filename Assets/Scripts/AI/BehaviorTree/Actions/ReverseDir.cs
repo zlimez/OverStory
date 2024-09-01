@@ -15,6 +15,7 @@ public class ReverseDir : CfAction
 
     public override void Update()
     {
+        Debug.Log("Reversed");
         _transform.Rotate(0, 180, 0);
         State = State.SUCCESS;
     }

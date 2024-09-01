@@ -15,6 +15,6 @@ public class CheckPlayerInFront : CfAction
 
     public override void Update()
     {
-        State = Vector3.Dot(_transform.forward, Tree.GetDatum<Transform>("player").position - _transform.position) > 0 ? State.SUCCESS : State.FAILURE;
+        State = Vector3.Dot(_transform.forward, Tree.GetDatum<Transform>("target").position - _transform.position) > 0 ? State.SUCCESS : State.FAILURE;
     }
 }

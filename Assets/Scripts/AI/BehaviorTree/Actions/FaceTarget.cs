@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using BehaviorTree;
 using UnityEngine;
 
@@ -17,7 +15,7 @@ public class FaceTarget : CfAction
 
     public override void Update()
     {
-        _transform.LookAt(Tree.GetDatum<Transform>("target"));
+        _transform.LookAt(new Vector3(Tree.GetDatum<Transform>("target").position.x, _transform.position.y, _transform.position.z));
         State = State.SUCCESS;
     }
 }

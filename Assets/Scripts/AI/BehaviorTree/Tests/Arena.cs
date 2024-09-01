@@ -15,7 +15,7 @@ public class Arena : MonoBehaviour
         {
             Player = other.gameObject;
             PlayerIn = true;
-            EventManager.InvokeEvent(new GameEvent(arenaName + EventPostfix), true);
+            EventManager.InvokeEvent(new GameEvent(EEEvent), true);
         }
     }
 
@@ -25,7 +25,7 @@ public class Arena : MonoBehaviour
         {
             Player = null;
             PlayerIn = false;
-            EventManager.InvokeEvent(new GameEvent(arenaName + EventPostfix), false);
+            EventManager.InvokeEvent(new GameEvent(EEEvent), false);
         }
     }
 

@@ -8,7 +8,7 @@ namespace BehaviorTree
     // Connected to EventManager to listen for events that changes data and retrieve from respective systems / data containers
     public class Blackboard
     {
-        public Dictionary<string, UnityEvent<object>> DataEvents { get; private set; }
+        public Dictionary<string, UnityEvent<object>> DataEvents { get; private set; } = new();
 
         public Blackboard(Pair<string, string>[] varEvents)
         {
