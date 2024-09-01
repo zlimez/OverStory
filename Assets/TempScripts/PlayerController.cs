@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
 	private Vector2 currVelocity;
 	private float currHorizontalSpeed;
+	private bool isFacingLeft;
 	
 	// Jump support
 	[SerializeField] private float jumpForce = 200;
@@ -37,10 +38,15 @@ public class PlayerController : MonoBehaviour
 		currVelocity.x = currHorizontalSpeed;
 		rb2D.velocity = currVelocity;
 		
-		if (rb2D.velocity.x > 0) 
+		if (rb2D.velocity.x > 0 && isFacingLeft) 
 		{
-			
+			FlipSprite();
 		}
+		else if (rb2D.velocity.x < 0 && !isFacingLeft) 
+		{
+			FlipSprite();
+		}
+		
 	}
 	
 	private void OnCollisionEnter2D(Collision2D coll2D) 
@@ -57,6 +63,15 @@ public class PlayerController : MonoBehaviour
 		{
 			isGrounded = false;
 		}
+	}
+	
+	private void FlipSprite() 
+	{
+		Vector3 currScale = gameObject.transform.localScale;
+		currScale.x *= -1;
+		gameObject.transform.localScale = currScale;
+		
+		isFacingLeft = !isFacingLeft;
 	}
 
 	#endregion
