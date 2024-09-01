@@ -14,4 +14,10 @@ namespace BehaviorTree
         public abstract void Update();
         public override List<Node> GetChildren() { return null; }
     }
+
+    // Actions with init params
+    public abstract class CfAction : Action {
+        protected string[] _params;
+        public CfAction(string[] parameters) { _params = parameters; }
+    }
 }

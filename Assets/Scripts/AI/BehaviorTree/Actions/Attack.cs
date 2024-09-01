@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using BehaviorTree;
 using UnityEngine;
 
-public class Attack : Action
+public class Attack : CfAction
 {
     // private Animator _animator;
-
     private Transform _lastTarget;
     private Health _enemyHealth;
 
@@ -13,17 +12,18 @@ public class Attack : Action
     private float _attackTime;
     private float _attackCounter = 0;
 
+    public Attack(string[] _params) : base(_params) { }
+
     public override void Setup(BT tree)
     {
         base.Setup(tree);
-        List<object> dataRef = Tree.GetData(new List<string> { "attackTime", "hitpoints" });
+        List<object> dataRef = Tree.GetData(_params);
         _attackTime = (float)dataRef[0];
         _hitpoints = (int)dataRef[1];
     }
 
     public override void Update()
     {
-        Debug.Log("Attacking");
         Transform target = Tree.GetDatum<Transform>("target", true);
         if (target != _lastTarget)
         {

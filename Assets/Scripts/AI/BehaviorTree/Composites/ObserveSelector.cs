@@ -9,11 +9,11 @@ namespace BehaviorTree
     {
         public bool Restarted { get; private set; } = false;
         Node _prevChild;
-        readonly List<string> _observedVars;
+        readonly string[] _observedVars;
         bool _shouldReevaluate = false;
         readonly Func<object, bool> _restartCondition;
 
-        public ObserveSelector(List<Node> children, List<string> observedVars, Func<object, bool> restartCondition) : base(children)
+        public ObserveSelector(List<Node> children, string[] observedVars, Func<object, bool> restartCondition) : base(children)
         {
             _observedVars = observedVars;
             _restartCondition = restartCondition;

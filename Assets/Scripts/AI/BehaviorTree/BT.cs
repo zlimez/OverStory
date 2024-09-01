@@ -21,7 +21,7 @@ namespace BehaviorTree
         Queue<UnityEvent> _eventFrontBuffer = new(), _eventBackBuffer = new();
         Queue<UnityEvent> _eventWriteBuffer;
         readonly Blackboard[] _blackboards; // By contract should possess or have reference to vars that are tracked by this BT whose changes can cause composite restarts
-        Dictionary<string, object> _headBoard = new();
+        readonly Dictionary<string, object> _headBoard = new();
 
         public BT(Node firstNode, Pair<string, object>[] charParams, Blackboard[] blackboards = null)
         {
@@ -127,10 +127,10 @@ namespace BehaviorTree
             return true;
         }
 
-        public List<object> GetData(List<string> name)
+        public List<object> GetData(string[] names)
         {
             List<object> data = new();
-            foreach (var n in name)
+            foreach (var n in names)
             {
                 if (!_headBoard.ContainsKey(n)) throw new UnityException($"Var {n} not found in board");
                 data.Add(_headBoard[n]);
@@ -138,10 +138,10 @@ namespace BehaviorTree
             return data;
         }
 
-        public T GetDatum<T>(string name, bool isGenerated = false)
+        public T GetDatum<T>(string name, bool nullable = false)
         {
             if (!_headBoard.ContainsKey(name)) {
-                if (isGenerated) return default;
+                if (nullable) return default;
                 throw new UnityException($"Var {name} not found in board");
             }
             return (T)_headBoard[name];

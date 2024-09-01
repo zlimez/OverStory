@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class GuardBT : MonoBehaviour
 {
-    // public float updateInterval = 0.5f;
-    // private float timeSinceLastUpdate = 0.0f;
-
     [SerializeField] int hitpoints;
     [SerializeField] float patrolSpeed;
     [SerializeField] float chaseSpeed;
@@ -15,13 +12,10 @@ public class GuardBT : MonoBehaviour
     [SerializeField] float waitTime;
     [SerializeField] float attackTime;
     [SerializeField] Transform[] waypoints;
-    private Transform _charTransform;
     private BT bT;
 
-    // Start is called before the first frame update
     void Awake()
     {
-        _charTransform = GetComponent<Transform>();
         Pair<string, object>[] charParams = {
             new("hitpoints", hitpoints),
             new("patrolSpeed", patrolSpeed),
@@ -30,22 +24,17 @@ public class GuardBT : MonoBehaviour
             new("waitTime", waitTime),
             new("attackTime", attackTime),
             new("waypoints", waypoints),
-            new("charTransform", _charTransform)
+            new("charTransform", GetComponent<Transform>())
         };
 
         bT = new BT(new ActiveSelector(new List<Node>{
             new Sequence(new List<Node>{
-                new CheckEnemyInRange(),
-                new GoToTarget(),
-                new Attack()
+                new CheckEnemyInRange(new string[] { "charTransform", "range" }),
+                new GoToTarget(new string[] { "chaseSpeed", "charTransform" }),
+                new Attack(new string[] { "attackTime", "hitpoints" })
             }),
-            new Patrol()
+            new Patrol(new string[] { "patrolSpeed", "waypoints", "charTransform", "waitTime" })
         }), charParams);
-        // bT = new BT(new ActiveSequence(new List<Node>{
-        //     new CheckEnemyInRange(),
-        //     new GoToTarget(),
-        //     new Attack()
-        // }), charParams);
     }
 
     void Update()

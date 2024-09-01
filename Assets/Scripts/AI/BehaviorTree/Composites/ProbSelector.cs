@@ -9,13 +9,13 @@ namespace BehaviorTree {
     public class ProbSelector : Selector
     {
         // NOTE: User's responsibility to ensure the order of probFactor key match args in a probFunc and order of probFuncs match children
-        readonly List<List<string>> _probFuncsFactors;
-        readonly List<Func<List<object>, float>> _probFuncs; // Does not nececessarily sum to 1, relative weightage respected
+        readonly string[][] _probFuncsFactors;
+        readonly Func<List<object>, float>[] _probFuncs; // Does not nececessarily sum to 1, relative weightage respected
 
-        public ProbSelector(List<Node> children, List<Func<List<object>, float>> probFuncs, List<List<string>> proFuncsFactors) : base(children)
+        public ProbSelector(List<Node> children, Func<List<object>, float>[] probFuncs, string[][] proFuncsFactors) : base(children)
         {
-            Assert.AreEqual(children.Count, probFuncs.Count);
-            Assert.AreEqual(children.Count, proFuncsFactors.Count);
+            Assert.AreEqual(children.Count, probFuncs.Length);
+            Assert.AreEqual(children.Count, proFuncsFactors.Length);
             _probFuncsFactors = proFuncsFactors;
             _probFuncs = probFuncs;
         }

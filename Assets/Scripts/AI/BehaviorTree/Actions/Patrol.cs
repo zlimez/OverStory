@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviorTree;
 
-public class Patrol : Action
+public class Patrol : CfAction
 {
     private int _currWaypoint = 0;
     private float _waitCounter = 0f;
@@ -12,10 +12,12 @@ public class Patrol : Action
     private Transform _transform;
     private float _waitTime;
 
+    public Patrol(string[] parameters) : base(parameters) { }
+
     public override void Setup(BT tree)
     {
         base.Setup(tree);
-        List<object> dataRef = Tree.GetData(new List<string> { "patrolSpeed", "waypoints", "charTransform", "waitTime" });
+        List<object> dataRef = Tree.GetData(_params);
         _speed = (float)dataRef[0];
         _waypoints = (Transform[])dataRef[1];
         _transform = (Transform)dataRef[2];
@@ -24,7 +26,6 @@ public class Patrol : Action
 
     public override void Update()
     {
-        Debug.Log("Patrolling");
         if (_waiting)
         {
             _waitCounter += Time.deltaTime;
