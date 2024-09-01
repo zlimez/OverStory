@@ -1,48 +1,63 @@
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 namespace BehaviorTree
 {
     public enum State
     {
+        INACTIVE,
         RUNNING,
         SUCCESS,
-        FAILURE
+        FAILURE,
+        SUSPENDED
     }
 
     public abstract class Node
     {
-        protected State state;
+        // For Debugging
+        public int Id;
+        
+        public State State { get; protected set; } = State.INACTIVE;
+        public BT Tree;
+        public Node Parent;
 
-        public Node parent;
-        protected List<Node> children = new();
-        private Dictionary<string, object> _context;
-
-        public Node(Dictionary<string, object> context)
+        public virtual State Tick()
         {
-            _context = context;
-            parent = null;
+            if (State == State.SUSPENDED) Done();
+            else if (State == State.INACTIVE) OnInit();
+            return State;
         }
 
-        public Node(List<Node> children, Dictionary<string, object> context)
+        public virtual void Setup(BT tree)
         {
-            _context = context;
-            foreach (Node child in children)
-                Attach(child);
+            Tree = tree;
         }
 
-        private void Attach(Node node)
+        protected virtual void OnInit()
         {
-            node.parent = this;
-            children.Add(node);
+            State = State.RUNNING;
         }
 
-        public abstract State Evaluate();
-        private void SetData(string name, object val) {
-            if (_context.ContainsKey(name)) {
-                _context[name] = val;
-            } else _context.Add(name, val);
+        // Cleanup resources here
+        public virtual void Done()
+        {
+            State = State.INACTIVE;
         }
 
-        private T GetData<T>(string name) { return (T)_context[name]; }
+        public virtual void Abort()
+        {
+            Assert.IsTrue(State == State.RUNNING);
+            Assert.IsTrue(this is not Root);
+            State = State.SUSPENDED;
+        }
+
+        public bool Completed => State == State.SUCCESS || State == State.FAILURE;
+
+        public virtual void OnChildComplete(Node child, State childState)
+        {
+            child.Done();
+        }
+
+        public abstract List<Node> GetChildren();
     }
 }

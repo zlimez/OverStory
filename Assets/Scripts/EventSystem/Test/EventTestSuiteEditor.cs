@@ -126,13 +126,13 @@ namespace Abyss.EventSystem
                 Dictionary<GameEvent, int> loopedPastEvents = new Dictionary<GameEvent, int>();
                 foreach (var entry in eventSet.LoopedPastEvents)
                 {
-                    loopedPastEvents.Add(entry.head, entry.tail);
+                    loopedPastEvents.Add(entry.Head, entry.Tail);
                 }
 
                 Dictionary<GameEvent, int> normalPastEvents = new Dictionary<GameEvent, int>();
                 foreach (var entry in eventSet.NormalPastEvents)
                 {
-                    normalPastEvents.Add(entry.head, entry.tail);
+                    normalPastEvents.Add(entry.Head, entry.Tail);
                 }
 
             }

@@ -2,57 +2,75 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 namespace Algorithms
 {
     public static class Search {
-        public static int BinarySearchClosest<T>(this List<T> list, T target) where T : IComparable<T>
-        {
-            int min = 0;
-            int max = list.Count - 1;
+        public static int BinFindLEQ<T>(this List<T> list, T target, int l = 0, int r = -1) where T : IComparable<T> {
+            r = r == -1 ? list.Count - 1 : r;
 
-            while (min <= max)
+            while (l <= r)
             {
-                int mid = (min + max) / 2;
+                int mid = (l + r) / 2;
                 int comparisonResult = target.CompareTo(list[mid]);
 
                 if (comparisonResult == 0)
-                {
-                    // target element found
                     return mid;
-                }
                 else if (comparisonResult < 0)
-                {
-                    // target element is less than mid element
-                    max = mid - 1;
-                }
-                else
-                {
-                    // target element is greater than mid element
-                    min = mid + 1;
-                }
+                    r = mid - 1;
+                else l = mid + 1;
             }
 
-            // target element not found, return index of closest match
-            if (max < 0)
+            return r;
+        }
+
+        public static int BinFindClosest<T>(this List<T> list, T target) where T : IComparable<T>
+        {
+            int l = 0;
+            int r = list.Count - 1;
+
+            while (l <= r)
             {
-                // target element is less than all elements in the list
+                int mid = (l + r) / 2;
+                int comparisonResult = target.CompareTo(list[mid]);
+
+                if (comparisonResult == 0)
+                    return mid;
+                else if (comparisonResult < 0)
+                    r = mid - 1;
+                else l = mid + 1;
+            }
+
+            if (r < 0)
                 return 0;
-            }
-            else if (min >= list.Count)
-            {
-                // target element is greater than all elements in the list
+            else if (l >= list.Count)
                 return list.Count - 1;
-            }
-            else
-            {
-                // return index of closest element
-                return Math.Abs(target.CompareTo(list[min])) < Math.Abs(target.CompareTo(list[max])) ? min : max;
-            }
+            else return Math.Abs(target.CompareTo(list[l])) < Math.Abs(target.CompareTo(list[r])) ? l : r;
         }
     }
 
-    public static class Tools {
+    public static class ListUtils {
+        // Not very efficient, but good enough for small lists
+        public static void WeightedShuffle<T>(List<float> probDist, List<T> target) {
+            float sum = probDist.Sum();
+            for (int i = 0; i < probDist.Count; i++) probDist[i] /= sum;
+            sum = 1f;
+
+            System.Random ran = new();
+            List<float> accProbDist = new();
+            for (int i = 0; i < target.Count - 1; i++) {
+                float rval = (float)ran.NextDouble() * sum;
+                for (int j = i; j < probDist.Count; j++) accProbDist.Add(j == i ? 0 : accProbDist[j - i - 1] + probDist[j - 1]);
+                int ind = Search.BinFindLEQ(accProbDist, rval, i);
+                sum -= probDist[ind];
+                accProbDist.Clear();
+                if (ind == i) continue;
+                (target[ind], target[i]) = (target[i], target[ind]);
+                (probDist[ind], probDist[i]) = (probDist[i], probDist[ind]);
+            }
+        }
+
         public static List<T> Merge<T>(List<T> sortedList1, List<T> sortedList2) where T : IComparable<T> {
             List<T> mergedList = new List<T>();
             int index1 = 0;

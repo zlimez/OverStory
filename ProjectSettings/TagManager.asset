@@ -4,9 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - BackgroundCamera
-  - Ground
-  - CableSeats
+  - Arena
   layers:
   - Default
   - TransparentFX
@@ -14,12 +12,12 @@ TagManager:
   - 
   - Water
   - UI
+  - Enemy
+  - Ground
   - 
   - 
-  - NavMesh
-  - BackgroundImage
-  - DistantHotspot
-  - NoPostProcess
+  - 
+  - 
   - 
   - 
   - 
@@ -44,6 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
+  - name: Buildings
     uniqueID: 1553467001
+    locked: 0
+  - name: Characters
+    uniqueID: 1528761381
+    locked: 0
+  - name: Player
+    uniqueID: 1619572195
+    locked: 0
+  - name: UI
+    uniqueID: 337728237
     locked: 0

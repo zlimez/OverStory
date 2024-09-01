@@ -4,14 +4,14 @@ using System;
 namespace DataStructures
 {
     // NOTE: Required as C# queue does not support removal of element not at head
-    public class MyQueue<T>
+    public class RQueue<T>
     {
         private readonly List<T> queue = new();
         private readonly int batchRemovalSize;
         private int frontPointer = 0;
         private int backPointer = 0;
 
-        public MyQueue(int batchRemovalSize = 32)
+        public RQueue(int batchRemovalSize = 32)
         {
             this.batchRemovalSize = batchRemovalSize;
         }
@@ -95,9 +95,11 @@ namespace DataStructures
             }
             else
             {
-                var addedNode = new LinkedNode<T>(item);
-                addedNode.Next = currentNode.Next;
-                addedNode.Previous = currentNode;
+                var addedNode = new LinkedNode<T>(item)
+                {
+                    Next = currentNode.Next,
+                    Previous = currentNode
+                };
                 currentNode.Next.Previous = addedNode;
                 currentNode.Next = addedNode;
                 currentNode = addedNode;

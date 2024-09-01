@@ -30,7 +30,7 @@ namespace Abyss.EventSystem
         /// <summary>
         /// A queue containing the most recent events.
         /// </summary>
-        private MyQueue<GameEvent> recentEvents;
+        private RQueue<GameEvent> recentEvents;
 
         /// <summary>
         /// The maximum size of the recentEvents queue.
@@ -42,7 +42,7 @@ namespace Abyss.EventSystem
             base.Awake();
             PastEvents = new Dictionary<GameEvent, int>();
             EventRecencyTable = new Dictionary<GameEvent, int>();
-            recentEvents = new MyQueue<GameEvent>();
+            recentEvents = new RQueue<GameEvent>();
             Counter = 0;
         }
 
