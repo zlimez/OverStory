@@ -102,6 +102,7 @@ tags
 #Log files
 *log.txt
 *.log
+mono_crash.*.json
 
 #macOS
 *.DS_Store
