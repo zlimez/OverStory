@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using KinematicCharacterController;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,15 +12,20 @@ public class PlayerController : MonoBehaviour
 	
 	private Rigidbody2D rb2D;
 
+	// Movement support
 	[SerializeField] private float speed = 8f;
-
 	private Vector2 currVelocity;
 	private float currHorizontalSpeed;
 	private bool isFacingLeft;
 	
 	// Jump support
-	[SerializeField] private float jumpForce = 200;
+	[SerializeField] private float jumpForce = 200f;
 	private bool isGrounded;
+	
+	// Dash support
+	[SerializeField] private float dashForce = 3000f;
+	private bool isDashAvailable = true;
+	private float dashCooldown = 1.2f;
 
 	#endregion
 
@@ -45,6 +51,16 @@ public class PlayerController : MonoBehaviour
 		else if (rb2D.velocity.x < 0 && !isFacingLeft) 
 		{
 			FlipSprite();
+		}
+		
+		if (!isDashAvailable) 
+		{
+			dashCooldown -= Time.deltaTime;
+		}
+		if (dashCooldown <= 0) 
+		{
+			isDashAvailable = true;
+			dashCooldown = 2f;
 		}
 		
 	}
@@ -88,9 +104,19 @@ public class PlayerController : MonoBehaviour
 	{
 		if (isGrounded) 
 		{
-			float inVal = context.ReadValue<float>();
-			// Debug.Log(inVal);
-			rb2D.AddForce(Vector2.up * jumpForce * inVal);
+			rb2D.AddForce(Vector2.up * jumpForce);
+		}
+	}
+	
+	public void OnDash(InputAction.CallbackContext context) 
+	{
+		if (isDashAvailable) 
+		{
+			Vector2 forceToAdd = isFacingLeft 
+				? Vector2.left * dashForce
+				: Vector2.right * dashForce; 
+			rb2D.AddForce(forceToAdd);
+			isDashAvailable = false;
 		}
 	}
 

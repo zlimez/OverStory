@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "adc9175f-893d-4566-8707-94f81f2129f3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -59,26 +68,26 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Space Jump",
-                    "id": "d5ed226e-473f-4a2d-96e7-751317045d34",
-                    "path": "1DAxis(minValue=0)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Positive",
-                    "id": "5ed3b92e-6f3d-4233-8f6e-b2e8877f50fc",
+                    "name": "",
+                    "id": "7350791b-d418-4d9b-84ea-26939d9d1e8e",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "603497b8-1240-42f4-ac68-703a3e7a3a8c",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
