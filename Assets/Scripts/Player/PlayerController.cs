@@ -3,7 +3,7 @@ using AnyPortrait;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 {
     #region Fields
     private enum State
@@ -28,9 +28,11 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField]
     private float walkSpeed = 4f;
+
+    [SerializeField]
     private float runSpeed = 8f;
     private Vector2 currVelocity;
-    private bool isRunning;
+    private bool shouldRun;
 
     private float currHorizontalSpeed;
     private bool isFacingLeft;
@@ -97,7 +99,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Walk:
-                if (Mathf.Abs(currHorizontalSpeed) > walkSpeed)
+                if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + .1f)
                 {
                     TransitionToState(State.Run);
                 }
@@ -108,7 +110,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Run:
-                if (Mathf.Abs(currHorizontalSpeed) <= walkSpeed)
+                if (Mathf.Abs(currHorizontalSpeed) <= walkSpeed - 0.1f)
                 {
                     TransitionToState(State.Walk);
                 }
@@ -191,13 +193,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        isRunning = context.ReadValueAsButton();
+        shouldRun = context.ReadValueAsButton();
 
-        if (isRunning && currentState == State.Walk)
+        if (shouldRun && currentState == State.Walk)
         {
+            currHorizontalSpeed = shouldRun ? runSpeed : walkSpeed;
+            currHorizontalSpeed *= isFacingLeft ? -1 : 1;
             TransitionToState(State.Run);
         }
-        else if (!isRunning && currentState == State.Run)
+        else if (!shouldRun && currentState == State.Run)
         {
             TransitionToState(State.Walk);
         }
@@ -205,7 +209,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        float maxSpeed = isRunning ? runSpeed : walkSpeed;
+        float maxSpeed = shouldRun ? runSpeed : walkSpeed;
         currHorizontalSpeed = context.ReadValue<float>() * maxSpeed;
 
         if (currentState == State.Idle || currentState == State.Walk || currentState == State.Run)
@@ -254,6 +258,16 @@ public class PlayerController : MonoBehaviour
             isDashAvailable = false;
             TransitionToState(State.Dash);
         }
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion
