@@ -5,25 +5,25 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StartCutscene.unity
     guid: a697f87c73135f149afffe57a328ab5f
   - enabled: 1
     path: Assets/Scenes/Master.unity
     guid: ab018b9a945c11042958a1302621ee12
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Room.unity
     guid: 17294fc8f0b87f948941f414416f4582
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Puzzle1.unity
     guid: 9aa16bd366bc7274a9938c84cd0f1ca7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Puzzle2.unity
     guid: 07741dd17f80b9948b15402debcea209
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Credits.unity
     guid: 0bb7047206a9bb044b77fbc16c6a06ed
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/RoomPostChase.unity
     guid: 7760ad35500c93f488c9312bb9f53df9
   - enabled: 1
