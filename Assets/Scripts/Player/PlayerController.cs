@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed = 8f;
     private Vector2 currVelocity;
+    private bool isRunning;
+
     private float currHorizontalSpeed;
     private bool isFacingLeft;
 
@@ -188,6 +190,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        isRunning = Input.GetKey(KeyCode.LeftShift);
         currHorizontalSpeed = context.ReadValue<float>() * speed;
 
         if (currentState == State.Idle || currentState == State.Walk || currentState == State.Run)
