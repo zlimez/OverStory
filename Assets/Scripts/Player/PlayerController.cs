@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     // Movement support
     [Header("Movement")]
     [SerializeField]
-    private float speed = 8f;
+    private float walkSpeed = 4f;
+    private float runSpeed = 8f;
     private Vector2 currVelocity;
     private bool isRunning;
 
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Walk:
-                if (Mathf.Abs(currHorizontalSpeed) > speed * 0.5f)
+                if (Mathf.Abs(currHorizontalSpeed) > walkSpeed)
                 {
                     TransitionToState(State.Run);
                 }
@@ -107,14 +108,14 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Run:
-                if (Mathf.Abs(currHorizontalSpeed) <= speed * 0.5f)
+                if (Mathf.Abs(currHorizontalSpeed) <= walkSpeed)
                 {
                     TransitionToState(State.Walk);
                 }
                 break;
 
             case State.Jump:
-                if (isGrounded && Mathf.Approximately(currVelocity.y, 0))
+                if (isGrounded && Mathf.Abs(currVelocity.y) < .1f)
                 {
                     TransitionToState(State.Idle);
                 }
@@ -188,10 +189,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        isRunning = context.ReadValueAsButton();
+
+        if (isRunning && currentState == State.Walk)
+        {
+            TransitionToState(State.Run);
+        }
+        else if (!isRunning && currentState == State.Run)
+        {
+            TransitionToState(State.Walk);
+        }
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-        currHorizontalSpeed = context.ReadValue<float>() * speed;
+        float maxSpeed = isRunning ? runSpeed : walkSpeed;
+        currHorizontalSpeed = context.ReadValue<float>() * maxSpeed;
 
         if (currentState == State.Idle || currentState == State.Walk || currentState == State.Run)
         {
