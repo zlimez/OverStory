@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/Test/Green tiles/tileGreen_01.png.meta
 guid: 9b335df4573d54e1f83bf08159908f4b
+========
+guid: f979d2ab4b58b49baa7118e3071c351f
+>>>>>>>> movement-base:Assets/TempSprites/Green tiles/tileGreen_04.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
