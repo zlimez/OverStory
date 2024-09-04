@@ -1,124 +1,274 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Timers;
-using KinematicCharacterController;
+using System;
+using AnyPortrait;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 {
+    #region Fields
+    private enum State
+    {
+        Idle,
+        Walk,
+        Run,
+        Jump,
+        Dash
+    }
 
-	#region Fields
-	
-	private Rigidbody2D rb2D;
+    [Header("Animation")]
+    [SerializeField]
+    private apPortrait portrait;
 
-	// Movement support
-	[SerializeField] private float speed = 8f;
-	private Vector2 currVelocity;
-	private float currHorizontalSpeed;
-	private bool isFacingLeft;
-	
-	// Jump support
-	[SerializeField] private float jumpForce = 200f;
-	private bool isGrounded;
-	
-	// Dash support
-	[SerializeField] private float dashForce = 3000f;
-	private bool isDashAvailable = true;
-	private float dashCooldown = 1.2f;
+    [SerializeField]
+    private float crossFadeSeconds = .01f;
 
-	#endregion
+    private Rigidbody2D rb2D;
 
+    // Movement support
+    [Header("Movement")]
+    [SerializeField]
+    private float walkSpeed = 4f;
 
-	#region Methods
+    [SerializeField]
+    private float runSpeed = 8f;
+    private Vector2 currVelocity;
+    private bool shouldRun;
 
-	private void Awake()
-	{
-		rb2D = GetComponent<Rigidbody2D>();
-		currVelocity = new Vector2();
-	}
-	
-	private void Update() 
-	{
-		currVelocity.y = rb2D.velocity.y;
-		currVelocity.x = currHorizontalSpeed;
-		rb2D.velocity = currVelocity;
-		
-		if (rb2D.velocity.x > 0 && isFacingLeft) 
-		{
-			FlipSprite();
-		}
-		else if (rb2D.velocity.x < 0 && !isFacingLeft) 
-		{
-			FlipSprite();
-		}
-		
-		if (!isDashAvailable) 
-		{
-			dashCooldown -= Time.deltaTime;
-		}
-		if (dashCooldown <= 0) 
-		{
-			isDashAvailable = true;
-			dashCooldown = 2f;
-		}
-		
-	}
-	
-	private void OnCollisionEnter2D(Collision2D coll2D) 
-	{
-		if (coll2D.gameObject.tag == "Ground") 
-		{
-			isGrounded = true;
-		}
-	}
-	
-	private void OnCollisionExit2D(Collision2D coll2D) 
-	{
-		if (coll2D.gameObject.tag == "Ground") 
-		{
-			isGrounded = false;
-		}
-	}
-	
-	private void FlipSprite() 
-	{
-		Vector3 currScale = gameObject.transform.localScale;
-		currScale.x *= -1;
-		gameObject.transform.localScale = currScale;
-		
-		isFacingLeft = !isFacingLeft;
-	}
+    private float currHorizontalSpeed;
+    private bool isFacingLeft;
 
-	#endregion
+    // Jump support
+    [SerializeField]
+    private float jumpForce = 200f;
+    private bool isGrounded;
+
+    // Dash support
+    [SerializeField]
+    private float dashForce = 3000f;
+    private bool isDashAvailable = true;
+    private float dashCooldown = 1.2f;
+
+    private State currentState;
+
+    #endregion
 
 
-	#region Event Handlers
+    #region Methods
 
-	public void OnMove(InputAction.CallbackContext context) 
-	{
-		currHorizontalSpeed = context.ReadValue<float>() * speed;
-	}
-	
-	public void OnJump(InputAction.CallbackContext context) 
-	{
-		if (isGrounded) 
-		{
-			rb2D.AddForce(Vector2.up * jumpForce);
-		}
-	}
-	
-	public void OnDash(InputAction.CallbackContext context) 
-	{
-		if (isDashAvailable) 
-		{
-			Vector2 forceToAdd = isFacingLeft 
-				? Vector2.left * dashForce
-				: Vector2.right * dashForce; 
-			rb2D.AddForce(forceToAdd);
-			isDashAvailable = false;
-		}
-	}
+    private void Awake()
+    {
+        rb2D = GetComponent<Rigidbody2D>();
+        currVelocity = new Vector2();
 
-	#endregion
+        portrait.Initialize();
+        currentState = State.Idle;
+    }
+
+    private void Update()
+    {
+        HandleState();
+        if (rb2D.velocity.x > 0 && isFacingLeft)
+        {
+            FlipSprite();
+        }
+        else if (rb2D.velocity.x < 0 && !isFacingLeft)
+        {
+            FlipSprite();
+        }
+
+        if (!isDashAvailable)
+        {
+            dashCooldown -= Time.deltaTime;
+        }
+        if (dashCooldown <= 0)
+        {
+            isDashAvailable = true;
+            dashCooldown = 2f;
+        }
+    }
+
+    private void HandleState()
+    {
+        switch (currentState)
+        {
+            case State.Idle:
+                if (currHorizontalSpeed != 0)
+                {
+                    TransitionToState(State.Walk);
+                }
+                break;
+
+            case State.Walk:
+                if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + .1f)
+                {
+                    TransitionToState(State.Run);
+                }
+                else if (currHorizontalSpeed == 0)
+                {
+                    TransitionToState(State.Idle);
+                }
+                break;
+
+            case State.Run:
+                if (Mathf.Abs(currHorizontalSpeed) <= walkSpeed - 0.1f)
+                {
+                    TransitionToState(State.Walk);
+                }
+                break;
+
+            case State.Jump:
+                if (isGrounded && Mathf.Abs(currVelocity.y) < .1f)
+                {
+                    TransitionToState(State.Idle);
+                }
+                break;
+
+            case State.Dash:
+                if (isDashAvailable)
+                {
+                    TransitionToState(State.Idle);
+                }
+                break;
+        }
+
+        // Update movement
+        currVelocity.y = rb2D.velocity.y;
+        currVelocity.x = currHorizontalSpeed;
+        rb2D.velocity = currVelocity;
+    }
+
+    private void TransitionToState(State newState)
+    {
+        Debug.Log($"Changing to state {newState.ToString()}");
+        currentState = newState;
+        PlayAnimation(newState.ToString());
+    }
+
+    private void OnCollisionEnter2D(Collision2D coll2D)
+    {
+        if (coll2D.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D coll2D)
+    {
+        if (coll2D.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
+        }
+    }
+
+    private void FlipSprite()
+    {
+        Vector3 currScale = gameObject.transform.localScale;
+        currScale.x *= -1;
+        gameObject.transform.localScale = currScale;
+
+        isFacingLeft = !isFacingLeft;
+    }
+
+    #endregion
+
+
+    #region Event Handlers
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (
+            isGrounded
+            && (
+                currentState == State.Idle
+                || currentState == State.Walk
+                || currentState == State.Run
+            )
+        )
+        {
+            rb2D.AddForce(Vector2.up * jumpForce);
+            isGrounded = false;
+            TransitionToState(State.Jump);
+        }
+    }
+
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        shouldRun = context.ReadValueAsButton();
+
+        if (shouldRun && currentState == State.Walk)
+        {
+            currHorizontalSpeed = shouldRun ? runSpeed : walkSpeed;
+            currHorizontalSpeed *= isFacingLeft ? -1 : 1;
+            TransitionToState(State.Run);
+        }
+        else if (!shouldRun && currentState == State.Run)
+        {
+            TransitionToState(State.Walk);
+        }
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        float maxSpeed = shouldRun ? runSpeed : walkSpeed;
+        currHorizontalSpeed = context.ReadValue<float>() * maxSpeed;
+
+        if (currentState == State.Idle || currentState == State.Walk || currentState == State.Run)
+        {
+            TransitionToState(Mathf.Abs(currHorizontalSpeed) > 0 ? State.Walk : State.Idle);
+        }
+    }
+
+    private void PlayAnimation(string animToPlay)
+    {
+        try
+        {
+            apAnimPlayData animData = portrait.CrossFadeAt(
+                animToPlay,
+                frame: portrait.GetAnimationCurrentFrame(animToPlay), // This so that the walk animation and run animation seamlessly transition at the same offset. Frame 3 is always when the back arm fully swings back
+                crossFadeSeconds
+            );
+            if (animData == null)
+            {
+                Debug.LogWarning("Failed to play animation " + animToPlay);
+            }
+        }
+        catch (Exception)
+        {
+            Debug.LogWarning(
+                $"Error playing animation {animToPlay}. The portrait is likely not initialized"
+            );
+        }
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (
+            isDashAvailable
+            && (
+                currentState == State.Idle
+                || currentState == State.Walk
+                || currentState == State.Run
+            )
+        )
+        {
+            Vector2 forceToAdd = isFacingLeft
+                ? Vector2.left * dashForce
+                : Vector2.right * dashForce;
+            rb2D.AddForce(forceToAdd);
+            isDashAvailable = false;
+            TransitionToState(State.Dash);
+        }
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
 }
