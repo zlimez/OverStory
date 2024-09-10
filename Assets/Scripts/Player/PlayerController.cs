@@ -41,10 +41,10 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 	private bool isFacingLeft;
 
 	// Jump support
-	[SerializeField]
-	private float jumpForce = 25f;
-	[SerializeField]
-	private float initialJumpForce = 1800f;
+	// [SerializeField]
+	private float jumpForce = 100f;
+	// [SerializeField]
+	private float initialJumpForce = 1500f;
 	private const float MAX_JUMP_TIME = 0.3f;
 	private float remainingJumpTime = MAX_JUMP_TIME;
 	private bool isGrounded;
@@ -52,8 +52,12 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 
 	// Dash support
 	[SerializeField]
-	private float dashForce = 3000f;
+	private float dashForce = 2000f;
+	private Vector2 dashForceToAdd;
 	private bool isDashAvailable = true;
+	private bool isDashing = false;
+	private const float DASH_TIME = 0.25f;
+	private float remainingDashTime = DASH_TIME;
 	private const float MAX_DASH_COOLDOWN = 1.2f;
 	private float dashCooldown = MAX_DASH_COOLDOWN;
 
@@ -94,15 +98,62 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 			isDashAvailable = true;
 			dashCooldown = MAX_DASH_COOLDOWN;
 		}
-		
+	}
+	
+	private void FixedUpdate() 
+	{
 		if (isJumping && remainingJumpTime > 0f) 
 		{
 			// Continue jump to max
 			rb2D.AddForce(Vector2.up * jumpForce);
-			remainingJumpTime -= Time.deltaTime;
+			remainingJumpTime -= Time.fixedDeltaTime;
+		}
+		
+		if (isDashing) 
+		{
+			if (remainingDashTime > 0f)
+			{
+				dashForceToAdd = isFacingLeft
+					? Vector2.left * dashForce
+					: Vector2.right * dashForce;
+				rb2D.AddForce(dashForceToAdd);
+				remainingDashTime -= Time.fixedDeltaTime;
+			}
+			else 
+			{
+				isDashing = false;
+			}
 		}
 	}
 
+	private void OnCollisionEnter2D(Collision2D coll2D)
+	{
+		// Check if player is on the ground
+		if (coll2D.gameObject.tag == "Ground")
+		{
+			isGrounded = true;
+		}
+	}
+
+	private void OnCollisionExit2D(Collision2D coll2D)
+	{
+		// Check if player is leaving the ground
+		if (coll2D.gameObject.tag == "Ground")
+		{
+			isGrounded = false;
+		}
+	}
+
+	private void FlipSprite()
+	{
+		Vector3 currScale = gameObject.transform.localScale;
+		currScale.x *= -1;
+		gameObject.transform.localScale = currScale;
+
+		isFacingLeft = !isFacingLeft;
+	}
+	
+	// Animation stuff
 	private void HandleState()
 	{
 		switch (currState)
@@ -159,33 +210,6 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 		currState = newState;
 		PlayAnimation(newState.ToString());
 	}
-
-	private void OnCollisionEnter2D(Collision2D coll2D)
-	{
-		// Check if player is on the ground
-		if (coll2D.gameObject.tag == "Ground")
-		{
-			isGrounded = true;
-		}
-	}
-
-	private void OnCollisionExit2D(Collision2D coll2D)
-	{
-		// Check if player is leaving the ground
-		if (coll2D.gameObject.tag == "Ground")
-		{
-			isGrounded = false;
-		}
-	}
-
-	private void FlipSprite()
-	{
-		Vector3 currScale = gameObject.transform.localScale;
-		currScale.x *= -1;
-		gameObject.transform.localScale = currScale;
-
-		isFacingLeft = !isFacingLeft;
-	}
 	
 	private void PlayAnimation(string animToPlay)
 	{
@@ -218,7 +242,6 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 	{
 		if (context.started)
 		{
-			Debug.Log("Jump context - started");
 			// Start jumping
 			if (isGrounded
 			&& (
@@ -235,27 +258,10 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 		}
 		else if (context.canceled) 
 		{
-			Debug.Log("Jump context - canceled");
 			// Stop jump and reset jumpTime
 			isJumping = false;
 			remainingJumpTime = 0f;
 		}
-		
-		/*
-		// TODO: remove old code below
-		if (isGrounded
-			&& (
-				currState == State.Idle
-				|| currState == State.Walk
-				|| currState == State.Run
-			)
-		)
-		{
-			rb2D.AddForce(Vector2.up * jumpForce);
-			isGrounded = false;
-			TransitionToState(State.Jump);
-		}
-		*/
 	}
 
 	public void OnRun(InputAction.CallbackContext context)
@@ -296,10 +302,8 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 			)
 		)
 		{
-			Vector2 forceToAdd = isFacingLeft
-				? Vector2.left * dashForce
-				: Vector2.right * dashForce;
-			rb2D.AddForce(forceToAdd);
+			isDashing = true;
+			remainingDashTime = DASH_TIME;
 			isDashAvailable = false;
 			TransitionToState(State.Dash);
 		}

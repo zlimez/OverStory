@@ -26826,9 +26826,6 @@ MonoBehaviour:
   crossFadeSeconds: 0.2
   walkSpeed: 3
   runSpeed: 5
-  jumpForce: 25
-  initialJumpForce: 1800
-  MAX_JUMP_TIME: 0.3
   dashForce: 3000
 --- !u!61 &541819844
 BoxCollider2D:
