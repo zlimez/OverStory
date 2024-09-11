@@ -4,7 +4,7 @@ using Abyss.EventSystem;
 [CreateAssetMenu(menuName = "Item")]
 public class Item : ScriptableObject
 {
-    public static string itemUsedPrefix = "Item used: ";
+    public static string ItemUsedPrefix = "Item used: ";
     // NOTE: Each item should have a unique name
     public string itemName;
     [TextArea(3, 5)]
@@ -22,26 +22,20 @@ public class Item : ScriptableObject
         itemUsedEvent = new GameEvent($"{itemName} used");
     }
 
-    // The behaviour of the item when the player uses
-    // the item in the inventory.
     public virtual void Use()
     {
         // Non consumables will be inspected instead via zoom box
         if (!isConsumable)
-        {
             Inventory.Instance.onItemInspected?.Invoke(this);
             // Debug.Log($"Should show {itemName} in zoombox");
-        }
         // InputManager.itemUseButtonActivated = true;
         EventManager.InvokeEvent(itemUsedEvent);
     }
 
     public override bool Equals(object other)
     {
-        if (other is Item)
-        {
-            return ((Item)other).itemName == itemName;
-        }
+        if (other is Item item)
+            return item.itemName == itemName;
 
         return false;
     }
@@ -50,12 +44,4 @@ public class Item : ScriptableObject
     {
         return itemName.GetHashCode();
     }
-
-    // public static bool operator ==(Item item1, Item item2) {
-    //     return item1.itemName == item2.itemName && item1.description == item2.description;
-    // }
-
-    // public static bool operator !=(Item item1, Item item2) {
-    //     return item1.itemName != item2.itemName || item1.description != item2.description;
-    // }
 }

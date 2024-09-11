@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] int _health;
+    [SerializeField] int health;
 
     public bool TakeHit(int hitpoints) {
-        _health -= hitpoints;
-        bool isDead = _health <= 0;
+        health -= hitpoints;
+        bool isDead = health <= 0;
         if (isDead) Destroy(gameObject);
         return isDead;
     }

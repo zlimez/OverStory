@@ -41,10 +41,9 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 	private bool isFacingLeft;
 
 	// Jump support
+	[SerializeField] private float jumpForce = 100f;
 	// [SerializeField]
-	private float jumpForce = 100f;
-	// [SerializeField]
-	private float initialJumpForce = 1500f;
+	[SerializeField] private float initialJumpForce = 1500f;
 	private const float MAX_JUMP_TIME = 0.3f;
 	private float remainingJumpTime = MAX_JUMP_TIME;
 	private bool isGrounded;

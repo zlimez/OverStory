@@ -40,13 +40,26 @@ public class GA
         if(chosenNumber == 1) return y;
         return (float)(rangeMin + (random.NextDouble() * (rangeMax - rangeMin)));
     }
+
+    public float [,] GetInitPopulation(int populationSize, Pair<float, float>[] ranges, int chromosomeLength)
+    {
+        float[,] population = new float[populationSize, chromosomeLength];
+
+        for (int i = 0; i < populationSize; i++)
+        {
+            for (int j = 0; j < chromosomeLength; j++)
+                population[i, j] = (float)(ranges[j].Head + (random.NextDouble() * (ranges[j].Tail - ranges[j].Head)));
+        }
+
+        return population;
+    }
     
-    public float[,] GetGenerations(float[,] parents, float mutationRate, Pair<float, float>[] ranges, float generationRate = 2)
+    public float[,] GetChildren(float[,] parents, float mutationRate, Pair<float, float>[] ranges, float generationRate = 2)
     {
         int populationSize = parents.GetLength(0);
         int chromosomeLength = parents.GetLength(1);
         int generationSize = (int)Math.Round(generationRate * (float)populationSize);
-        float[,] generations = new float[generationSize, chromosomeLength];
+        float[,] children = new float[generationSize, chromosomeLength];
 
         for (int i = 0; i < generationSize; i++)
         {
@@ -56,10 +69,10 @@ public class GA
             {
                 float x = parents[selectedParents[0], j];
                 float y = parents[selectedParents[1], j];
-                generations[i, j] = Mutate(x, y, mutationRate, ranges[j].Head, ranges[j].Tail);
+                children[i, j] = Mutate(x, y, mutationRate, ranges[j].Head, ranges[j].Tail);
             }
         }
 
-        return generations;
+        return children;
     }
 }
