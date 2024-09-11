@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5597107894890797261}
   - component: {fileID: 1089974432030228776}
-  - component: {fileID: 5666494785165472645}
   m_Layer: 6
   m_Name: Hog
   m_TagString: Untagged
@@ -82,21 +81,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   arena: {fileID: 0}
---- !u!114 &5666494785165472645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1340715973396851374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2928dc31c5deb4707af2ff1dc8eddc43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alive: 0
-  speed: 0
-  strength: 0
 --- !u!1 &4121430963432485380
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +152,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1528761381
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b6108dd98e352450abef3a15d3d6f502, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -178,6 +162,6 @@ SpriteRenderer:
   m_Size: {x: 3.2, y: 2.84}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

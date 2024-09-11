@@ -93,27 +93,27 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     private GameObject npcPrefab;
-    private List<GameObject> npcs = new List<GameObject>();
+    // private List<GameObject> npcs = new List<GameObject>();
     private void Start()
     {
-        List<NPCData> loadedNPCs1 = NPCDataManager.LoadNPCs();
-        List<NPCData> loadedNPCs = NPCDataManager.NextGeneration(loadedNPCs1);
+        // List<EnemyAttr> loadedNPCs1 = NPCDataManager.LoadNPCs();
+        // List<EnemyAttr> loadedNPCs = NPCDataManager.NextGeneration(loadedNPCs1);
 
-        foreach (NPCData data in loadedNPCs)
-        {
-            GameObject npcObject = Instantiate(npcPrefab, NPCDataManager.GenerateRandomPosition((float)-7.8, (float)13.5), Quaternion.identity);
-            NPCController npcController = npcObject.GetComponent<NPCController>();
+        // foreach (EnemyAttr data in loadedNPCs)
+        // {
+        //     GameObject npcObject = Instantiate(npcPrefab, NPCDataManager.GenerateRandomPosition((float)-7.8, (float)13.5), Quaternion.identity);
+        //     NPCController npcController = npcObject.GetComponent<NPCController>();
 
-            if (npcController != null)
-            {
-                npcController.alive = true;
-                npcController.speed = data.speed;
-                npcController.strength = data.strength;
-            }
+        //     if (npcController != null)
+        //     {
+        //         npcController.alive = true;
+        //         npcController.speed = data.speed;
+        //         npcController.strength = data.strength;
+        //     }
 
-            npcs.Add(npcObject);
-        }
-        NPCDataManager.SaveNPCs(npcs);
+        //     npcs.Add(npcObject);
+        // }
+        // NPCDataManager.SaveNPCs(npcs);
         // CreateRandomNPCs();
     }
 
