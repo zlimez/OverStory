@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Represents a conversation consisting of multiple dialogue lines.
 /// </summary>
-[CreateAssetMenu(menuName = "Conversation")]
+[CreateAssetMenu(menuName = "Dialogue/Conversation", order = 1)]
 public class Conversation : ScriptableObject
 {
     [Header("Settings")]

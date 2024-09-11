@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Represents a speaker for in-game dialogues or events.
 /// </summary>
-[CreateAssetMenu(fileName = "New Speaker", menuName = "ScriptableObjects/Speaker", order = 0)]
+[CreateAssetMenu(menuName = "Dialogue/Speaker", order = 0)]
 public class Speaker : ScriptableObject
 {
     [SerializeField] private string speakerName;

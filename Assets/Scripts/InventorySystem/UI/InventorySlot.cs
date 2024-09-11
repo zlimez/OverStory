@@ -49,7 +49,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (itemStack != null)
         {
-            GameEvent specificItemUseEvent = new GameEvent(Item.itemUsedPrefix + itemStack.Data.itemName);
+            GameEvent specificItemUseEvent = new GameEvent(Item.ItemUsedPrefix + itemStack.Data.itemName);
             // Debug.Log($"Using {itemStack.Data.itemName}");
             referencedCollection.UseItem(itemStack.Data);
             EventManager.InvokeEvent(CommonEventCollection.ItemUsed);

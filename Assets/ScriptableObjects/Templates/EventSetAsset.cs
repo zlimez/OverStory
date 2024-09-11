@@ -3,7 +3,7 @@ using UnityEngine;
 using Tuples;
 using Abyss.EventSystem;
 
-[CreateAssetMenu(fileName = "EventSet", menuName = "Abyss/EventSet")]
+[CreateAssetMenu(menuName = "Event Set")]
 public class EventSetAsset : ScriptableObject
 {
     [SerializeField]

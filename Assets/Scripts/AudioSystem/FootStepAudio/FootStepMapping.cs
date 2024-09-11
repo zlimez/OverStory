@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "New FootStepMapping", menuName = "ScriptableObjects/FootStepMapping", order = 1)]
+[CreateAssetMenu(menuName = "Footstep Mapping")]
 public class FootStepMapping : ScriptableObject
 {
     public List<Material> materials;
