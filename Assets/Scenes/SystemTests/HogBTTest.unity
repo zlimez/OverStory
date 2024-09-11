@@ -1964,7 +1964,7 @@ SpriteRenderer:
   m_Size: {x: 3.2, y: 2.84}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &104215955
@@ -1995,10 +1995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624bfb3afb33e4f9f9cc9da0315b187f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portrait: {fileID: 0}
-  crossFadeSeconds: 0.01
-  walkSpeed: 4
-  runSpeed: 8
+  speed: 5
   jumpForce: 300
   dashForce: 3000
 --- !u!114 &104215957
@@ -30838,7 +30835,7 @@ SpriteRenderer:
   m_Size: {x: 3.2, y: 2.84}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1875013542
