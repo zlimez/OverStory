@@ -46,8 +46,10 @@ namespace BehaviorTree
 
         public virtual void Abort()
         {
+#if DEBUG
             Assert.IsTrue(State == State.RUNNING);
             Assert.IsTrue(this is not Root);
+#endif
             State = State.SUSPENDED;
         }
 

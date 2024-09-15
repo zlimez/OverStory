@@ -94,7 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2783f183ec7a540dbb1188a343ddc16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  specyAttr: {fileID: 11400000, guid: 497df2db7b8524584b2d479508ecc4f5, type: 2}
   attributes:
+    isAlive: 1
     strength: 0
     speed: 0
     alertness: 0

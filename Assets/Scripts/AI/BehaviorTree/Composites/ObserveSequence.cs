@@ -83,7 +83,9 @@ namespace BehaviorTree
             }
             else if (Restarted)
             {
+#if DEBUG
                 Assert.IsTrue(State == State.FAILURE);
+#endif
                 _prevChild.Abort();
                 Restarted = false;
             }

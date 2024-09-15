@@ -22,4 +22,16 @@ namespace Tuples {
             this.Item3 = item3;
         }
     }
+
+    [Serializable]
+    public class RefTriplet<U, T, Z> {
+        public U Item1;
+        public T Item2;
+        public Z Item3;
+        public RefTriplet(U item1, T item2, Z item3) {
+            this.Item1 = item1;
+            this.Item2 = item2;
+            this.Item3 = item3;
+        }
+    }
 }

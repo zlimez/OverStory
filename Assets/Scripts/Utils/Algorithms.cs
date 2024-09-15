@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 using System.Linq;
 
 namespace Algorithms
@@ -68,6 +66,14 @@ namespace Algorithms
                 if (ind == i) continue;
                 (target[ind], target[i]) = (target[i], target[ind]);
                 (probDist[ind], probDist[i]) = (probDist[i], probDist[ind]);
+            }
+        }
+
+        public static void ShuffleForK<T>(int k, List<T> target) {
+            System.Random ran = new();
+            for (int i = 0; i < k; i++) {
+                int j = ran.Next(i, target.Count);
+                (target[i], target[j]) = (target[j], target[i]);
             }
         }
 

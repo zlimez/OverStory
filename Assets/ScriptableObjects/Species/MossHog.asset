@@ -14,9 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   specyName: Moss Hog
   mutationRate: 0.1
-  maxPopulation: 50
+  maxPopulation: 20
   generationRate: 1.5
   attrRanges:
   - Item1: strength
+    Item2: 1
+    Item3: 10
+  - Item1: speed
+    Item2: 1
+    Item3: 10
+  - Item1: alertness
+    Item2: 1
+    Item3: 10
+  - Item1: friendliness
     Item2: 1
     Item3: 10
