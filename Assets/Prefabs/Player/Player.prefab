@@ -7928,6 +7928,8 @@ MonoBehaviour:
   crossFadeSeconds: 0.2
   walkSpeed: 3
   runSpeed: 5
+  jumpForce: 100
+  initialJumpForce: 1500
   dashForce: 3000
 --- !u!70 &5773483344534926292
 CapsuleCollider2D:
@@ -7961,8 +7963,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.027848141, y: 0.10025297}
-  m_Size: {x: 1.8255677, y: 2.826833}
+  m_Offset: {x: 0.027849333, y: 0.15538591}
+  m_Size: {x: 3.369281, y: 4.7013407}
   m_Direction: 0
 --- !u!1 &2475583787839678536
 GameObject:

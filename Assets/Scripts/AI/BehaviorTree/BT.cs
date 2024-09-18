@@ -68,6 +68,10 @@ namespace BehaviorTree
             }
         }
 
+        public void Teardown() {
+            // TODO: Remove all listeners
+        }
+
         public void AddTracker(string observedVar, UnityAction func)
         {
             if (!_trackedVars.ContainsKey(observedVar))

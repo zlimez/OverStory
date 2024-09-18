@@ -70,7 +70,7 @@ namespace BehaviorTree
                     if (Restarted)
                     {
                         _prevChild = Children[_currChildInd];
-                        if (_currChildInd != 0) 
+                        if (_currChildInd != 0)
                             OnInit();
                         else Restarted = false;
                     }
@@ -84,7 +84,9 @@ namespace BehaviorTree
             else if (Restarted)
             {
                 // Failure means prevChild have alse been executed this turn and failed violating at most one tick starting at running state per turn
+#if DEBUG
                 Assert.IsTrue(State == State.SUCCESS);
+#endif
                 _prevChild.Abort();
                 Restarted = false;
             }

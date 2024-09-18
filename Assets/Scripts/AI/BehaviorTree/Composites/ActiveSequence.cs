@@ -70,7 +70,9 @@ namespace BehaviorTree
             else if (Restarted)
             {
                 // Success means prevChild have alse been executed this turn and succeeded violating at most one tick starting at running state per turn
+#if DEBUG
                 Assert.IsTrue(State == State.FAILURE);
+#endif
                 _prevChild.Abort();
                 Restarted = false;
             }

@@ -18,13 +18,14 @@ public class HogBT : MonoBehaviour
     [Header("Patrol Settings")]
     [SerializeField] float patrolSpeed;
     [SerializeField] float waitTime;
-    [SerializeField] Transform[] waypoints;
+    public Transform[] waypoints;
     [Header("Misc")]
-    [SerializeField] Arena arena;
+    public Arena arena;
 
     BT bT;
 
-    void Awake()
+    // Invoked by spawner
+    public void Setup()
     {
         Blackboard bb = new(new Pair<string, string>[] { new(arena.EEEvent, arena.EEEvent) });
         Pair<string, object>[] hogParams = {

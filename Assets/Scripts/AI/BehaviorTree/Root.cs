@@ -8,8 +8,10 @@ namespace BehaviorTree {
         public Node Child { get; private set; }
         public Root(Node child)
         {
+#if DEBUG
             Assert.IsNull(Parent);
             Assert.IsNotNull(child);
+#endif
             Child = child;
             Child.Parent = this;
         }
