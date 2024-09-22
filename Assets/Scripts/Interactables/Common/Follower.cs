@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class Follower : MonoBehaviour
 {
@@ -13,29 +14,34 @@ public class Follower : MonoBehaviour
     private IEnumerator bufferRoutine;
     private bool bufferDistCreated = false;
 
-    void OnEnable() {
+    void OnEnable()
+    {
         offsetToTarget = target.transform.position - transform.position;
         offsetToTarget = offsetToTarget * (offsetToTarget.magnitude + bufferDistance) / offsetToTarget.magnitude;
         bufferRoutine = CreateBuffer();
         StartCoroutine(bufferRoutine);
     }
 
-    void OnDisable() {
+    void OnDisable()
+    {
         if (bufferRoutine != null) StopCoroutine(bufferRoutine);
         bufferDistCreated = false;
     }
 
-    void Update() {
+    void Update()
+    {
         transform.position = Vector3.Lerp(transform.position, target.transform.position - offsetToTarget, 1f - Mathf.Exp(-followingSharpness * Time.deltaTime));
     }
 
-    IEnumerator CreateBuffer() {
+    IEnumerator CreateBuffer()
+    {
         float timeElapsed = 0;
         Vector3 initialPosition = transform.position;
         Vector3 targetPosition = target.transform.position - offsetToTarget;
-        while (timeElapsed < creatBufferTime) {
+        while (timeElapsed < creatBufferTime)
+        {
             timeElapsed += Time.deltaTime;
-            transform.position = VectorCurves.CubicLerpVector(initialPosition, targetPosition, timeElapsed / creatBufferTime);
+            transform.position = Curves.CubicLerpVector(initialPosition, targetPosition, timeElapsed / creatBufferTime);
             yield return null;
         }
         bufferRoutine = null;

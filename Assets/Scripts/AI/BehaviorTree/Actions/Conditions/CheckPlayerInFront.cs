@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class CheckPlayerInFront : CfAction
 {
-    private Transform _transform;
+    Transform _transform;
+    SpriteManager _spriteManager;
 
     public CheckPlayerInFront(string[] parameters) : base(parameters) { }
 
@@ -11,10 +12,11 @@ public class CheckPlayerInFront : CfAction
     {
         base.Setup(tree);
         _transform = Tree.GetDatum<Transform>(_params[0]);
+        _spriteManager = Tree.GetDatum<SpriteManager>(_params[1]);
     }
 
     public override void Update()
     {
-        State = Vector3.Dot(_transform.forward, Tree.GetDatum<Transform>("target").position - _transform.position) > 0 ? State.SUCCESS : State.FAILURE;
+        State = Vector3.Dot(_spriteManager.forward, Tree.GetDatum<Transform>("target").position - _transform.position) > 0 ? State.SUCCESS : State.FAILURE;
     }
 }

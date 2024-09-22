@@ -1,21 +1,22 @@
-using BehaviorTree;
-
-public class CheckPlayerInArena : CfAction
+namespace BehaviorTree.Actions
 {
-    Arena _arena;
-    public CheckPlayerInArena(string[] parameters) : base(parameters) {}
-
-    public override void Setup(BT tree)
+    public class CheckPlayerInArena : CfAction
     {
-        base.Setup(tree);
-        var dataRef = Tree.GetData(_params);
-        _arena = (Arena)dataRef[0];
-    }
+        Arena _arena;
+        public CheckPlayerInArena(string[] parameters) : base(parameters) { }
 
-    public override void Update()
-    {
-        State = _arena.PlayerIn ? State.SUCCESS : State.FAILURE;
-        if (State == State.SUCCESS)
-            Tree.SetDatum("target", _arena.Player.transform);
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            var dataRef = Tree.GetData(_params);
+            _arena = (Arena)dataRef[0];
+        }
+
+        public override void Update()
+        {
+            State = _arena.PlayerIn ? State.SUCCESS : State.FAILURE;
+            if (State == State.SUCCESS)
+                Tree.SetDatum("target", _arena.Player.transform);
+        }
     }
 }

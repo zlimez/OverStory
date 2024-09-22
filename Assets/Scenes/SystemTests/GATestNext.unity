@@ -542,13 +542,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84060f4fbdc14a909c22357cc0bb870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 7569369266368374267, guid: 2058f017154e248a898d90f33e5a7bfa,
+  entityPrefab: {fileID: 3152220848850252839, guid: 2058f017154e248a898d90f33e5a7bfa,
     type: 3}
   location: {fileID: 1615910904}
   waypoints:
   - {fileID: 1633523297}
   - {fileID: 852219496}
-  arena: {fileID: 1875013545}
 --- !u!4 &230752973
 Transform:
   m_ObjectHideFlags: 0
@@ -2256,13 +2255,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84060f4fbdc14a909c22357cc0bb870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 7569369266368374267, guid: 2058f017154e248a898d90f33e5a7bfa,
+  entityPrefab: {fileID: 3152220848850252839, guid: 2058f017154e248a898d90f33e5a7bfa,
     type: 3}
   location: {fileID: 809518168}
   waypoints:
   - {fileID: 1633523297}
   - {fileID: 852219496}
-  arena: {fileID: 1875013545}
 --- !u!4 &831453310
 Transform:
   m_ObjectHideFlags: 0
@@ -2434,13 +2432,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84060f4fbdc14a909c22357cc0bb870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 7569369266368374267, guid: 2058f017154e248a898d90f33e5a7bfa,
+  entityPrefab: {fileID: 3152220848850252839, guid: 2058f017154e248a898d90f33e5a7bfa,
     type: 3}
   location: {fileID: 235143722}
   waypoints:
   - {fileID: 1633523297}
   - {fileID: 852219496}
-  arena: {fileID: 1875013545}
 --- !u!4 &1145784115
 Transform:
   m_ObjectHideFlags: 0
@@ -3755,13 +3752,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84060f4fbdc14a909c22357cc0bb870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 7569369266368374267, guid: 2058f017154e248a898d90f33e5a7bfa,
+  entityPrefab: {fileID: 3152220848850252839, guid: 2058f017154e248a898d90f33e5a7bfa,
     type: 3}
   location: {fileID: 1836245860}
   waypoints:
   - {fileID: 1633523297}
   - {fileID: 852219496}
-  arena: {fileID: 1875013545}
 --- !u!4 &1868414888
 Transform:
   m_ObjectHideFlags: 0
@@ -4110,13 +4106,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84060f4fbdc14a909c22357cc0bb870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 7569369266368374267, guid: 2058f017154e248a898d90f33e5a7bfa,
+  entityPrefab: {fileID: 3152220848850252839, guid: 2058f017154e248a898d90f33e5a7bfa,
     type: 3}
   location: {fileID: 618240600}
   waypoints:
   - {fileID: 1633523297}
   - {fileID: 852219496}
-  arena: {fileID: 1875013545}
 --- !u!4 &2092426949
 Transform:
   m_ObjectHideFlags: 0

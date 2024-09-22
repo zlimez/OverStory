@@ -2444,8 +2444,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &827549974877775810
@@ -3087,8 +3087,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1574362025530945196
@@ -3102,7 +3102,7 @@ GameObject:
   - component: {fileID: 3997376017742084351}
   m_Layer: 0
   m_Name: EditorObjects
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7784,8 +7784,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.4, y: -4.85, z: -0.033267822}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1213745816249920528}
   m_Father: {fileID: 0}
@@ -7963,8 +7963,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.027849333, y: 0.15538591}
-  m_Size: {x: 3.369281, y: 4.7013407}
+  m_Offset: {x: 0.01578331, y: 0.2159288}
+  m_Size: {x: 3.2834358, y: 4.68967}
   m_Direction: 0
 --- !u!1 &2475583787839678536
 GameObject:
@@ -12568,8 +12568,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5034761846206563787
@@ -19410,8 +19410,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5878445485271890356
@@ -19729,8 +19729,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5954422041564655014
@@ -20048,8 +20048,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6173682374523063112
@@ -28505,8 +28505,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6412902408088066239
@@ -28824,8 +28824,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6468083390576585357
@@ -28840,7 +28840,7 @@ GameObject:
   - component: {fileID: 2117168226034622443}
   m_Layer: 0
   m_Name: Root Unit 0
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30261,8 +30261,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6609920594191169983
@@ -30684,8 +30684,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6896121379404875286
@@ -31901,8 +31901,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7141325577187307491
@@ -32220,8 +32220,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7142202006563064589
@@ -33123,7 +33123,7 @@ GameObject:
   - component: {fileID: 2018327544417887530}
   m_Layer: 0
   m_Name: PlayerPortrait
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33138,7 +33138,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.59519994, y: 0.59519994, z: 0.41664}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3997376017742084351}
@@ -38716,7 +38716,7 @@ MonoBehaviour:
   _isOptimizedPortrait: 0
   _bakeTargetOptPortrait: {fileID: 0}
   _bakeSrcEditablePortrait: {fileID: 0}
-  _sortingLayerID: 0
+  _sortingLayerID: 1619572195
   _sortingOrder: 0
   _sortingOrderOption: 0
   _sortingOrderPerDepth: 1

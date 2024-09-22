@@ -5,6 +5,7 @@ using UnityEngine;
 using Cinemachine;
 using Tuples;
 using UnityEngine.Assertions;
+using Utils;
 
 // Camera's right vector is always parallel to the x-axis
 public class MainCamera : MonoBehaviour
@@ -79,7 +80,8 @@ public class MainCamera : MonoBehaviour
         PlanarDirection = Vector3.forward;
     }
 
-    public void SetFollowTransform(Transform t, float newDistance = -1) {
+    public void SetFollowTransform(Transform t, float newDistance = -1)
+    {
         targetViewDistance = newDistance == -1 ? _currentDistance : newDistance;
         // Debug.Log("Current distance is " + _currentDistance + " Target view distance is " + targetViewDistance);
         // The first camera binded object will be focused immediately instead of going through transition
@@ -148,7 +150,7 @@ public class MainCamera : MonoBehaviour
         while (elapsedTransitionTime < givenTransitionInterval)
         {
             elapsedTransitionTime += Time.deltaTime;
-            transform.position = VectorCurves.CubicLerpVector(transitStartPosition, transitTargetPosition, elapsedTransitionTime / givenTransitionInterval);
+            transform.position = Curves.CubicLerpVector(transitStartPosition, transitTargetPosition, elapsedTransitionTime / givenTransitionInterval);
             this.transform.rotation = RotationUtils.CubicLerpRotation(transitStartRotation, transitTargetRotation, elapsedTransitionTime / givenTransitionInterval);
             yield return null;
         }

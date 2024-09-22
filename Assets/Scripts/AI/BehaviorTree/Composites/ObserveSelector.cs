@@ -12,6 +12,11 @@ namespace BehaviorTree
         bool _shouldReevaluate = false;
         readonly Func<object, bool> _restartCondition;
 
+        void PromptReevaluate()
+        {
+            if (State == State.RUNNING) _shouldReevaluate = true;
+        }
+
         public ObserveSelector(List<Node> children, string[] observedVars, Func<object, bool> restartCondition) : base(children)
         {
             _observedVars = observedVars;
@@ -22,10 +27,13 @@ namespace BehaviorTree
         {
             base.Setup(tree);
             foreach (var observedVar in _observedVars)
-                Tree.AddTracker(observedVar, () =>
-                {
-                    if (State == State.RUNNING) _shouldReevaluate = true;
-                });
+                Tree.AddTracker(observedVar, PromptReevaluate);
+        }
+
+        public override void Teardown()
+        {
+            foreach (var observedVar in _observedVars)
+                Tree.AddTracker(observedVar, PromptReevaluate);
         }
 
         public override void OnChildComplete(Node child, State childState)
