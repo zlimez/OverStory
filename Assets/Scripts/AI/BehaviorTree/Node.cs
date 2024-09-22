@@ -16,7 +16,7 @@ namespace BehaviorTree
     {
         // For Debugging
         public int Id;
-        
+
         public State State { get; protected set; } = State.INACTIVE;
         public BT Tree;
         public Node Parent;
@@ -32,6 +32,8 @@ namespace BehaviorTree
         {
             Tree = tree;
         }
+
+        public virtual void Teardown() { }
 
         protected virtual void OnInit()
         {

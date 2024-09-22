@@ -1,21 +1,23 @@
-using BehaviorTree;
 using UnityEngine;
 
-public class FaceTarget : CfAction
+namespace BehaviorTree.Actions
 {
-    Transform _transform;
-
-    public FaceTarget(string[] parameters) : base(parameters) { }
-
-    public override void Setup(BT tree)
+    public class FaceTarget : CfAction
     {
-        base.Setup(tree);
-        _transform = Tree.GetDatum<Transform>(_params[0]);
-    }
+        Transform _transform;
 
-    public override void Update()
-    {
-        _transform.LookAt(new Vector3(Tree.GetDatum<Transform>("target").position.x, _transform.position.y, _transform.position.z));
-        State = State.SUCCESS;
+        public FaceTarget(string[] parameters) : base(parameters) { }
+
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            _transform = Tree.GetDatum<Transform>(_params[0]);
+        }
+
+        public override void Update()
+        {
+            _transform.LookAt(new Vector3(Tree.GetDatum<Transform>("target").position.x, _transform.position.y, _transform.position.z));
+            State = State.SUCCESS;
+        }
     }
 }

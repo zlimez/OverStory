@@ -1,22 +1,26 @@
-using BehaviorTree;
 using UnityEngine;
 
-public class ReverseDir : CfAction
+namespace BehaviorTree.Actions
 {
-    Transform _transform;
-
-    public ReverseDir(string[] parameters) : base(parameters) { }
-
-    public override void Setup(BT tree)
+    public class ReverseDir : CfAction
     {
-        base.Setup(tree);
-        _transform = Tree.GetDatum<Transform>(_params[0]);
-    }
+        SpriteManager _spriteManager;
 
-    public override void Update()
-    {
-        Debug.Log("Reversed");
-        _transform.Rotate(0, 180, 0);
-        State = State.SUCCESS;
+        public ReverseDir(string[] parameters) : base(parameters) { }
+
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            _spriteManager = Tree.GetDatum<SpriteManager>(_params[0]);
+        }
+
+        public override void Update()
+        {
+#if DEBUG
+            Debug.Log("Reversed");
+#endif
+            _spriteManager.Flip();
+            State = State.SUCCESS;
+        }
     }
 }

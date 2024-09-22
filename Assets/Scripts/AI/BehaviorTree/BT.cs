@@ -8,16 +8,20 @@ namespace BehaviorTree
 {
     public class BT
     {
-        // For debugging
+#if DEBUG
         private int _idCounter = 0;
+#endif
 
         protected Node _root;
         public readonly LinkedList<Node> Scheduled = new();
         // NOTE: Directly subscription to blackboard events prohibited to prevent mid tick changes and multiple reevaluates per composite,
         // a buffer is used to store events and then processed at the start of the next tick
         readonly Dictionary<string, UnityEvent> _trackedVars = new();
+        readonly Dictionary<string, (Blackboard, UnityAction<object>)> _trackedVarsActions = new();
+
         Queue<UnityEvent> _eventFrontBuffer = new(), _eventBackBuffer = new();
         Queue<UnityEvent> _eventWriteBuffer;
+
         readonly Blackboard[] _blackboards; // By contract should possess or have reference to vars that are tracked by this BT whose changes can cause composite restarts
         readonly Dictionary<string, object> _headBoard = new();
 
@@ -37,7 +41,9 @@ namespace BehaviorTree
             while (q.Count > 0)
             {
                 Node node = q.Dequeue();
+#if DEBUG
                 node.Id = _idCounter++;
+#endif
                 node.Setup(this);
                 var children = node.GetChildren();
                 if (children == null) continue;
@@ -56,11 +62,13 @@ namespace BehaviorTree
                     if (blackboard.DataEvents.ContainsKey(varName))
                     {
                         sourceFound = true;
-                        blackboard.DataEvents[varName].AddListener((obj) =>
+                        void listener(object obj)
                         {
                             _headBoard[varName] = obj;
                             _eventWriteBuffer.Enqueue(changeEvent);
-                        });
+                        }
+                        blackboard.DataEvents[varName].AddListener(listener);
+                        _trackedVarsActions[varName] = (blackboard, listener);
                         break;
                     }
                 }
@@ -68,8 +76,27 @@ namespace BehaviorTree
             }
         }
 
-        public void Teardown() {
+        public void Teardown()
+        {
             // TODO: Remove all listeners
+            foreach (var varTEvent in _trackedVarsActions)
+            {
+                var varName = varTEvent.Key;
+                var bboard = varTEvent.Value.Item1;
+                bboard.DataEvents[varName].RemoveListener(varTEvent.Value.Item2);
+            }
+
+            Queue<Node> q = new();
+            q.Enqueue(_root);
+            while (q.Count > 0)
+            {
+                Node node = q.Dequeue();
+                node.Teardown();
+                var children = node.GetChildren();
+                if (children == null) continue;
+                foreach (var child in children)
+                    q.Enqueue(child);
+            }
         }
 
         public void AddTracker(string observedVar, UnityAction func)
@@ -77,6 +104,12 @@ namespace BehaviorTree
             if (!_trackedVars.ContainsKey(observedVar))
                 _trackedVars[observedVar] = new();
             _trackedVars[observedVar].AddListener(func);
+        }
+
+        public void RemoveTracker(string observedVar, UnityAction func)
+        {
+            if (!_trackedVars.ContainsKey(observedVar)) throw new UnityException($"No tracker for {observedVar}, problem with setup");
+            _trackedVars[observedVar].RemoveListener(func);
         }
 
         public State Tick()
@@ -142,7 +175,8 @@ namespace BehaviorTree
 
         public T GetDatum<T>(string name, bool nullable = false)
         {
-            if (!_headBoard.ContainsKey(name)) {
+            if (!_headBoard.ContainsKey(name))
+            {
                 if (nullable) return default;
                 throw new UnityException($"Var {name} not found in board");
             }
