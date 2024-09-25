@@ -1,0 +1,62 @@
+using System;
+using AnyPortrait;
+using UnityEngine;
+
+namespace Environment.Enemy.Anim
+{
+    public class PortraitAnim : MonoBehaviour
+    {
+        [SerializeField] protected apPortrait portrait;
+        protected bool isFirstFrame = true;
+        EnemyManager _enemyManager;
+        protected System.Action _playDeathAnim;
+        protected string currState;
+
+        protected virtual void Awake()
+        {
+            portrait.Initialize();
+            _enemyManager = GetComponent<EnemyManager>();
+        }
+
+        void LateUpdate()
+        {
+            if (isFirstFrame)
+            {
+                PlayAnimation(currState.ToString());
+                isFirstFrame = false;
+            }
+        }
+
+        protected virtual void OnEnable()
+        {
+            GetComponent<EnemyManager>().OnDeath += _playDeathAnim;
+        }
+
+        void OnDisable()
+        {
+            _enemyManager.OnDeath -= _playDeathAnim;
+        }
+
+        public void TransitionToState(string newState)
+        {
+            if (currState == newState)
+                return;
+            currState = newState;
+            isFirstFrame = true;
+        }
+
+        private void PlayAnimation(string animToPlay)
+        {
+            try
+            {
+                apAnimPlayData animData = portrait.CrossFade(animToPlay);
+                if (animData == null)
+                    Debug.LogWarning("Failed to play animation " + animToPlay);
+            }
+            catch (Exception)
+            {
+                Debug.LogWarning($"Error playing animation {animToPlay}. The portrait is likely not initialized");
+            }
+        }
+    }
+}

@@ -58,13 +58,13 @@ public class Charge : CfAction
         {
             if (chargeTimer == 0)
             {
-                _chargeTypeAnim.TransitionToState(HogAnim.State.ChargeUp);
+                _chargeTypeAnim.TransitionToState(HogAnim.State.ChargeUp.ToString());
                 startPos = _transform.position;
             }
 
             if (chargeTimer >= chargeTime + _chargeupTime)
             {
-                _chargeTypeAnim.TransitionToState(HogAnim.State.Idle);
+                _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
                 isResting = true;
                 chargeTimer = 0;
                 pauseTime = _restTime;
@@ -74,7 +74,7 @@ public class Charge : CfAction
             // Consider collision into wall
             if (Physics2D.Raycast(_transform.position, _spriteManager.forward, 2.0f, _obstacleLayerMask))
             {
-                _chargeTypeAnim.TransitionToState(HogAnim.State.Idle);
+                _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
                 isResting = true;
                 chargeTimer = 0;
                 pauseTime = _restTime + _stunTime;

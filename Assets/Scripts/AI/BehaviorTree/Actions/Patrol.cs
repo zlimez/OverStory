@@ -38,7 +38,7 @@ namespace BehaviorTree.Actions
                 if (_waitCounter >= _waitTime)
                 {
                     _waiting = false;
-                    _chargeTypeAnim.TransitionToState(HogAnim.State.Walk);
+                    _chargeTypeAnim.TransitionToState(HogAnim.State.Walk.ToString());
                 }
             }
             else
@@ -51,11 +51,11 @@ namespace BehaviorTree.Actions
                     _waiting = true;
 
                     _currWaypoint = (_currWaypoint + 1) % _waypoints.Length;
-                    _chargeTypeAnim.TransitionToState(HogAnim.State.Idle);
+                    _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
                 }
                 else
                 {
-                    _chargeTypeAnim.TransitionToState(HogAnim.State.Walk);
+                    _chargeTypeAnim.TransitionToState(HogAnim.State.Walk.ToString());
                     _transform.position = Vector3.MoveTowards(_transform.position, new Vector3(wp.position.x, _transform.position.y, _transform.position.z), _speed * Time.deltaTime);
                     _spriteManager.Face(wp.position);
                 }
