@@ -6,37 +6,35 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 {
 	#region Fields
-	
+
 	private enum State
 	{
 		Idle,
 		Walk,
 		Run,
 		Jump,
-		Dash
+		Dash,
+		Damage,
+		Attack
 	}
-	
+
 	// GameObject Components
 	private Rigidbody2D rb2D;
 
 	// Animation support
 	[Header("Animation")]
-	[SerializeField]
-	private apPortrait portrait;
+	[SerializeField] apPortrait portrait;
 
-	[SerializeField]
-	private float crossFadeSeconds = .01f;
+	[SerializeField] float crossFadeSeconds = .01f;
 
 	// Movement support
 	[Header("Movement")]
-	[SerializeField]
-	private float walkSpeed = 4f;
-
-	[SerializeField]
-	private float runSpeed = 8f;
+	[SerializeField] float walkSpeed = 4f;
+	[SerializeField] float runSpeed = 8f;
 	private Vector2 currVelocity;
-	private bool shouldRun;
+	bool shouldRun;
 
+	float moveDir;
 	private float currHorizontalSpeed;
 	private bool isFacingLeft;
 
@@ -50,17 +48,17 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 	private bool isJumping;
 
 	// Dash support
-	[SerializeField]
-	private float dashForce = 2000f;
+	[SerializeField] private float dashForce = 2000f;
 	private Vector2 dashForceToAdd;
 	private bool isDashAvailable = true;
 	private bool isDashing = false;
 	private const float DASH_TIME = 0.25f;
 	private float remainingDashTime = DASH_TIME;
-	private const float MAX_DASH_COOLDOWN = 1.2f;
-	private float dashCooldown = MAX_DASH_COOLDOWN;
+	[SerializeField] float dashCooldown = 1.0f;
+	private float dashCountdown;
 
 	private State currState;
+	bool isAttacking = false;
 
 	#endregion
 
@@ -74,41 +72,37 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 
 		portrait.Initialize();
 		currState = State.Idle;
+		dashCountdown = dashCooldown;
 	}
 
 	private void Update()
 	{
 		HandleState();
 		if (rb2D.velocity.x > 0 && isFacingLeft)
-		{
 			FlipSprite();
-		}
 		else if (rb2D.velocity.x < 0 && !isFacingLeft)
-		{
 			FlipSprite();
-		}
 
 		if (!isDashAvailable)
-		{
-			dashCooldown -= Time.deltaTime;
-		}
-		if (dashCooldown <= 0)
+			dashCountdown -= Time.deltaTime;
+
+		if (dashCountdown <= 0)
 		{
 			isDashAvailable = true;
-			dashCooldown = MAX_DASH_COOLDOWN;
+			dashCountdown = dashCooldown;
 		}
 	}
-	
-	private void FixedUpdate() 
+
+	private void FixedUpdate()
 	{
-		if (isJumping && remainingJumpTime > 0f) 
+		if (isJumping && remainingJumpTime > 0f)
 		{
 			// Continue jump to max
 			rb2D.AddForce(Vector2.up * jumpForce);
 			remainingJumpTime -= Time.fixedDeltaTime;
 		}
-		
-		if (isDashing) 
+
+		if (isDashing)
 		{
 			if (remainingDashTime > 0f)
 			{
@@ -118,29 +112,24 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 				rb2D.AddForce(dashForceToAdd);
 				remainingDashTime -= Time.fixedDeltaTime;
 			}
-			else 
-			{
-				isDashing = false;
-			}
+			else isDashing = false;
 		}
 	}
+
+
 
 	private void OnCollisionEnter2D(Collision2D coll2D)
 	{
 		// Check if player is on the ground
-		if (coll2D.gameObject.tag == "Ground")
-		{
+		if (coll2D.gameObject.CompareTag("Ground"))
 			isGrounded = true;
-		}
 	}
 
 	private void OnCollisionExit2D(Collision2D coll2D)
 	{
 		// Check if player is leaving the ground
-		if (coll2D.gameObject.tag == "Ground")
-		{
+		if (coll2D.gameObject.CompareTag("Ground"))
 			isGrounded = false;
-		}
 	}
 
 	private void FlipSprite()
@@ -151,78 +140,76 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 
 		isFacingLeft = !isFacingLeft;
 	}
-	
+
 	// Animation stuff
 	private void HandleState()
 	{
+		if (isAttacking) return;
+		// Update movement
+		currHorizontalSpeed = moveDir * (shouldRun ? runSpeed : walkSpeed);
+		currVelocity.y = rb2D.velocity.y;
+		currVelocity.x = currHorizontalSpeed;
+		// Debug.Log("curr h speed: " + currHorizontalSpeed);
+		rb2D.velocity = currVelocity;
+
 		switch (currState)
 		{
+			case State.Attack:
+				if (!isGrounded)
+					TransitionToState(State.Jump);
+				else if (isDashing)
+					TransitionToState(State.Dash);
+				else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+					TransitionToState(State.Run);
+				else if (currHorizontalSpeed == 0)
+					TransitionToState(State.Idle);
+				else TransitionToState(State.Walk);
+				break;
+
 			case State.Idle:
 				if (currHorizontalSpeed != 0)
-				{
 					TransitionToState(State.Walk);
-				}
 				break;
 
 			case State.Walk:
 				if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + .1f)
-				{
 					TransitionToState(State.Run);
-				}
 				else if (currHorizontalSpeed == 0)
-				{
 					TransitionToState(State.Idle);
-				}
 				break;
 
 			case State.Run:
-				if (Mathf.Abs(currHorizontalSpeed) <= walkSpeed - 0.1f)
-				{
+				if (Mathf.Abs(currHorizontalSpeed) < walkSpeed + 0.1f)
 					TransitionToState(State.Walk);
-				}
 				break;
 
 			case State.Jump:
 				if (isGrounded && Mathf.Abs(currVelocity.y) < .1f)
-				{
 					TransitionToState(State.Idle);
-				}
 				break;
 
 			case State.Dash:
-				if (isDashAvailable)
-				{
+				if (!isDashing)
 					TransitionToState(State.Idle);
-				}
+
 				break;
 		}
-
-		// Update movement
-		currVelocity.y = rb2D.velocity.y;
-		currVelocity.x = currHorizontalSpeed;
-		rb2D.velocity = currVelocity;
 	}
 
 	private void TransitionToState(State newState)
 	{
-		// Debug.Log($"Changing to state {newState.ToString()}");
+		if (currState == newState) return;
 		currState = newState;
 		PlayAnimation(newState.ToString());
 	}
-	
+
 	private void PlayAnimation(string animToPlay)
 	{
 		try
 		{
-			apAnimPlayData animData = portrait.CrossFadeAt(
-				animToPlay,
-				frame: portrait.GetAnimationCurrentFrame(animToPlay), // This so that the walk animation and run animation seamlessly transition at the same offset. Frame 3 is always when the back arm fully swings back
-				crossFadeSeconds
-			);
+			apAnimPlayData animData = portrait.CrossFade(animToPlay, crossFadeSeconds);
 			if (animData == null)
-			{
 				Debug.LogWarning("Failed to play animation " + animToPlay);
-			}
 		}
 		catch (Exception)
 		{
@@ -239,6 +226,7 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 
 	public void OnJump(InputAction.CallbackContext context)
 	{
+		if (isAttacking) return;
 		if (context.started)
 		{
 			// Start jumping
@@ -255,7 +243,7 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 				TransitionToState(State.Jump);
 			}
 		}
-		else if (context.canceled) 
+		else if (context.canceled)
 		{
 			// Stop jump and reset jumpTime
 			isJumping = false;
@@ -265,33 +253,27 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 
 	public void OnRun(InputAction.CallbackContext context)
 	{
-		shouldRun = context.ReadValueAsButton();
-
-		if (shouldRun && currState == State.Walk)
+		if (context.started)
 		{
-			currHorizontalSpeed = shouldRun ? runSpeed : walkSpeed;
-			currHorizontalSpeed *= isFacingLeft ? -1 : 1;
-			TransitionToState(State.Run);
+			shouldRun = true;
+			Debug.Log("Run started");
 		}
-		else if (!shouldRun && currState == State.Run)
+		else if (context.canceled)
 		{
-			TransitionToState(State.Walk);
+			shouldRun = false;
+			Debug.Log("Run ended");
 		}
 	}
 
 	public void OnMove(InputAction.CallbackContext context)
 	{
-		float maxSpeed = shouldRun ? runSpeed : walkSpeed;
-		currHorizontalSpeed = context.ReadValue<float>() * maxSpeed;
-
-		if (currState == State.Idle || currState == State.Walk || currState == State.Run)
-		{
-			TransitionToState(Mathf.Abs(currHorizontalSpeed) > 0 ? State.Walk : State.Idle);
-		}
+		moveDir = context.ReadValue<float>();
+		// Debug.Log("curr h speed: " + currHorizontalSpeed);
 	}
 
 	public void OnDash(InputAction.CallbackContext context)
 	{
+		if (isAttacking) return;
 		if (isDashAvailable
 			&& (
 				currState == State.Idle
@@ -308,15 +290,21 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 		}
 	}
 
-	public void OnLook(InputAction.CallbackContext context)
+	public void OnAttack(InputAction.CallbackContext context)
 	{
-		throw new NotImplementedException();
+		if (isDashing) return;
+		if (context.started)
+		{
+			if (isAttacking) return;
+			isAttacking = true;
+			currState = State.Attack;
+			portrait.Play(State.Attack.ToString()); // CrossFade is glitchy here
+		}
 	}
 
-	public void OnFire(InputAction.CallbackContext context)
+	void AttackEnd()
 	{
-		throw new NotImplementedException();
+		isAttacking = false;
 	}
-
 	#endregion
 }
