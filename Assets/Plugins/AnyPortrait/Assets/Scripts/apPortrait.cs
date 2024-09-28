@@ -440,7 +440,7 @@ namespace AnyPortrait
 
 		//추가 v1.5.0 : 빌보드시 부모의 Rotation을 적용할지 여부.
 		public enum BILLBOARD_PARENT_ROTATION : int
-		{	
+		{
 			Ignore = 0,
 			//단순히 부모의 Rotation을 더한다. (Pitch-Yaw-Roll 처럼 동작한다.)
 			PitchYawRoll = 1,
@@ -726,7 +726,7 @@ namespace AnyPortrait
 		[SerializeField] public bool _isTeleportCorrectionOption = false;
 		/// <summary>텔레포트인지 판정하는 이동 거리</summary>
 		[SerializeField] public float _teleportMovementDist = 10.0f;
-		
+
 		//[v1.5.0] 텔레포트 옵션에 크기/회전 추가하고, 각각 체크 여부 옵션가짐		
 		[SerializeField] public float _teleportRotationOffset = 30.0f;
 		[SerializeField] public float _teleportScaleOffset = 0.2f;
@@ -775,7 +775,7 @@ namespace AnyPortrait
 			ChangedByTimeScale = 1,
 		}
 		[SerializeField] public FIXED_UPDATE_FPS_SCALE_OPTION _meshRefreshFPSScaleOption = FIXED_UPDATE_FPS_SCALE_OPTION.Fixed;
-	
+
 
 
 		/// <summary>
@@ -843,9 +843,9 @@ namespace AnyPortrait
 		[SerializeField] public ROOT_MOTION_TARGET_TRANSFORM _rootMotionTargetTransformType = ROOT_MOTION_TARGET_TRANSFORM.Parent;
 		[SerializeField, NonBackupField] public Transform _rootMotionSpecifiedParentTransform = null;
 
-		
-		
-		
+
+
+
 
 		//조건을 체크하여 실제로 RootMotion이 어떻게 동작하는지의 모드 (유효성 검사 결과)
 		[NonSerialized] public ROOT_MOTION_MODE _rootMotionValidatedMode = ROOT_MOTION_MODE.None;
@@ -986,11 +986,11 @@ namespace AnyPortrait
 			{
 				return;
 			}
-#endif	
+#endif
 
 #if UNITY_EDITOR
 			try
-			{	
+			{
 #endif
 				if (_initStatus != INIT_STATUS.Completed)
 				{
@@ -1023,13 +1023,13 @@ namespace AnyPortrait
 						_updateToken = apOptUpdateChecker.I.OnUpdate(_updateToken, _FPS, Time.unscaledDeltaTime);
 					}
 				}
-					
+
 				// < Main Process - (Update 옵션) >
 				//- Main Process를 "Update" 함수에서 실행하도록 옵션이 설정된 경우
-				if(_mainProcessEvent == PROCESS_EVENT_ON.Update)
+				if (_mainProcessEvent == PROCESS_EVENT_ON.Update)
 				{
 					MainProcess();
-				}	
+				}
 
 
 #if UNITY_EDITOR
@@ -1074,10 +1074,10 @@ namespace AnyPortrait
 				//- 메인 프로세스와 별개인 후처리를 진행한다.
 				//- 타이머 객체의 LateUpdate 함수를 호출한다.
 				//- Post Update (위치 갱신 등)을 호출한다.
-				if(_isImportant)
+				if (_isImportant)
 				{
 					//Important + FixedFrames_Sync일때의 타이머 이벤트
-					if(_meshRefreshRateOption == MESH_UPDATE_FREQUENCY.FixedFrames_Sync)
+					if (_meshRefreshRateOption == MESH_UPDATE_FREQUENCY.FixedFrames_Sync)
 					{
 						//Late Update에서 호출을 하자
 						apOptFixedFrameChecker.I.OnLateUpdate(_meshRefreshRateFPS);
@@ -1094,7 +1094,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Debug.LogError("AnyPortrait LateUpdate Error", this.gameObject);
 				Debug.LogException(ex, this.gameObject);
@@ -1324,7 +1324,7 @@ namespace AnyPortrait
 		private void FixedUpdate()
 		{
 			//v1.4.8 : 루트모션으로 RigidBody를 움직이는 경우는 FixedUpdate에서 처리해야한다.
-			if(_rootMotionValidatedMode == ROOT_MOTION_MODE.MoveParentTransform
+			if (_rootMotionValidatedMode == ROOT_MOTION_MODE.MoveParentTransform
 				&& _rootMotion_IsRequestedMove)
 			{
 				ProcessRootMotion_FixedUpdate();
@@ -1377,7 +1377,7 @@ namespace AnyPortrait
 			if (_curPlayingOptRootUnit == null)
 			{
 				//만약 동기화 업데이트라면, 중단하기 전에 동기화된 자식 객체를 업데이트를 해야한다.
-				if(_isSyncParent)
+				if (_isSyncParent)
 				{
 					UpdateSyncedChildren();
 				}
@@ -1411,28 +1411,28 @@ namespace AnyPortrait
 					// [ Important : 매프레임 업데이트 ]
 					//애니메이션 업데이트로 인해서 Root Unit이 바뀌었다면 메시를 갱신해야한다.
 					//v1.4.7
-					if(!_isMeshRefreshFrame)
+					if (!_isMeshRefreshFrame)
 					{
 						//현재 프레임이 메시가 갱신되지 않는 (=건너뛰는) 프레임인데,
 						//다음의 경우엔 프레임 계산에 상관없이 무조건 메시를 갱신해야한다.
 						//- Root Unit이 변경된 경우 > 여기서 체크한다.
 						//- 상하좌우 플립이 된 경우 > UpdateTransforms의 내부의 CheckFlippedTransform() 구문에서 체크한다.
-						
+
 						//Root Unit이 변경된 경우
-						if(_prevOptRootUnit != _curPlayingOptRootUnit)
+						if (_prevOptRootUnit != _curPlayingOptRootUnit)
 						{
 							_isMeshRefreshFrame = true;
 						}
 					}
 
 					//v1.4.7 변경 : UpdateTransform에 _isMeshRefreshFrame를 입력해서 메시 갱신 여부를 전달하자.
-					_curPlayingOptRootUnit.UpdateTransforms(	_tCurUpdate,
+					_curPlayingOptRootUnit.UpdateTransforms(_tCurUpdate,
 																_isMeshRefreshFrame,
 																_funcRootMotionEvent);
-					
+
 				}
 				else
-				{	
+				{
 					// [ Not Important : 간헐적 업데이트 ]
 					//중앙에서 관리하는 토큰 업데이트
 					if (_isNotImportant_UpdateFrame)
@@ -1450,7 +1450,7 @@ namespace AnyPortrait
 
 
 			//동기화된 부모라면 자식 객체를 업데이트하자
-			if(_isSyncParent)
+			if (_isSyncParent)
 			{
 				UpdateSyncedChildren();
 			}
@@ -1465,7 +1465,7 @@ namespace AnyPortrait
 		private void CalculateDeltaTime()
 		{
 			switch (_deltaTimeOption)
-			{	
+			{
 				case DELTA_TIME_OPTION.UnscaledDeltaTime:
 					_tCurUpdate = Time.unscaledDeltaTime;
 					break;
@@ -1473,7 +1473,7 @@ namespace AnyPortrait
 				case DELTA_TIME_OPTION.MultipliedDeltaTime:
 					_tCurUpdate = Time.deltaTime * _deltaTimeMultiplier;
 					break;
-					
+
 				case DELTA_TIME_OPTION.MultipliedUnscaledDeltaTime:
 					_tCurUpdate = Time.unscaledDeltaTime * _deltaTimeMultiplier;
 					break;
@@ -1520,7 +1520,7 @@ namespace AnyPortrait
 				// 모디파이어는 항상 업데이트 되지만, 메시에는 옵션에 따라 반영이 안될 수도 있다.
 
 				//v1.4.7 : 매시 갱신 빈도 옵션을 적용한다.
-				
+
 				switch (_meshRefreshRateOption)
 				{
 					case MESH_UPDATE_FREQUENCY.EveryFrames:
@@ -1533,7 +1533,7 @@ namespace AnyPortrait
 							// [ 메시 갱신 빈도가 "고정 프레임 + 동기화 안됨"인 경우
 
 							//[v1.4.8] 옵션에 따라 타이머가 다르게 동작한다.
-							if(_meshRefreshFPSScaleOption == FIXED_UPDATE_FPS_SCALE_OPTION.Fixed)
+							if (_meshRefreshFPSScaleOption == FIXED_UPDATE_FPS_SCALE_OPTION.Fixed)
 							{
 								//고정이라면 > Unscaled Delta Time을 기준으로 타이머 게산
 								_tMeshRefreshTimer += Time.unscaledDeltaTime;
@@ -1545,10 +1545,10 @@ namespace AnyPortrait
 								_tMeshRefreshTimer += _tCurUpdate;
 							}
 
-							
+
 							int refreshFPS = Mathf.Clamp(_meshRefreshRateFPS, MESH_REFRESH_FPS_MIN, MESH_REFRESH_FPS_MAX);
 							float secPerFrame = 1.0f / (float)refreshFPS;
-							if(_tMeshRefreshTimer > secPerFrame)
+							if (_tMeshRefreshTimer > secPerFrame)
 							{
 								_tMeshRefreshTimer -= secPerFrame;
 								_isMeshRefreshFrame = true;
@@ -1564,22 +1564,22 @@ namespace AnyPortrait
 				}
 
 				//v1.4.7
-				if(!_isMeshRefreshFrame)
+				if (!_isMeshRefreshFrame)
 				{
 					//현재 프레임이 메시가 갱신되지 않는 (=건너뛰는) 프레임인데,
 					//다음의 경우엔 프레임 계산에 상관없이 무조건 메시를 갱신해야한다.
 					//- Root Unit이 변경된 경우 > 여기서 체크한다.
 					//- 상하좌우 플립이 된 경우 > UpdateTransforms의 내부의 CheckFlippedTransform() 구문에서 체크한다.
-						
+
 					//Root Unit이 변경된 경우
-					if(_prevOptRootUnit != _curPlayingOptRootUnit)
+					if (_prevOptRootUnit != _curPlayingOptRootUnit)
 					{
 						_isMeshRefreshFrame = true;
 					}
-				}	
+				}
 			}
 			else
-			{	
+			{
 				// [ Important OFF : 간헐적으로 업데이트를 한다.  ]
 				//모디파이어와 달리 메시는 매번 갱신한다. (마스크 이슈 때문에)
 				//중앙에서 관리하는 토큰 업데이트
@@ -1601,13 +1601,13 @@ namespace AnyPortrait
 		private void ProcessRootMotion(apOptRootUnit curRootUnit)
 		{
 			//1. 루트 모션 옵션을 확인한다.
-			if(_rootMotionValidatedMode == ROOT_MOTION_MODE.None)
+			if (_rootMotionValidatedMode == ROOT_MOTION_MODE.None)
 			{
 				return;
 			}
 
 			Transform curParent = _transform.parent;
-			if(curParent == null
+			if (curParent == null
 				|| _rootMotionValidated_ParentTransform == null
 				|| _rootMotionValidated_ParentTransform != curParent)
 			{
@@ -1615,9 +1615,9 @@ namespace AnyPortrait
 				return;
 			}
 
-			
 
-			if(_curPlayingOptRootUnit == null || _curPlayingOptRootUnit != curRootUnit)
+
+			if (_curPlayingOptRootUnit == null || _curPlayingOptRootUnit != curRootUnit)
 			{
 				//현재 루트 유닛이 없다면 실패
 				return;
@@ -1626,7 +1626,7 @@ namespace AnyPortrait
 			//1. Root Bone을 찾자
 			apOptBone curRootBone = _curPlayingOptRootUnit.RootMotionBone;
 
-			if(curRootBone == null)
+			if (curRootBone == null)
 			{
 				//루트 본이 없다.
 				return;
@@ -1640,27 +1640,27 @@ namespace AnyPortrait
 
 			//Root Unit은 Scale이 들어갔고 나머지 위치는 항상 원점이다.
 			//하위 오브젝트들 ( Bone 포함)도 Identity이므로, RootUnit의 Transform에서 World 좌표를 구하자
-			
+
 			Vector3 rootBonePosW = _curPlayingOptRootUnit._transform.TransformPoint(new Vector3(rootBonePosL.x, rootBonePosL.y, 0.0f));
-			
-			
+
+
 			//World 상에서 이동을 한다.
 			//Parent 기준으로 Root Bone이 중심에 달라붙도록 apPortrait를 움직인다.
 			//위치 변위량만큼 역이동하는게 아니라 현재 위치 차이를 적용하는 것
 			Vector3 portraitPosW_Prev = _transform.position;
-			
+
 			Vector3 rootBonePosL_OfParent = curParent.InverseTransformPoint(rootBonePosW);
 
 			//Parent 기준으로 Root Bone이 원점으로 가도록 apPortrait를 이동시킨다.
 			//[축별로 적용]
 			Vector3 curLocalPosition = _transform.localPosition;
 
-			if(_rootMotionAxisOption_X != ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
+			if (_rootMotionAxisOption_X != ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
 			{
 				//X축 옵션이 활성화되어 있다면
 				curLocalPosition.x += -1.0f * rootBonePosL_OfParent.x;
 			}
-			if(_rootMotionAxisOption_Y != ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
+			if (_rootMotionAxisOption_Y != ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
 			{
 				//Y축 옵션이 활성화되어 있다면
 				curLocalPosition.y += -1.0f * rootBonePosL_OfParent.y;
@@ -1681,18 +1681,18 @@ namespace AnyPortrait
 			//Portrait의 이동 변위의 역 만큼 Base Transform을 이동시켜야 한다.
 			//(Lock된 변위만큼 이동해야 겉보기에 똑같아진다)
 			Vector3 portraitPosW_Next = _transform.position;
-			
+
 			//루트 모션에서 프레임 진행에 따른 Mod-Pos의 변위의 합을 정리했다. 이 값을 이용하자
 			Vector2 rootMotionDeltaPos = _curPlayingOptRootUnit.GetRootMotionDeltaPos();//루트 모션에 적용하기 위한 루트 본의 이번 프레임 변위.역으로 계산해서 이동 변위를 구하자
 
 			//축에 따라서 이동값 제한
-			if(_rootMotionAxisOption_X == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
+			if (_rootMotionAxisOption_X == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
 			{
 				//X축으로는 Delta Pos 적용 안하는 경우
 				rootMotionDeltaPos.x = 0.0f;
 			}
 
-			if(_rootMotionAxisOption_Y == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
+			if (_rootMotionAxisOption_Y == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
 			{
 				//Y축으로는 Delta Pos 적용 안하는 경우
 				rootMotionDeltaPos.y = 0.0f;
@@ -1700,9 +1700,9 @@ namespace AnyPortrait
 
 			Vector3 rootBoneDeltaPos = _curPlayingOptRootUnit._transform.TransformVector(new Vector3(rootMotionDeltaPos.x, rootMotionDeltaPos.y, 0.0f));
 
-			
 
-			
+
+
 
 			//<옵션>
 			//1. Physics (2D/3D)라면 > RigidBody에 넣어야 한다.
@@ -1711,7 +1711,7 @@ namespace AnyPortrait
 			{
 				case ROOT_MOTION_BASE_COMPONENT.Rigidbody2D:
 					{
-						if(_rootMotionValidated_BaseCom_Rigidbody2D != null)
+						if (_rootMotionValidated_BaseCom_Rigidbody2D != null)
 						{
 							//RigidBody 2D에 위치 적용 > Fixed Update로 예약
 							_rootMotion_IsRequestedMove = true;
@@ -1727,7 +1727,7 @@ namespace AnyPortrait
 
 				case ROOT_MOTION_BASE_COMPONENT.Rigidbody3D:
 					{
-						if(_rootMotionValidated_BaseCom_Rigidbody3D != null)
+						if (_rootMotionValidated_BaseCom_Rigidbody3D != null)
 						{
 							//RigidBody 3D에 위치 적용 > Fixed Update로 예약
 							_rootMotion_IsRequestedMove = true;
@@ -1757,7 +1757,7 @@ namespace AnyPortrait
 		/// </summary>
 		private void ProcessRootMotion_FixedUpdate()
 		{
-			if(_rootMotionValidatedMode != ROOT_MOTION_MODE.MoveParentTransform
+			if (_rootMotionValidatedMode != ROOT_MOTION_MODE.MoveParentTransform
 				|| !_rootMotion_IsRequestedMove)
 			{
 				return;
@@ -1765,7 +1765,7 @@ namespace AnyPortrait
 
 			//다만, Position은 순간이동 등에 사용되는 것이므로, DeltaPos가 너무 커서는 안된다.
 			//기준은 1
-			if(Mathf.Abs(_rootMotion_RequestedPos.x) > 1.0f
+			if (Mathf.Abs(_rootMotion_RequestedPos.x) > 1.0f
 				|| Mathf.Abs(_rootMotion_RequestedPos.y) > 1.0f
 				|| Mathf.Abs(_rootMotion_RequestedPos.z) > 1.0f)
 			{
@@ -1773,7 +1773,7 @@ namespace AnyPortrait
 				//1 미만으로 만들어야 한다.
 				//Debug.Log("너무 큰 이동 : " + _rootMotion_RequestedPos + " > " + _rootMotion_RequestedPos.normalized);
 				_rootMotion_RequestedPos.Normalize();
-				
+
 			}
 
 			//Delta Pos의 값의 축별 할당은 ProcessRootMotion에서 수행했다.
@@ -1785,31 +1785,31 @@ namespace AnyPortrait
 			//- 현재 속도와 Delta에 따른 예상 속도의 차이가 너무 크다면 보정하는 기능
 			//- 원래 현재 속도는 "메인의 오브젝트 속도" + "루트 본의 움직임에 따른 순간 속도"의 합이어야 한다.
 			//- 메인의 오브젝트 속도가 중요하므로, 사실 루트 본의 움직임의 속도가 메인이 되어서는 안된다.
-			
+
 			//- 문제가 되는 경우는 다음과 같다.
 			//  > 중력이 적용하여 아래로 속력이 높은 상태에서 위로 점프하는 모션이 있어도 충분히 반영되지 않는다. (루트본 방향과 속력의 차이가 크고 방향이 반대)
 			//  > 앞으로 이동하는데 속도가 앞으로 크게 향하지 않아서 이동이 버벅거린다.
 			//  > (부작용-1) 앞으로의 이동에 속도를 보정하니 이동이 멈춰도 슬라이딩이 발생한다.
 			//  > (부작용-2) 감속 보정을 하니 서있는 상태에서는 속도가 0으로 보정되어버려서 움직이질 못한다.
-			
+
 			//- 즉, 루트 본의 이동 속력을 강하게 보정하면 "슬라이딩(가속)/이동 못함(감속)" 문제가 발생해버린다.
 			//- "속도의 방향이 반대"이며, "속도 차이가 너무 커서 이동을 제대로 표현 못할 정도"인 경우에 보간(30%)을 수행한다.
 			//- 속도 차이는 경험값에 의해서 결정된다.
 
 			//노트 : MovePosition는 사용하지 않는다. 중력이 무시되기 때문
 
-			float tDelta = Time.fixedDeltaTime;			
+			float tDelta = Time.fixedDeltaTime;
 
 			switch (_rootMotionValidated_BaseComponentType)
 			{
 				case ROOT_MOTION_BASE_COMPONENT.Rigidbody2D:
 					{
-						if(_rootMotionValidated_BaseCom_Rigidbody2D != null)
-						{	
+						if (_rootMotionValidated_BaseCom_Rigidbody2D != null)
+						{
 							Vector2 nextPos = _rootMotionValidated_BaseCom_Rigidbody2D.position;
 							nextPos += new Vector2(_rootMotion_RequestedPos.x, _rootMotion_RequestedPos.y);
 
-							if((isVelocityCorrection_X || isVelocityCorrection_Y) && tDelta > 0.0f)
+							if ((isVelocityCorrection_X || isVelocityCorrection_Y) && tDelta > 0.0f)
 							{
 								Vector3 expectedVel = _rootMotion_RequestedPos / tDelta;
 								expectedVel.x = Mathf.Clamp(expectedVel.x, -100.0f, 100.0f);
@@ -1818,12 +1818,12 @@ namespace AnyPortrait
 								Vector2 curVelocity = _rootMotionValidated_BaseCom_Rigidbody2D.velocity;//현재 속도
 
 								//[X 축 - 옵션에 따라 조정]
-								if(isVelocityCorrection_X)
+								if (isVelocityCorrection_X)
 								{
 									//- 루트본의 기대 속도와 현재 속도의 방향이 반대다.
 									//- 절대값으로 현재 속도가 기대 속도보다 더 크다
 									//- 속도의 차이는 경험값으로 2 차이 이상 차이가 난다. (너무 작은 값 사이에서 반대 부호간 보간을 하면 0이 되버리므로)
-									if(expectedVel.x * curVelocity.x < 0.0f
+									if (expectedVel.x * curVelocity.x < 0.0f
 										&& Mathf.Abs(curVelocity.x) > Mathf.Abs(expectedVel.x)
 										&& Mathf.Abs(curVelocity.x - expectedVel.x) > 2.0f)
 									{
@@ -1834,12 +1834,12 @@ namespace AnyPortrait
 								}
 
 								//[Y 축 - 옵션에 따라 조정]
-								if(isVelocityCorrection_Y)
+								if (isVelocityCorrection_Y)
 								{
 									//- 루트본의 기대 속도와 현재 속도의 방향이 반대다.
 									//- 절대값으로 현재 속도가 기대 속도보다 더 크다
 									//- 속도의 차이는 경험값으로 2 차이 이상 차이가 난다. (너무 작은 값 사이에서 반대 부호간 보간을 하면 0이 되버리므로)
-									if(expectedVel.y * curVelocity.y < 0.0f
+									if (expectedVel.y * curVelocity.y < 0.0f
 										&& Mathf.Abs(curVelocity.y) > Mathf.Abs(expectedVel.y)
 										&& Mathf.Abs(curVelocity.y - expectedVel.y) > 2.0f)
 									{
@@ -1861,12 +1861,12 @@ namespace AnyPortrait
 
 				case ROOT_MOTION_BASE_COMPONENT.Rigidbody3D:
 					{
-						if(_rootMotionValidated_BaseCom_Rigidbody3D != null)
+						if (_rootMotionValidated_BaseCom_Rigidbody3D != null)
 						{
 							Vector3 nextPos = _rootMotionValidated_BaseCom_Rigidbody3D.position;
 							nextPos += _rootMotion_RequestedPos;
 
-							if((isVelocityCorrection_X || isVelocityCorrection_Y) && tDelta > 0.0f)
+							if ((isVelocityCorrection_X || isVelocityCorrection_Y) && tDelta > 0.0f)
 							{
 								Vector3 expectedVel = _rootMotion_RequestedPos / tDelta;
 								expectedVel.x = Mathf.Clamp(expectedVel.x, -100.0f, 100.0f);
@@ -1876,10 +1876,10 @@ namespace AnyPortrait
 								Vector3 curVelocity = _rootMotionValidated_BaseCom_Rigidbody3D.velocity;//현재 속도
 
 								//[X/Z 축 - 옵션에 따라 조정] > 3D에서는 Z 축도 X옵션에 포함시킨다.
-								if(isVelocityCorrection_X)
+								if (isVelocityCorrection_X)
 								{
 									//X축 보간
-									if(expectedVel.x * curVelocity.x < 0.0f
+									if (expectedVel.x * curVelocity.x < 0.0f
 										&& Mathf.Abs(curVelocity.x) > Mathf.Abs(expectedVel.x)
 										&& Mathf.Abs(curVelocity.x - expectedVel.x) > 2.0f)
 									{
@@ -1888,7 +1888,7 @@ namespace AnyPortrait
 									}
 
 									//Z축 보간
-									if(expectedVel.z * curVelocity.z < 0.0f
+									if (expectedVel.z * curVelocity.z < 0.0f
 										&& Mathf.Abs(curVelocity.z) > Mathf.Abs(expectedVel.z)
 										&& Mathf.Abs(curVelocity.z - expectedVel.z) > 2.0f)
 									{
@@ -1898,7 +1898,7 @@ namespace AnyPortrait
 								}
 
 								//[Y 축 - 옵션에 따라 조정]
-								if(isVelocityCorrection_Y)
+								if (isVelocityCorrection_Y)
 								{
 									if (expectedVel.y * curVelocity.y < 0.0f
 										&& Mathf.Abs(curVelocity.y) > Mathf.Abs(expectedVel.y)
@@ -2010,14 +2010,14 @@ namespace AnyPortrait
 		//동기화된 다른 객체들을 업데이트한다.
 		private void UpdateSyncedChildren()
 		{
-			if(!_isSyncParent)
+			if (!_isSyncParent)
 			{
 				return;
 			}
 			int nChildPortrait = _syncChildPortraits.Count;
 			apPortrait childPortrait = null;
 			bool isAnyRemovedPortrait = false;
-			
+
 			for (int i = 0; i < nChildPortrait; i++)
 			{
 				childPortrait = _syncChildPortraits[i];
@@ -2028,7 +2028,7 @@ namespace AnyPortrait
 				}
 
 				//업데이트를 대신 호출해준다.
-				childPortrait.UpdateAsSyncChild(	_tCurUpdate,
+				childPortrait.UpdateAsSyncChild(_tCurUpdate,
 													_isMeshRefreshFrame,
 													_isImportant,
 													_isNotImportant_UpdateFrame,
@@ -2060,7 +2060,7 @@ namespace AnyPortrait
 		//애니메이션이나 컨트롤 파라미터가 다른 Portrait에 동기화된 경우, 부모 apPortrait로부터 업데이트를 대신 호출받는다.
 
 		//변경 v1.4.8 : 부모의 Important여부 및 Important가 아닌 경우의 업데이트 여부/경과 시간이 추가되었다.
-		public void UpdateAsSyncChild(	float updateTime,
+		public void UpdateAsSyncChild(float updateTime,
 										bool isMeshRefreshFrame,
 										//Parent의 Important 속성을 따른다.
 										bool isParentImportant,
@@ -2068,7 +2068,7 @@ namespace AnyPortrait
 										//Parent가 Not-Important인 경우
 										bool isNotImportantUpdateFrame,//이 프레임이 업데이트 되는 프레임인가
 										float notImportantElapsedTime
-										) 
+										)
 		{
 			if (!_isSyncChild || _syncPlay == null)
 			{
@@ -2155,12 +2155,12 @@ namespace AnyPortrait
 				//전체 업데이트하는 코드
 				//일정 프레임마다 업데이트를 한다.
 				//if (_isImportant)//이전
-				if(isParentImportant)//변경 v1.4.8 : 부모의 Important 설정을 따라간다.
+				if (isParentImportant)//변경 v1.4.8 : 부모의 Important 설정을 따라간다.
 				{
-					if(!isMeshRefreshFrame)
+					if (!isMeshRefreshFrame)
 					{
 						//만약 Root Unit이 변경될 때는 무조건 한번 갱신을 해야한다. [v1.4.7]
-						if(_curPlayingOptRootUnit != _prevOptRootUnit)
+						if (_curPlayingOptRootUnit != _prevOptRootUnit)
 						{
 							isMeshRefreshFrame = true;
 						}
@@ -2181,7 +2181,7 @@ namespace AnyPortrait
 					//부모의 Not-Important 설정을 이용한다.
 
 					if (isNotImportantUpdateFrame)
-					{	
+					{
 						_curPlayingOptRootUnit.UpdateTransformsAsSyncChild(notImportantElapsedTime, _isSync_Bone, true, _funcRootMotionEvent);//동기화용
 					}
 					else
@@ -2206,14 +2206,14 @@ namespace AnyPortrait
 			_isCurrentTeleporting = false;//일단 false
 
 			//v1.4.2 : 텔레포트 보정 옵션에 관계없이 이전 프레임에 물리 연산 기록이 없다면 이건 텔레포트된 프레임과 동일하게 처리해야한다.
-			if(!_isPhysicsEnabledInPrevFrame)
+			if (!_isPhysicsEnabledInPrevFrame)
 			{
 				//물리가 이전 프레임에서 발생하지 않았다면 이건 텔레포트 프레임이다. [물리가 활성화되어 있어도 이전 프레임 기준으로 체크]
 				_isCurrentTeleporting = true;
-				
+
 			}
 
-			if(_preventPhysicsCount > 0)
+			if (_preventPhysicsCount > 0)
 			{
 				//Debug.Log("물리 방지 카운트 [" + _preventPhysicsCount + "]");
 				_isCurrentTeleporting = true;
@@ -2227,7 +2227,7 @@ namespace AnyPortrait
 			{
 				//텔레포트 보정 옵션이 켜져있고 텔레포트를 체크할 수 있는 상황이라면
 				//v1.5.0 : 옵션에 따라 위치, 회전, 크기 비교를 한다.
-				if(_teleportPositionEnabled)
+				if (_teleportPositionEnabled)
 				{
 					// [ 위치 비교 ]
 					Vector3 curPos = _transform.position;
@@ -2248,7 +2248,7 @@ namespace AnyPortrait
 					_teleportCheck_PosPrev = _transform.position;
 				}
 
-				if(_teleportRotationEnabled)
+				if (_teleportRotationEnabled)
 				{
 					// [ 회전 각도 비교 ]
 					Vector3 curRotationAngle = _transform.rotation.eulerAngles;
@@ -2269,7 +2269,7 @@ namespace AnyPortrait
 					_teleportCheck_RotationPrev = curRotationAngle;
 				}
 
-				if(_teleportScaleEnabled)
+				if (_teleportScaleEnabled)
 				{
 					// [ 크기 비교 ] - World이므로 Lossy Scale을 체크한다.
 					Vector3 curLossyScale = _transform.lossyScale;
@@ -2330,8 +2330,8 @@ namespace AnyPortrait
 					Initialize();
 				}
 
-				
-				if(_initStatus != INIT_STATUS.Completed)
+
+				if (_initStatus != INIT_STATUS.Completed)
 				{
 					//로딩이 끝나지 않았다면 처리를 하지 않는다.
 					return;
@@ -2361,7 +2361,7 @@ namespace AnyPortrait
 
 				//일정 프레임마다 업데이트를 한다.
 				//_optRootUnit.UpdateTransforms(_tDelta);
-				
+
 
 #if UNITY_EDITOR
 			}
@@ -2384,7 +2384,7 @@ namespace AnyPortrait
 		{
 			//Debug.LogWarning("InitForceWhenSkipDomainReload");
 			//존재하는 모든 apPortrait를 찾는다.
-			
+
 			//v1.4.8 : Unity 2023용 코드 분기
 #if UNITY_2023_1_OR_NEWER
 			apPortrait[] portraitsInScene = GameObject.FindObjectsByType<apPortrait>(FindObjectsSortMode.None);
@@ -2392,7 +2392,7 @@ namespace AnyPortrait
 			apPortrait[] portraitsInScene = GameObject.FindObjectsOfType<apPortrait>();
 #endif
 
-			if(portraitsInScene != null && portraitsInScene.Length > 0)
+			if (portraitsInScene != null && portraitsInScene.Length > 0)
 			{
 				for (int i = 0; i < portraitsInScene.Length; i++)
 				{
@@ -2510,7 +2510,7 @@ namespace AnyPortrait
 				}
 			}
 
-			
+
 			apOptRootUnit prevRootUnit = _curPlayingOptRootUnit;//v1.4.7 추가
 
 			_curPlayingOptRootUnit = null;
@@ -2559,7 +2559,7 @@ namespace AnyPortrait
 
 			//v1.4.9 : 루트유닛이 바뀌면 한번이 아닌 3번의 프레임동안 물리가 비활성화된다.
 			//1번으로는 물리가 이상하게 작동하는 듯
-			if(_isCurrentRootUnitChanged)
+			if (_isCurrentRootUnitChanged)
 			{
 				_preventPhysicsCount = 3;
 			}
@@ -2637,7 +2637,7 @@ namespace AnyPortrait
 
 			//v1.4.9 : 루트유닛이 바뀌면 한번이 아닌 3번의 프레임동안 물리가 비활성화된다.
 			//1번으로는 물리가 이상하게 작동하는 듯
-			if(_isCurrentRootUnitChanged)
+			if (_isCurrentRootUnitChanged)
 			{
 				_preventPhysicsCount = 3;
 			}
@@ -2675,7 +2675,7 @@ namespace AnyPortrait
 
 			//v1.4.9 : 루트유닛이 바뀌면 한번이 아닌 3번의 프레임동안 물리가 비활성화된다.
 			//1번으로는 물리가 이상하게 작동하는 듯
-			if(_isCurrentRootUnitChanged)
+			if (_isCurrentRootUnitChanged)
 			{
 				_preventPhysicsCount = 3;
 			}
@@ -3807,27 +3807,27 @@ namespace AnyPortrait
 
 
 
-			if(!Application.isPlaying)
+			if (!Application.isPlaying)
 			{
 				//플레이 중이 아니라면 루트 모션 옵션은 비활성화된 상태로 종료
 				return;
 			}
 
-			if(_rootMotionModeOption == ROOT_MOTION_MODE.None)
+			if (_rootMotionModeOption == ROOT_MOTION_MODE.None)
 			{
 				//해당 옵션이 사용되지 않는다면 더 검토하진 않는다.
 				return;
 			}
 
 			//모든 축의 옵션이 Disabled라면 비활성화된다.
-			if(_rootMotionAxisOption_X == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled
+			if (_rootMotionAxisOption_X == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled
 				&& _rootMotionAxisOption_Y == ROOT_MOTION_MOVE_TYPE_PER_AXIS.Disabled)
 			{
 				return;
 			}
 
 			//옵션에 관계없이, Parent는 무조건 있어야 한다.
-			if(transform.parent == null)
+			if (transform.parent == null)
 			{
 				Debug.LogError("AnyPortrait : [Root Motion Failed] The Parent Transform required to operate as Root Motion does not exist.", this.gameObject);
 				return;
@@ -3876,7 +3876,7 @@ namespace AnyPortrait
 
 				//Base Transform이 가진 컴포넌트를 확인하자
 				Rigidbody2D comp_Rigidbody2D = _rootMotionValidated_BaseTransform.GetComponent<Rigidbody2D>();
-				if(comp_Rigidbody2D != null)
+				if (comp_Rigidbody2D != null)
 				{
 					//Rigid Body 2D를 움직이자
 					_rootMotionValidated_BaseComponentType = ROOT_MOTION_BASE_COMPONENT.Rigidbody2D;
@@ -3885,7 +3885,7 @@ namespace AnyPortrait
 				else
 				{
 					Rigidbody comp_Rigidbody3D = _rootMotionValidated_BaseTransform.GetComponent<Rigidbody>();
-					if(comp_Rigidbody3D != null)
+					if (comp_Rigidbody3D != null)
 					{
 						//Rigid Body 3D를 움직이자
 						_rootMotionValidated_BaseComponentType = ROOT_MOTION_BASE_COMPONENT.Rigidbody3D;
@@ -3897,22 +3897,22 @@ namespace AnyPortrait
 						_rootMotionValidated_BaseComponentType = ROOT_MOTION_BASE_COMPONENT.Transform;
 					}
 				}
-				
-				
-				
+
+
+
 			}
-			
+
 
 
 			bool isAllHasRootMotionBone = true;
 			int nRootUnits = _optRootUnitList != null ? _optRootUnitList.Count : 0;
-			if(nRootUnits > 0)
+			if (nRootUnits > 0)
 			{
 				apOptRootUnit curRootUnit = null;
 				for (int i = 0; i < nRootUnits; i++)
 				{
 					curRootUnit = _optRootUnitList[i];
-					if(curRootUnit.RootMotionBone == null)
+					if (curRootUnit.RootMotionBone == null)
 					{
 						//하나라도 루트 모션용 본이 없다면
 						isAllHasRootMotionBone = false;
@@ -3921,7 +3921,7 @@ namespace AnyPortrait
 				}
 			}
 
-			if(!isAllHasRootMotionBone)
+			if (!isAllHasRootMotionBone)
 			{
 				//루트 모션용 본이 하나라도 없다면
 				//루트 모션은 비활성화된다.
@@ -3933,7 +3933,7 @@ namespace AnyPortrait
 			//완료
 			_rootMotionValidatedMode = _rootMotionModeOption;
 
-			if(_rootMotionValidatedMode != ROOT_MOTION_MODE.None)
+			if (_rootMotionValidatedMode != ROOT_MOTION_MODE.None)
 			{
 				_funcRootMotionEvent = ProcessRootMotion;//업데이트 이벤트 할당
 			}
@@ -3999,7 +3999,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4047,7 +4047,7 @@ namespace AnyPortrait
 				return animPlayData;
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4122,7 +4122,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4173,7 +4173,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4227,7 +4227,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4277,7 +4277,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4330,7 +4330,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4375,10 +4375,10 @@ namespace AnyPortrait
 				//변경 22.5.18 : 지연된 플레이 요청
 				_animPlayDeferredRequest.CrossFadeQueued(animPlayData, layer, blendMethod, fadeTime, isAutoEndIfNotloop);
 				return animPlayData;
-				
+
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4437,7 +4437,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4486,7 +4486,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4538,7 +4538,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4586,7 +4586,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4641,7 +4641,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4692,7 +4692,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4746,7 +4746,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4797,7 +4797,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4835,7 +4835,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4870,7 +4870,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4907,7 +4907,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4944,7 +4944,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -4980,7 +4980,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -5015,7 +5015,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -5229,8 +5229,8 @@ namespace AnyPortrait
 #if UNITY_EDITOR
 		//v1.4.7 : 초기화 전에 실행했다면 에러 원인에 대한 로그를 보여주자
 		private void ShowErrorMsgIfNotInitialized_Editor(Exception ex)
-		{	
-			if(InitializationStatus != INIT_STATUS.Completed)
+		{
+			if (InitializationStatus != INIT_STATUS.Completed)
 			{
 				Debug.LogWarning("AnyPortrait : An error occurred because the function was called before [Initialization].\n"
 								+ "Please call the Initialize() function directly or try again after initialization (approx. 1 frame).\n"
@@ -5923,7 +5923,7 @@ namespace AnyPortrait
 			//IKSpace로 옮겨야 한다.
 			//Vector2 targetPos = optBone._worldMatrix.ConvertForIK(position);
 			//Vector2 startPos = optBone._worldMatrix.ConvertForIK(optBone.PositionWithouEditing);
-			
+
 			//float angle = Mathf.Atan2(targetPos.y - startPos.y, targetPos.x - startPos.x) * Mathf.Rad2Deg;
 
 			//이전 : IK Angle에 넣어서 계산하기
@@ -6488,7 +6488,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6527,7 +6527,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6546,7 +6546,7 @@ namespace AnyPortrait
 		public void ResetTextureForExtraOptionAll()
 		{
 			int nTextures = _optTextureData != null ? _optTextureData.Count : 0;
-			if(nTextures == 0)
+			if (nTextures == 0)
 			{
 				return;
 			}
@@ -6564,13 +6564,13 @@ namespace AnyPortrait
 		public void ResetTextureForExtraOptionByName(string optTextureName)
 		{
 			int nTextures = _optTextureData != null ? _optTextureData.Count : 0;
-			if(nTextures == 0)
+			if (nTextures == 0)
 			{
 				return;
 			}
 
 			apOptTextureData targetTextureData = GetOptTextureData(optTextureName);
-			if(targetTextureData != null)
+			if (targetTextureData != null)
 			{
 				targetTextureData.SetRuntimeTexture(null);
 			}
@@ -6614,7 +6614,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6655,7 +6655,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6697,7 +6697,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6739,7 +6739,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6779,7 +6779,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6822,7 +6822,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6865,7 +6865,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6911,7 +6911,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6954,7 +6954,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -6999,7 +6999,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7043,7 +7043,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7086,7 +7086,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7129,7 +7129,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7172,7 +7172,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7216,7 +7216,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7240,7 +7240,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7263,7 +7263,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7288,7 +7288,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7303,7 +7303,7 @@ namespace AnyPortrait
 		public void CleanUpMeshesCommandBuffers()
 		{
 			int nOptMeshes = _optMeshes != null ? _optMeshes.Count : 0;
-			if(nOptMeshes > 0)
+			if (nOptMeshes > 0)
 			{
 				for (int i = 0; i < nOptMeshes; i++)
 				{
@@ -7324,7 +7324,7 @@ namespace AnyPortrait
 				//RootUnit 단위로 Reset을 한다. ]
 				int nRootUnits = _optRootUnitList != null ? _optRootUnitList.Count : 0;
 				apOptRootUnit rootUnit = null;
-				if(nRootUnits > 0)
+				if (nRootUnits > 0)
 				{
 					for (int i = 0; i < nRootUnits; i++)
 					{
@@ -7333,20 +7333,20 @@ namespace AnyPortrait
 						ResetMeshCommandBuffer(rootUnit, isRegistToCamera);
 					}
 				}
-				
+
 			}
 			else
 			{
 				// [ 모든 Opt Mesh 대상으로 갱신 ]				
 				int nOptMeshes = _optMeshes != null ? _optMeshes.Count : 0;
-				if(nOptMeshes > 0)
+				if (nOptMeshes > 0)
 				{
 					for (int i = 0; i < nOptMeshes; i++)
 					{
 						_optMeshes[i].ResetMaskParentSetting();
 					}
 				}
-				
+
 			}
 
 		}
@@ -7368,7 +7368,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7395,7 +7395,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7422,7 +7422,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetMeshTexture(texture);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7447,7 +7447,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetMeshColor(color2X);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7474,7 +7474,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7505,7 +7505,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7532,7 +7532,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetMeshAlpha(alpha);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7557,7 +7557,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetMeshAlpha(alpha);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7587,7 +7587,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7622,7 +7622,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7655,7 +7655,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7689,7 +7689,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7721,7 +7721,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7750,7 +7750,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7779,7 +7779,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7808,7 +7808,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7837,7 +7837,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7866,7 +7866,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7894,7 +7894,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7923,7 +7923,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7953,7 +7953,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -7985,7 +7985,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8014,7 +8014,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8044,7 +8044,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8073,7 +8073,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8102,7 +8102,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8130,7 +8130,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8161,7 +8161,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8189,7 +8189,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8217,7 +8217,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8247,7 +8247,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8276,7 +8276,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8306,7 +8306,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8337,7 +8337,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8366,7 +8366,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8395,7 +8395,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8427,7 +8427,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8456,7 +8456,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8486,7 +8486,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8518,7 +8518,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8547,7 +8547,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8576,7 +8576,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8608,7 +8608,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8637,7 +8637,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetCustomVector4(vector4Value, propertyName);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8667,7 +8667,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8697,7 +8697,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8727,7 +8727,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8757,7 +8757,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8788,7 +8788,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8817,7 +8817,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8847,7 +8847,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8877,7 +8877,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8906,7 +8906,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8936,7 +8936,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8964,7 +8964,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetHideForce(false);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -8988,7 +8988,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetHideForce(false);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9014,7 +9014,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetHideForce(false);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9037,7 +9037,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetHideForce(true);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9061,7 +9061,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetHideForce(true);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9087,7 +9087,7 @@ namespace AnyPortrait
 				optTransform._childMesh.SetHideForce(true);
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9109,7 +9109,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9130,7 +9130,7 @@ namespace AnyPortrait
 				ShowRootUnit();
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9163,7 +9163,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9195,7 +9195,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9228,7 +9228,7 @@ namespace AnyPortrait
 
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9262,7 +9262,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9294,7 +9294,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9327,7 +9327,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9361,7 +9361,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9394,7 +9394,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9426,7 +9426,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9457,7 +9457,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9491,7 +9491,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9523,7 +9523,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9555,7 +9555,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9587,7 +9587,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9620,7 +9620,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9653,7 +9653,7 @@ namespace AnyPortrait
 				}
 #if UNITY_EDITOR
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				//v1.4.7 : 초기화 전에 함수 호출시 에러 로그가 찍히도록
 				ShowErrorMsgIfNotInitialized_Editor(ex);
@@ -9990,7 +9990,7 @@ namespace AnyPortrait
 		/// </summary>
 		public void SetUpdateMeshesEveryFrame()
 		{
-			_meshRefreshRateOption = MESH_UPDATE_FREQUENCY.EveryFrames;			
+			_meshRefreshRateOption = MESH_UPDATE_FREQUENCY.EveryFrames;
 		}
 
 		/// <summary>
@@ -10000,7 +10000,7 @@ namespace AnyPortrait
 		/// <param name="isSyncUpdate">If True, it updates at the same frame as other characters with the same FPS settings.</param>
 		public void SetUpdateMeshesPerTime(int fps, bool isSyncUpdate)
 		{
-			if(isSyncUpdate)
+			if (isSyncUpdate)
 			{
 				_meshRefreshRateOption = MESH_UPDATE_FREQUENCY.FixedFrames_Sync;
 			}
@@ -10010,11 +10010,11 @@ namespace AnyPortrait
 			}
 			_meshRefreshRateFPS = fps;
 			//Min ~ Max 사이 값으로 설정하자
-			if(_meshRefreshRateFPS < MESH_REFRESH_FPS_MIN)
+			if (_meshRefreshRateFPS < MESH_REFRESH_FPS_MIN)
 			{
 				_meshRefreshRateFPS = MESH_REFRESH_FPS_MIN;
 			}
-			else if(_meshRefreshRateFPS > MESH_REFRESH_FPS_MAX)
+			else if (_meshRefreshRateFPS > MESH_REFRESH_FPS_MAX)
 			{
 				_meshRefreshRateFPS = MESH_REFRESH_FPS_MAX;
 			}
@@ -10435,7 +10435,7 @@ namespace AnyPortrait
 			for (int iMeshGroup = 0; iMeshGroup < _meshGroups.Count; iMeshGroup++)
 			{
 				apMeshGroup meshGroup = _meshGroups[iMeshGroup];
-				if(meshGroup._parentMeshGroup == null)
+				if (meshGroup._parentMeshGroup == null)
 				{
 					//루트 메시 그룹에 대해서만 재귀 함수 호출
 					ReadyToEdit_RefrestMeshGroupRecursive(meshGroup, meshGroup, processedMeshGroups);
@@ -10446,7 +10446,7 @@ namespace AnyPortrait
 			for (int iMeshGroup = 0; iMeshGroup < _meshGroups.Count; iMeshGroup++)
 			{
 				apMeshGroup meshGroup = _meshGroups[iMeshGroup];
-				if(processedMeshGroups.Contains(meshGroup))
+				if (processedMeshGroups.Contains(meshGroup))
 				{
 					//이미 처리가 되었다.
 					continue;
@@ -10467,7 +10467,7 @@ namespace AnyPortrait
 
 			curMeshGroup.SetDirtyToReset();//추가 1.4.2 : 초기화시 Reset 플래그를 올리자
 			curMeshGroup.RefreshForce();
-			if(curMeshGroup._parentMeshGroup == null || curMeshGroup == rootMeshGroup)
+			if (curMeshGroup._parentMeshGroup == null || curMeshGroup == rootMeshGroup)
 			{
 				//이게 루트 메시 그룹이라면
 				//Sort 후 TF에 Depth Assign까지 수행한다.
@@ -10485,7 +10485,7 @@ namespace AnyPortrait
 
 			//자식 메시 그룹이 있다면 (이건 Step3에서 연결이 된다)
 			int nChildMeshGroups = curMeshGroup._childMeshGroupTransforms != null ? curMeshGroup._childMeshGroupTransforms.Count : 0;
-			if(nChildMeshGroups == 0)
+			if (nChildMeshGroups == 0)
 			{
 				return;
 			}
@@ -10494,11 +10494,11 @@ namespace AnyPortrait
 			for (int i = 0; i < nChildMeshGroups; i++)
 			{
 				childMeshGroupTF = curMeshGroup._childMeshGroupTransforms[i];
-				if(childMeshGroupTF == null)
+				if (childMeshGroupTF == null)
 				{
 					continue;
 				}
-				if(childMeshGroupTF._meshGroup == null
+				if (childMeshGroupTF._meshGroup == null
 					|| childMeshGroupTF._meshGroup == curMeshGroup
 					|| childMeshGroupTF._meshGroup == rootMeshGroup)
 				{
@@ -10516,9 +10516,9 @@ namespace AnyPortrait
 		public void ReadyToEdit_Step7()
 		{
 			//Anim Clip 준비도 하자
-			_animClips.RemoveAll(delegate(apAnimClip a)
+			_animClips.RemoveAll(delegate (apAnimClip a)
 			{
-				return 
+				return
 				a == null || //Null이거나
 				(a._targetMeshGroupID >= 0 && GetMeshGroup(a._targetMeshGroupID) == null);//TargetMeshGroup ID는 있는데, MeshGroup은 존재하지 않는 경우
 			});
@@ -10536,7 +10536,7 @@ namespace AnyPortrait
 			//5. Modifier 세팅
 			LinkAndRefreshInEditor(true, apUtil.LinkRefresh.Set_AllObjects(null));
 
-			
+
 		}
 
 
@@ -10546,8 +10546,8 @@ namespace AnyPortrait
 			// Main MeshGroup 연결
 			// 수정) "다중" MainMeshGroup으로 변경
 
-			if (_mainMeshGroupList == null)		{ _mainMeshGroupList = new List<apMeshGroup>(); }
-			else								{ _mainMeshGroupList.Clear(); }
+			if (_mainMeshGroupList == null) { _mainMeshGroupList = new List<apMeshGroup>(); }
+			else { _mainMeshGroupList.Clear(); }
 
 			if (_mainMeshGroupIDList == null)
 			{
@@ -10620,26 +10620,26 @@ namespace AnyPortrait
 											)
 		{
 			//UnityEngine.Profiling.Profiler.BeginSample("AnyPortrait Link And Refresh In Editor");
-			
+
 			//4.1 리셋이 필요한지 검사한다.
 			//겸사겸사 불필요한 데이터도 삭제한다.
 
 			//UnityEngine.Profiling.Profiler.BeginSample("Link 1 - Remove null");
-			
+
 			//노트 v1.5.0 : 이 대리자 코드는 GC를 발생시키지 않는다.
-			int nTextureRemoved = _textureData.RemoveAll(delegate(apTextureData a)
+			int nTextureRemoved = _textureData.RemoveAll(delegate (apTextureData a)
 			{
 				return a == null;
 			});
-			int nMeshRemoved = _meshes.RemoveAll(delegate(apMesh a)
+			int nMeshRemoved = _meshes.RemoveAll(delegate (apMesh a)
 			{
 				return a == null;
 			});
-			int nMeshGroupRemoved = _meshGroups.RemoveAll(delegate(apMeshGroup a)
+			int nMeshGroupRemoved = _meshGroups.RemoveAll(delegate (apMeshGroup a)
 			{
 				return a == null;
 			});
-			int nAnimClipRemoved = _animClips.RemoveAll(delegate(apAnimClip a)
+			int nAnimClipRemoved = _animClips.RemoveAll(delegate (apAnimClip a)
 			{
 				return a == null;
 			});
@@ -10666,9 +10666,9 @@ namespace AnyPortrait
 
 				//유효하지 않은 모디파이어들을 여기서 삭제한다.
 				//int curNumModRemoved = curMeshGroup._modifierStack.RemoveInvalidModifiers();
-				if(curMeshGroup._modifierStack._modifiers != null)
+				if (curMeshGroup._modifierStack._modifiers != null)
 				{
-					int curNumModRemoved = curMeshGroup._modifierStack._modifiers.RemoveAll(delegate(apModifierBase a)
+					int curNumModRemoved = curMeshGroup._modifierStack._modifiers.RemoveAll(delegate (apModifierBase a)
 					{
 						return a == null;
 					});
@@ -10677,9 +10677,9 @@ namespace AnyPortrait
 				}
 			}
 
-			if(!isResetLink)
+			if (!isResetLink)
 			{
-				if(nTextureRemoved > 0 ||
+				if (nTextureRemoved > 0 ||
 					nMeshRemoved > 0 ||
 					nMeshGroupRemoved > 0 ||
 					nAnimClipRemoved > 0 ||
@@ -10690,7 +10690,7 @@ namespace AnyPortrait
 			}
 
 			//UnityEngine.Profiling.Profiler.EndSample();
-			
+
 
 			//4.1 추가
 			// 만약 isResetLink= true라면
@@ -10707,14 +10707,14 @@ namespace AnyPortrait
 				_controller.Ready(this);
 
 				int nMeshes = _meshes != null ? _meshes.Count : 0;
-				if(nMeshes > 0)
+				if (nMeshes > 0)
 				{
 					for (int iMesh = 0; iMesh < nMeshes; iMesh++)
 					{
 						_meshes[iMesh].LinkEdgeAndVertex();
 					}
 				}
-				
+
 
 				//UnityEngine.Profiling.Profiler.EndSample();
 				//--------------------------------------
@@ -10724,24 +10724,24 @@ namespace AnyPortrait
 
 				//텍스쳐도 리셋
 				int nTextureData = _textureData != null ? _textureData.Count : 0;
-				if(nTextureData > 0)
+				if (nTextureData > 0)
 				{
 					for (int iTexture = 0; iTexture < nTextureData; iTexture++)
 					{
 						_textureData[iTexture].ReadyToEdit(this);
 					}
 				}
-				
+
 
 				nMeshes = _meshes != null ? _meshes.Count : 0;
-				if(nMeshes > 0)
+				if (nMeshes > 0)
 				{
 					apMesh mesh = null;
 					for (int iMeshes = 0; iMeshes < nMeshes; iMeshes++)
 					{
 						//내부 MeshComponent들의 레퍼런스를 연결하자
 						mesh = _meshes[iMeshes];
-						
+
 						mesh.ReadyToEdit(this);
 
 						//텍스쳐를 연결하자
@@ -10751,7 +10751,7 @@ namespace AnyPortrait
 						mesh.LinkEdgeAndVertex();
 					}
 				}
-				
+
 
 
 				//UnityEngine.Profiling.Profiler.EndSample();
@@ -10769,9 +10769,9 @@ namespace AnyPortrait
 					meshGroup.Init(this);
 
 					int nChildMeshTFs = meshGroup._childMeshTransforms != null ? meshGroup._childMeshTransforms.Count : 0;
-					if(nChildMeshTFs > 0)
+					if (nChildMeshTFs > 0)
 					{
-						meshGroup._childMeshTransforms.RemoveAll(delegate(apTransform_Mesh a)
+						meshGroup._childMeshTransforms.RemoveAll(delegate (apTransform_Mesh a)
 						{
 							return a == null;
 						});
@@ -10806,7 +10806,7 @@ namespace AnyPortrait
 								//--------------
 								//추가) Clipping Layer를 위해서 Mesh Transform끼리 연결을 해준다.
 
-								
+
 								if (meshTransform._clipChildMeshes == null)
 								{
 									meshTransform._clipChildMeshes = new List<apTransform_Mesh.ClipMeshSet>();
@@ -10819,7 +10819,7 @@ namespace AnyPortrait
 									//2. MeshGroup에 존재하지 않다.
 									return a._transformID < 0 || (meshGroup.GetMeshTransform(a._transformID) == null);
 								});
-								
+
 								//-------------
 							}
 							else
@@ -10833,7 +10833,7 @@ namespace AnyPortrait
 							{
 								//기본값의 MatSet을 사용하자.
 								meshTransform._linkedMaterialSet = GetDefaultMaterialSet();
-								if(meshTransform._linkedMaterialSet != null)
+								if (meshTransform._linkedMaterialSet != null)
 								{
 									//ID도 바꿔주자.
 									meshTransform._materialSetID = meshTransform._linkedMaterialSet._uniqueID;
@@ -10858,16 +10858,16 @@ namespace AnyPortrait
 						}
 					}
 
-					
 
-					
+
+
 
 
 					//1-2. MeshGroup 연결
 					int nChildMeshGroupTFs = meshGroup._childMeshGroupTransforms != null ? meshGroup._childMeshGroupTransforms.Count : 0;
-					if(nChildMeshGroupTFs > 0)
+					if (nChildMeshGroupTFs > 0)
 					{
-						meshGroup._childMeshGroupTransforms.RemoveAll(delegate(apTransform_MeshGroup a)
+						meshGroup._childMeshGroupTransforms.RemoveAll(delegate (apTransform_MeshGroup a)
 						{
 							return a == null;
 						});
@@ -10883,7 +10883,7 @@ namespace AnyPortrait
 
 							int meshGroupID = meshGroupTF._meshGroupUniqueID;
 							if (meshGroupID >= 0)
-							{	
+							{
 								if (meshGroupTF._meshGroup == null)
 								{
 									//MeshGroup이 연결이 안된 경우
@@ -10904,7 +10904,7 @@ namespace AnyPortrait
 								//MeshGroup ID가 유효하지 않은 MeshGroupTransform 발견
 								meshGroupTF._meshGroup = null;
 							}
-						}						
+						}
 					}
 				}
 
@@ -10919,7 +10919,7 @@ namespace AnyPortrait
 
 					//2. 하위 MeshGroup 연결
 					int nChildMeshGroupTFs = meshGroup._childMeshGroupTransforms != null ? meshGroup._childMeshGroupTransforms.Count : 0;
-					if(nChildMeshGroupTFs > 0)
+					if (nChildMeshGroupTFs > 0)
 					{
 						for (int iChild = 0; iChild < nChildMeshGroupTFs; iChild++)
 						{
@@ -10946,11 +10946,11 @@ namespace AnyPortrait
 							}
 						}
 					}
-					
+
 
 					//다만, 없어진 Mesh Group은 정리해주자
 					int nChildMeshTFs = meshGroup._childMeshTransforms != null ? meshGroup._childMeshTransforms.Count : 0;
-					if(nChildMeshTFs > 0)
+					if (nChildMeshTFs > 0)
 					{
 						meshGroup._childMeshTransforms.RemoveAll(delegate (apTransform_Mesh a)
 						{
@@ -10958,8 +10958,8 @@ namespace AnyPortrait
 						});
 					}
 
-					nChildMeshGroupTFs = meshGroup._childMeshGroupTransforms != null ? meshGroup._childMeshGroupTransforms.Count : 0;					
-					if(nChildMeshGroupTFs > 0)
+					nChildMeshGroupTFs = meshGroup._childMeshGroupTransforms != null ? meshGroup._childMeshGroupTransforms.Count : 0;
+					if (nChildMeshGroupTFs > 0)
 					{
 						meshGroup._childMeshGroupTransforms.RemoveAll(delegate (apTransform_MeshGroup a)
 						{
@@ -10999,7 +10999,7 @@ namespace AnyPortrait
 					//추가 : Clipping 후속 처리를 한다.
 					apTransform_Mesh meshTransform = null;
 					int nChildMeshTFs = meshGroup._childMeshTransforms != null ? meshGroup._childMeshTransforms.Count : 0;
-					if(nChildMeshTFs > 0)
+					if (nChildMeshTFs > 0)
 					{
 						for (int iChild = 0; iChild < nChildMeshTFs; iChild++)
 						{
@@ -11010,7 +11010,7 @@ namespace AnyPortrait
 								//Clipped Mesh를 검색해서 연결한다.
 								//찾은 이후엔 Sort를 해준다.
 								int nClipMeshes = meshTransform._clipChildMeshes != null ? meshTransform._clipChildMeshes.Count : 0;
-								if(nClipMeshes > 0)
+								if (nClipMeshes > 0)
 								{
 									for (int iClip = 0; iClip < nClipMeshes; iClip++)
 									{
@@ -11038,7 +11038,7 @@ namespace AnyPortrait
 							}
 							else
 							{
-								if(meshTransform._clipChildMeshes == null)
+								if (meshTransform._clipChildMeshes == null)
 								{
 									meshTransform._clipChildMeshes = new List<apTransform_Mesh.ClipMeshSet>();
 								}
@@ -11048,7 +11048,7 @@ namespace AnyPortrait
 							meshTransform.SortClipMeshTransforms();
 						}
 					}
-					
+
 
 
 					//이전 >> 위치가 변경되었다 [v1.4.2]
@@ -11071,12 +11071,12 @@ namespace AnyPortrait
 				//추가 [v1.4.2] Root Mesh Group에 대해 Depth를 갱신하는 Sorting을 여기서 하자
 				//Root Mesh Group만 체크하므로 [REV_MG]를 따르지 않는다.
 				int nMeshGroups = _meshGroups != null ? _meshGroups.Count : 0;
-				if(nMeshGroups > 0)
+				if (nMeshGroups > 0)
 				{
 					for (int iMeshGroup = 0; iMeshGroup < nMeshGroups; iMeshGroup++)
 					{
 						apMeshGroup meshGroup = _meshGroups[iMeshGroup];
-						if(meshGroup._parentMeshGroup == null && meshGroup._parentMeshGroupID < 0)
+						if (meshGroup._parentMeshGroup == null && meshGroup._parentMeshGroupID < 0)
 						{
 							//Root MeshGroup인 경우
 							//Sort 후 Depth 할당까지 하자
@@ -11084,7 +11084,7 @@ namespace AnyPortrait
 						}
 					}
 				}
-				
+
 
 				//Debug.LogWarning("<Link And Refresh In Editor> : Modifier Test");
 
@@ -11099,12 +11099,12 @@ namespace AnyPortrait
 					apMeshGroup meshGroup = revMeshGroups[iMeshGroup];
 
 					int nModifiers = meshGroup._modifierStack._modifiers != null ? meshGroup._modifierStack._modifiers.Count : 0;
-					if(nModifiers == 0)
+					if (nModifiers == 0)
 					{
 						continue;
 					}
-					
-					meshGroup._modifierStack._modifiers.RemoveAll(delegate(apModifierBase a)
+
+					meshGroup._modifierStack._modifiers.RemoveAll(delegate (apModifierBase a)
 					{
 						return a == null;
 					});
@@ -11115,19 +11115,19 @@ namespace AnyPortrait
 					for (int iMod = 0; iMod < nModifiers; iMod++)
 					{
 						apModifierBase modifier = meshGroup._modifierStack._modifiers[iMod];
-						if(modifier == null)
+						if (modifier == null)
 						{
 							continue;
 						}
 
 						//여기서 Modifier Link를 다시 해야한다.
-						
+
 						//apMeshGroup meshGroupOfTransform = null;
 						apMeshGroup meshGroupOfBone = null;
 
 						int nPSGs = modifier._paramSetGroup_controller != null ? modifier._paramSetGroup_controller.Count : 0;
 
-						if(nPSGs > 0)
+						if (nPSGs > 0)
 						{
 							continue;
 						}
@@ -11145,27 +11145,27 @@ namespace AnyPortrait
 								case apModifierParamSetGroup.SYNC_TARGET.Controller:
 									//Controller 체크해볼 필요 있다.
 									modPSG._keyControlParam = _controller.FindParam(modPSG._keyControlParamID);
-									
+
 									break;
 
 								case apModifierParamSetGroup.SYNC_TARGET.KeyFrame:
 									modPSG._keyAnimClip = GetAnimClip(modPSG._keyAnimClipID);
 									modPSG._keyAnimTimeline = null;
 									modPSG._keyAnimTimelineLayer = null;
-									if(modPSG._keyAnimClip != null)
+									if (modPSG._keyAnimClip != null)
 									{
 										modPSG._keyAnimTimeline = modPSG._keyAnimClip.GetTimeline(modPSG._keyAnimTimelineID);
-										if(modPSG._keyAnimTimeline != null)
+										if (modPSG._keyAnimTimeline != null)
 										{
 											modPSG._keyAnimTimelineLayer = modPSG._keyAnimTimeline.GetTimelineLayer(modPSG._keyAnimTimelineLayerID);
 										}
 									}
-									
+
 									break;
 							}
 
 							int nParamSets = modPSG._paramSetList != null ? modPSG._paramSetList.Count : 0;
-							if(nParamSets == 0)
+							if (nParamSets == 0)
 							{
 								continue;
 							}
@@ -11216,10 +11216,10 @@ namespace AnyPortrait
 									{
 										meshGroupOfBone = GetMeshGroup(a._meshGropuUniqueID_Bone);
 
-										if(meshGroupOfBone != null)
+										if (meshGroupOfBone != null)
 										{
 											a._bone = meshGroupOfBone.GetBone(a._boneID);
-											if(a._bone == null)
+											if (a._bone == null)
 											{
 												//Bone이 없다. 삭제
 												//Debug.LogError("ModBone - Bone : 삭제됨");
@@ -11234,14 +11234,14 @@ namespace AnyPortrait
 						}
 					}
 				}
-				
+
 				//UnityEngine.Profiling.Profiler.EndSample();
 
 				//UnityEngine.Profiling.Profiler.BeginSample("Link 3-8");
 
 				//Root Unit도 갱신하자
-				if (_mainMeshGroupList == null)		{ _mainMeshGroupList = new List<apMeshGroup>(); }
-				else								{ _mainMeshGroupList.Clear(); }
+				if (_mainMeshGroupList == null) { _mainMeshGroupList = new List<apMeshGroup>(); }
+				else { _mainMeshGroupList.Clear(); }
 
 				if (_mainMeshGroupIDList == null) { _mainMeshGroupIDList = new List<int>(); }
 
@@ -11286,7 +11286,7 @@ namespace AnyPortrait
 							|| !_meshGroups.Contains(a._childMeshGroup)
 							|| !_mainMeshGroupList.Contains(a._childMeshGroup);
 				});
-				
+
 
 
 				//UnityEngine.Profiling.Profiler.EndSample();
@@ -11305,7 +11305,7 @@ namespace AnyPortrait
 				for (int iMainMesh = 0; iMainMesh < _mainMeshGroupList.Count; iMainMesh++)
 				{
 					apMeshGroup meshGroup = _mainMeshGroupList[iMainMesh];
-					
+
 					//재활용 가능한지 확인하자
 					//이전 (GC 발생)
 					//apRootUnit existRootUnit = prevRootUnits.Find(delegate(apRootUnit a)
@@ -11338,18 +11338,18 @@ namespace AnyPortrait
 
 
 				//UnityEngine.Profiling.Profiler.EndSample();
-				
+
 				//UnityEngine.Profiling.Profiler.EndSample();
 			}
 			//isResetLink 끝-------------------
-			
+
 			//모든 모디파이어가 아닌 특정 AnimClip에 대한 모디파이어를 제외할 것인가.
 			bool isLinkAllMeshGroups = false;
 			bool isSkipAllAnimModifier = false;//모든 Anim 모디파이어 스킵
 			bool isSkipUnselectedAnimPSGs = false;//선택되지 않은 Anim 모디파이어의 PSG 스킵
 			apAnimClip selectedAnimClip = null;
 
-			
+
 			bool isNeedToRefreshOtherMeshGroups = false;
 			apMeshGroup curSelectedMeshGroup = null;
 
@@ -11360,14 +11360,14 @@ namespace AnyPortrait
 			//최적화 20.4.3 : 이 코드들이 에디터를 무겁게 한다.
 			//만약 특정 메시 그룹을 선택했거나, 특정 AnimClip을 선택했다면, 그 외의 메시 그룹을 갱신하지 말자.
 			//revMeshGroups에서 대상이 되는 메시 그룹의 부모/자식들은 제외한다.
-			if(linkRefreshRequest != null)
+			if (linkRefreshRequest != null)
 			{
-				if(linkRefreshRequest.Request_MeshGroup == apUtil.LR_REQUEST__MESHGROUP.SelectedMeshGroup && linkRefreshRequest.MeshGroup != null)
+				if (linkRefreshRequest.Request_MeshGroup == apUtil.LR_REQUEST__MESHGROUP.SelectedMeshGroup && linkRefreshRequest.MeshGroup != null)
 				{
 					//대상이 되는 메시 그룹과 관련된 모든 메시 그룹을 찾자.
 					List<apMeshGroup> targetMeshGroups = new List<apMeshGroup>();
 
-					if(linkRefreshRequest.MeshGroup != null)
+					if (linkRefreshRequest.MeshGroup != null)
 					{
 						FindAllParentAndChildrenMeshGroups(linkRefreshRequest.MeshGroup, targetMeshGroups);
 					}
@@ -11410,7 +11410,7 @@ namespace AnyPortrait
 				//첫 Link시, 잘못된 데이터가 있으면 삭제를 한다.
 				//UnityEngine.Profiling.Profiler.BeginSample("Link 5-1 - Refresh And Sort");
 
-				meshGroup._modifierStack.RefreshAndSort(	apModifierStack.REFRESH_OPTION_ACTIVE.Keep,
+				meshGroup._modifierStack.RefreshAndSort(apModifierStack.REFRESH_OPTION_ACTIVE.Keep,
 															apModifierStack.REFRESH_OPTION_REMOVE.RemoveNullModifiers);//변경 22.12.13
 
 				//UnityEngine.Profiling.Profiler.EndSample();
@@ -11420,11 +11420,11 @@ namespace AnyPortrait
 				//Bone 연결 
 				//Root 리스트는 일단 날리고 BoneAll 리스트를 돌면서 필요한걸 넣어주자
 				//이후엔 Root -> Child 방식으로 순회
-				if(meshGroup._boneList_Root == null) { meshGroup._boneList_Root = new List<apBone>(); }
+				if (meshGroup._boneList_Root == null) { meshGroup._boneList_Root = new List<apBone>(); }
 				meshGroup._boneList_Root.Clear();
 
 				int nBoneListAll = meshGroup._boneList_All != null ? meshGroup._boneList_All.Count : 0;
-				if(nBoneListAll > 0)
+				if (nBoneListAll > 0)
 				{
 					apBone bone = null;
 					for (int iBone = 0; iBone < nBoneListAll; iBone++)
@@ -11466,7 +11466,7 @@ namespace AnyPortrait
 
 				int curBoneIndex = 0;
 				int nRootBoneList = meshGroup._boneList_Root != null ? meshGroup._boneList_Root.Count : 0;
-				if(nRootBoneList > 0)
+				if (nRootBoneList > 0)
 				{
 					for (int iRoot = 0; iRoot < nRootBoneList; iRoot++)
 					{
@@ -11476,7 +11476,7 @@ namespace AnyPortrait
 						curBoneIndex = rootBone.SetBoneIndex(curBoneIndex) + 1;
 					}
 				}
-				
+
 
 				//UnityEngine.Profiling.Profiler.EndSample();
 				//UnityEngine.Profiling.Profiler.BeginSample("Link 5-3 - Modifier");
@@ -11572,7 +11572,7 @@ namespace AnyPortrait
 											paramSetGroup._keyAnimTimelineLayer.LinkParamSetGroup(paramSetGroup);
 
 											//키프레임이면 여기서 한번더 링크를 해주자
-											
+
 											if (nParamSets > 0)
 											{
 												//[v1.5.0]
@@ -11589,7 +11589,7 @@ namespace AnyPortrait
 													apAnimKeyframe targetKeyframe = paramSetGroup._keyAnimTimelineLayer.GetKeyframeByID(keyframeID);
 													if (targetKeyframe != null)
 													{
-														if(!checkedKeyframes.Contains(targetKeyframe))
+														if (!checkedKeyframes.Contains(targetKeyframe))
 														{
 															//연결되지 않은 키프레임이다.
 															paramSet.LinkSyncKeyframe(targetKeyframe);
@@ -11600,7 +11600,7 @@ namespace AnyPortrait
 															//Debug.LogError("에러 : 이미 연결이 완료된 키프레임에 다른 ModParamSet이 연결을 시도했다.");
 															paramSet._keyframeUniqueID = -1;//삭제 처리
 														}
-														
+
 													}
 													else
 													{
@@ -11700,7 +11700,7 @@ namespace AnyPortrait
 												return a._meshGroupOfModifier == null || a._meshGroupOfTransform == null;
 											});
 										}
-										
+
 
 
 										//---------------------------------------------------------------------------------
@@ -11770,13 +11770,13 @@ namespace AnyPortrait
 												return a._bone == null || a._meshGroup_Bone == null || a._meshGroup_Modifier == null;
 											});
 										}
-										
+
 
 									}
 								}
 							}
 						}
-						
+
 
 
 						//mod.RefreshParamSet();
@@ -11797,20 +11797,20 @@ namespace AnyPortrait
 						return a._meshGroup == null;
 					});
 				}
-				
+
 				//UnityEngine.Profiling.Profiler.EndSample();
 				//ModStack의 CalculateParam을 모두 지우고 다시 만들자
-				
+
 				//이 조건문 추가 20.4.3 : 모든 메시 그룹에 대해서 Refresh를 할 경우에만
 				//단, 여러개의 메시그룹을 대상으로 하는 경우에는 타겟을 제외한 나머지 객체는 Refresh를 해야한다.
 				//UnityEngine.Profiling.Profiler.BeginSample("Link 5-4 - Refresh Link");
 
-				if(isLinkAllMeshGroups)
+				if (isLinkAllMeshGroups)
 				{
 					//Debug.Log(">>>> All MeshGroups (Other)");
 					meshGroup.RefreshModifierLink(null);
 				}
-				else if(curSelectedMeshGroup != null 
+				else if (curSelectedMeshGroup != null
 					&& isNeedToRefreshOtherMeshGroups
 					&& curSelectedMeshGroup != meshGroup)
 				{
@@ -11825,7 +11825,7 @@ namespace AnyPortrait
 			//UnityEngine.Profiling.Profiler.EndSample();
 			//UnityEngine.Profiling.Profiler.BeginSample("Link 6");
 
-			if(curSelectedMeshGroup != null && !isLinkAllMeshGroups)
+			if (curSelectedMeshGroup != null && !isLinkAllMeshGroups)
 			{
 				//모든 메시 그룹을 대상으로 한게 아닌데 대상 메시 그룹이 있다면
 				curSelectedMeshGroup.RefreshModifierLink(linkRefreshRequest);
@@ -11854,21 +11854,21 @@ namespace AnyPortrait
 						animClip.RemoveUnlinkedTimeline();
 					}
 				}
-				
+
 			}
-			
+
 
 			//UnityEngine.Profiling.Profiler.EndSample();
 			//UnityEngine.Profiling.Profiler.BeginSample("Link 8");
-			
+
 			//추가 9.30 : 만약, 선택한 MeshGroup에 하위 MeshGroup이 있다면,
 			//전체적으로 하위 MeshGroup으로의 연결을 다시 해야한다.
 			//위에서 연결이 흐트러졌기 때문
-			
-			if(linkRefreshRequest != null && curSelectedMeshGroup != null)
+
+			if (linkRefreshRequest != null && curSelectedMeshGroup != null)
 			{
 				//하위에 메시 그룹이 있거나, 모든 메시 그룹을 대상으로 하지 않았을 경우
-				if((curSelectedMeshGroup._childMeshGroupTransforms != null && curSelectedMeshGroup._childMeshGroupTransforms.Count > 0)
+				if ((curSelectedMeshGroup._childMeshGroupTransforms != null && curSelectedMeshGroup._childMeshGroupTransforms.Count > 0)
 					|| !isLinkAllMeshGroups)
 				{
 					//UnityEngine.Profiling.Profiler.BeginSample("Link 8-1");
@@ -11890,7 +11890,7 @@ namespace AnyPortrait
 			//System.GC.Collect();
 
 			//UnityEngine.Profiling.Profiler.EndSample();
-			
+
 		}
 
 
@@ -11922,7 +11922,7 @@ namespace AnyPortrait
 		/// <returns></returns>
 		private List<apMeshGroup> GetReverseMeshGroupList(List<apMeshGroup> srcMeshGroups)
 		{
-			if(_tmpReverseMeshGroups == null)
+			if (_tmpReverseMeshGroups == null)
 			{
 				_tmpReverseMeshGroups = new List<apMeshGroup>();
 			}
@@ -11941,7 +11941,7 @@ namespace AnyPortrait
 					}
 				}
 			}
-			
+
 			return _tmpReverseMeshGroups;
 		}
 
@@ -11949,7 +11949,7 @@ namespace AnyPortrait
 		private void FindReverseMeshGroupListRecursive(apMeshGroup curMeshGroup, List<apMeshGroup> resultList)
 		{
 			int nChildTFs = curMeshGroup._childMeshGroupTransforms != null ? curMeshGroup._childMeshGroupTransforms.Count : 0;
-			if(nChildTFs > 0)
+			if (nChildTFs > 0)
 			{
 				apTransform_MeshGroup childMeshGroupTransform = null;
 				apMeshGroup childMeshGroup = null;
@@ -11983,14 +11983,14 @@ namespace AnyPortrait
 			{
 				while (true)
 				{
-					if(rootParentMG._parentMeshGroup == null)
+					if (rootParentMG._parentMeshGroup == null)
 					{
 						break;
 					}
 					rootParentMG = rootParentMG._parentMeshGroup;
 				}
 			}
-			
+
 			//Recursive 방식ㅇ로 Root MG
 			FindReverseMeshGroupListRecursive(rootParentMG, resultList);
 		}
@@ -12017,7 +12017,7 @@ namespace AnyPortrait
 		{
 			_IDManager.RegistID(target, ID);
 		}
-#region [미사용 코드]
+		#region [미사용 코드]
 		//public void RegistUniqueID_Texture(int uniqueID)
 		//{
 		//	if (!_registeredUniqueIDs_Texture.Contains(uniqueID))
@@ -12081,7 +12081,7 @@ namespace AnyPortrait
 		//		_registeredUniqueIDs_AnimClip.Add(uniqueID);
 		//	}
 		//} 
-#endregion
+		#endregion
 
 
 
@@ -12104,7 +12104,7 @@ namespace AnyPortrait
 
 			return resultID;
 		}
-#region [미사용 코드]
+		#region [미사용 코드]
 		//private int MakeUniqueID(List<int> IDList)
 		//{
 		//	int nextID = -1;
@@ -12144,7 +12144,7 @@ namespace AnyPortrait
 		//public int MakeUniqueID_Modifier()		{ return MakeUniqueID(_registeredUniqueIDs_Modifier); }
 		//public int MakeUniqueID_ControlParam()	{ return MakeUniqueID(_registeredUniqueIDs_ControlParam); }
 		//public int MakeUniqueID_AnimClip()		{ return MakeUniqueID(_registeredUniqueIDs_AnimClip); } 
-#endregion
+		#endregion
 
 
 		// 객체 삭제시 ID 회수
@@ -12167,14 +12167,14 @@ namespace AnyPortrait
 		public void RefreshAllUniqueIDs()
 		{
 			_IDManager.Clear();
-			
-			
+
+
 			//1. Texture
 			apTextureData curTextureData = null;
 			for (int i = 0; i < _textureData.Count; i++)
 			{
 				curTextureData = _textureData[i];
-				if(curTextureData == null) { continue; }
+				if (curTextureData == null) { continue; }
 
 				_IDManager.RegistID(apIDManager.TARGET.Texture, curTextureData._uniqueID);
 			}
@@ -12184,7 +12184,7 @@ namespace AnyPortrait
 			for (int i = 0; i < _meshes.Count; i++)
 			{
 				curMesh = _meshes[i];
-				if(curMesh == null) { continue; }
+				if (curMesh == null) { continue; }
 
 				_IDManager.RegistID(apIDManager.TARGET.Mesh, curMesh._uniqueID);
 				curMesh.RefreshVertexAndPinIDs();//<<Vertex ID를 등록한다.
@@ -12195,8 +12195,8 @@ namespace AnyPortrait
 			for (int i = 0; i < _meshGroups.Count; i++)
 			{
 				curMeshGroup = _meshGroups[i];
-				if(curMeshGroup == null) { continue; }
-				
+				if (curMeshGroup == null) { continue; }
+
 				_IDManager.RegistID(apIDManager.TARGET.MeshGroup, curMeshGroup._uniqueID);
 
 
@@ -12205,7 +12205,7 @@ namespace AnyPortrait
 				for (int iMeshTF = 0; iMeshTF < curMeshGroup._childMeshTransforms.Count; iMeshTF++)
 				{
 					meshTF = curMeshGroup._childMeshTransforms[iMeshTF];
-					if(meshTF == null) { continue; }
+					if (meshTF == null) { continue; }
 
 					_IDManager.RegistID(apIDManager.TARGET.Transform, meshTF._transformUniqueID);
 				}
@@ -12214,14 +12214,14 @@ namespace AnyPortrait
 				for (int iMGTF = 0; iMGTF < curMeshGroup._childMeshGroupTransforms.Count; iMGTF++)
 				{
 					mgTF = curMeshGroup._childMeshGroupTransforms[iMGTF];
-					if(mgTF == null) { continue; }
+					if (mgTF == null) { continue; }
 
 					_IDManager.RegistID(apIDManager.TARGET.Transform, mgTF._transformUniqueID);
 				}
 
-				if(curMeshGroup._rootMeshGroupTransform != null)
+				if (curMeshGroup._rootMeshGroupTransform != null)
 				{
-					_IDManager.RegistID(	apIDManager.TARGET.Transform, 
+					_IDManager.RegistID(apIDManager.TARGET.Transform,
 											curMeshGroup._rootMeshGroupTransform._transformUniqueID);
 				}
 
@@ -12230,9 +12230,9 @@ namespace AnyPortrait
 				for (int iMod = 0; iMod < curMeshGroup._modifierStack._modifiers.Count; iMod++)
 				{
 					modifier = curMeshGroup._modifierStack._modifiers[iMod];
-					if(modifier == null) { continue; }
+					if (modifier == null) { continue; }
 
-					_IDManager.RegistID(	apIDManager.TARGET.Modifier,
+					_IDManager.RegistID(apIDManager.TARGET.Modifier,
 											modifier._uniqueID);
 				}
 
@@ -12240,9 +12240,9 @@ namespace AnyPortrait
 				for (int iBone = 0; iBone < curMeshGroup._boneList_All.Count; iBone++)
 				{
 					bone = curMeshGroup._boneList_All[iBone];
-					if(bone == null) { continue; }
+					if (bone == null) { continue; }
 
-					_IDManager.RegistID(	apIDManager.TARGET.Bone,
+					_IDManager.RegistID(apIDManager.TARGET.Bone,
 											bone._uniqueID);
 
 				}
@@ -12253,9 +12253,9 @@ namespace AnyPortrait
 			for (int i = 0; i < _controller._controlParams.Count; i++)
 			{
 				controlParam = _controller._controlParams[i];
-				if(controlParam == null) { continue; }
+				if (controlParam == null) { continue; }
 
-				_IDManager.RegistID(	apIDManager.TARGET.ControlParam,
+				_IDManager.RegistID(apIDManager.TARGET.ControlParam,
 										controlParam._uniqueID);
 			}
 
@@ -12267,39 +12267,39 @@ namespace AnyPortrait
 			for (int iAnimClip = 0; iAnimClip < _animClips.Count; iAnimClip++)
 			{
 				animClip = _animClips[iAnimClip];
-				if(animClip == null) { continue; }
+				if (animClip == null) { continue; }
 
-				_IDManager.RegistID(	apIDManager.TARGET.AnimClip,
+				_IDManager.RegistID(apIDManager.TARGET.AnimClip,
 										animClip._uniqueID);
 
 				//Timeline
 				for (int iTimeline = 0; iTimeline < animClip._timelines.Count; iTimeline++)
 				{
 					timeline = animClip._timelines[iTimeline];
-					if(timeline == null) { continue; }
+					if (timeline == null) { continue; }
 
-					_IDManager.RegistID(	apIDManager.TARGET.AnimTimeline,
+					_IDManager.RegistID(apIDManager.TARGET.AnimTimeline,
 											timeline._uniqueID);
 
 					//Timeline Layer
 					for (int iTimelineLayer = 0; iTimelineLayer < timeline._layers.Count; iTimelineLayer++)
 					{
 						timelineLayer = timeline._layers[iTimelineLayer];
-						if(timelineLayer == null) { continue; }
+						if (timelineLayer == null) { continue; }
 
-						_IDManager.RegistID(	apIDManager.TARGET.AnimTimelineLayer,
+						_IDManager.RegistID(apIDManager.TARGET.AnimTimelineLayer,
 												timelineLayer._uniqueID);
 
 						//Keyframe
 						for (int iKeyframe = 0; iKeyframe < timelineLayer._keyframes.Count; iKeyframe++)
 						{
 							keyframe = timelineLayer._keyframes[iKeyframe];
-							if(keyframe == null)
+							if (keyframe == null)
 							{
 								continue;
 							}
 
-							_IDManager.RegistID(	apIDManager.TARGET.AnimKeyFrame,
+							_IDManager.RegistID(apIDManager.TARGET.AnimKeyFrame,
 													keyframe._uniqueID);
 
 						}
@@ -12318,13 +12318,13 @@ namespace AnyPortrait
 		/// </summary>
 		public void CalculatePhysicsTimer()
 		{
-			if(_physicsTimer == null)
+			if (_physicsTimer == null)
 			{
 				_physicsTimer = new System.Diagnostics.Stopwatch();
 				_physicsTimer.Start();
 			}
 			float nextDeltaTime = (float)(_physicsTimer.ElapsedMilliseconds / 1000.0f);
-			if(nextDeltaTime > 0.0f)
+			if (nextDeltaTime > 0.0f)
 			{
 				_physicsDeltaTime = nextDeltaTime;
 
@@ -12357,7 +12357,7 @@ namespace AnyPortrait
 		/// </summary>
 		public void SetPhysicsTimerWhenCapture(float tDelta)
 		{
-			if(_physicsTimer == null)
+			if (_physicsTimer == null)
 			{
 				_physicsTimer = new System.Diagnostics.Stopwatch();
 				_physicsTimer.Start();
@@ -12375,7 +12375,7 @@ namespace AnyPortrait
 		/// </summary>
 		public void ResetPhysicsTimer()
 		{
-			if(_physicsTimer == null)
+			if (_physicsTimer == null)
 			{
 				_physicsTimer = new System.Diagnostics.Stopwatch();
 				_physicsTimer.Start();
@@ -12387,7 +12387,7 @@ namespace AnyPortrait
 		}
 
 
-#region [미사용 코드]
+		#region [미사용 코드]
 		//public void PushUniqueID_Texture(int uniquedID)			{ _registeredUniqueIDs_Texture.Remove(uniquedID); }
 		//public void PushUniqueID_Vertex(int uniquedID)			{ _registeredUniqueIDs_Vert.Remove(uniquedID); }
 		//public void PushUniqueID_Mesh(int uniquedID)			{ _registeredUniqueIDs_Mesh.Remove(uniquedID); }
@@ -12396,18 +12396,18 @@ namespace AnyPortrait
 		//public void PushUniqueID_Modifier(int uniquedID)		{ _registeredUniqueIDs_Modifier.Remove(uniquedID); }
 		//public void PushUniqueID_ControlParam(int uniquedID)	{ _registeredUniqueIDs_ControlParam.Remove(uniquedID); }
 		//public void PushUniqueID_AnimClip(int uniquedID)		{ _registeredUniqueIDs_AnimClip.Remove(uniquedID); } 
-#endregion
+		#endregion
 
 		//카메라 관련
 		//-------------------------------------------------------------------------------------------------------
 		private void CheckAndRefreshCameras(bool isResetCommandBufferWhenCameraChanged = true)
 		{
-			if(_mainCamera == null)
+			if (_mainCamera == null)
 			{
 				_mainCamera = new apOptMainCamera(this);
 			}
 
-			if(_transform == null)
+			if (_transform == null)
 			{
 				_transform = transform;
 			}
@@ -12426,30 +12426,30 @@ namespace AnyPortrait
 			bool isCameraChanged = false;
 
 			//변경 2019.9.24 : 멀티 카메라도 지원하도록 래핑
-			if(_billboardType == BILLBOARD_TYPE.None)
+			if (_billboardType == BILLBOARD_TYPE.None)
 			{
 				//빌보드가 아니라면 단순 카메라 리스트 검사(false, false)
 				isCameraChanged = _mainCamera.Refresh(false, false, _cameraCheckMode);
-				if(isCameraChanged && isResetCommandBufferWhenCameraChanged)
+				if (isCameraChanged && isResetCommandBufferWhenCameraChanged)
 				{
 					//카메라가 변경되었다면 > 커맨드 버퍼를 갱신한다.
 					ResetMeshesCommandBuffers(false);
 				}
 				return;
 			}
-			
+
 			//빌보드라면 카메라의 매트릭스까지 계산(false, true)
 			isCameraChanged = _mainCamera.Refresh(false, true, _cameraCheckMode);
-			if(isCameraChanged && isResetCommandBufferWhenCameraChanged)
+			if (isCameraChanged && isResetCommandBufferWhenCameraChanged)
 			{
 				//카메라가 변경되었다면 > 커맨드 버퍼를 갱신한다.
 				ResetMeshesCommandBuffers(false);
 			}
 
 			//조건문 추가 v1.5.0 : 바라보는 카메라가 없는 경우에 갱신하면 안된다.
-			if(_mainCamera.GetNumberOfCamera() != apOptMainCamera.NumberOfCamera.None)
+			if (_mainCamera.GetNumberOfCamera() != apOptMainCamera.NumberOfCamera.None)
 			{
-				if(_billboardType == BILLBOARD_TYPE.Billboard)
+				if (_billboardType == BILLBOARD_TYPE.Billboard)
 				{
 					//전체 빌보드
 					_transform.rotation = _mainCamera.Rotation;
@@ -12462,13 +12462,13 @@ namespace AnyPortrait
 
 				//추가 v1.5.0
 				//옵션에 따라선, 부모 Transform의 Rotation을 더하거나 Up Vector를 맞춘다.
-				if(_billboardParentRotation != BILLBOARD_PARENT_ROTATION.Ignore)
+				if (_billboardParentRotation != BILLBOARD_PARENT_ROTATION.Ignore)
 				{
 					//Ignore 외의 값을 갖는 경우
 					Transform parentTF = _transform.parent;
-					if(parentTF != null)
+					if (parentTF != null)
 					{
-						if(_billboardParentRotation == BILLBOARD_PARENT_ROTATION.PitchYawRoll)
+						if (_billboardParentRotation == BILLBOARD_PARENT_ROTATION.PitchYawRoll)
 						{
 							//일반 더하기 연산 (Local) - Yaw-Pitch-Roll로 동작
 							//_transform.rotation *= parentTF.rotation;
@@ -12479,11 +12479,11 @@ namespace AnyPortrait
 							//Up Vector 동기화
 							_transform.rotation = Quaternion.LookRotation(_mainCamera.Forward, parentTF.up);
 						}
-						
+
 					}
 				}
-				
-				
+
+
 				//카메라 좌표계에서의 Z값 (ZDepth)
 				//_zDepthOnPerspectiveCam = _curCamera.worldToCameraMatrix.MultiplyPoint3x4(_transform.position).z;//미사용 코드
 
@@ -12495,7 +12495,7 @@ namespace AnyPortrait
 				_rotationOnlyMatrixIfBillboard = Matrix4x4.TRS(Vector3.zero, _transform.rotation, Vector3.one);
 				_invRotationOnlyMatrixIfBillboard = _rotationOnlyMatrixIfBillboard.inverse;
 			}
-			
+
 		}
 
 		//추가. 업데이트가 끝나면 이 함수를 호출하자.
@@ -12530,7 +12530,7 @@ namespace AnyPortrait
 		{
 			_cameraCheckMode = cameraCheckMode;
 		}
-	
+
 
 
 		//카메라를 직접 지정하는 함수
@@ -12539,7 +12539,7 @@ namespace AnyPortrait
 		/// </summary>
 		public void FindRenderingCamerasAutomatically()
 		{
-			if(_mainCamera == null)
+			if (_mainCamera == null)
 			{
 				Debug.LogError("AnyPortrait - The camera module has not been initialized yet.");
 				return;
@@ -12550,7 +12550,7 @@ namespace AnyPortrait
 				//기존에는 자동이 아니었는데 이번에 자동으로 갱신되도록 변경되었다.
 				//>> 강제로 갱신
 				bool isCameraChanged = _mainCamera.Refresh(true, _billboardType != BILLBOARD_TYPE.None, _cameraCheckMode);
-				if(isCameraChanged)
+				if (isCameraChanged)
 				{
 					ResetMeshesCommandBuffers(false);
 				}
@@ -12566,7 +12566,7 @@ namespace AnyPortrait
 		/// <returns>The number of cameras that can actually render the character. Returns -1 if an error occurs</returns>
 		public int SetRenderingCameras(params Camera[] cameras)
 		{
-			if(_mainCamera == null)
+			if (_mainCamera == null)
 			{
 				Debug.LogError("AnyPortrait - The camera module has not been initialized yet.");
 				return -1;
@@ -12580,7 +12580,7 @@ namespace AnyPortrait
 
 			return result;
 		}
-		
+
 
 
 		//추가 20.9.15 : 지글본의 좌표계 변환 처리를 위한 특별 함수
@@ -12842,18 +12842,18 @@ namespace AnyPortrait
 		/// <returns></returns>
 		public apOptRootUnit GetOptRootUnit(int rootUnitIndex)
 		{
-			if(_optRootUnitList.Count == 0)
+			if (_optRootUnitList.Count == 0)
 			{
 				return null;
 			}
-			if(rootUnitIndex < 0 || rootUnitIndex >= _optRootUnitList.Count)
+			if (rootUnitIndex < 0 || rootUnitIndex >= _optRootUnitList.Count)
 			{
 				return null;
 			}
 			return _optRootUnitList[rootUnitIndex];
 		}
 
-		
+
 
 
 		//추가 19.6.3 : MaterialSet에 관련
@@ -12908,16 +12908,16 @@ namespace AnyPortrait
 		/// </summary>
 		public void Unsynchronize()
 		{
-			if(_isSyncParent)
+			if (_isSyncParent)
 			{
-				if(_syncChildPortraits != null)
+				if (_syncChildPortraits != null)
 				{
 					//자식들의 동기화를 모두 해제한다.
 					apPortrait childPortrait = null;
 					for (int i = 0; i < _syncChildPortraits.Count; i++)
-					{	
+					{
 						childPortrait = _syncChildPortraits[i];
-						if(childPortrait == null || childPortrait == this)
+						if (childPortrait == null || childPortrait == this)
 						{
 							continue;
 						}
@@ -12931,17 +12931,17 @@ namespace AnyPortrait
 				_isSyncParent = false;
 				_syncChildPortraits = null;
 			}
-			if(_isSyncChild)
+			if (_isSyncChild)
 			{
-				if(_syncParentPortrait != null)
+				if (_syncParentPortrait != null)
 				{
 					//부모로부터 동기화를 해제한다.
-					if(_syncParentPortrait._syncChildPortraits != null
+					if (_syncParentPortrait._syncChildPortraits != null
 						&& _syncParentPortrait._syncChildPortraits.Contains(this))
 					{
 						_syncParentPortrait._syncChildPortraits.Remove(this);
 
-						if(_syncParentPortrait._syncChildPortraits.Count == 0)
+						if (_syncParentPortrait._syncChildPortraits.Count == 0)
 						{
 							//부모 객체의 모든 동기화가 해제되었다.
 							_syncParentPortrait._isSyncParent = false;
@@ -12952,10 +12952,10 @@ namespace AnyPortrait
 						}
 					}
 				}
-				
+
 				_isSyncChild = false;
 				_syncParentPortrait = null;
-				
+
 				//이전
 				//_syncMethod = SYNC_METHOD.None;
 
@@ -12965,7 +12965,7 @@ namespace AnyPortrait
 				_isSync_Bone = false;
 				_isSync_RootUnit = false;
 
-				if(_syncPlay != null)
+				if (_syncPlay != null)
 				{
 					_syncPlay.Unsynchronize();
 				}
@@ -12993,7 +12993,7 @@ namespace AnyPortrait
 		/// <returns>Returns True if synchronization is successful.</returns>
 		public bool Synchronize(apPortrait targetPortrait, bool syncAnimation, bool syncControlParam)
 		{
-			return Synchronize(targetPortrait, syncAnimation, syncControlParam, 
+			return Synchronize(targetPortrait, syncAnimation, syncControlParam,
 								false, false, SYNC_BONE_OPTION.MatchFromRoot);
 		}
 
@@ -13009,8 +13009,8 @@ namespace AnyPortrait
 		/// <returns>Returns True if synchronization is successful.</returns>
 		public bool Synchronize(apPortrait targetPortrait, bool syncAnimation, bool syncControlParam, bool syncRootUnit)
 		{
-			return Synchronize(targetPortrait, syncAnimation, syncControlParam, 
-								syncRootUnit, 
+			return Synchronize(targetPortrait, syncAnimation, syncControlParam,
+								syncRootUnit,
 								false, SYNC_BONE_OPTION.MatchFromRoot);
 		}
 
@@ -13033,19 +13033,19 @@ namespace AnyPortrait
 				Debug.LogError("AnyPortrait : [Sync failed] Target is null");
 				return false;
 			}
-			if(_isSyncParent)
+			if (_isSyncParent)
 			{
 				Debug.LogError("AnyPortrait : [Sync failed] This apPortrait is a parent object that has already been synced.");
 				return false;
 			}
 
-			if(targetPortrait._isSyncChild)
+			if (targetPortrait._isSyncChild)
 			{
 				Debug.LogError("AnyPortrait : [Sync failed] The target is already synced to another apPortrait.");
 				return false;
 			}
 
-			
+
 			//잘못된 코드
 			//if(syncAnimation && syncRootUnit)
 			//{
@@ -13055,13 +13055,13 @@ namespace AnyPortrait
 
 			//반대. Animation에 RootUnit 동기화 기능이 없었다!
 			//Animation을 켜면 RootUnit 동기화를 같이 켜야한다.
-			
-			if(syncAnimation)
+
+			if (syncAnimation)
 			{
 				syncRootUnit = true;
 			}
 
-			if(!syncAnimation && !syncControlParam && !syncBones && !syncRootUnit)
+			if (!syncAnimation && !syncControlParam && !syncBones && !syncRootUnit)
 			{
 				Debug.LogError("AnyPortrait : [Sync failed] This function does not work because all arguments are false. To unsynchronize, use the Unsynchronize() function instead.");
 				return false;
@@ -13081,59 +13081,59 @@ namespace AnyPortrait
 
 			if (syncControlParam)
 			{
-				if(_controller._controlParams == null || targetPortrait._controller._controlParams == null)
+				if (_controller._controlParams == null || targetPortrait._controller._controlParams == null)
 				{
 					syncControlParam = false;
 				}
 			}
-			
-			if(syncRootUnit)
+
+			if (syncRootUnit)
 			{
 				//루트 유닛이 모두 2개 이상이어야 하고, 개수가 같아야 한다.
 				int nRootUnit_Target = targetPortrait._optRootUnitList != null ? targetPortrait._optRootUnitList.Count : 0;
 				int nRootUnit_Self = _optRootUnitList != null ? _optRootUnitList.Count : 0;
 
-				if(nRootUnit_Target <= 1 || nRootUnit_Self <= 1)
+				if (nRootUnit_Target <= 1 || nRootUnit_Self <= 1)
 				{
 					//루트 유닛이 1 이하라면 syncRootUnit 요청은 무시된다.
-					
-					if(!syncAnimation)
+
+					if (!syncAnimation)
 					{
 						//단 경고문은 애니메이션 동기화가 아닌 경우에만 보여주자
 						Debug.LogWarning("AnyPortrait : If there are 1 or fewer Root Units, the synchronization request to the Root Unit is ignored.");
 					}
-					
+
 					syncRootUnit = false;
 				}
-				else if(nRootUnit_Target != nRootUnit_Self)
+				else if (nRootUnit_Target != nRootUnit_Self)
 				{
 					//루트 유닛의 개수가 다르다면 syncRootUnit 요청은 무시된다.
-					
+
 					Debug.LogError("AnyPortrait : Since the number of Root Units between the two Portraits is different, the synchronization request for switching Root Units is ignored.");
 					syncRootUnit = false;
 				}
 			}
 
 
-			if(!syncAnimation && !syncControlParam && !syncBones && !syncRootUnit)
+			if (!syncAnimation && !syncControlParam && !syncBones && !syncRootUnit)
 			{
 				return false;
 			}
 
-			
 
-			if(_isSyncChild)
+
+			if (_isSyncChild)
 			{
-				if(targetPortrait == _syncParentPortrait)
+				if (targetPortrait == _syncParentPortrait)
 				{
 					//이미 동기화가 되었다.
 					//부모의 입장에서 이 객체가 등록되었는지 한번 더 확인하자
 					_syncParentPortrait._isSyncParent = true;
-					if(_syncParentPortrait._syncChildPortraits == null)
+					if (_syncParentPortrait._syncChildPortraits == null)
 					{
 						_syncParentPortrait._syncChildPortraits = new List<apPortrait>();
 					}
-					if(!_syncParentPortrait._syncChildPortraits.Contains(this))
+					if (!_syncParentPortrait._syncChildPortraits.Contains(this))
 					{
 						_syncParentPortrait._syncChildPortraits.Add(this);
 					}
@@ -13145,7 +13145,7 @@ namespace AnyPortrait
 			_isSyncChild = true;
 			_syncParentPortrait = targetPortrait;
 
-			
+
 			//이전
 			//if(syncAnimation && syncControlParam)
 			//{
@@ -13176,11 +13176,11 @@ namespace AnyPortrait
 			_syncPlay = new apSyncPlay(this, _syncParentPortrait, syncAnimation, syncControlParam, syncBones, syncBoneOption, syncRootUnit);
 
 			_syncParentPortrait._isSyncParent = true;
-			if(_syncParentPortrait._syncChildPortraits == null)
+			if (_syncParentPortrait._syncChildPortraits == null)
 			{
 				_syncParentPortrait._syncChildPortraits = new List<apPortrait>();
 			}
-			if(!_syncParentPortrait._syncChildPortraits.Contains(this))
+			if (!_syncParentPortrait._syncChildPortraits.Contains(this))
 			{
 				_syncParentPortrait._syncChildPortraits.Add(this);
 			}
@@ -13198,12 +13198,12 @@ namespace AnyPortrait
 					_optRootUnitList[i]._rootOptTransform._modifierStack.EnableSync();
 				}
 			}
-			
+
 
 			return true;
 		}
 
-		
+
 
 		// 추가 21.10.7 : 업데이트 시간 배속 설정
 		/// <summary>
@@ -13215,7 +13215,7 @@ namespace AnyPortrait
 		{
 			_isDeltaTimeOptionChanged = true;
 
-			if(useUnscaleDeltaTime)
+			if (useUnscaleDeltaTime)
 			{
 				_deltaTimeOption = DELTA_TIME_OPTION.UnscaledDeltaTime;
 			}
@@ -13238,7 +13238,7 @@ namespace AnyPortrait
 		{
 			_isDeltaTimeOptionChanged = true;
 
-			if(useUnscaleDeltaTime)
+			if (useUnscaleDeltaTime)
 			{
 				_deltaTimeOption = DELTA_TIME_OPTION.MultipliedUnscaledDeltaTime;
 			}
@@ -13263,7 +13263,7 @@ namespace AnyPortrait
 		{
 			_isDeltaTimeOptionChanged = true;
 
-			if(onDeltaTimeRequested == null)
+			if (onDeltaTimeRequested == null)
 			{
 				Debug.Log("AnyPortrait : onDeltaTimeRequested is null, so it will be restored to the default option.");
 				_deltaTimeOption = DELTA_TIME_OPTION.DeltaTime;
@@ -13279,7 +13279,7 @@ namespace AnyPortrait
 			_deltaTimeRequestSavedObject = savedObject;
 		}
 
-		
+
 
 
 		// 추가 21.12.22 : 재질 합치기
@@ -13295,12 +13295,12 @@ namespace AnyPortrait
 			//> UnmergeProcess를 수행하면 연결이 종료된다.
 			//메인 오브젝트가 없다면 (연결이 뭔가 해제됨)
 			//> 그냥 스스로 실행한다.
-			if(!_isUseMergedMat)
-			{	
+			if (!_isUseMergedMat)
+			{
 				return;
 			}
 
-			if(_mergeMatMainPortrait != null && _mergeMatMainPortrait != this)
+			if (_mergeMatMainPortrait != null && _mergeMatMainPortrait != this)
 			{
 				//다른 Main Portrait가 있었다면 Main에게 시키자
 				_mergeMatMainPortrait.UnmergeMaterialsAsMain();
@@ -13315,20 +13315,20 @@ namespace AnyPortrait
 		/// <summary>Main으로서 재질 병합을 해제한다.</summary>
 		private void UnmergeMaterialsAsMain()
 		{
-			if(_optMergedMaterial != null)
+			if (_optMergedMaterial != null)
 			{
 				_optMergedMaterial.OnDestroy();
 			}
 
 			//연결된 모든 Portrait에 Unmerged를 호출하자
 			int nSubPortraits = _mergedMatSubPortraits != null ? _mergedMatSubPortraits.Count : 0;
-			if(nSubPortraits > 0)
+			if (nSubPortraits > 0)
 			{
 				apPortrait curSubPortrait = null;
 				for (int i = 0; i < nSubPortraits; i++)
 				{
 					curSubPortrait = _mergedMatSubPortraits[i];
-					if(curSubPortrait == null || curSubPortrait == this)
+					if (curSubPortrait == null || curSubPortrait == this)
 					{
 						continue;
 					}
@@ -13347,13 +13347,13 @@ namespace AnyPortrait
 		{
 			//모든 OptMesh의 재질이나 VertexID 등을 Merge 전으로 초기화한다.
 			int nOptMeshes = _optMeshes != null ? _optMeshes.Count : 0;
-			if(nOptMeshes > 0)
+			if (nOptMeshes > 0)
 			{
 				apOptMesh curOptMesh = null;
 				for (int i = 0; i < nOptMeshes; i++)
 				{
 					curOptMesh = _optMeshes[i];
-					
+
 					//각 Mesh의 Merged 정보를 삭제한다.
 					curOptMesh.ReleaseMergedMaterial();
 				}
@@ -13375,13 +13375,13 @@ namespace AnyPortrait
 		/// </summary>
 		/// <param name="otherPortraits">It can also be merged with materials from other apPortraits. If you only want to merge this character's internal materials, you don't need to input anything.</param>
 		public void MergeMaterials(params apPortrait[] otherPortraits)
-		{	
+		{
 			//재질을 모두 병합한다.
 			//Portrait들이 추가되지 않았어도 된다. (자기 자신만 병합되어도 됨)
 			ResetMeshMaterialToBatchAll();//모든 외부에 의한 재질 변화를 초기화한다.
 			UnmergeMaterials();
 
-			
+
 			int nOtherPortraits = otherPortraits != null ? otherPortraits.Length : 0;
 			apPortrait curOtherPortrait = null;
 			if (nOtherPortraits > 0)
@@ -13404,7 +13404,7 @@ namespace AnyPortrait
 					{
 						//이미 재질 병합에 포함되었다면
 						curOtherPortrait.UnmergeMaterials();
-						
+
 					}
 				}
 			}
@@ -13412,14 +13412,14 @@ namespace AnyPortrait
 			//병합 대상인 Portrait 리스트를 초기화한다.
 			_isUseMergedMat = true;
 			_mergeMatMainPortrait = this;
-			if(_mergedMatSubPortraits == null)
+			if (_mergedMatSubPortraits == null)
 			{
 				_mergedMatSubPortraits = new List<apPortrait>();
 			}
 			_mergedMatSubPortraits.Clear();
 
 			//기존 정보가 있다면 일단 상테
-			if(_optMergedMaterial != null)
+			if (_optMergedMaterial != null)
 			{
 				_optMergedMaterial.OnDestroy();
 			}
@@ -13428,9 +13428,9 @@ namespace AnyPortrait
 			//병합할 Portrait 리스트를 만들자
 			List<apPortrait> targetPortraits = new List<apPortrait>();
 			targetPortraits.Add(this);//일단 자기 자신 포함
-			
-			
-				
+
+
+
 			if (nOtherPortraits > 0)
 			{
 
@@ -13438,13 +13438,13 @@ namespace AnyPortrait
 				{
 					curOtherPortrait = otherPortraits[i];
 
-					if(curOtherPortrait == null || curOtherPortrait == this)
+					if (curOtherPortrait == null || curOtherPortrait == this)
 					{
 						continue;
 					}
 
 					//이미 포함되어 있다면
-					if(_mergedMatSubPortraits.Contains(curOtherPortrait))
+					if (_mergedMatSubPortraits.Contains(curOtherPortrait))
 					{
 						continue;
 					}

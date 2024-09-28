@@ -11,6 +11,7 @@ public class Charge : CfAction
     float _chargeDist;
     float _chargeupTime;
     float _chargeSpeed; // Avg speed of charge
+    float _stunRaycastDist;
     AnimationCurve _chargeCurve;
     Transform _transform;
     SpriteManager _spriteManager;
@@ -21,6 +22,7 @@ public class Charge : CfAction
     float chargeTimer = 0;
     float pauseTime = 0;
     bool isResting = false;
+    bool isStunned = false;
     float restTimer = 0;
 
     public Charge(string[] _params) : base(_params) { }
@@ -38,6 +40,7 @@ public class Charge : CfAction
         _transform = (Transform)dataRef[6];
         _spriteManager = (SpriteManager)dataRef[7];
         _chargeTypeAnim = (HogAnim)dataRef[8];
+        _stunRaycastDist = (float)dataRef[9];
         chargeTime = _chargeDist / _chargeSpeed;
     }
 
@@ -45,7 +48,12 @@ public class Charge : CfAction
     {
         if (isResting)
         {
-            if (restTimer >= pauseTime)
+            if (isStunned && restTimer >= _stunTime)
+            {
+                isStunned = false;
+                _chargeTypeAnim.TransitionToState(HogAnim.State.Wake.ToString());
+            }
+            else if (restTimer >= pauseTime)
             {
                 isResting = false;
                 restTimer = 0;
@@ -72,10 +80,11 @@ public class Charge : CfAction
             }
 
             // Consider collision into wall
-            if (Physics2D.Raycast(_transform.position, _spriteManager.forward, 2.0f, _obstacleLayerMask))
+            if (Physics2D.Raycast(_transform.position, _spriteManager.forward, _stunRaycastDist, _obstacleLayerMask))
             {
-                _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
+                _chargeTypeAnim.TransitionToState(HogAnim.State.Stun.ToString());
                 isResting = true;
+                isStunned = true;
                 chargeTimer = 0;
                 pauseTime = _restTime + _stunTime;
                 return;

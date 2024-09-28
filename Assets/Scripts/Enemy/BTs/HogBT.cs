@@ -19,6 +19,7 @@ public class HogBT : MonoBehaviour
     [SerializeField] float longChargeupTime;
     [SerializeField] float shortChargeDist;
     [SerializeField] float longChargeDist;
+    [SerializeField] float stunRaycastDist;
     [SerializeField] AnimationCurve chargeCurve;
     [SerializeField] float chargeSpeed;
     [Header("Patrol Settings")]
@@ -70,6 +71,7 @@ public class HogBT : MonoBehaviour
             new("longChargeDist", longChargeDist),
             new("chargeCurve", chargeCurve),
             new("chargeSpeed", chargeSpeed),
+            new("stunRaycastDist", stunRaycastDist),
 
             new("patrolSpeed", patrolSpeed),
             new("waitTime", waitTime),
@@ -81,8 +83,8 @@ public class HogBT : MonoBehaviour
             new("hogAnim", GetComponent<HogAnim>())
         };
 
-        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim" };
-        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim" };
+        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist" };
+        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
                 new CheckPlayerInAggro(new string[] { "aggro" }),
@@ -124,7 +126,7 @@ public class HogBT : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, GetComponent<SpriteManager>().forward * 2.0f);
+        Gizmos.DrawRay(transform.position, GetComponent<SpriteManager>().forward * stunRaycastDist);
     }
 #endif
 }

@@ -8385,6 +8385,7 @@ MonoBehaviour:
   longChargeupTime: 0.3
   shortChargeDist: 6
   longChargeDist: 12
+  stunRaycastDist: 1.8
   chargeCurve:
     serializedVersion: 2
     m_Curve:
@@ -8434,6 +8435,7 @@ MonoBehaviour:
     speed: 0
     alertness: 0
     friendliness: 0
+  health: 0
 --- !u!114 &5323227856919584256
 MonoBehaviour:
   m_ObjectHideFlags: 0

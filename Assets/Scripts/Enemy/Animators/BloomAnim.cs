@@ -6,11 +6,16 @@ namespace Environment.Enemy.Anim
     public class BloomAnim : PortraitAnim
     {
         [SerializeField] Transform target;
+        [SerializeField] AnimationCurve curve;
+        [SerializeField] float chompTime;
 
         public enum State
         {
             Idle,
             Death,
+            Wiggle,
+            MouthOpen,
+            MouthClose
         }
 
         protected override void Awake()
@@ -19,35 +24,46 @@ namespace Environment.Enemy.Anim
             currState = State.Idle.ToString();
         }
 
-        void Start()
+        public void Chomp()
         {
             StartCoroutine(TestMoveTo(target.position));
         }
 
         IEnumerator TestMoveTo(Vector3 target)
         {
-            yield return new WaitForSeconds(1f);
-            portrait.StopAll();
+            TransitionToState(State.MouthOpen.ToString());
+            yield return new WaitForSeconds(0.2f);
             var startPos = portrait.GetBoneSocket("tongue").position;
-            Debug.Log("Start pos: " + startPos);
-            Debug.Log("Target pos: " + target);
+            // var mtStartRot = portrait.GetBoneSocket("mouth (top)").localRotation.eulerAngles.z;
+            // var mbStartRot = portrait.GetBoneSocket("mouth (btm)").localRotation.eulerAngles.z;
+            // var mtEndRot = mtStartRot - 20;
+            // var mbEndRot = mbStartRot + 30;
+
             // interpolate between start and target
             var t = 0f;
-            while (t < 1f)
+            while (t < chompTime)
             {
-                MoveTo(Vector3.Lerp(startPos, target, t));
+                float nt = curve.Evaluate(t / chompTime);
+                MoveTo(startPos + new Vector3((target.x - startPos.x) * nt, nt * nt * (target.y - startPos.y), target.z));
+                // portrait.SetBoneRotation("mouth (top)", Mathf.Lerp(mtStartRot, mtEndRot, t), Space.Self);
+                // portrait.SetBoneRotation("mouth (btm)", Mathf.Lerp(mbStartRot, mbEndRot, t), Space.Self);
                 t += Time.deltaTime;
                 yield return null;
             }
-            while (t < 2f)
+            while (t < chompTime * 2)
             {
-                MoveTo(Vector3.Lerp(target, startPos, t - 1));
+                float nt = curve.Evaluate((t - chompTime) / chompTime);
+                MoveTo(target + new Vector3((startPos.x - target.x) * nt, nt * nt * (startPos.y - target.y), startPos.z));
+                // portrait.SetBoneRotation("mouth (top)", Mathf.Lerp(mtEndRot, mtStartRot, t - 1), Space.Self);
+                // portrait.SetBoneRotation("mouth (btm)", Mathf.Lerp(mbEndRot, mbStartRot, t - 1), Space.Self);
                 t += Time.deltaTime;
                 yield return null;
             }
+            // yield return new WaitForSeconds(0.1f);
+            // TransitionToState(State.MouthClose.ToString());
+            // yield return new WaitForSeconds(0.15f);
             MoveTo(startPos);
-            yield return new WaitForSeconds(0.1f);
-            portrait.CrossFade(State.Idle.ToString(), 0.5f);
+            TransitionToState(State.Idle.ToString());
         }
 
         protected override void OnEnable()
@@ -60,12 +76,6 @@ namespace Environment.Enemy.Anim
         {
             var tongue = portrait.GetBone("tongue");
             portrait.SetBoneIK(tongue, position, Space.World);
-        }
-
-        public void LookAt(float angle)
-        {
-            var tongue = portrait.GetBone("tongue");
-            portrait.SetBoneRotation(tongue, angle, Space.World);
         }
     }
 }

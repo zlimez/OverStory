@@ -7900,7 +7900,7 @@ Rigidbody2D:
   m_Mass: 8
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.75
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -7926,10 +7926,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portrait: {fileID: 2018327544417887530}
   crossFadeSeconds: 0.2
-  walkSpeed: 3
+  walkSpeed: 5
   runSpeed: 5
-  jumpForce: 100
-  initialJumpForce: 1500
+  jumpForce: 150
+  initialJumpForce: 3000
   dashForce: 3000
 --- !u!70 &5773483344534926292
 CapsuleCollider2D:

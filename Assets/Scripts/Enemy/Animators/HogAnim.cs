@@ -12,7 +12,9 @@ namespace Environment.Enemy.Anim
             Walk,
             Charge,
             ChargeUp,
-            Death
+            Death,
+            Stun,
+            Wake,
         }
         [SerializeField] float walkSpeed = 2.5f;
         [SerializeField] float runSpeed = 8f;
