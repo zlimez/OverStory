@@ -1,4 +1,4 @@
-namespace Environment.Enemy
+namespace Abyss.Environment.Enemy
 {
     public class EnemySpawner : Spawner
     {

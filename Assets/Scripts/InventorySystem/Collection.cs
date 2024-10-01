@@ -1,113 +1,79 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Collection
 {
-    private int capacity;
-    private int scannedCapacity;
-    public List<Countable<Item>> items;
-    public Dictionary<Item, Countable<Item>> itemsTable;
+    private int _capacity;
+    public List<Countable<Item>> Items { get; private set; }
+    public Dictionary<Item, Countable<Item>> ItemsTable { get; private set; }
     public Action onItemChanged;
     public Action<Item> onNewItemAdded;
-    public Func<Collection, Item, int, bool> assertAddRule;
 
-    // Used to define rules for the inventory, invoked before adding an item to the collection
-    // Use case: For the scanned collection, per slot the item amount can only be 1
-    // protected virtual bool AssertAddRule(Item item, int quantity) { return true; }
+    public Collection(List<Countable<Item>> items = null, int capacity = -1)
+    {
+        this.Items = items ?? new List<Countable<Item>>();
+        this.ItemsTable = new Dictionary<Item, Countable<Item>>();
+        this._capacity = capacity;
 
-    public Collection(Func<Collection, Item, int, bool> assertAddRule, List<Countable<Item>> items = null, int capacity = 8) {
-        this.items = items ?? new List<Countable<Item>>();
-        this.itemsTable = new Dictionary<Item, Countable<Item>>();
-        this.capacity = capacity;
-        this.assertAddRule = assertAddRule;
-
-        foreach (Countable<Item> itemStack in this.items) {
-            itemsTable.Add(itemStack.Data, itemStack);
-        }
+        foreach (Countable<Item> itemStack in this.Items)
+            ItemsTable.Add(itemStack.Data, itemStack);
     }
 
-    public void Add(Item item, int quantity = 1) {
-        if (IsFull()) {
-            Debug.Log("Inventory normal capacity exceeded.");
-            return;
-        }
+    public bool Add(Item item, int quantity = 1)
+    {
+        if (IsFull) return false;
 
-        if (!assertAddRule.Invoke(this, item, quantity)) {
-            return;
-        }
-
-        // Existing item.
-        if (itemsTable.ContainsKey(item)) {
-            itemsTable[item].AddToStock(quantity);
-        } else {
-        // New item
-            Countable<Item> itemStack = new Countable<Item>(item, quantity);
-            itemsTable.Add(item, itemStack);
-            items.Add(itemStack);
+        if (ItemsTable.ContainsKey(item))
+            ItemsTable[item].AddToStock(quantity);
+        else
+        {
+            // New item
+            Countable<Item> itemStack = new(item, quantity);
+            ItemsTable.Add(item, itemStack);
+            Items.Add(itemStack);
             onNewItemAdded?.Invoke(item);
         }
 
         onItemChanged?.Invoke();
+        return true;
     }
 
-    public bool IsFull() {
-        return items.Count >= capacity;
-    }
- 
-    public bool Contains(Item item) {
-        return itemsTable.ContainsKey(item);
+    public bool IsFull => _capacity != -1 && Items.Count >= _capacity;
+    public int Size => Items.Count;
+    public bool IsEmpty => Size == 0;
+
+    public bool Contains(Item item)
+    {
+        return ItemsTable.ContainsKey(item);
     }
 
-    public int StockOf(Item item) {
-        if (itemsTable.ContainsKey(item)) {
-            return itemsTable[item].Count;
-        }
+    public int StockOf(Item item)
+    {
+        if (ItemsTable.ContainsKey(item))
+            return ItemsTable[item].Count;
         return 0;
     }
 
-    public int Size() {
-        return items.Count;
+    public void RemoveItem(Item item)
+    {
+        Items.Remove(ItemsTable[item]);
+        ItemsTable.Remove(item);
     }
 
-    public bool isEmpty() {
-        return Size() == 0;
-    }
-
-    public void RemoveItem(Item item) {
-        items.Remove(itemsTable[item]);
-        itemsTable.Remove(item);
-    }
-
-    public void UseItem(Item item, int quantity = 1, bool isUsedFromInventory = true) {
-        if (
-            itemsTable.ContainsKey(item) 
-            && (!isUsedFromInventory || (item.canUseFromInventory && isUsedFromInventory)) 
-            && itemsTable[item].Count >= quantity
-        ) {
-            for (int i = 0; i < quantity; i++) {
+    public bool UseItem(Item item, int quantity = 1)
+    {
+        if (ItemsTable.ContainsKey(item) && ItemsTable[item].Count >= quantity)
+        {
+            for (int i = 0; i < quantity; i++)
                 item.Use();
-            }
 
-            bool noneLeft = item.isConsumable ? itemsTable[item].RemoveStock(quantity) : false;
-            if (noneLeft) {
+            bool noneLeft = item.isConsumable && ItemsTable[item].RemoveStock(quantity);
+            if (noneLeft)
                 RemoveItem(item);
-            }
 
             onItemChanged?.Invoke();
-            return;
+            return true;
         }
-    }
-
-    // NOTE: These GetCopy() are required to support snapshot function required to record an immutable state of inventory
-    // at rewindable time checkpoints
-    public virtual Collection GetCopy() {
-        List<Countable<Item>> newItems = new List<Countable<Item>>();
-
-        foreach (Countable<Item> itemStack in items) {
-            newItems.Add(itemStack.GetCopy());
-        }
-
-        return new Collection(assertAddRule, newItems);
+        return false;
     }
 }

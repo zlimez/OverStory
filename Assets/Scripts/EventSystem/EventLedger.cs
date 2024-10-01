@@ -93,9 +93,7 @@ namespace Abyss.EventSystem
         {
             recentEvents.Enqueue(gameEvent);
             if (recentEvents.Count() > RecentEventsSize)
-            {
                 recentEvents.Dequeue();
-            }
         }
 
         public void AddToRecent(StaticEvent gameEvent)
@@ -144,9 +142,7 @@ namespace Abyss.EventSystem
             Counter++;
 
             if (!isSilent)
-            {
                 EventManager.InvokeEvent(gameEvent);
-            }
         }
 
         public void RecordEvent(StaticEvent gameEvent, bool isSilent = false)
@@ -209,13 +205,8 @@ namespace Abyss.EventSystem
         private void IncrementEventCount(Dictionary<GameEvent, int> eventDict, GameEvent gameEvent)
         {
             if (eventDict.ContainsKey(gameEvent))
-            {
                 eventDict[gameEvent]++;
-            }
-            else
-            {
-                eventDict.Add(gameEvent, 1);
-            }
+            else eventDict.Add(gameEvent, 1);
         }
 
         public void IncrementEventCount(Dictionary<StaticEvent, int> eventDict, StaticEvent gameEvent)
@@ -229,15 +220,14 @@ namespace Abyss.EventSystem
         /// <param name="eventDict">The dictionary containing the event count.</param>
         /// <param name="gameEvent">The game event to get the count for.</param>
         /// <returns>The occurrence count of the game event.</returns>
-        private int GetEventCount(Dictionary<GameEvent, int> eventDict, GameEvent gameEvent)
+        private static int GetEventCount(Dictionary<GameEvent, int> eventDict, GameEvent gameEvent)
         {
             return eventDict.ContainsKey(gameEvent) ? eventDict[gameEvent] : 0;
         }
 
-        public int GetEventCount(Dictionary<StaticEvent, int> eventDict, StaticEvent gameEvent)
+        public static int GetEventCount(Dictionary<StaticEvent, int> eventDict, StaticEvent gameEvent)
         {
             return GetEventCount(eventDict.ToDictionary(kvp => new GameEvent(kvp.Key.ToString()), kvp => kvp.Value), new GameEvent(gameEvent.ToString()));
         }
-
     }
 }

@@ -240,3 +240,6 @@ Assets/Character/**/Unused/*(Unused)*
 # My cpp test built files
 References/*.dSYM
 References/*.o
+
+# Ignore AnyPortrait backup files
+AnyPortraitBackup/*

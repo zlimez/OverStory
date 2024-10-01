@@ -95,7 +95,7 @@ namespace Abyss.SceneSystem
                 StartCoroutine(LoadSceneAsync(newScene, removeMasterAftTransit));
             };
 
-            EventManager.StartListening(CommonEventCollection.CurtainFullyDrawn, currLoaderWithMaster);
+            EventManager.StartListening(CommonEventCollection.CurtainDrawn, currLoaderWithMaster);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Abyss.SceneSystem
 
             if (isQueued)
             {
-                EventManager.StopListening(CommonEventCollection.CurtainFullyDrawn, currLoaderWithMaster);
+                EventManager.StopListening(CommonEventCollection.CurtainDrawn, currLoaderWithMaster);
                 currLoaderWithMaster = null;
             }
 

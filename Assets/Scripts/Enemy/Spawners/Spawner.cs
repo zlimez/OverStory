@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Environment
+namespace Abyss.Environment
 {
     public class Spawner : MonoBehaviour
     {

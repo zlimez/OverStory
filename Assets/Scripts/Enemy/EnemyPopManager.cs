@@ -7,7 +7,7 @@ using Tuples;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Environment.Enemy
+namespace Abyss.Environment.Enemy
 {
     // NOTE: Population for each specy should be large compared to the number of spawning locations
     public class EnemyPopManager : PersistentSingleton<EnemyPopManager>

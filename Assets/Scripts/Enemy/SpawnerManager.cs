@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Environment.Enemy;
+using Abyss.Environment;
+using Abyss.Environment.Enemy;
 using UnityEngine;
 
-namespace Environment
+namespace Abyss.Environment
 {
     public class SpawnerManager : MonoBehaviour
     {

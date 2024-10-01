@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using Abyss.EventSystem;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using Abyss.Utils;
 
@@ -13,30 +12,18 @@ public class InventoryUI : Singleton<InventoryUI>
     ZoomInBox zoomBox; // This is the center biggest UI that shows the details of the items
     [SerializeField]
     ItemObtainedHint itemHint;
-    [SerializeField]
-    Animator confirmWindow;
-    [SerializeField]
-    GameObject confirmWindowYesButton;
-    [SerializeField]
-    GameObject panel;
-    [SerializeField]
-    InventorySlotController normalSlotController;
-    [SerializeField]
-    InventorySlotController scannedSlotController;
-    [SerializeField]
-    public static bool isOpen;
-    [SerializeField]
-    CanvasGroup TipsHider; // Parent object to the tips Displays. We use it to hide the tips after the first time the inventory opens
-    [SerializeField]
-    GameObject shortcutKeys; // These are the shorcut hint on the bottom right
-    [SerializeField]
-    GameObject shortCutKeysItemDelete;
-    [SerializeField]
-    GameObject shortcutKeysItemSelect;
-    [SerializeField]
-    GameObject shortCutKeysSwap;
-    [SerializeField]
-    AudioClip hover, select;
+    [SerializeField] Animator confirmWindow;
+    [SerializeField] GameObject confirmWindowYesButton;
+    [SerializeField] GameObject panel;
+    [SerializeField] InventorySlotController normalSlotController;
+    [SerializeField] InventorySlotController scannedSlotController;
+    public bool isOpen;
+    [SerializeField] CanvasGroup TipsHider; // Parent object to the tips Displays. We use it to hide the tips after the first time the inventory opens
+    [SerializeField] GameObject shortcutKeys; // These are the shorcut hint on the bottom right
+    [SerializeField] GameObject shortCutKeysItemDelete;
+    [SerializeField] GameObject shortcutKeysItemSelect;
+    [SerializeField] GameObject shortCutKeysSwap;
+    [SerializeField] AudioClip hover, select;
 
     private InventorySlotController currentSlotController;
     private Stack<Action> pageRecyclers; // This is a stack of function calls used to control the opening and closing of pages ontop of each other
@@ -386,7 +373,7 @@ public class InventoryUI : Singleton<InventoryUI>
                 }
 
                 // If inventory is not full just fill it to the first avaialble slot
-                if (scannedSlotController.referencedCollection.Size() < scannedSlotController.slots.Length)
+                if (scannedSlotController.referencedCollection.Size < scannedSlotController.slots.Length)
                 {
 
                     if (normalSlotController.referencedCollection.Contains(curNormalItem))
@@ -501,7 +488,7 @@ public class InventoryUI : Singleton<InventoryUI>
         DisableItemHints(); // Otherwise will show the hints as if a new item has been added to the inventory
 
         // If scanned items is not full, then add the current normal item to the scanned 
-        if (scannedSlotController.slots.Length > scannedSlotController.referencedCollection.Size())
+        if (scannedSlotController.slots.Length > scannedSlotController.referencedCollection.Size)
         {
             normalSlotController.referencedCollection.RemoveItem(curNormalItem);
             scannedSlotController.referencedCollection.Add(curNormalItem);

@@ -1,4 +1,3 @@
-using BehaviorTree;
 using UnityEngine;
 
 namespace BehaviorTree.Actions
