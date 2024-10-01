@@ -1,6 +1,6 @@
 using System;
 
-namespace Environment.Enemy
+namespace Abyss.Environment.Enemy
 {
     [Serializable]
     public class EnemyAttr

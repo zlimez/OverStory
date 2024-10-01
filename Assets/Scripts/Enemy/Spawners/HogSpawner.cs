@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Environment.Enemy
+namespace Abyss.Environment.Enemy
 {
     public class HogSpawner : EnemySpawner
     {

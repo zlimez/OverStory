@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Abyss.EventSystem;
-using Environment.Enemy;
+using Abyss.Environment.Enemy;
 using UnityEngine;
 
 namespace Abyss.Player
@@ -10,7 +10,7 @@ namespace Abyss.Player
         // TODO: Add removable obstacle to mask, currently only inc. enemy
         static readonly int _layerMask = 1 << 6;
         [SerializeField] WeaponItem _weaponItem;
-        public HashSet<int> hits;
+        public HashSet<int> hits = new();
 
         void OnEnable()
         {
@@ -27,10 +27,10 @@ namespace Abyss.Player
             _weaponItem = (WeaponItem)obj;
         }
 
-        public void Strike(float str, Vector3 weaponPos)
+        public void Strike(float str)
         {
             // TODO: Change position based on weapon movement
-            var hitEnemies = Physics2D.OverlapCircleAll(weaponPos, _weaponItem.radius, _layerMask);
+            var hitEnemies = Physics2D.OverlapCircleAll(transform.position, _weaponItem.radius, _layerMask);
             foreach (var hitEnemy in hitEnemies)
             {
                 if (hits.Contains(hitEnemy.GetInstanceID())) continue;
@@ -43,5 +43,13 @@ namespace Abyss.Player
         {
             hits.Clear();
         }
+
+#if DEBUG
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _weaponItem.radius);
+        }
+#endif
     }
 }

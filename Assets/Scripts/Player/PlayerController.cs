@@ -62,6 +62,7 @@ namespace Abyss.Player
 		private float dashCountdown;
 
 		public bool IsAttacking { get; private set; } = false;
+		bool isTakingDamage = false;
 		public Action OnAttackEnded;
 
 		private State currState;
@@ -83,7 +84,7 @@ namespace Abyss.Player
 
 		private void Update()
 		{
-			if (!IsAttacking) HandleState();
+			if (!IsAttacking && !isTakingDamage) HandleState();
 			if (rb2D.velocity.x > 0 && isFacingLeft)
 				FlipSprite();
 			else if (rb2D.velocity.x < 0 && !isFacingLeft)
@@ -167,6 +168,16 @@ namespace Abyss.Player
 					else TransitionToState(State.Walk);
 					break;
 
+				case State.Damage:
+					if (!isGrounded)
+						TransitionToState(State.Jump);
+					else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+						TransitionToState(State.Run);
+					else if (currHorizontalSpeed == 0)
+						TransitionToState(State.Idle);
+					else TransitionToState(State.Walk);
+					break;
+
 				case State.Idle:
 					if (currHorizontalSpeed != 0)
 						TransitionToState(State.Walk);
@@ -232,7 +243,7 @@ namespace Abyss.Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
-			if (IsAttacking) return;
+			if (IsAttacking || isTakingDamage) return;
 			if (context.started)
 			{
 				// Start jumping
@@ -273,7 +284,7 @@ namespace Abyss.Player
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
-			if (IsAttacking) return;
+			if (IsAttacking || isTakingDamage) return;
 			if (isDashAvailable
 				&& (
 					currState == State.Idle
@@ -292,7 +303,7 @@ namespace Abyss.Player
 
 		public void OnAttack(InputAction.CallbackContext context)
 		{
-			if (isDashing) return;
+			if (isDashing || isTakingDamage) return;
 			if (context.started)
 			{
 				if (IsAttacking) return;
@@ -302,16 +313,28 @@ namespace Abyss.Player
 			}
 		}
 
-		// When creating anim must ensure socket name for weapon matches weaponName
-		Vector3 GetWeaponPos(string weaponName)
+		public bool TakeHit()
 		{
-			return portrait.GetBoneSocket(weaponName).position;
+			if (isTakingDamage) return true;
+			IsAttacking = false;
+			isDashing = false;
+			remainingDashTime = 0f;
+			isJumping = false;
+			remainingJumpTime = 0f;
+			isTakingDamage = true;
+			TransitionToState(State.Damage);
+			return false;
+		}
+
+		void DamageEnd()
+		{
+			isTakingDamage = false;
 		}
 
 		void AttackEnd()
 		{
 			IsAttacking = false;
-			OnAttackEnded.Invoke();
+			OnAttackEnded?.Invoke();
 		}
 		#endregion
 	}

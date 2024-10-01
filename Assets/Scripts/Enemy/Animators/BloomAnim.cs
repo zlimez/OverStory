@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Environment.Enemy.Anim
+namespace Abyss.Environment.Enemy.Anim
 {
     public class BloomAnim : PortraitAnim
     {

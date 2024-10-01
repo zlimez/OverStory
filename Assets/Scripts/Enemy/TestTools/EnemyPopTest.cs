@@ -1,7 +1,7 @@
 using Abyss.Utils;
 using UnityEngine.UI;
 
-namespace Environment.Enemy.Test
+namespace Abyss.Environment.Enemy.Test
 {
     public class EnemyPopTest : PersistentSingleton<EnemyPopTest>
     {
@@ -20,10 +20,12 @@ namespace Environment.Enemy.Test
             if (activeScene == "GATest")
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("GATestNext");
-            } else if (activeScene == "GATestNext")
+            }
+            else if (activeScene == "GATestNext")
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("GATest");
-            } else UnityEngine.Debug.LogWarning("Script should only used for GATest scenes");
+            }
+            else UnityEngine.Debug.LogWarning("Script should only used for GATest scenes");
 
         }
     }

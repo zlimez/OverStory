@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using BehaviorTree;
 using BehaviorTree.Actions;
-using Environment.Enemy;
-using Environment.Enemy.Anim;
+using Abyss.Environment.Enemy;
+using Abyss.Environment.Enemy.Anim;
 using Tuples;
 using UnityEngine;
 
@@ -21,14 +21,17 @@ public class HogBT : MonoBehaviour
     [SerializeField] float longChargeDist;
     [SerializeField] float stunRaycastDist;
     [SerializeField] AnimationCurve chargeCurve;
+    [SerializeField] Aggro aggro;
     [SerializeField] float chargeSpeed;
+    [SerializeField] float chargeDamage;
+    [SerializeField] float chargeDamageCooldown;
     [Header("Patrol Settings")]
     [SerializeField] float patrolSpeed;
     [SerializeField] float waitTime;
     public Transform[] waypoints;
 
     BT _bT;
-    List<Blackboard> _bbs = new(); // local blackboards for this instance
+    readonly List<Blackboard> _bbs = new(); // local blackboards for this instance
 
 #if DEBUG
     void OnEnable()
@@ -60,7 +63,6 @@ public class HogBT : MonoBehaviour
     IEnumerator SetupRoutine()
     {
         yield return new WaitForSeconds(0.1f);
-        var aggro = GetComponent<Aggro>();
         Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent) });
         _bbs.Add(bb);
         Pair<string, object>[] hogParams = {
@@ -82,11 +84,15 @@ public class HogBT : MonoBehaviour
             new("aggro", aggro),
             new("hog", gameObject.transform),
             new("hogSprite", GetComponent<SpriteManager>()),
-            new("hogAnim", GetComponent<HogAnim>())
+            new("hogAnim", GetComponent<HogAnim>()),
+
+            new("chargeDamage", chargeDamage),
+            new("chargeDamageCooldown", chargeDamageCooldown),
+            new("hogManager", GetComponent<EnemyManager>())
         };
 
-        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist" };
-        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist" };
+        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist", "chargeDamage", "hogManager" };
+        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist", "chargeDamage", "hogManager" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
                 new CheckPlayerInAggro(new string[] { "aggro" }),

@@ -1,7 +1,7 @@
 using System;
 using Tuples;
 
-namespace Environment
+namespace Abyss.Environment
 {
     public class GA
     {

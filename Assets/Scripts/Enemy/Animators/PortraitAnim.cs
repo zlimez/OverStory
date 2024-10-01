@@ -2,14 +2,14 @@ using System;
 using AnyPortrait;
 using UnityEngine;
 
-namespace Environment.Enemy.Anim
+namespace Abyss.Environment.Enemy.Anim
 {
     public class PortraitAnim : MonoBehaviour
     {
         [SerializeField] protected apPortrait portrait;
         protected bool isFirstFrame = true;
         EnemyManager _enemyManager;
-        protected System.Action _playDeathAnim;
+        protected Action _playDeathAnim;
         protected string currState;
 
         protected virtual void Awake()

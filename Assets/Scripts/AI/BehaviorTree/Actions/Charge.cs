@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviorTree;
-using Environment.Enemy.Anim;
+using Abyss.Environment.Enemy.Anim;
+using Abyss.Player;
+using Abyss.Environment.Enemy;
 
 public class Charge : CfAction
 {
@@ -12,10 +14,12 @@ public class Charge : CfAction
     float _chargeupTime;
     float _chargeSpeed; // Avg speed of charge
     float _stunRaycastDist;
+    float _chargeDmg;
     AnimationCurve _chargeCurve;
     Transform _transform;
     SpriteManager _spriteManager;
     HogAnim _chargeTypeAnim;
+    EnemyManager _enemyManager;
 
     Vector3 startPos;
     float chargeTime;
@@ -41,6 +45,8 @@ public class Charge : CfAction
         _spriteManager = (SpriteManager)dataRef[7];
         _chargeTypeAnim = (HogAnim)dataRef[8];
         _stunRaycastDist = (float)dataRef[9];
+        _chargeDmg = (float)dataRef[10];
+        _enemyManager = (EnemyManager)dataRef[11];
         chargeTime = _chargeDist / _chargeSpeed;
     }
 
@@ -73,6 +79,7 @@ public class Charge : CfAction
             if (chargeTimer >= chargeTime + _chargeupTime)
             {
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
+                _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;
                 chargeTimer = 0;
                 pauseTime = _restTime;
@@ -83,6 +90,7 @@ public class Charge : CfAction
             if (Physics2D.Raycast(_transform.position, _spriteManager.forward, _stunRaycastDist, _obstacleLayerMask))
             {
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Stun.ToString());
+                _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;
                 isStunned = true;
                 chargeTimer = 0;
@@ -92,6 +100,7 @@ public class Charge : CfAction
 
             if (chargeTimer >= _chargeupTime)
             {
+                _enemyManager.OnStrikePlayer += ChargeHit;
                 float t = (chargeTimer - _chargeupTime) / chargeTime;
                 _transform.position = _chargeCurve.Evaluate(t) * _chargeDist * _spriteManager.forward + startPos;
                 _chargeTypeAnim.StateBySpeed(Utils.Curves.GetGradient(_chargeCurve, t) * _chargeDist);
@@ -99,5 +108,10 @@ public class Charge : CfAction
 
             chargeTimer += Time.deltaTime;
         }
+    }
+
+    void ChargeHit(float str)
+    {
+        Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg);
     }
 }

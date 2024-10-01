@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Environment.Enemy.Anim;
+using Abyss.Environment.Enemy.Anim;
 
 namespace BehaviorTree.Actions
 {

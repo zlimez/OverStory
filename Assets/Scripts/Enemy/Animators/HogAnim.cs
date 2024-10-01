@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Environment.Enemy.Anim
+namespace Abyss.Environment.Enemy.Anim
 {
     public class HogAnim : PortraitAnim
     {
