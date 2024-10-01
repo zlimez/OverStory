@@ -70,7 +70,7 @@ public class GameManager : Singleton<GameManager>
     private void InitInventory()
     {
         Inventory gameInventory = new Inventory();
-        Inventory.AssignNewInventory(gameInventory);
+        Inventory.AssignInventory(gameInventory);
     }
 
     /// <summary>
@@ -144,5 +144,5 @@ public class GameManager : Singleton<GameManager>
     // }
 
 
-    
+
 }

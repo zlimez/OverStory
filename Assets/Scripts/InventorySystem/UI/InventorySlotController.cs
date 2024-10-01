@@ -5,7 +5,6 @@ using Abyss.EventSystem;
 // This class is responsible for controlleing setting the inventory slots which are it's children.
 public class InventorySlotController : MonoBehaviour
 {
-    public bool isNormal;// Indicate whether the controller is controlling the normal inventory or the scanned inventory.
     public Collection referencedCollection; // A reference to which inventory
     public InventorySlot[] slots; // Represents a collection of the individual slots in the UI
     public GameObject firstSlot;
@@ -17,25 +16,25 @@ public class InventorySlotController : MonoBehaviour
     // Returns the currently selected item
     public Item GetCurrentItem()
     {
-        if (selectedSlot < 0 || selectedSlot >= referencedCollection.Size())
+        if (selectedSlot < 0 || selectedSlot >= referencedCollection.Size)
         {
             return null;
         }
 
-        if (slots[selectedSlot].itemStack == null)
+        if (slots[selectedSlot].ItemPile == null)
             return null;
 
-        return slots[selectedSlot].itemStack.Data;
+        return slots[selectedSlot].ItemPile.Data;
     }
 
     public void UseCurrentItem()
     {
-        if (selectedSlot < 0 || selectedSlot >= referencedCollection.Size())
+        if (selectedSlot < 0 || selectedSlot >= referencedCollection.Size)
         {
             return;
         }
 
-        if (slots[selectedSlot].itemStack == null)
+        if (slots[selectedSlot].ItemPile == null)
             return;
 
         slots[selectedSlot].UseItem();
@@ -58,13 +57,8 @@ public class InventorySlotController : MonoBehaviour
     public void Init(object input = null)
     {
         // We have two separate inventories. This controller could be attached to control either of them
-        referencedCollection = isNormal ? Inventory.Instance.NormalCollection : Inventory.Instance.ScannedCollection;
-        if (isNormal)
-        {
-            InventoryUI.Instance.EnableItemHints();
-        }
-
-
+        referencedCollection = Inventory.Instance.MaterialCollection;
+        InventoryUI.Instance.EnableItemHints();
 
         slots = inventorySlotParent.GetComponentsInChildren<InventorySlot>();
 
@@ -73,13 +67,13 @@ public class InventorySlotController : MonoBehaviour
         foreach (InventorySlot slot in slots)
         {
             slot.ClearSlot();
-            slot.referencedCollection = referencedCollection;
+            slot.RefCollection = referencedCollection;
         }
 
         // Sets the actual items to be in the inventory
-        for (int i = 0; i < referencedCollection.Size(); i++)
+        for (int i = 0; i < referencedCollection.Size; i++)
         {
-            slots[i].SetItem(referencedCollection.items[i]);
+            slots[i].SetItem(referencedCollection.Items[i]);
         }
 
         selectedSlot = 0;
@@ -123,9 +117,9 @@ public class InventorySlotController : MonoBehaviour
         // Display all the items as icons in their respective slots
         for (int i = 0; i < slots.Length; i++)
         {
-            if (i < referencedCollection.Size())
+            if (i < referencedCollection.Size)
             {
-                slots[i].SetItem(referencedCollection.items[i]);
+                slots[i].SetItem(referencedCollection.Items[i]);
             }
             else
             {
@@ -153,11 +147,8 @@ public class InventorySlotController : MonoBehaviour
     {
         selectedSlot = Mathf.Clamp(selectedSlot, 0, slots.Length - 1);
 
-        // For normal items, restrict selections to things already displayed
-        if (isNormal)
-        {
-            selectedSlot = Mathf.Clamp(selectedSlot, 0, referencedCollection.Size() - 1);
-        }
+        // Restrict selections to things already displayed
+        selectedSlot = Mathf.Clamp(selectedSlot, 0, referencedCollection.Size - 1);
     }
 
     // This is called once every time the inventory panel opens
@@ -178,11 +169,10 @@ public class InventorySlotController : MonoBehaviour
         }
 
         //Set the first selected object to be the first slot
-        if (referencedCollection.Size() != 0)
+        if (!referencedCollection.IsEmpty)
         {
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(firstSlot);
         }
-
     }
 }

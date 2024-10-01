@@ -59,7 +59,7 @@ namespace BehaviorTree
                 bool sourceFound = false;
                 foreach (var blackboard in _blackboards)
                 {
-                    if (blackboard.DataEvents.ContainsKey(varName))
+                    if (blackboard.IsTracking(varName))
                     {
                         sourceFound = true;
                         void listener(object obj)
@@ -67,7 +67,7 @@ namespace BehaviorTree
                             _headBoard[varName] = obj;
                             _eventWriteBuffer.Enqueue(changeEvent);
                         }
-                        blackboard.DataEvents[varName].AddListener(listener);
+                        blackboard.AddListener(varName, listener);
                         _trackedVarsActions[varName] = (blackboard, listener);
                         break;
                     }
@@ -83,7 +83,7 @@ namespace BehaviorTree
             {
                 var varName = varTEvent.Key;
                 var bboard = varTEvent.Value.Item1;
-                bboard.DataEvents[varName].RemoveListener(varTEvent.Value.Item2);
+                bboard.RemoveListener(varName, varTEvent.Value.Item2);
             }
 
             Queue<Node> q = new();

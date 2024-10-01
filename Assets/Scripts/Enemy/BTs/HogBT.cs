@@ -28,6 +28,7 @@ public class HogBT : MonoBehaviour
     public Transform[] waypoints;
 
     BT _bT;
+    List<Blackboard> _bbs = new(); // local blackboards for this instance
 
 #if DEBUG
     void OnEnable()
@@ -61,6 +62,7 @@ public class HogBT : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         var aggro = GetComponent<Aggro>();
         Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent) });
+        _bbs.Add(bb);
         Pair<string, object>[] hogParams = {
             new("stunTime", stunTime),
             new("shortRestTime", shortRestTime),
@@ -120,6 +122,7 @@ public class HogBT : MonoBehaviour
     {
         GetComponent<EnemyManager>().OnDeath -= StopBT;
         StopBT();
+        foreach (var _bb in _bbs) _bb.Teardown();
     }
 
 #if DEBUG

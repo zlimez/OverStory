@@ -4,12 +4,12 @@ using Abyss.EventSystem;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Countable<Item> itemStack;
-    public Collection referencedCollection;
-    public Image icon;
+    public Countable<Item> ItemPile;
+    public Collection RefCollection;
+    public Image Icon;
     public GameObject BG;
-    public Text amount;
-    public Button slotButton;
+    public Text Amount;
+    public Button SlotButton;
 
     public void Deselect()
     {
@@ -20,40 +20,35 @@ public class InventorySlot : MonoBehaviour
     {
         BG.SetActive(true);
     }
+
     public void SetItem(Countable<Item> newItemStack)
     {
-        itemStack = newItemStack;
+        ItemPile = newItemStack;
 
-        icon.sprite = newItemStack.Data.icon;
-        icon.preserveAspect = true;
-        amount.text = newItemStack.Count.ToString();
+        Icon.sprite = newItemStack.Data.icon;
+        Icon.preserveAspect = true;
+        Amount.text = newItemStack.Count.ToString();
 
-        icon.enabled = true;
-        amount.enabled = true;
-        slotButton.interactable = true;
+        Icon.enabled = true;
+        Amount.enabled = true;
+        SlotButton.interactable = true;
     }
 
     public void ClearSlot()
     {
-        itemStack = null;
+        ItemPile = null;
 
-        icon.sprite = null;
-        amount.text = "";
+        Icon.sprite = null;
+        Amount.text = "";
 
-        icon.enabled = false;
-        amount.enabled = false;
-        slotButton.interactable = false;
+        Icon.enabled = false;
+        Amount.enabled = false;
+        SlotButton.interactable = false;
     }
 
     public void UseItem()
     {
-        if (itemStack != null)
-        {
-            GameEvent specificItemUseEvent = new GameEvent(Item.ItemUsedPrefix + itemStack.Data.itemName);
-            // Debug.Log($"Using {itemStack.Data.itemName}");
-            referencedCollection.UseItem(itemStack.Data);
-            EventManager.InvokeEvent(CommonEventCollection.ItemUsed);
-            EventManager.InvokeEvent(specificItemUseEvent);
-        }
+        if (ItemPile != null && ItemPile.Data.canUseFromInventory)
+            RefCollection.UseItem(ItemPile.Data);
     }
 }

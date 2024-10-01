@@ -78,7 +78,7 @@ public class Curtain : MonoBehaviour
             blackCurtain.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
-        EventManager.InvokeEvent(CommonEventCollection.CurtainFullyDrawn);
+        EventManager.InvokeEvent(CommonEventCollection.CurtainDrawn);
     }
 
     IEnumerator Lighten()
@@ -92,7 +92,7 @@ public class Curtain : MonoBehaviour
             yield return null;
         }
 
-        EventManager.InvokeEvent(CommonEventCollection.CurtainFullyOpen);
+        EventManager.InvokeEvent(CommonEventCollection.CurtainOpen);
     }
 
     IEnumerator DarkenThenLighten()
@@ -104,7 +104,7 @@ public class Curtain : MonoBehaviour
             blackCurtain.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
-        EventManager.InvokeEvent(CommonEventCollection.CurtainFullyDrawn);
+        EventManager.InvokeEvent(CommonEventCollection.CurtainDrawn);
         timeElapsed = 0;
         while (timeElapsed < closedInterval)
         {
@@ -119,6 +119,6 @@ public class Curtain : MonoBehaviour
             yield return null;
         }
 
-        EventManager.InvokeEvent(CommonEventCollection.CurtainFullyOpen);
+        EventManager.InvokeEvent(CommonEventCollection.CurtainOpen);
     }
 }

@@ -8,7 +8,6 @@ namespace Abyss.EventSystem
     public struct GameEvent
     {
         public static GameEvent NoEvent { get; private set; } = new GameEvent(string.Empty);
-        // TODO: better way?
         [Tooltip("The related static event, if any.")]
         public StaticEvent RelatedStaticEvent;
 
@@ -52,19 +51,14 @@ namespace Abyss.EventSystem
 
         public static bool operator !=(GameEvent left, GameEvent right)
         {
-            return left.EventName != right.EventName;
+            return !(left == right);
         }
 
         public override readonly string ToString()
         {
             if (RelatedStaticEvent != StaticEvent.NoEvent)
-            {
                 return $"{RelatedStaticEvent} ({EventName})";
-            }
-            else
-            {
-                return EventName;
-            }
+            else return EventName;
         }
     }
 }

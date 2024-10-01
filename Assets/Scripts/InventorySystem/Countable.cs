@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class Countable<U>
 {
@@ -23,19 +22,10 @@ public class Countable<U>
         return this.Count == 0;
     }
 
-    public Countable<U> GetCopy()
-    {
-        return new Countable<U>(Data, Count);
-    }
-
     public override bool Equals(object obj)
     {
-        if (obj is Countable<U>)
-        {
-            Countable<U> countable = (Countable<U>)obj;
+        if (obj is Countable<U> countable)
             return countable.Count == Count && countable.Data.Equals(Data);
-        }
-
         return false;
     }
 
@@ -46,15 +36,13 @@ public class Countable<U>
 
     public static bool operator ==(Countable<U> a, Countable<U> b)
     {
-        if ((object)a == null) return (object)b == null;
-
+        if (a is null) return b is null;
         return a.Equals(b);
     }
 
     public static bool operator !=(Countable<U> a, Countable<U> b)
     {
-        if ((object)a == null) return (object)b != null;
-
+        if (a is null) return b is not null;
         return !a.Equals(b);
     }
 }

@@ -60352,13 +60352,13 @@ MonoBehaviour:
           _weightPairs:
           - _boneID: 61484005
             _meshGroupID: 91153871
-            _weight: 0.8157897
+            _weight: 0.8157898
           - _boneID: 97504309
             _meshGroupID: 91153871
-            _weight: 0.16607419
+            _weight: 0.1660742
           - _boneID: 99310119
             _meshGroupID: 91153871
-            _weight: 0.018136049
+            _weight: 0.01813605
           _totalWeight: 1
         - _vertexUniqueID: 78760444
           _vertIndex: 4
@@ -95277,7 +95277,7 @@ MonoBehaviour:
           _angleDeg: 26.70826
           _scale: {x: 1, y: 1}
     _layerIndex: 63
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95340,7 +95340,7 @@ MonoBehaviour:
           _angleDeg: 0.44888163
           _scale: {x: 1, y: 1}
     _layerIndex: 64
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95403,7 +95403,7 @@ MonoBehaviour:
           _angleDeg: 2.7540646
           _scale: {x: 1, y: 1}
     _layerIndex: 65
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95466,7 +95466,7 @@ MonoBehaviour:
           _angleDeg: -5.146332
           _scale: {x: 1, y: 1}
     _layerIndex: 66
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95529,7 +95529,7 @@ MonoBehaviour:
           _angleDeg: -5.845066
           _scale: {x: 1, y: 1}
     _layerIndex: 67
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95592,7 +95592,7 @@ MonoBehaviour:
           _angleDeg: 0.8508816
           _scale: {x: 1, y: 1}
     _layerIndex: 68
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95655,7 +95655,7 @@ MonoBehaviour:
           _angleDeg: 0.64268017
           _scale: {x: 1, y: 1}
     _layerIndex: 69
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95718,7 +95718,7 @@ MonoBehaviour:
           _angleDeg: 53.913784
           _scale: {x: 1, y: 1}
     _layerIndex: 70
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95781,7 +95781,7 @@ MonoBehaviour:
           _angleDeg: 11.35872
           _scale: {x: 1, y: 1}
     _layerIndex: 71
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95844,7 +95844,7 @@ MonoBehaviour:
           _angleDeg: 6.8983
           _scale: {x: 1, y: 1}
     _layerIndex: 72
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95907,7 +95907,7 @@ MonoBehaviour:
           _angleDeg: -5.9049053
           _scale: {x: 1, y: 1}
     _layerIndex: 73
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -95970,7 +95970,7 @@ MonoBehaviour:
           _angleDeg: 5.657071
           _scale: {x: 1, y: 1}
     _layerIndex: 74
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -96150,7 +96150,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 75
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -96330,7 +96330,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 76
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -96510,7 +96510,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 77
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -96690,7 +96690,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 78
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -96870,7 +96870,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 79
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -101882,7 +101882,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 127
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
@@ -101950,7 +101950,7 @@ MonoBehaviour:
           _weightCutout_AnimNext: 0.6
       _boneData: []
     _layerIndex: 128
-    _layerWeight: 1
+    _layerWeight: 0
     _blendMethod: 0
     _isColorPropertyEnabled: 1
     _isToggleShowHideWithoutBlend: 0
