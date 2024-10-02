@@ -1,4 +1,5 @@
 using System;
+using Abyss.EventSystem;
 using AnyPortrait;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,7 +36,6 @@ namespace Abyss.Player
 		[Header("Movement")]
 		[SerializeField] float walkSpeed = 4f;
 		[SerializeField] float runSpeed = 8f;
-		private Vector2 currVelocity;
 		bool shouldRun;
 
 		float moveDir;
@@ -62,7 +62,7 @@ namespace Abyss.Player
 		private float dashCountdown;
 
 		public bool IsAttacking { get; private set; } = false;
-		bool isTakingDamage = false;
+		bool isTakingDamage = false, isDead = false;
 		public Action OnAttackEnded;
 
 		private State currState;
@@ -75,7 +75,6 @@ namespace Abyss.Player
 		private void Awake()
 		{
 			rb2D = GetComponent<Rigidbody2D>();
-			currVelocity = new Vector2();
 
 			portrait.Initialize();
 			currState = State.Idle;
@@ -84,7 +83,13 @@ namespace Abyss.Player
 
 		private void Update()
 		{
-			if (!IsAttacking && !isTakingDamage) HandleState();
+			if (!isDashing)
+			{
+				currHorizontalSpeed = (isDead || IsAttacking) ? 0 : moveDir * (shouldRun ? runSpeed : walkSpeed);
+				if (!isTakingDamage) rb2D.velocity = new(currHorizontalSpeed, rb2D.velocity.y);
+			}
+
+			if (!IsAttacking && !isTakingDamage && !isDead) HandleState();
 			if (rb2D.velocity.x > 0 && isFacingLeft)
 				FlipSprite();
 			else if (rb2D.velocity.x < 0 && !isFacingLeft)
@@ -149,11 +154,6 @@ namespace Abyss.Player
 		// Animation stuff
 		private void HandleState()
 		{
-			currHorizontalSpeed = moveDir * (shouldRun ? runSpeed : walkSpeed);
-			currVelocity.y = rb2D.velocity.y;
-			currVelocity.x = currHorizontalSpeed;
-			rb2D.velocity = currVelocity;
-
 			switch (currState)
 			{
 				case State.Attack:
@@ -196,7 +196,7 @@ namespace Abyss.Player
 					break;
 
 				case State.Jump:
-					if (isGrounded && Mathf.Abs(currVelocity.y) < .1f)
+					if (isGrounded && Mathf.Abs(rb2D.velocity.y) < .1f)
 					{
 						if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
 							TransitionToState(State.Run);
@@ -243,7 +243,7 @@ namespace Abyss.Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
-			if (IsAttacking || isTakingDamage) return;
+			if (IsAttacking || isTakingDamage || isDead) return;
 			if (context.started)
 			{
 				// Start jumping
@@ -284,7 +284,7 @@ namespace Abyss.Player
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
-			if (IsAttacking || isTakingDamage) return;
+			if (IsAttacking || isTakingDamage || isDead) return;
 			if (isDashAvailable
 				&& (
 					currState == State.Idle
@@ -303,7 +303,7 @@ namespace Abyss.Player
 
 		public void OnAttack(InputAction.CallbackContext context)
 		{
-			if (isDashing || isTakingDamage) return;
+			if (isDashing || isTakingDamage || isDead) return;
 			if (context.started)
 			{
 				if (IsAttacking) return;
@@ -315,7 +315,7 @@ namespace Abyss.Player
 
 		public bool TakeHit()
 		{
-			if (isTakingDamage) return true;
+			if (isTakingDamage || isDead) return true;
 			IsAttacking = false;
 			isDashing = false;
 			remainingDashTime = 0f;
@@ -324,6 +324,18 @@ namespace Abyss.Player
 			isTakingDamage = true;
 			TransitionToState(State.Damage);
 			return false;
+		}
+
+		public void Die()
+		{
+			IsAttacking = false;
+			isDashing = false;
+			remainingDashTime = 0f;
+			isJumping = false;
+			remainingJumpTime = 0f;
+			isTakingDamage = false;
+			isDead = true;
+			TransitionToState(State.Death);
 		}
 
 		void DamageEnd()
@@ -335,6 +347,11 @@ namespace Abyss.Player
 		{
 			IsAttacking = false;
 			OnAttackEnded?.Invoke();
+		}
+
+		void DeathEnd()
+		{
+			EventManager.InvokeEvent(StaticEvent.Common_PlayerDeath);
 		}
 		#endregion
 	}

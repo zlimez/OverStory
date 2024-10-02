@@ -154,7 +154,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8e1955c1-714b-438f-bf8f-cc166e7e2957"",
-                    ""path"": ""<Keyboard>/#(X)"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

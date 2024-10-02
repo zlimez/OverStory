@@ -8,18 +8,19 @@ namespace Abyss.Environment.Enemy
         public EnemyAttr attributes;
         public float health;
         public System.Action OnDeath;
-        public System.Action<float> OnStrikePlayer;
+        public System.Action<float> OnStrikePlayer; // Subscribed by moveset in BT for the enemy
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
         public bool TakeHit(float baseDamage)
         {
             Debug.Log($"{name} took {baseDamage} damage");
-            health -= baseDamage;
-            bool isDead = health <= 0;
+            health -= Mathf.Min(health, baseDamage);
+            bool isDead = health == 0;
             if (isDead)
             {
                 attributes.isAlive = false;
                 OnDeath?.Invoke();
+                OnStrikePlayer = null;
             }
             return isDead;
         }

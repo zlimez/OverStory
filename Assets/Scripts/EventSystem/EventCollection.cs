@@ -32,10 +32,10 @@ namespace Abyss.EventSystem
 
         static CommonEventCollection()
         {
-            CurtainDrawn = StaticEvent.Common_CurtainFullyDrawn;
+            CurtainDrawn = StaticEvent.Common_CurtainDrawn;
             PrepToTeleport = StaticEvent.Common_PrepToTeleport;
             OpenInventory = StaticEvent.Common_OpenInventory;
-            CurtainOpen = StaticEvent.Common_CurtainFullyOpen;
+            CurtainOpen = StaticEvent.Common_CurtainOpen;
             DialogStarted = StaticEvent.Common_DialogStarted;
             PlayerMoved = StaticEvent.Common_PlayerPositionMoved;
         }

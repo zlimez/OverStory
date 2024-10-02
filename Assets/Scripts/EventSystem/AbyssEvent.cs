@@ -12,18 +12,18 @@ namespace Abyss.EventSystem
         Core_TransitionWithMasterCompleted = 3,
         Core_Transition = 4,
         Core_InteractableEntered = 5,
-        Common_CurtainFullyDrawn = 6,
+        Common_CurtainDrawn = 6,
         Common_PrepToTeleport = 7,
         Common_OpenInventory = 8,
-        Common_CurtainFullyOpen = 9,
+        Common_CurtainOpen = 9,
         Common_ItemUsed = 10,
         Common_DialogStarted = 11,
         Common_PlayerPositionMoved = 12,
-        Common_PlayerChangeDirection = 13,
+        Common_PlayerDeath = 13,
         Common_ObjectPickedUp = 14,
         Common_ObjectPutDown = 15,
     }
 
 
-    public static class DynamicEvent {}
+    public static class DynamicEvent { }
 }

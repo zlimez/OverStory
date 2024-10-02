@@ -1,12 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Abyss.EventSystem;
 
 // Hide GameControl Hint button when in cutscene
 public class CutsceneGameControl : MonoBehaviour
 {
-    void OnEnable() 
+    void OnEnable()
     {
         if (GameControlUi.Instance != null)
         {
@@ -16,12 +14,12 @@ public class CutsceneGameControl : MonoBehaviour
         StartCoroutine(WaitForInstanceInitialisation());
     }
 
-    void OnDisable() 
+    void OnDisable()
     {
         GameControlUi.Instance.ShowButton();
     }
 
-    IEnumerator WaitForInstanceInitialisation() 
+    IEnumerator WaitForInstanceInitialisation()
     {
         while (GameControlUi.Instance == null)
         {
