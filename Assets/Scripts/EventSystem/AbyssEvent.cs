@@ -21,6 +21,7 @@ namespace Abyss.EventSystem
         ObjectPickedUp = 12,
         ObjectPutDown = 13,
         InteractableEntered = 14,
+        InteractableExited = 15,
     }
 
 

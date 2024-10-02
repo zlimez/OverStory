@@ -8,7 +8,6 @@ namespace Abyss.Player
         [SerializeField] Weapon weapon;
         [SerializeField] PlayerAttr playerAttributes;
         // public float health;
-        public System.Action OnDeath;
 
         void OnEnable()
         {
@@ -29,11 +28,10 @@ namespace Abyss.Player
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
         public void TakeHit(float baseDamage)
         {
-            if (isDead) playerController.Die();
+            if (playerAttributes.health == 0) return;
             if (playerController.TakeHit()) return; // Is still taking last damage or isDead
-            if (health == 0) return;
-            health -= Mathf.Min(health, baseDamage);
-            bool isDead = health == 0;
+            playerAttributes.health -= Mathf.Min(playerAttributes.health, baseDamage);
+            if (playerAttributes.health == 0) playerController.Die();
         }
     }
 }

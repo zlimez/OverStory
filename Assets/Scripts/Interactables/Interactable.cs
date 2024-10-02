@@ -8,6 +8,7 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField] private bool hasHint = true;
     [SerializeField] private Vector3 offSetPosition;
     [SerializeField] private float hintScale = 1;
+    [SerializeField] GameObject hintPrefab;
 
     // [Header("Use Item")]
     // [SerializeField] private bool isItemUsable = false;
@@ -54,7 +55,7 @@ public abstract class Interactable : MonoBehaviour
         if (!hasHint)
             return;
 
-        hint = Instantiate(GameManager.Instance.GetInteractableHint());
+        hint = Instantiate(hintPrefab);
         hint.transform.SetParent(transform);
         hint.transform.SetParent(null);
         BoxCollider2D collider = GetComponent<BoxCollider2D>();
@@ -90,6 +91,7 @@ public abstract class Interactable : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
+            EventManager.InvokeEvent(PlayEventCollection.InteractableExited);
             collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
             DestroyHint();
         }
