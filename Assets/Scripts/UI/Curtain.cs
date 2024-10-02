@@ -30,7 +30,7 @@ public class Curtain : MonoBehaviour
             EventManager.StartListening(closeOpenTrigger, CloseAndOpen);
         }
         // Every time there is teleportation draw the curtain
-        EventManager.StartListening(CommonEventCollection.PrepToTeleport, CloseAndOpen);
+        EventManager.StartListening(UIEventCollection.PrepToTeleport, CloseAndOpen);
     }
 
     void OnDisable()
@@ -50,7 +50,7 @@ public class Curtain : MonoBehaviour
             EventManager.StopListening(closeOpenTrigger, CloseAndOpen);
         }
 
-        EventManager.StopListening(CommonEventCollection.PrepToTeleport, CloseAndOpen);
+        EventManager.StopListening(UIEventCollection.PrepToTeleport, CloseAndOpen);
     }
 
     public void Close(object input = null)
@@ -78,7 +78,7 @@ public class Curtain : MonoBehaviour
             blackCurtain.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
-        EventManager.InvokeEvent(CommonEventCollection.CurtainDrawn);
+        EventManager.InvokeEvent(UIEventCollection.CurtainDrawn);
     }
 
     IEnumerator Lighten()
@@ -92,7 +92,7 @@ public class Curtain : MonoBehaviour
             yield return null;
         }
 
-        EventManager.InvokeEvent(CommonEventCollection.CurtainOpen);
+        EventManager.InvokeEvent(UIEventCollection.CurtainOpen);
     }
 
     IEnumerator DarkenThenLighten()
@@ -104,7 +104,7 @@ public class Curtain : MonoBehaviour
             blackCurtain.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
-        EventManager.InvokeEvent(CommonEventCollection.CurtainDrawn);
+        EventManager.InvokeEvent(UIEventCollection.CurtainDrawn);
         timeElapsed = 0;
         while (timeElapsed < closedInterval)
         {
@@ -119,6 +119,6 @@ public class Curtain : MonoBehaviour
             yield return null;
         }
 
-        EventManager.InvokeEvent(CommonEventCollection.CurtainOpen);
+        EventManager.InvokeEvent(UIEventCollection.CurtainOpen);
     }
 }

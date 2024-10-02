@@ -22,12 +22,12 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     private void OnEnable()
     {
-        EventManager.StartListening(CommonEventCollection.DialogStarted, Close);
+        EventManager.StartListening(UIEventCollection.DialogStarted, Close);
     }
 
     private void OnDisable()
     {
-        EventManager.StopListening(CommonEventCollection.DialogStarted, Close);
+        EventManager.StopListening(UIEventCollection.DialogStarted, Close);
     }
 
     private void Update()
@@ -82,10 +82,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
                 choiceButton.GetComponentInChildren<Text>().text = choices[i].ChoiceText;
                 choiceButton.GetComponentInChildren<Button>().interactable = choices[i].IsActivated;
             }
-            else
-            {
-                choiceButton.SetActive(false);
-            }
+            else choiceButton.SetActive(false);
         }
     }
 
@@ -112,18 +109,9 @@ public class ChoiceManager : Singleton<ChoiceManager>
     /// </summary>
     private void HandleChoiceSelection()
     {
-        /*if (InputManager.ChoiceButtonActivated && choiceIndex != -1)
-        {
-            InputManager.ChoiceButtonActivated = false;
-            choices[choiceIndex].ChoiceSelectedEvent.Invoke(null);
-
-            EndChoices();
-        }*/
-
         if ((Input.GetButtonDown("Submit") || Input.GetMouseButtonDown(0)) && choiceIndex != -1)
         {
             choices[choiceIndex].ChoiceSelectedEvent.Invoke(null);
-
             EndChoices();
         }
     }
@@ -136,13 +124,8 @@ public class ChoiceManager : Singleton<ChoiceManager>
         GameEvent onChoiceSelected;
 
         if (choiceIndex != -1)
-        {
             onChoiceSelected = new GameEvent($"{Choice.EventPrefix}{choices[choiceIndex].ChoiceText}");
-        }
-        else
-        {
-            onChoiceSelected = new GameEvent("No Choice Selected");
-        }
+        else onChoiceSelected = new GameEvent("No Choice Selected");
 
         Close();
     }
@@ -160,9 +143,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
         choiceIndex = -1;
         choiceHolder.SetActive(false);
         for (int i = 0; i < choiceButtons.Length; i++)
-        {
             choiceButtons[i].SetActive(false);
-        }
         InChoice = false;
         justSelected = true;
     }

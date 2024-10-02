@@ -15,7 +15,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         if (GameManager.Instance == null)
         {
             Debug.Log("GameManager not initialized yet");
-            EventManager.StartListening(CoreEventCollection.GameManagerReady, StartConvoIfPresent);
+            EventManager.StartListening(SystemEventCollection.GameManagerReady, StartConvoIfPresent);
         }
         else
         {
@@ -32,7 +32,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         {
             DialogueManager.Instance.StartConversation(GameManager.Instance.CutsceneConversation);
             GameManager.Instance.CutsceneConversation = null;
-        } 
+        }
         // may not look right?
         else if (GameManager.Instance.CutsceneSecondaryConversation != null)
         {
@@ -40,7 +40,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         }
     }
 
-    IEnumerator StartSecondaryConversation(SecondaryConversation convo) 
+    IEnumerator StartSecondaryConversation(SecondaryConversation convo)
     {
         yield return new WaitForSeconds(.3f);
         SecondaryDialogueManager.Instance.StartAutomaticConversation(GameManager.Instance.CutsceneSecondaryConversation);

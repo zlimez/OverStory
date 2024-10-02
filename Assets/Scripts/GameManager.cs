@@ -2,7 +2,6 @@ using Abyss.EventSystem;
 using UnityEngine;
 using Abyss.Utils;
 using Abyss.SceneSystem;
-using System.Collections.Generic;
 
 /// <summary>
 /// Manages game-related data and states that persist throughout the session.
@@ -44,15 +43,10 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Awake()
     {
-        if (Instance == null)
-        {
-            InitInventory();
-        }
+        if (Instance == null) InitInventory();
 
         base.Awake();
-
-        EventManager.InvokeEvent(CoreEventCollection.GameManagerReady);
-
+        EventManager.InvokeEvent(SystemEventCollection.GameManagerReady);
     }
 
     /// <summary>
@@ -88,61 +82,4 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 1;
     }
-
-
-
-    [SerializeField]
-    private GameObject npcPrefab;
-    // private List<GameObject> npcs = new List<GameObject>();
-    private void Start()
-    {
-        // List<EnemyAttr> loadedNPCs1 = NPCDataManager.LoadNPCs();
-        // List<EnemyAttr> loadedNPCs = NPCDataManager.NextGeneration(loadedNPCs1);
-
-        // foreach (EnemyAttr data in loadedNPCs)
-        // {
-        //     GameObject npcObject = Instantiate(npcPrefab, NPCDataManager.GenerateRandomPosition((float)-7.8, (float)13.5), Quaternion.identity);
-        //     NPCController npcController = npcObject.GetComponent<NPCController>();
-
-        //     if (npcController != null)
-        //     {
-        //         npcController.alive = true;
-        //         npcController.speed = data.speed;
-        //         npcController.strength = data.strength;
-        //     }
-
-        //     npcs.Add(npcObject);
-        // }
-        // NPCDataManager.SaveNPCs(npcs);
-        // CreateRandomNPCs();
-    }
-
-    // private void CreateRandomNPCs()
-    // {
-    //     CreateRandomNPC(new Vector3(0, 0, 0));
-    //     CreateRandomNPC(new Vector3(2, 0, 0));
-    //     NPCDataManager.SaveNPCs(npcs);
-    // }
-
-    // private void CreateRandomNPC(Vector3 position)
-    // {
-    //     float randomSpeed = Random.Range(0f, 10f);
-    //     float randomStrength = Random.Range(0f, 10f);
-
-    //     GameObject npcObject = Instantiate(npcPrefab, position, Quaternion.identity);
-
-    //     NPCController npcController = npcObject.GetComponent<NPCController>();
-    //     if (npcController != null)
-    //     {
-    //         npcController.alive = true;
-    //         npcController.speed = randomSpeed;
-    //         npcController.strength = randomStrength;
-    //     }
-    //     npcs.Add(npcObject);
-
-    //     Debug.Log($"Created npc with Speed: {randomSpeed}, Strength: {randomStrength}");
-    // }
-
-
-
 }

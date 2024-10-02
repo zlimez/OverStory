@@ -29,6 +29,12 @@ namespace Utils
             return Mathf.Sin(clampedT * 2 * Mathf.PI) * amplitude + center;
         }
 
+        public static Vector3 CosLerpVector(Vector3 center, Vector3 amplitude, float t)
+        {
+            float clampedT = Mathf.Clamp(t, 0, 1);
+            return Mathf.Cos(clampedT * 2 * Mathf.PI) * amplitude + center;
+        }
+
         public static float SquareLerpFloat(float start, float end, float t)
         {
             float clampedT = Mathf.Clamp(t, 0, 1);

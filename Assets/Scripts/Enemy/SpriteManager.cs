@@ -18,4 +18,10 @@ public class SpriteManager : MonoBehaviour
         forward.x *= -1;
         transform.localScale = new Vector3(forward.x * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
+
+    public void FaceMoveDir(Vector3 moveDir)
+    {
+        if ((moveDir.x < 0 && forward.x > 0) || (moveDir.x > 0 && forward.x < 0))
+            Flip();
+    }
 }

@@ -64,6 +64,7 @@ namespace Abyss.Player
 		public bool IsAttacking { get; private set; } = false;
 		bool isTakingDamage = false, isDead = false;
 		public Action OnAttackEnded;
+		public Action OnAttemptInteract;
 
 		private State currState;
 
@@ -313,6 +314,12 @@ namespace Abyss.Player
 			}
 		}
 
+		public void OnInteract(InputAction.CallbackContext context)
+		{
+			if (context.started)
+				OnAttemptInteract?.Invoke();
+		}
+
 		public bool TakeHit()
 		{
 			if (isTakingDamage || isDead) return true;
@@ -351,7 +358,7 @@ namespace Abyss.Player
 
 		void DeathEnd()
 		{
-			EventManager.InvokeEvent(StaticEvent.Common_PlayerDeath);
+			EventManager.InvokeEvent(PlayEventCollection.PlayerDeath);
 		}
 		#endregion
 	}

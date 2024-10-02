@@ -145,17 +145,17 @@ public class InventoryUI : Singleton<InventoryUI>
 
     void OnEnable()
     {
-        EventManager.StartListening(CommonEventCollection.OpenInventory, OpenPanel);
+        EventManager.StartListening(UIEventCollection.OpenInventory, OpenPanel);
         // when a dialog is forced starting, inventory should be disabled
         // otherwise the dialog will be interrpted when the player selects
         // an item, which cause bugs (slecting item in PimpRoom when pimp comes back)
-        EventManager.StartListening(CommonEventCollection.DialogStarted, ClosePanel);
+        EventManager.StartListening(UIEventCollection.DialogStarted, ClosePanel);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(CommonEventCollection.OpenInventory, OpenPanel);
-        EventManager.StopListening(CommonEventCollection.DialogStarted, ClosePanel);
+        EventManager.StopListening(UIEventCollection.OpenInventory, OpenPanel);
+        EventManager.StopListening(UIEventCollection.DialogStarted, ClosePanel);
     }
 
     void SelectItem()
