@@ -14,11 +14,6 @@ public class HpBar : MonoBehaviour
 
     void Start()
     {
-        UpdateHpBar();
-    }
-
-    void UpdateHpBar()
-    {
         ClearJem();
 
         float GemCnt = CountJem(health);
@@ -33,6 +28,24 @@ public class HpBar : MonoBehaviour
             
             jemImage.fillAmount = GemCnt;
         }
+    }
+
+    void UpdateHpBar()
+    {
+        // ClearJem();
+
+        // float GemCnt = CountJem(health);
+
+        // for (; GemCnt >= 1; GemCnt--) Instantiate(HpPoint, layout.transform);
+        
+
+        // if (GemCnt > 0)
+        // {
+        //     GameObject partialJem = Instantiate(HpPoint, layout.transform);
+        //     Image jemImage = partialJem.GetComponent<Image>();
+            
+        //     jemImage.fillAmount = GemCnt;
+        // }
     }
 
     void ClearJem()
