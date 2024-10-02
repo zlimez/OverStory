@@ -8,7 +8,7 @@ public class PurityBar : MonoBehaviour
 {
     // public PlayerAttr playerAttributes; 
     public Image PurityBarImage;
-    public float purity = (float)60;
+    public float purity = (float)65;
 
     void Start()
     {
