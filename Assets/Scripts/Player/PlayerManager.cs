@@ -1,4 +1,3 @@
-using Abyss.EventSystem;
 using UnityEngine;
 
 namespace Abyss.Player

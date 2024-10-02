@@ -25,10 +25,9 @@ namespace Abyss.Environment.Enemy
             return isDead;
         }
 
-        void OnTriggerEnter2D(Collider2D other)
+        public void Strike()
         {
-            if (other.CompareTag("Player"))
-                OnStrikePlayer?.Invoke(attributes.strength);
+            OnStrikePlayer?.Invoke(attributes.strength);
         }
 
         // NOTE: If enemy always moving (enter/exit trigger), this is not required

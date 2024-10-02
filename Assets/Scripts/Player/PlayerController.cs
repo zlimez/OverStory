@@ -248,12 +248,7 @@ namespace Abyss.Player
 			if (context.started)
 			{
 				// Start jumping
-				if (isGrounded
-				&& (
-					currState == State.Idle
-					|| currState == State.Walk
-					|| currState == State.Run
-				))
+				if (isGrounded)
 				{
 					rb2D.AddForce(Vector2.up * initialJumpForce);
 					remainingJumpTime = MAX_JUMP_TIME;

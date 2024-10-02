@@ -4,13 +4,12 @@ using UnityEngine;
 /** <summary> Makes required transform operations on root object such that sprite reflects movement </summary> **/
 public class SpriteManager : MonoBehaviour
 {
-    public Vector3 forward = Vector3.right;
+    public Vector3 forward;
 
     public void Face(Vector3 target)
     {
         if ((target.x < transform.position.x && forward.x > 0) || (target.x > transform.position.x && forward.x < 0))
             Flip();
-        // Flip(); Flip();
     }
 
     public void Flip()
