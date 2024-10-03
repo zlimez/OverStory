@@ -8,7 +8,7 @@ using Abyss.Environment.Enemy.Anim;
 using Tuples;
 using UnityEngine;
 
-public class HogBT : MonoBehaviour
+public class HogBT : MonoBT
 {
     [Header("Charge Settings")]
     // Stun time if during charge the hog hits an obstacle
@@ -30,29 +30,19 @@ public class HogBT : MonoBehaviour
     [SerializeField] float waitTime;
     public Transform[] waypoints;
 
-    BT _bT;
-    readonly List<Blackboard> _bbs = new(); // local blackboards for this instance
-
 #if DEBUG
-    void OnEnable()
+    protected override void OnEnable()
     {
         Setup();
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
         GetComponent<EnemyManager>().OnDeath -= StopBT;
         StopBT();
     }
 #endif
-
-    void StopBT()
-    {
-        _bT?.Teardown();
-        _bT = null;
-    }
-
-    public void Setup()
+    public override void Setup()
     {
         StartCoroutine(SetupRoutine());
         GetComponent<EnemyManager>().OnDeath += StopBT;
@@ -82,7 +72,7 @@ public class HogBT : MonoBehaviour
             new("waypoints", waypoints),
 
             new("aggro", aggro),
-            new("hog", gameObject.transform),
+            new("hog", transform),
             new("hogSprite", GetComponent<SpriteManager>()),
             new("hogAnim", GetComponent<HogAnim>()),
 
@@ -119,16 +109,10 @@ public class HogBT : MonoBehaviour
         , hogParams, new Blackboard[] { bb });
     }
 
-    void Update()
-    {
-        _bT?.Tick();
-    }
-
-    void OnDestroy()
+    protected override void OnDestroy()
     {
         GetComponent<EnemyManager>().OnDeath -= StopBT;
-        StopBT();
-        foreach (var _bb in _bbs) _bb.Teardown();
+        base.OnDestroy();
     }
 
 #if DEBUG

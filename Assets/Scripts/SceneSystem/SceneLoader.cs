@@ -78,7 +78,7 @@ namespace Abyss.SceneSystem
         {
             InTransition = true;
             GameManager.Instance.PauseGame();
-            EventManager.InvokeEvent(CoreEventCollection.TransitionWithMaster);
+            EventManager.InvokeEvent(SystemEventCollection.TransitionWithMaster);
 
             if (currLoaderWithMaster != null)
             {
@@ -95,7 +95,7 @@ namespace Abyss.SceneSystem
                 StartCoroutine(LoadSceneAsync(newScene, removeMasterAftTransit));
             };
 
-            EventManager.StartListening(CommonEventCollection.CurtainDrawn, currLoaderWithMaster);
+            EventManager.StartListening(UIEventCollection.CurtainDrawn, currLoaderWithMaster);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Abyss.SceneSystem
 
             if (isQueued)
             {
-                EventManager.StopListening(CommonEventCollection.CurtainDrawn, currLoaderWithMaster);
+                EventManager.StopListening(UIEventCollection.CurtainDrawn, currLoaderWithMaster);
                 currLoaderWithMaster = null;
             }
 
@@ -172,7 +172,7 @@ namespace Abyss.SceneSystem
             else
             {
                 loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
-                EventManager.InvokeEvent(CoreEventCollection.Transition);
+                EventManager.InvokeEvent(SystemEventCollection.Transition);
             }
 
             while (!loadingAsyncOperation.isDone)
@@ -189,7 +189,7 @@ namespace Abyss.SceneSystem
             }
 
             ActiveScene = scene;
-            EventManager.InvokeEvent(CoreEventCollection.TransitionWithMasterCompleted);
+            EventManager.InvokeEvent(SystemEventCollection.TransitionWithMasterCompleted);
             EventManager.InvokeQueueEvents();
             if (removeMasterAftTransit) UnloadMaster();
 

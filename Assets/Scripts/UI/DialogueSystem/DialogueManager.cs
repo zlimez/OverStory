@@ -101,7 +101,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private void PrepareConversationUI(Conversation conversation)
     {
-        EventManager.InvokeEvent(CommonEventCollection.DialogStarted);
+        EventManager.InvokeEvent(UIEventCollection.DialogStarted);
 
         dialogBox.SetActive(true);
         UiStatus.OpenUI();

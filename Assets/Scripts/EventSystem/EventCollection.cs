@@ -1,43 +1,53 @@
-using System.Collections.Generic;
-
 namespace Abyss.EventSystem
 {
-    public static class CoreEventCollection
+    public static class SystemEventCollection
     {
         public static readonly StaticEvent GameManagerReady;
         public static readonly StaticEvent TransitionWithMaster;
         public static readonly StaticEvent TransitionWithMasterCompleted;
         public static readonly StaticEvent Transition;
-        public static readonly StaticEvent InteractableEntered;
 
-        static CoreEventCollection()
+
+        static SystemEventCollection()
         {
-            GameManagerReady = StaticEvent.Core_GameManagerReady;
-            TransitionWithMaster = StaticEvent.Core_TransitionWithMaster;
-            TransitionWithMasterCompleted = StaticEvent.Core_TransitionWithMasterCompleted;
-            Transition = StaticEvent.Core_Transition;
-            InteractableEntered = StaticEvent.Core_InteractableEntered;
+            GameManagerReady = StaticEvent.GameManagerReady;
+            TransitionWithMaster = StaticEvent.SceneTransitWithMaster;
+            TransitionWithMasterCompleted = StaticEvent.SceneTransitWithMasterDone;
+            Transition = StaticEvent.SceneTransition;
         }
     }
 
-    public static class CommonEventCollection
+    public static class UIEventCollection
     {
         public static readonly StaticEvent CurtainDrawn;
         public static readonly StaticEvent CurtainOpen;
         public static readonly StaticEvent PrepToTeleport;
         public static readonly StaticEvent OpenInventory;
-        public static readonly StaticEvent ForcedRewind;
         public static readonly StaticEvent DialogStarted;
-        public static readonly StaticEvent PlayerMoved;
 
-        static CommonEventCollection()
+        static UIEventCollection()
         {
-            CurtainDrawn = StaticEvent.Common_CurtainFullyDrawn;
-            PrepToTeleport = StaticEvent.Common_PrepToTeleport;
-            OpenInventory = StaticEvent.Common_OpenInventory;
-            CurtainOpen = StaticEvent.Common_CurtainFullyOpen;
-            DialogStarted = StaticEvent.Common_DialogStarted;
-            PlayerMoved = StaticEvent.Common_PlayerPositionMoved;
+            CurtainDrawn = StaticEvent.CurtainDrawn;
+            PrepToTeleport = StaticEvent.PrepToTeleport;
+            OpenInventory = StaticEvent.OpenInventory;
+            CurtainOpen = StaticEvent.CurtainOpen;
+            DialogStarted = StaticEvent.DialogStarted;
+        }
+    }
+
+    public static class PlayEventCollection
+    {
+        public static readonly StaticEvent PlayerDeath;
+        public static readonly StaticEvent InteractableEntered;
+        public static readonly StaticEvent InteractableExited;
+        public static readonly StaticEvent PlayerHealthChange;
+
+        static PlayEventCollection()
+        {
+            PlayerDeath = StaticEvent.PlayerDeath;
+            PlayerHealthChange = StaticEvent.PlayerHealthChange;
+            InteractableEntered = StaticEvent.InteractableEntered;
+            InteractableExited = StaticEvent.InteractableExited;
         }
     }
 }

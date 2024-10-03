@@ -7,23 +7,24 @@ namespace Abyss.EventSystem
     public enum StaticEvent
     {
         NoEvent = 0,
-        Core_GameManagerReady = 1,
-        Core_TransitionWithMaster = 2,
-        Core_TransitionWithMasterCompleted = 3,
-        Core_Transition = 4,
-        Core_InteractableEntered = 5,
-        Common_CurtainFullyDrawn = 6,
-        Common_PrepToTeleport = 7,
-        Common_OpenInventory = 8,
-        Common_CurtainFullyOpen = 9,
-        Common_ItemUsed = 10,
-        Common_DialogStarted = 11,
-        Common_PlayerPositionMoved = 12,
-        Common_PlayerChangeDirection = 13,
-        Common_ObjectPickedUp = 14,
-        Common_ObjectPutDown = 15,
+        GameManagerReady = 1,
+        SceneTransitWithMaster = 2,
+        SceneTransitWithMasterDone = 3,
+        SceneTransition = 4,
+        CurtainDrawn = 5,
+        CurtainOpen = 6,
+        PrepToTeleport = 7,
+        OpenInventory = 8,
+        ItemUsed = 9,
+        DialogStarted = 10,
+        PlayerDeath = 11,
+        ObjectPickedUp = 12,
+        ObjectPutDown = 13,
+        InteractableEntered = 14,
+        InteractableExited = 15,
+        PlayerHealthChange = 16
     }
 
 
-    public static class DynamicEvent {}
+    public static class DynamicEvent { }
 }

@@ -13,12 +13,12 @@ public class AudioManager : Singleton<AudioManager>
 
     void OnEnable()
     {
-        EventManager.StartListening(CoreEventCollection.InteractableEntered, PlayInteractableHintAudio);
+        EventManager.StartListening(PlayEventCollection.InteractableEntered, PlayInteractableHintAudio);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(CoreEventCollection.InteractableEntered, PlayInteractableHintAudio);
+        EventManager.StopListening(PlayEventCollection.InteractableEntered, PlayInteractableHintAudio);
     }
 
     public void PlayInteractableHintAudio(object o = null)
@@ -44,7 +44,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             Debug.LogWarning("Existing xontrolled Audio should be stopped before playing new one.");
         }
-        
+
         controlledAudioSource.clip = audioClip;
         controlledAudioSource.loop = isLooping;
         controlledAudioSource.Play();

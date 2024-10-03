@@ -29,7 +29,7 @@ namespace Abyss.Environment.Enemy.Anim
 
         protected virtual void OnEnable()
         {
-            GetComponent<EnemyManager>().OnDeath += _playDeathAnim;
+            _enemyManager.OnDeath += _playDeathAnim;
         }
 
         void OnDisable()

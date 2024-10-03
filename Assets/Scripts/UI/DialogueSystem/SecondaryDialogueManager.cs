@@ -43,7 +43,7 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
         PreserveSpriteAspect();
     }
 
-    void Update() 
+    void Update()
     {
         if (Input.GetKey(KeyCode.LeftShift) && InDialogue)
         {
@@ -51,14 +51,14 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
         }
     }
 
-    void OnEnable() 
+    void OnEnable()
     {
-        EventManager.StartListening(CoreEventCollection.TransitionWithMaster, ForceCloseDialogueUI);
+        EventManager.StartListening(SystemEventCollection.TransitionWithMaster, ForceCloseDialogueUI);
     }
 
-    void OnDisable() 
+    void OnDisable()
     {
-        EventManager.StopListening(CoreEventCollection.TransitionWithMaster, ForceCloseDialogueUI);
+        EventManager.StopListening(SystemEventCollection.TransitionWithMaster, ForceCloseDialogueUI);
     }
 
     private void PreserveSpriteAspect()
@@ -69,7 +69,7 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
     // Secondary Dialogue should always be automatic
     private void StartConversation(SecondaryConversation conversation, DialogueFinishedCallback callback = null)
     {
-        if (!CanStartConversation(conversation)) 
+        if (!CanStartConversation(conversation))
         {
             Debug.LogWarning("Cannot start secondary conversation since Ui is disabled");
             return;
@@ -104,7 +104,7 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 
     private void PrepareConversationUI(SecondaryConversation conversation)
     {
-        EventManager.InvokeEvent(CommonEventCollection.DialogStarted);
+        EventManager.InvokeEvent(UIEventCollection.DialogStarted);
 
         currentIndex = 0;
         currentConversation = conversation;

@@ -33,9 +33,12 @@ namespace Abyss.Player
             var hitEnemies = Physics2D.OverlapCircleAll(transform.position, _weaponItem.radius, _layerMask);
             foreach (var hitEnemy in hitEnemies)
             {
-                if (hits.Contains(hitEnemy.GetInstanceID())) continue;
-                hits.Add(hitEnemy.GetInstanceID());
-                hitEnemy.gameObject.GetComponent<EnemyManager>().TakeHit(_weaponItem.damage * str); // 
+                if (hitEnemy.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
+                {
+                    if (hits.Contains(enemyPart.EnemyIntanceId)) continue;
+                    hits.Add(enemyPart.EnemyIntanceId);
+                    enemyPart.TakeHit(_weaponItem.damage + str);
+                }
             }
         }
 

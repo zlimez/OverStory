@@ -1,3 +1,4 @@
+using Abyss.EventSystem;
 using UnityEngine;
 
 namespace Abyss.Player
@@ -7,8 +8,12 @@ namespace Abyss.Player
         [SerializeField] PlayerController playerController;
         [SerializeField] Weapon weapon;
         [SerializeField] PlayerAttr playerAttributes;
-        public float health;
-        public System.Action OnDeath;
+        // public float health;
+
+        void Start()
+        {
+            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, playerAttributes.health);
+        }
 
         void OnEnable()
         {
@@ -23,20 +28,17 @@ namespace Abyss.Player
         void FixedUpdate()
         {
             if (playerController.IsAttacking)
-            {
                 weapon.Strike(playerAttributes.strength);
-            }
         }
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
-        public bool TakeHit(float baseDamage)
+        public void TakeHit(float baseDamage)
         {
-            if (playerController.TakeHit()) return false; // Is still taking last damage
-            health -= baseDamage;
-            bool isDead = health <= 0;
-            if (isDead)
-                OnDeath?.Invoke();
-            return isDead;
+            if (playerAttributes.health == 0) return;
+            if (playerController.TakeHit()) return; // Is still taking last damage or isDead
+            playerAttributes.health -= Mathf.Min(playerAttributes.health, baseDamage);
+            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, playerAttributes.health);
+            if (playerAttributes.health == 0) playerController.Die();
         }
     }
 }
