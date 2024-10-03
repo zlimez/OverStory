@@ -1,3 +1,4 @@
+using Abyss.EventSystem;
 using UnityEngine;
 
 namespace Abyss.Player
@@ -8,6 +9,11 @@ namespace Abyss.Player
         [SerializeField] Weapon weapon;
         [SerializeField] PlayerAttr playerAttributes;
         // public float health;
+
+        void Start()
+        {
+            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, playerAttributes.health);
+        }
 
         void OnEnable()
         {
@@ -31,6 +37,7 @@ namespace Abyss.Player
             if (playerAttributes.health == 0) return;
             if (playerController.TakeHit()) return; // Is still taking last damage or isDead
             playerAttributes.health -= Mathf.Min(playerAttributes.health, baseDamage);
+            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, playerAttributes.health);
             if (playerAttributes.health == 0) playerController.Die();
         }
     }

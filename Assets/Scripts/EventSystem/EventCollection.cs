@@ -40,10 +40,12 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent PlayerDeath;
         public static readonly StaticEvent InteractableEntered;
         public static readonly StaticEvent InteractableExited;
+        public static readonly StaticEvent PlayerHealthChange;
 
         static PlayEventCollection()
         {
             PlayerDeath = StaticEvent.PlayerDeath;
+            PlayerHealthChange = StaticEvent.PlayerHealthChange;
             InteractableEntered = StaticEvent.InteractableEntered;
             InteractableExited = StaticEvent.InteractableExited;
         }

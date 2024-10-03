@@ -4,7 +4,7 @@ using AnyPortrait;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
+// FIXME: When damaged seems to charge further
 namespace Abyss.Player
 {
 	public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions

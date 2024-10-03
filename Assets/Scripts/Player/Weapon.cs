@@ -37,7 +37,7 @@ namespace Abyss.Player
                 {
                     if (hits.Contains(enemyPart.EnemyIntanceId)) continue;
                     hits.Add(enemyPart.EnemyIntanceId);
-                    enemyPart.TakeHit(_weaponItem.damage * str);
+                    enemyPart.TakeHit(_weaponItem.damage + str);
                 }
             }
         }

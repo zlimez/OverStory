@@ -22,6 +22,7 @@ namespace Abyss.EventSystem
         ObjectPutDown = 13,
         InteractableEntered = 14,
         InteractableExited = 15,
+        PlayerHealthChange = 16
     }
 
 
