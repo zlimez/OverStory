@@ -87,7 +87,8 @@ namespace BehaviorTree.Actions
 
             void ChompHit(float str)
             {
-                Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chompDmg);
+                Transform target = Tree.GetDatum<Transform>("target");
+                target.GetComponent<PlayerManager>().TakeHit(str + _chompDmg, target.position); // No knockback
             }
         }
     }

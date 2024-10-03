@@ -112,6 +112,6 @@ public class Charge : CfAction
 
     void ChargeHit(float str)
     {
-        Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg);
+        Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg, _enemyManager.transform.position);
     }
 }
