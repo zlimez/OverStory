@@ -29,7 +29,7 @@ namespace Abyss.Player
 		// Animation support
 		[Header("Animation")]
 		[SerializeField] apPortrait portrait;
-		// [SerializeField] SpriteFlash spriteFlash;
+		PlayerSfx _playerSfx;
 
 		[SerializeField] float crossFadeSeconds = .01f;
 
@@ -79,6 +79,7 @@ namespace Abyss.Player
 		private void Awake()
 		{
 			rb2D = GetComponent<Rigidbody2D>();
+			_playerSfx = GetComponent<PlayerSfx>();
 
 			portrait.Initialize();
 			currState = State.Idle;
@@ -250,16 +251,13 @@ namespace Abyss.Player
 		public void OnJump(InputAction.CallbackContext context)
 		{
 			if (IsAttacking || isTakingDamage || isDead) return;
-			if (context.started)
+			if (context.started && isGrounded)
 			{
-				// Start jumping
-				if (isGrounded)
-				{
-					rb2D.AddForce(Vector2.up * initialJumpImpulse, ForceMode2D.Impulse);
-					remainingJumpTime = MAX_JUMP_TIME;
-					isJumping = true;
-					TransitionToState(State.Jump);
-				}
+				_playerSfx.PlayJump();
+				rb2D.AddForce(Vector2.up * initialJumpImpulse, ForceMode2D.Impulse);
+				remainingJumpTime = MAX_JUMP_TIME;
+				isJumping = true;
+				TransitionToState(State.Jump);
 			}
 			else if (context.canceled)
 			{
@@ -287,6 +285,7 @@ namespace Abyss.Player
 			if (IsAttacking || isTakingDamage || isDead) return;
 			if (context.started && isDashAvailable)
 			{
+				_playerSfx.PlayDash();
 				isDashing = true;
 				remainingDashTime = dashTime;
 				isDashAvailable = false;
@@ -317,6 +316,7 @@ namespace Abyss.Player
 		{
 			if (isTakingDamage || isDead) return true;
 			IsAttacking = false;
+			_playerSfx.PlayHurt();
 			if (isDashing)
 			{
 				// NOTE: compensate for dash -> damage then in Update method isTakingDamage check preserves dashing momentum
