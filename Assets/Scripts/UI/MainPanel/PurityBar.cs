@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Abyss.EventSystem;
 using Abyss.Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,16 +9,26 @@ public class PurityBar : MonoBehaviour
 {
     // public PlayerAttr playerAttributes; 
     public Image PurityBarImage;
-    public float purity = (float)65;
+    // public float purity = (float)65;
 
-    void Start()
+    // void Start()
+    // {
+    //     UpdatePurityBar();
+    // }
+
+    void OnEnable()
     {
-        UpdatePurityBar();
+        EventManager.StartListening(PlayEventCollection.PlayerPurityChange, UpdatePurityBar);
     }
 
-    void UpdatePurityBar()
+    void OnDisable()
     {
-        // float PurityPercentage = playerAttributes.purity / 100f;
+        EventManager.StopListening(PlayEventCollection.PlayerPurityChange, UpdatePurityBar);
+    }
+
+    void UpdatePurityBar(object input)
+    {
+        float purity = (float)input;
         float PurityPercentage = purity / 100f;
         PurityBarImage.fillAmount = PurityPercentage;
     }

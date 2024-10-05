@@ -13,6 +13,7 @@ namespace Abyss.Player
         void Start()
         {
             EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, playerAttributes.health);
+            EventManager.InvokeEvent(PlayEventCollection.PlayerPurityChange, playerAttributes.purity);
         }
 
         void OnEnable()

@@ -9,7 +9,6 @@ public class HpBar : MonoBehaviour
 {
     public GameObject layout;
     public GameObject HpPoint;
-    // [SerializeField] PlayerAttr playerAttributes;
     public int hp4eachGem = 20;
 
     void OnEnable()
