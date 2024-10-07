@@ -10,6 +10,8 @@ public class Item : ScriptableObject
     public Sprite itemImage;
     public bool canUseFromInventory = true; // Some items are auto consumed when interacting with target
     public bool isConsumable = true; // Items like map or files are not consumable and thus cannot decrease in amount
+
+    public ItemType itemType;
     protected GameEvent itemUsedEvent;
 
     protected virtual void Awake()
@@ -36,4 +38,16 @@ public class Item : ScriptableObject
     {
         return itemName.GetHashCode();
     }
+}
+
+public enum ItemType
+{
+    Organs,
+    Consumables,
+    Weapons,
+    Materials,
+    Farmables,
+    Spells,
+    Blueprints,
+    Constructions
 }

@@ -76,10 +76,10 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void LevelUp()
+    public void UpdateLevel(int le)
     {
-        level++;
-        UpdateInventoryImage(level - 1);
+        level = le;
+        UpdateInventoryImage(level-1);
     }
 
     void OpenBag()

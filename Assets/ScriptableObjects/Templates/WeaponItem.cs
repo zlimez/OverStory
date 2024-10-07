@@ -12,7 +12,7 @@ public class WeaponItem : Item
     protected override void Awake()
     {
         itemUsedEvent = new GameEvent($"{WeaponEquippedPrefix}: ${itemName}");
-        canUseFromInventory = true;
+        canUseFromInventory = false;
         isConsumable = false;
     }
 
