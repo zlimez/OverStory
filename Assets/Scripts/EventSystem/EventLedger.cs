@@ -125,7 +125,7 @@ namespace Abyss.EventSystem
         {
             string eventName = GetMostRecentEvent(events.Select(s => new GameEvent(s.ToString())).ToArray()).EventName;
 
-            return Parser.getStaticEventFromText(eventName);
+            return Parser.GetStaticEventFromText(eventName);
         }
 
         /// <summary>

@@ -1,47 +1,25 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using Abyss.Environment.Enemy;
 using BehaviorTree;
 using BehaviorTree.Actions;
-using Environment.Enemy;
 using Tuples;
 using UnityEngine;
 
-public class BugBT : MonoBehaviour
+public class BugBT : MonoBT
 {
 	[Header("Dash Settings")]
 	[SerializeField] float dashDistance;
 	[SerializeField] float dashSpeed;
-	
+
 	[Header("Run Settings")]
 	[SerializeField] float runSpeed;
 	[SerializeField] Transform dropDownPoint;
-	
+
 	[Header("Jump Settings")]
 	[SerializeField] float waitBeforeJumpTime;
 
-	BT _bT;
-
-#if DEBUG
-	void OnEnable()
-	{
-		Setup();
-	}
-
-	void OnDisable()
-	{
-		GetComponent<EnemyManager>().OnDeath -= StopBT;
-		StopBT();
-	}
-#endif
-
-	void StopBT()
-	{
-		_bT?.Teardown();
-		_bT = null;
-	}
-
-	public void Setup()
+	public override void Setup()
 	{
 		StartCoroutine(SetupRoutine());
 		GetComponent<EnemyManager>().OnDeath += StopBT;
@@ -57,11 +35,11 @@ public class BugBT : MonoBehaviour
 		Pair<string, object>[] bugParams = {
 			new("dashDistance", dashDistance),
 			new("dashSpeed", dashSpeed),
-			
+
 			new("runSpeed", runSpeed),
 			new("dropDownPoint", dropDownPoint),
 			new("waitBeforeJumpTime", waitBeforeJumpTime),
-			
+
 			new("bugSprite", GetComponent<SpriteManager>())
 		};
 
@@ -76,23 +54,4 @@ public class BugBT : MonoBehaviour
 		})
 		, bugParams, new Blackboard[] { bb });
 	}
-
-	void Update()
-	{
-		_bT?.Tick();
-	}
-
-	void OnDestroy()
-	{
-		GetComponent<EnemyManager>().OnDeath -= StopBT;
-		StopBT();
-	}
-
-#if DEBUG
-	void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawRay(transform.position, GetComponent<SpriteManager>().forward * 2.0f);
-	}
-#endif
 }
