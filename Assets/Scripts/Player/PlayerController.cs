@@ -312,7 +312,7 @@ namespace Abyss.Player
 				OnAttemptInteract?.Invoke();
 		}
 
-		public bool TakeHit(Vector3 from)
+		public bool TakeHit(bool hasKnockback, Vector3 from)
 		{
 			if (isTakingDamage || isDead) return true;
 			IsAttacking = false;
@@ -322,12 +322,12 @@ namespace Abyss.Player
 				// NOTE: compensate for dash -> damage then in Update method isTakingDamage check preserves dashing momentum
 				isDashing = false;
 				remainingDashTime = 0f;
-				rb2D.AddForce((rb2D.velocity.x > 0 ? Vector2.left : Vector2.right) * knockbackImpulse, ForceMode2D.Impulse);
+				if (hasKnockback) rb2D.AddForce((rb2D.velocity.x > 0 ? Vector2.left : Vector2.right) * knockbackImpulse, ForceMode2D.Impulse);
 			}
 			isJumping = false;
 			remainingJumpTime = 0f;
 			isTakingDamage = true;
-			rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * knockbackImpulse, ForceMode2D.Impulse);
+			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * knockbackImpulse, ForceMode2D.Impulse);
 			TransitionToState(State.Damage);
 			return false;
 		}
