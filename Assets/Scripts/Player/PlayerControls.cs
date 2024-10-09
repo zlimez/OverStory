@@ -183,6 +183,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""9d4611c6-0b12-4c98-8bce-d56b9948421d"",
+            ""actions"": [
+                {
+                    ""name"": ""OnOpenInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c2fdc6e-f5d1-4c1e-a5e2-c9828fd67aa0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""808800d7-5448-4c21-b7c3-124ef78d53e8"",
+                    ""path"": ""<Keyboard>/#(I)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnOpenInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -195,6 +223,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_OnOpenInventory = m_UI.FindAction("OnOpenInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,6 +369,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_OnOpenInventory;
+    public struct UIActions
+    {
+        private @PlayerControls m_Wrapper;
+        public UIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OnOpenInventory => m_Wrapper.m_UI_OnOpenInventory;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @OnOpenInventory.started += instance.OnOnOpenInventory;
+            @OnOpenInventory.performed += instance.OnOnOpenInventory;
+            @OnOpenInventory.canceled += instance.OnOnOpenInventory;
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
+        {
+            @OnOpenInventory.started -= instance.OnOnOpenInventory;
+            @OnOpenInventory.performed -= instance.OnOnOpenInventory;
+            @OnOpenInventory.canceled -= instance.OnOnOpenInventory;
+        }
+
+        public void RemoveCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -346,5 +423,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnOnOpenInventory(InputAction.CallbackContext context);
     }
 }
