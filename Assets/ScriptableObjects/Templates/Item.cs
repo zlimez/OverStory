@@ -8,6 +8,7 @@ public class Item : ScriptableObject
     [TextArea(3, 5)] public string description;
     public Sprite icon;
     public Sprite itemImage;
+    public GameObject itemPrefab;
     public bool canUseFromInventory = true; // Some items are auto consumed when interacting with target
     public bool isConsumable = true; // Items like map or files are not consumable and thus cannot decrease in amount
 

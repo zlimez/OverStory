@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
@@ -11,6 +12,9 @@ public class SlotController : MonoBehaviour
 
     public Sprite[] SlotBG;
     public Image SlotBGImage; 
+
+    public GameObject tooltipPanel; // Reference to the tooltip panel
+    public TextMeshProUGUI tooltipText; 
 
     public Button slotButton;
     public GameObject contextMenu; // The context menu UI (to display options like Equip, Discard)
@@ -29,7 +33,19 @@ public class SlotController : MonoBehaviour
     void Start()
     {
         slotButton.onClick.AddListener(ShowContextMenu);
+        CloseTooltip();
         CloseContextMenu();
+    }
+
+    public void ShowTooltip()
+    {
+        tooltipPanel.SetActive(true); 
+        tooltipText.text = itemStack.Data.description; 
+    }
+
+    public void CloseTooltip()
+    {
+        tooltipPanel.SetActive(false);
     }
 
     void ShowContextMenu()
@@ -88,7 +104,20 @@ public class SlotController : MonoBehaviour
     void DiscardItem()
     {
         Debug.Log("Discarding " + itemStack.Data.itemName);
+        DropItemInScene(itemStack.Data);
         Inventory.Instance.MaterialCollection.DiscardItem(itemStack.Data);
         CloseContextMenu();
+    }
+
+    void DropItemInScene(Item item)
+    {
+        if (item.itemPrefab != null)
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            Vector3 dropPosition = player.transform.position + player.transform.right * 4f;
+
+
+            Instantiate(item.itemPrefab, dropPosition, Quaternion.identity);
+        }
     }
 }
