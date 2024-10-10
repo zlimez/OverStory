@@ -66,11 +66,7 @@ public class Charge : CfAction
         }
         else
         {
-            if (chargeTimer == 0)
-            {
-                _chargeTypeAnim.TransitionToState(HogAnim.State.ChargeUp.ToString());
-                startPos = _transform.position;
-            }
+            if (chargeTimer == 0) _chargeTypeAnim.TransitionToState(HogAnim.State.ChargeUp.ToString());
 
             if (chargeTimer >= chargeTime + _chargeupTime)
             {
@@ -111,6 +107,7 @@ public class Charge : CfAction
         isResting = false;
         isStunned = false;
         restTimer = 0;
+        startPos = _transform.position;
     }
 
     void ChargeHit(float str)

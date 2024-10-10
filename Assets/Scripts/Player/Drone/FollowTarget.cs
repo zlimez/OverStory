@@ -49,7 +49,7 @@ namespace BehaviorTree.Actions
                 if ((_target.position - _transform.position).sqrMagnitude > _dist2StopSq)
                 {
                     _transform.position = Vector3.SmoothDamp(_transform.position, _target.position, ref currVelocity, _smoothTime);
-                    _spriteManager.FaceMoveDir(currVelocity);
+                    _spriteManager.FaceDir(currVelocity);
                 }
                 else
                 {
