@@ -74,7 +74,7 @@ public class HogBT : MonoBT
             new("aggro", aggro),
             new("hog", transform),
             new("hogSprite", GetComponent<SpriteManager>()),
-            new("hogAnim", GetComponent<HogAnim>()),
+            new("hogAnim", GetComponent<PortraitAnim>()),
 
             new("chargeDamage", chargeDamage),
             new("chargeDamageCooldown", chargeDamageCooldown),
@@ -103,8 +103,7 @@ public class HogBT : MonoBT
                     },
                     new string[][] { new string[] { "target", "hog" }, new string[] { "target", "hog" }}
                 )
-            })
-            , new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnim" })
+            }), new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnim" })
         }, new string[] { aggro.EEEvent }, (obj) => { return true; })
         , hogParams, new Blackboard[] { bb });
     }

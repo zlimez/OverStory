@@ -41,7 +41,7 @@ namespace Abyss.Player
 
 		float moveDir;
 		private float currHorizontalSpeed;
-		private bool isFacingLeft;
+		public bool IsFacingLeft { get; private set; } = false;
 
 		[Header("Jump")]
 		[SerializeField] private float jumpForce = 100f;
@@ -97,9 +97,9 @@ namespace Abyss.Player
 			if (!IsAttacking && !isTakingDamage && !isDead) HandleState();
 			if (!isTakingDamage)
 			{
-				if (rb2D.velocity.x > 0 && isFacingLeft)
+				if (rb2D.velocity.x > 0 && IsFacingLeft)
 					FlipSprite();
-				else if (rb2D.velocity.x < 0 && !isFacingLeft)
+				else if (rb2D.velocity.x < 0 && !IsFacingLeft)
 					FlipSprite();
 			}
 
@@ -151,7 +151,7 @@ namespace Abyss.Player
 			currScale.x *= -1;
 			gameObject.transform.localScale = currScale;
 
-			isFacingLeft = !isFacingLeft;
+			IsFacingLeft = !IsFacingLeft;
 		}
 
 		// Animation stuff
@@ -289,7 +289,7 @@ namespace Abyss.Player
 				isDashing = true;
 				remainingDashTime = dashTime;
 				isDashAvailable = false;
-				rb2D.AddForce((isFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
+				rb2D.AddForce((IsFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
 				TransitionToState(State.Dash);
 			}
 		}

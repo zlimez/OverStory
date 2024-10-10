@@ -12,9 +12,11 @@ namespace BehaviorTree.Actions
         private float _speed;
         private Transform[] _waypoints;
         private Transform _transform;
-        private HogAnim _chargeTypeAnim;
+        private PortraitAnim _chargeTypeAnim;
         private SpriteManager _spriteManager;
         private float _waitTime;
+        string _idleAnim;
+        string _walkAnim;
 
         public Patrol(string[] parameters) : base(parameters) { }
 
@@ -27,7 +29,9 @@ namespace BehaviorTree.Actions
             _transform = (Transform)dataRef[2];
             _waitTime = (float)dataRef[3];
             _spriteManager = (SpriteManager)dataRef[4];
-            _chargeTypeAnim = (HogAnim)dataRef[5];
+            _chargeTypeAnim = (PortraitAnim)dataRef[5];
+            _idleAnim = (string)dataRef[6];
+            _walkAnim = (string)dataRef[7];
         }
 
         public override void Update()
@@ -38,7 +42,7 @@ namespace BehaviorTree.Actions
                 if (_waitCounter >= _waitTime)
                 {
                     _waiting = false;
-                    _chargeTypeAnim.TransitionToState(HogAnim.State.Walk.ToString());
+                    _chargeTypeAnim.TransitionToState(_walkAnim);
                 }
             }
             else
@@ -51,11 +55,11 @@ namespace BehaviorTree.Actions
                     _waiting = true;
 
                     _currWaypoint = (_currWaypoint + 1) % _waypoints.Length;
-                    _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
+                    _chargeTypeAnim.TransitionToState(_idleAnim);
                 }
                 else
                 {
-                    _chargeTypeAnim.TransitionToState(HogAnim.State.Walk.ToString());
+                    _chargeTypeAnim.TransitionToState(_walkAnim);
                     _transform.position = Vector2.MoveTowards(_transform.position, new Vector3(wp.position.x, _transform.position.y, _transform.position.z), _speed * Time.deltaTime);
                     _spriteManager.Face(wp.position);
                 }
