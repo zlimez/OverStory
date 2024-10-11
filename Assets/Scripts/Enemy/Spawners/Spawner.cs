@@ -10,7 +10,7 @@ namespace Abyss.Environment
 
         // Passes any required auxiliary info to the instance via fields and attr
         // Invoked by SpawnerManager of scene during Start
-        public virtual bool Setup(object attr)
+        public virtual bool Spawn(object attr)
         {
             if (attr == null)
             {

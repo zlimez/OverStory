@@ -2,35 +2,35 @@ namespace Abyss.EventSystem
 {
     public static class SystemEventCollection
     {
-        public static readonly StaticEvent GameManagerReady;
-        public static readonly StaticEvent TransitionWithMaster;
-        public static readonly StaticEvent TransitionWithMasterCompleted;
+        public static readonly StaticEvent SystemsReady;
+        public static readonly StaticEvent SceneTransitWithMasterStart;
+        public static readonly StaticEvent SceneTransitWithMasterDone;
         public static readonly StaticEvent Transition;
 
 
         static SystemEventCollection()
         {
-            GameManagerReady = StaticEvent.GameManagerReady;
-            TransitionWithMaster = StaticEvent.SceneTransitWithMaster;
-            TransitionWithMasterCompleted = StaticEvent.SceneTransitWithMasterDone;
+            SystemsReady = StaticEvent.SystemsReady;
+            SceneTransitWithMasterStart = StaticEvent.SceneTransitWithMasterStart;
+            SceneTransitWithMasterDone = StaticEvent.SceneTransitWithMasterDone;
             Transition = StaticEvent.SceneTransition;
         }
     }
 
     public static class UIEventCollection
     {
-        public static readonly StaticEvent CurtainDrawn;
-        public static readonly StaticEvent CurtainOpen;
+        public static readonly StaticEvent BlackIn;
+        public static readonly StaticEvent BlackOut;
         public static readonly StaticEvent PrepToTeleport;
         public static readonly StaticEvent OpenInventory;
         public static readonly StaticEvent DialogStarted;
 
         static UIEventCollection()
         {
-            CurtainDrawn = StaticEvent.CurtainDrawn;
+            BlackIn = StaticEvent.BlackIn;
             PrepToTeleport = StaticEvent.PrepToTeleport;
             OpenInventory = StaticEvent.OpenInventory;
-            CurtainOpen = StaticEvent.CurtainOpen;
+            BlackOut = StaticEvent.BlackOut;
             DialogStarted = StaticEvent.DialogStarted;
         }
     }

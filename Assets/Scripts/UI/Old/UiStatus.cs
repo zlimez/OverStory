@@ -54,6 +54,6 @@ public class UiStatus : MonoBehaviour
     /// <returns>True if the UI is disabled, false otherwise.</returns>
     public static bool IsDisabled()
     {
-        return SceneLoader.Instance.InTransition;
+        return SceneLoader.Instance.InTransit;
     }
 }

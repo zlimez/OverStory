@@ -32,10 +32,10 @@ namespace Abyss.Player
         }
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
-        public void TakeHit(float baseDamage)
+        public void TakeHit(float baseDamage, bool hasKnockback = false, Vector3 from = default)
         {
             if (playerAttributes.health == 0) return;
-            if (playerController.TakeHit()) return; // Is still taking last damage or isDead
+            if (playerController.TakeHit(hasKnockback, from)) return; // Is still taking last damage or isDead
             playerAttributes.health -= Mathf.Min(playerAttributes.health, baseDamage);
             EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, playerAttributes.health);
             if (playerAttributes.health == 0) playerController.Die();

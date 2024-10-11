@@ -11,6 +11,12 @@ namespace Abyss.Player
         static readonly int _layerMask = 1 << 6;
         [SerializeField] WeaponItem _weaponItem;
         public HashSet<int> hits = new();
+        ParticleSystem _particleSystem;
+
+        void Awake()
+        {
+            _particleSystem = GetComponent<ParticleSystem>();
+        }
 
         void OnEnable()
         {
@@ -31,11 +37,17 @@ namespace Abyss.Player
         {
             // TODO: Change position based on weapon movement
             var hitEnemies = Physics2D.OverlapCircleAll(transform.position, _weaponItem.radius, _layerMask);
+            bool psPlayed = false;
             foreach (var hitEnemy in hitEnemies)
             {
                 if (hitEnemy.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
                 {
                     if (hits.Contains(enemyPart.EnemyIntanceId)) continue;
+                    if (!psPlayed)
+                    {
+                        _particleSystem.Play();
+                        psPlayed = true;
+                    }
                     hits.Add(enemyPart.EnemyIntanceId);
                     enemyPart.TakeHit(_weaponItem.damage + str);
                 }

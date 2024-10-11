@@ -1,72 +1,50 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Utils;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    private float timeDuration = 0.5f;
-    private List<AudioSource> audioSources = new List<AudioSource>();
-    [SerializeField] AudioSource uiAudioSource, soundEffectAudioSource, controlledAudioSource;
-    [SerializeField] AudioClip interactalbeHintAudio;
+    [SerializeField] AudioSource uiAudioSource, sfxAudioSource;
+    [SerializeField] AudioClip interactableHint;
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEventCollection.InteractableEntered, PlayInteractableHintAudio);
+        EventManager.StartListening(PlayEventCollection.InteractableEntered, PlayInteractableHint);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(PlayEventCollection.InteractableEntered, PlayInteractableHintAudio);
+        EventManager.StopListening(PlayEventCollection.InteractableEntered, PlayInteractableHint);
     }
 
-    public void PlayInteractableHintAudio(object o = null)
+    public void PlayInteractableHint(object o = null)
     {
-        AudioManager.Instance.StartPlayingUiAudio(interactalbeHintAudio);
+        PlayUIClip(interactableHint);
     }
 
-    public void StartPlayingUiAudio(AudioClip audioClip)
+    public void PlayUIClip(AudioClip audioClip)
     {
         uiAudioSource.clip = audioClip;
         uiAudioSource.Play();
     }
 
-    public void StartPlayingSoundEffectAudio(AudioClip audioClip)
+    public void PlaySFX(AudioClip audioClip)
     {
-        soundEffectAudioSource.clip = audioClip;
-        soundEffectAudioSource.Play();
+        sfxAudioSource.clip = audioClip;
+        sfxAudioSource.Play();
     }
 
-    public void StartPlayingControlledAudioSource(AudioClip audioClip, bool isLooping)
-    {
-        if (controlledAudioSource.clip != null)
-        {
-            Debug.LogWarning("Existing xontrolled Audio should be stopped before playing new one.");
-        }
-
-        controlledAudioSource.clip = audioClip;
-        controlledAudioSource.loop = isLooping;
-        controlledAudioSource.Play();
-    }
-
-    public void StopPlayingUiAudio()
+    public void StopUIClip()
     {
         uiAudioSource.Stop();
         uiAudioSource.clip = null;
     }
 
-    public void StopPlayingSoundEffectAudio()
+    public void StopSFX()
     {
-        soundEffectAudioSource.Stop();
-        soundEffectAudioSource.clip = null;
-    }
-
-    public void StopPlayingControlledAudioSource()
-    {
-        controlledAudioSource.Stop();
-        controlledAudioSource.clip = null;
-        controlledAudioSource.loop = false;
+        sfxAudioSource.Stop();
+        sfxAudioSource.clip = null;
     }
 
     public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)

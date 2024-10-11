@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bdc3594313274e29b5e52252632b160, type: 3}
+  m_Name: AssassinBug
+  m_EditorClassIdentifier: 
+  specyName: Moss Hog
+  mutationRate: 0.1
+  maxPopulation: 20
+  generationRate: 1.5
+  attrRanges:
+  - Item1: strength
+    Item2: 1
+    Item3: 10
+  - Item1: speed
+    Item2: 1
+    Item3: 10
+  - Item1: alertness
+    Item2: 1
+    Item3: 10
+  - Item1: friendliness
+    Item2: 1
+    Item3: 10

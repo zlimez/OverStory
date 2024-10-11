@@ -44,7 +44,7 @@ namespace BehaviorTree.Actions
             else
             {
                 Transform wp = _waypoints[_currWaypoint];
-                if (Vector3.Distance(_transform.position, wp.position) < 0.01f)
+                if (Vector2.Distance(_transform.position, wp.position) < 0.01f)
                 {
                     _transform.position = wp.position;
                     _waitCounter = 0f;
@@ -56,7 +56,7 @@ namespace BehaviorTree.Actions
                 else
                 {
                     _chargeTypeAnim.TransitionToState(HogAnim.State.Walk.ToString());
-                    _transform.position = Vector3.MoveTowards(_transform.position, new Vector3(wp.position.x, _transform.position.y, _transform.position.z), _speed * Time.deltaTime);
+                    _transform.position = Vector2.MoveTowards(_transform.position, new Vector3(wp.position.x, _transform.position.y, _transform.position.z), _speed * Time.deltaTime);
                     _spriteManager.Face(wp.position);
                 }
             }

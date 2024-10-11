@@ -33,7 +33,7 @@ namespace Abyss.EventSystem
                 eventListenerCountTable.Add(gameEvent, 1);
             }
         }
-        
+
         public static void StartListening(StaticEvent gameEvent, UnityAction<object> listener)
         {
             StartListening(new GameEvent(gameEvent.ToString()), listener);
@@ -62,7 +62,6 @@ namespace Abyss.EventSystem
         public static void StopListening(StaticEvent gameEvent, UnityAction<object> listener)
         {
             StopListening(new GameEvent(gameEvent.ToString()), listener);
-
         }
 
         /// <summary>
@@ -72,9 +71,7 @@ namespace Abyss.EventSystem
         public static void StopListeningAll(GameEvent gameEvent)
         {
             if (eventTable.TryGetValue(gameEvent, out UnityEvent<object> thisEvent))
-            {
                 thisEvent.RemoveAllListeners();
-            }
         }
 
         public static void StopListeningAll(StaticEvent gameEvent)
@@ -118,9 +115,7 @@ namespace Abyss.EventSystem
         {
             Debug.Log($"{gameEvent.EventName} invoked");
             if (eventTable.TryGetValue(gameEvent, out UnityEvent<object> thisEvent))
-            {
                 thisEvent.Invoke(inputParam);
-            }
         }
 
         public static void InvokeEvent(StaticEvent gameEvent, object inputParam = null)

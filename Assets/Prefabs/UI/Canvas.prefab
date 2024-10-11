@@ -314,7 +314,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layout: {fileID: 3489167297603397069}
   HpPoint: {fileID: 4213935029930152420, guid: a3cc673766a5a4b99a4eb304e7ec4b77, type: 3}
-  health: 65
   hp4eachGem: 20
 --- !u!114 &7640131992313707848
 MonoBehaviour:
@@ -606,7 +605,7 @@ MonoBehaviour:
   ConstructionButton: {fileID: 865466280609548005}
   JournalButton: {fileID: 5090653836785283584}
   CloseButton: {fileID: 2488923797732095543}
-  level: 3
+  level: 1
   backgroundImages:
   - {fileID: 21300000, guid: 5161d447c179641aaab4bc4f49668f1d, type: 3}
   - {fileID: 21300000, guid: 7b92d8d5d50c84396b58ca404e87013c, type: 3}

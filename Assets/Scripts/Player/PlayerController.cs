@@ -29,6 +29,7 @@ namespace Abyss.Player
 		// Animation support
 		[Header("Animation")]
 		[SerializeField] apPortrait portrait;
+		PlayerSfx _playerSfx;
 
 		[SerializeField] float crossFadeSeconds = .01f;
 
@@ -45,21 +46,23 @@ namespace Abyss.Player
 		[Header("Jump")]
 		[SerializeField] private float jumpForce = 100f;
 		// [SerializeField]
-		[SerializeField] private float initialJumpForce = 1500f;
+		[SerializeField] private float initialJumpImpulse = 1500f;
 		private const float MAX_JUMP_TIME = 0.3f;
 		private float remainingJumpTime = MAX_JUMP_TIME;
-		private bool isGrounded;
+		public bool isGrounded;
 		private bool isJumping;
 
 		[Header("Dash")]
-		[SerializeField] private float dashForce = 2000f;
+		[SerializeField] float dashImpulse = 2000f;
 		[SerializeField] float dashCooldown = 1.0f;
-		private Vector2 dashForceToAdd;
+		[SerializeField] float dashTime = 0.3f;
 		private bool isDashAvailable = true;
 		private bool isDashing = false;
-		private const float DASH_TIME = 0.25f;
-		private float remainingDashTime = DASH_TIME;
+		private float remainingDashTime;
 		private float dashCountdown;
+
+		[Header("Damage")]
+		[SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
 
 		public bool IsAttacking { get; private set; } = false;
 		bool isTakingDamage = false, isDead = false;
@@ -76,6 +79,7 @@ namespace Abyss.Player
 		private void Awake()
 		{
 			rb2D = GetComponent<Rigidbody2D>();
+			_playerSfx = GetComponent<PlayerSfx>();
 
 			portrait.Initialize();
 			currState = State.Idle;
@@ -91,10 +95,13 @@ namespace Abyss.Player
 			}
 
 			if (!IsAttacking && !isTakingDamage && !isDead) HandleState();
-			if (rb2D.velocity.x > 0 && isFacingLeft)
-				FlipSprite();
-			else if (rb2D.velocity.x < 0 && !isFacingLeft)
-				FlipSprite();
+			if (!isTakingDamage)
+			{
+				if (rb2D.velocity.x > 0 && isFacingLeft)
+					FlipSprite();
+				else if (rb2D.velocity.x < 0 && !isFacingLeft)
+					FlipSprite();
+			}
 
 			if (!isDashAvailable)
 				dashCountdown -= Time.deltaTime;
@@ -117,14 +124,9 @@ namespace Abyss.Player
 
 			if (isDashing)
 			{
+				// Debug.Log($"Dashing {remainingDashTime}");
 				if (remainingDashTime > 0f)
-				{
-					dashForceToAdd = isFacingLeft
-						? Vector2.left * dashForce
-						: Vector2.right * dashForce;
-					rb2D.AddForce(dashForceToAdd);
 					remainingDashTime -= Time.fixedDeltaTime;
-				}
 				else isDashing = false;
 			}
 		}
@@ -160,8 +162,6 @@ namespace Abyss.Player
 				case State.Attack:
 					if (!isGrounded)
 						TransitionToState(State.Jump);
-					else if (isDashing)
-						TransitionToState(State.Dash);
 					else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
 						TransitionToState(State.Run);
 					else if (currHorizontalSpeed == 0)
@@ -209,7 +209,13 @@ namespace Abyss.Player
 
 				case State.Dash:
 					if (!isDashing)
-						TransitionToState(State.Idle);
+					{
+						if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+							TransitionToState(State.Run);
+						else if (currHorizontalSpeed == 0)
+							TransitionToState(State.Idle);
+						else TransitionToState(State.Walk);
+					}
 					break;
 			}
 		}
@@ -245,16 +251,13 @@ namespace Abyss.Player
 		public void OnJump(InputAction.CallbackContext context)
 		{
 			if (IsAttacking || isTakingDamage || isDead) return;
-			if (context.started)
+			if (context.started && isGrounded)
 			{
-				// Start jumping
-				if (isGrounded)
-				{
-					rb2D.AddForce(Vector2.up * initialJumpForce);
-					remainingJumpTime = MAX_JUMP_TIME;
-					isJumping = true;
-					TransitionToState(State.Jump);
-				}
+				_playerSfx.PlayJump();
+				rb2D.AddForce(Vector2.up * initialJumpImpulse, ForceMode2D.Impulse);
+				remainingJumpTime = MAX_JUMP_TIME;
+				isJumping = true;
+				TransitionToState(State.Jump);
 			}
 			else if (context.canceled)
 			{
@@ -275,24 +278,18 @@ namespace Abyss.Player
 		public void OnMove(InputAction.CallbackContext context)
 		{
 			moveDir = context.ReadValue<float>();
-			// Debug.Log("curr h speed: " + currHorizontalSpeed);
 		}
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
 			if (IsAttacking || isTakingDamage || isDead) return;
-			if (isDashAvailable
-				&& (
-					currState == State.Idle
-					|| currState == State.Walk
-					|| currState == State.Run
-					|| currState == State.Jump
-				)
-			)
+			if (context.started && isDashAvailable)
 			{
+				_playerSfx.PlayDash();
 				isDashing = true;
-				remainingDashTime = DASH_TIME;
+				remainingDashTime = dashTime;
 				isDashAvailable = false;
+				rb2D.AddForce((isFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
 				TransitionToState(State.Dash);
 			}
 		}
@@ -315,15 +312,22 @@ namespace Abyss.Player
 				OnAttemptInteract?.Invoke();
 		}
 
-		public bool TakeHit()
+		public bool TakeHit(bool hasKnockback, Vector3 from)
 		{
 			if (isTakingDamage || isDead) return true;
 			IsAttacking = false;
-			isDashing = false;
-			remainingDashTime = 0f;
+			_playerSfx.PlayHurt();
+			if (isDashing)
+			{
+				// NOTE: compensate for dash -> damage then in Update method isTakingDamage check preserves dashing momentum
+				isDashing = false;
+				remainingDashTime = 0f;
+				if (hasKnockback) rb2D.AddForce((rb2D.velocity.x > 0 ? Vector2.left : Vector2.right) * knockbackImpulse, ForceMode2D.Impulse);
+			}
 			isJumping = false;
 			remainingJumpTime = 0f;
 			isTakingDamage = true;
+			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * knockbackImpulse, ForceMode2D.Impulse);
 			TransitionToState(State.Damage);
 			return false;
 		}
