@@ -45,6 +45,21 @@ public class DialogueManager : Singleton<DialogueManager>
         PreserveSpriteAspect();
     }
 
+    private void Update()
+    {
+        if (UiStatus.IsDisabled()) return;
+
+        if (Input.GetKey(KeyCode.LeftShift) && InDialogue)
+        {
+            StartCoroutine(Skip());
+        }
+
+        if (InputManager.DialogButtonActivated && InDialogue)
+        {
+            HandleDialogButtonClick();
+        }
+    }
+
     private void PreserveSpriteAspect()
     {
         leftSprite.preserveAspect = true;
@@ -115,8 +130,15 @@ public class DialogueManager : Singleton<DialogueManager>
     private void HandleDialogButtonClick()
     {
         if (!isCurrentLinePrinting)
+        {
             ReadNext();
-        else SkipCurrentLine();
+        }
+        else
+        {
+            SkipCurrentLine();
+        }
+
+        InputManager.DialogButtonActivated = false;
     }
 
     private void SkipCurrentLine()
@@ -216,7 +238,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         if (currentLine.Audio != null)
         {
-            AudioManager.Instance.PlaySFX(currentLine.Audio);
+            AudioManager.Instance.StartPlayingSoundEffectAudio(currentLine.Audio);
         }
     }
 

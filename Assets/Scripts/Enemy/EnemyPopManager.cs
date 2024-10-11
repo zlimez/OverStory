@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Abyss.EventSystem;
 using Abyss.Utils;
 using Algorithms;
 using Tuples;
@@ -11,9 +10,8 @@ using UnityEngine.Assertions;
 namespace Abyss.Environment.Enemy
 {
     // NOTE: Population for each specy should be large compared to the number of spawning locations
-    public class EnemyPopManager : PersistentSystem<EnemyPopManager>
+    public class EnemyPopManager : PersistentSingleton<EnemyPopManager>
     {
-        public static readonly GameEvent EnemyPopManagerReady = new("EnemyPopManager Ready");
         [Tooltip("Species attributes and initial population count")]
         public Pair<SpecyAttr, int>[] SpeciesAttrAndInitCount;
         readonly GA _ga = new();
@@ -57,8 +55,6 @@ namespace Abyss.Environment.Enemy
                     _speciesConfig.Add(specyAttr.specyName, specyAttr);
                 }
             }
-            EventManager.InvokeEvent(EnemyPopManagerReady);
-            IsReady = true;
         }
 
         public void SaveNPCs(string fileName = "npcData.json")
@@ -160,7 +156,7 @@ namespace Abyss.Environment.Enemy
                 {
                     while (bpt > i && !specyPop[--bpt].isAlive) ;
                     if (bpt == i) break;
-                    // Debug.Log("Swapping dead enemy at " + i + " with alive enemy at " + bpt);
+                    Debug.Log("Swapping dead enemy at " + i + " with alive enemy at " + bpt);
                     (specyPop[i], specyPop[bpt]) = (specyPop[bpt], specyPop[i]);
                 }
             }

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Abyss.SceneSystem;
 using Abyss.EventSystem;
 
@@ -6,18 +7,30 @@ namespace Abyss.Utils
 {
     class Parser
     {
-        public static StaticEvent GetStaticEventFromText(string text)
+        public static StaticEvent getStaticEventFromText(String text)
         {
             if (Enum.TryParse(text, out StaticEvent parsedEvent))
+            {
                 return parsedEvent;
-            else return StaticEvent.NoEvent;
+            }
+            else
+            {
+                Debug.Log("Invalid event text: " + text);
+                return StaticEvent.NoEvent;
+            }
         }
 
-        public static AbyssScene GetSceneFromText(string text)
+        public static AbyssScene getSceneFromText(String text)
         {
             if (Enum.TryParse(text, out AbyssScene parsedScene))
+            {
                 return parsedScene;
-            else return AbyssScene.None;
+            }
+            else
+            {
+                Debug.Log("Invalid scene text: " + text);
+                return AbyssScene.None;
+            }
         }
     }
 }
