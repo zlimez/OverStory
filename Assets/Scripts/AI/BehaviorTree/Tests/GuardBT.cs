@@ -25,13 +25,14 @@ public class GuardBT : MonoBehaviour
             new("waitTime", waitTime),
             new("attackTime", attackTime),
             new("waypoints", waypoints),
+            new("targetName", "target"),
             new("charTransform", GetComponent<Transform>())
         };
 
         bT = new BT(new ActiveSelector(new List<Node>{
             new Sequence(new List<Node>{
                 new CheckEnemyInRange(new string[] { "charTransform", "range" }),
-                new GoToTarget(new string[] { "chaseSpeed", "charTransform" }),
+                new GotoTfmBySpd(new string[] { "chaseSpeed", "charTransform", "targetName" }),
                 new Attack(new string[] { "attackTime", "hitpoints" })
             }),
             new Patrol(new string[] { "patrolSpeed", "waypoints", "charTransform", "waitTime" })

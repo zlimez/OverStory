@@ -9,11 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Master.unity
     guid: ab018b9a945c11042958a1302621ee12
   - enabled: 1
-    path: Assets/Scenes/SystemTests/GATest.unity
-    guid: e52cbaa9ad5174f8c9358d9511d328f2
-  - enabled: 1
-    path: Assets/Scenes/SystemTests/GATestNext.unity
-    guid: 26096703f31f04558bd41f534605ca25
+    path: Assets/Scenes/Lab.unity
+    guid: dfb07293cd9864e4cb3c19ec98b5a268
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 593e09fe5962a434e968d3dd9727c02b,
       type: 2}

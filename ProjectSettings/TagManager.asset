@@ -16,7 +16,9 @@ TagManager:
   - UI
   - Enemy
   - Ground
-  - 
+  - Post Processing
+  - Lights
+  - Pickable Item
   - 
   - 
   - 
@@ -49,6 +51,9 @@ TagManager:
     locked: 0
   - name: Buildings
     uniqueID: 1553467001
+    locked: 0
+  - name: Pickable Item
+    uniqueID: 2553922309
     locked: 0
   - name: Characters
     uniqueID: 1528761381

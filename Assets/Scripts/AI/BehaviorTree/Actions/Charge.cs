@@ -60,28 +60,19 @@ public class Charge : CfAction
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Wake.ToString());
             }
             else if (restTimer >= pauseTime)
-            {
-                isResting = false;
-                restTimer = 0;
                 State = State.SUCCESS; // One set of charge is done
-            }
             else
                 restTimer += Time.deltaTime;
         }
         else
         {
-            if (chargeTimer == 0)
-            {
-                _chargeTypeAnim.TransitionToState(HogAnim.State.ChargeUp.ToString());
-                startPos = _transform.position;
-            }
+            if (chargeTimer == 0) _chargeTypeAnim.TransitionToState(HogAnim.State.ChargeUp.ToString());
 
             if (chargeTimer >= chargeTime + _chargeupTime)
             {
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
                 _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;
-                chargeTimer = 0;
                 pauseTime = _restTime;
                 return;
             }
@@ -93,7 +84,6 @@ public class Charge : CfAction
                 _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;
                 isStunned = true;
-                chargeTimer = 0;
                 pauseTime = _restTime + _stunTime;
                 return;
             }
@@ -110,8 +100,15 @@ public class Charge : CfAction
         }
     }
 
-    void ChargeHit(float str)
+    protected override void OnInit()
     {
-        Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg);
+        base.OnInit();
+        chargeTimer = 0;
+        isResting = false;
+        isStunned = false;
+        restTimer = 0;
+        startPos = _transform.position;
     }
+
+    void ChargeHit(float str) => Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg, true, _enemyManager.transform.position);
 }

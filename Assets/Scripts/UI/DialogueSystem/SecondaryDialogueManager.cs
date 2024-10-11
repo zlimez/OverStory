@@ -53,12 +53,12 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 
     void OnEnable()
     {
-        EventManager.StartListening(SystemEventCollection.TransitionWithMaster, ForceCloseDialogueUI);
+        EventManager.StartListening(SystemEventCollection.SceneTransitWithMasterStart, ForceCloseDialogueUI);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(SystemEventCollection.TransitionWithMaster, ForceCloseDialogueUI);
+        EventManager.StopListening(SystemEventCollection.SceneTransitWithMasterStart, ForceCloseDialogueUI);
     }
 
     private void PreserveSpriteAspect()
@@ -180,7 +180,7 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
     {
         if (currentLine.Audio != null)
         {
-            AudioManager.Instance.StartPlayingSoundEffectAudio(currentLine.Audio);
+            AudioManager.Instance.PlaySFX(currentLine.Audio);
         }
     }
 

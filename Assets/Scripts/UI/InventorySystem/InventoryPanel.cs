@@ -1,5 +1,5 @@
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
@@ -16,19 +16,19 @@ public class InventorySystem : MonoBehaviour
     public Button ConstructionButton;
     public Button JournalButton;
     public Button CloseButton;
-    
 
-    public int level = 3; 
-    public Sprite[] backgroundImages;  
-    public Image inventoryBackground;  
-    public Sprite[] BagImages;  
-    public Image BagBG;  
-    public Sprite[] SpellImages;  
-    public Image SpellBG;  
-    public Sprite[] ConstructionImages;  
-    public Image ConstructionBG;  
-    public Sprite[] JournalImages;  
-    public Image JournalBG;  
+
+    public int level = 3;
+    public Sprite[] backgroundImages;
+    public Image inventoryBackground;
+    public Sprite[] BagImages;
+    public Image BagBG;
+    public Sprite[] SpellImages;
+    public Image SpellBG;
+    public Sprite[] ConstructionImages;
+    public Image ConstructionBG;
+    public Sprite[] JournalImages;
+    public Image JournalBG;
 
     private bool isInventoryOpen = false;
     private bool isBagOpen = false;
@@ -40,7 +40,7 @@ public class InventorySystem : MonoBehaviour
     {
         inventoryPanel.SetActive(false);
 
-        UpdateInventoryImage(level-1);
+        UpdateInventoryImage(level - 1);
 
         BagButton.onClick.AddListener(OpenBag);
         SpellButton.onClick.AddListener(OpenSpell);
@@ -49,10 +49,11 @@ public class InventorySystem : MonoBehaviour
         CloseButton.onClick.AddListener(ToggleInventory);
     }
 
-    void Update()
+    public void OnOpenInventory(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (context.performed)
         {
+            Debug.Log("I key pressed, toggling inventory.");
             ToggleInventory();
             OpenBag();
         }
@@ -66,7 +67,7 @@ public class InventorySystem : MonoBehaviour
 
     void UpdateInventoryImage(int order)
     {
-        Debug.Log("level: "+order);
+        Debug.Log("level: " + order);
         if (order >= 0 && order < backgroundImages.Length)
         {
             inventoryBackground.sprite = backgroundImages[order];
@@ -77,10 +78,10 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void LevelUp()
+    public void UpdateLevel(int le)
     {
-        level++;
-        UpdateInventoryImage(level-1);
+        level = le;
+        UpdateInventoryImage(level - 1);
     }
 
     void OpenBag()
@@ -146,5 +147,5 @@ public class InventorySystem : MonoBehaviour
         isJournalOpen = false;
         Journal.SetActive(isJournalOpen);
     }
-    
+
 }

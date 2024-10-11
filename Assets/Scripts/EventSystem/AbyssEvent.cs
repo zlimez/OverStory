@@ -7,12 +7,12 @@ namespace Abyss.EventSystem
     public enum StaticEvent
     {
         NoEvent = 0,
-        GameManagerReady = 1,
-        SceneTransitWithMaster = 2,
+        SystemsReady = 1,
+        SceneTransitWithMasterStart = 2,
         SceneTransitWithMasterDone = 3,
         SceneTransition = 4,
-        CurtainDrawn = 5,
-        CurtainOpen = 6,
+        BlackIn = 5,
+        BlackOut = 6,
         PrepToTeleport = 7,
         OpenInventory = 8,
         ItemUsed = 9,
@@ -22,7 +22,8 @@ namespace Abyss.EventSystem
         ObjectPutDown = 13,
         InteractableEntered = 14,
         InteractableExited = 15,
-        PlayerHealthChange = 16
+        PlayerHealthChange = 16,
+        PlayerPurityChange = 17
     }
 
 

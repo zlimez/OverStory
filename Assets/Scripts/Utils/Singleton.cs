@@ -49,4 +49,9 @@ namespace Abyss.Utils
             DontDestroyOnLoad(gameObject);
         }
     }
+
+    public abstract class PersistentSystem<T> : PersistentSingleton<T> where T : MonoBehaviour
+    {
+        public bool IsReady { get; protected set; } = false;
+    }
 }
