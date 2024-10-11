@@ -24,7 +24,7 @@ public class Item : ScriptableObject
     {
         // Non consumables will be inspected instead via zoom box
         if (!isConsumable)
-            Inventory.Instance.onItemInspected?.Invoke(this);
+            GameManager.Instance.Inventory.OnItemInspected?.Invoke(this);
         EventManager.InvokeEvent(itemUsedEvent);
     }
 

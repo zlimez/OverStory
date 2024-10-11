@@ -48,15 +48,7 @@ public class InventorySystem : MonoBehaviour
         JournalButton.onClick.AddListener(OpenJournal);
         CloseButton.onClick.AddListener(ToggleInventory);
     }
-    
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.I))
-    //     {
-    //         ToggleInventory();
-    //         OpenBag();
-    //     }
-    // }
+
     public void OnOpenInventory(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -89,7 +81,7 @@ public class InventorySystem : MonoBehaviour
     public void UpdateLevel(int le)
     {
         level = le;
-        UpdateInventoryImage(level-1);
+        UpdateInventoryImage(level - 1);
     }
 
     void OpenBag()

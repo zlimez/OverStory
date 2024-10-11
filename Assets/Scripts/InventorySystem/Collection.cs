@@ -6,7 +6,7 @@ public class Collection
     private int _capacity;
     public List<Countable<Item>> Items { get; private set; }
     public Dictionary<Item, Countable<Item>> ItemsTable { get; private set; }
-    public Action onItemChanged;
+    public Action OnItemChanged;
     public Action<Item> onNewItemAdded;
 
     public Collection(List<Countable<Item>> items = null, int capacity = 10)
@@ -34,7 +34,7 @@ public class Collection
             onNewItemAdded?.Invoke(item);
         }
 
-        onItemChanged?.Invoke();
+        OnItemChanged?.Invoke();
         return true;
     }
 
@@ -71,7 +71,7 @@ public class Collection
             if (noneLeft)
                 RemoveItem(item);
 
-            onItemChanged?.Invoke();
+            OnItemChanged?.Invoke();
             return true;
         }
         return false;
@@ -85,7 +85,7 @@ public class Collection
             if (noneLeft)
                 RemoveItem(item);
 
-            onItemChanged?.Invoke();
+            OnItemChanged?.Invoke();
             return true;
         }
         return false;

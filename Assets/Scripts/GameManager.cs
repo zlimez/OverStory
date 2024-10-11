@@ -1,8 +1,6 @@
-using Abyss.EventSystem;
 using UnityEngine;
 using Abyss.Utils;
-using Abyss.SceneSystem;
-using Abyss.Environment.Enemy;
+using Abyss.EventSystem;
 
 /// <summary>
 /// Manages game-related data and states that persist throughout the session.
@@ -13,13 +11,14 @@ public class GameManager : Singleton<GameManager>
     public SecondaryConversation CutsceneSecondaryConversation;
     public GameObject InteractableHint;
 
-    public void PauseGame()
+    public Inventory Inventory = new();
+
+    protected override void Awake()
     {
-        Time.timeScale = 0;
+        base.Awake();
+        EventManager.InvokeEvent(SystemEventCollection.SystemsReady);
     }
 
-    public void ResumeGame()
-    {
-        Time.timeScale = 1;
-    }
+    public void PauseGame() => Time.timeScale = 0;
+    public void ResumeGame() => Time.timeScale = 1;
 }

@@ -21,7 +21,7 @@ public class AddItemButton : MonoBehaviour
     {
         if (item != null && quantity > 0)
         {
-            Inventory.Instance.AddTo(item, quantity);
+            GameManager.Instance.Inventory.AddTo(item, quantity);
         }
     }
 }

@@ -11,10 +11,10 @@ public class SlotController : MonoBehaviour
     public GameObject backgroundPanel;
 
     public Sprite[] SlotBG;
-    public Image SlotBGImage; 
+    public Image SlotBGImage;
 
     public GameObject tooltipPanel; // Reference to the tooltip panel
-    public TextMeshProUGUI tooltipText; 
+    public TextMeshProUGUI tooltipText;
 
     public Button slotButton;
     public GameObject contextMenu; // The context menu UI (to display options like Equip, Discard)
@@ -27,7 +27,7 @@ public class SlotController : MonoBehaviour
         {
             itemIcon.sprite = itemStack.Data.icon;
             itemCount.text = itemStack.Count.ToString();
-            SlotBGImage.sprite = SlotBG[level-1];
+            SlotBGImage.sprite = SlotBG[level - 1];
         }
     }
     void Start()
@@ -39,8 +39,8 @@ public class SlotController : MonoBehaviour
 
     public void ShowTooltip()
     {
-        tooltipPanel.SetActive(true); 
-        tooltipText.text = itemStack.Data.description; 
+        tooltipPanel.SetActive(true);
+        tooltipText.text = itemStack.Data.description;
     }
 
     public void CloseTooltip()
@@ -52,7 +52,7 @@ public class SlotController : MonoBehaviour
     {
         contextMenu.SetActive(true);
         backgroundPanel.SetActive(true);
-        ClearContextMenuOptions(); 
+        ClearContextMenuOptions();
 
         // Determine item type and add appropriate options
         if (itemStack.Data.itemType == ItemType.Weapons) AddOptionToContextMenu("Equip", EquipItem);
@@ -70,7 +70,7 @@ public class SlotController : MonoBehaviour
     {
         foreach (Transform child in contextMenu.transform)
         {
-            Destroy(child.gameObject); 
+            Destroy(child.gameObject);
         }
     }
 
@@ -80,15 +80,15 @@ public class SlotController : MonoBehaviour
         TextMeshProUGUI text = newOption.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         text.text = optionName;
         Button button = newOption.GetComponent<Button>();
-        button.onClick.AddListener(action);  
+        button.onClick.AddListener(action);
     }
 
     // Method to equip the item (for Weapon)
     void EquipItem()
     {
         Debug.Log("Equipping " + itemStack.Data.itemName);
-        Inventory.Instance.MaterialCollection.UseItem(itemStack.Data);
-        Inventory.Instance.MaterialCollection.DiscardItem(itemStack.Data);
+        GameManager.Instance.Inventory.MaterialCollection.UseItem(itemStack.Data);
+        GameManager.Instance.Inventory.MaterialCollection.DiscardItem(itemStack.Data);
         CloseContextMenu();
     }
 
@@ -96,7 +96,7 @@ public class SlotController : MonoBehaviour
     void UseItem()
     {
         Debug.Log("Using " + itemStack.Data.itemName);
-        Inventory.Instance.MaterialCollection.UseItem(itemStack.Data);
+        GameManager.Instance.Inventory.MaterialCollection.UseItem(itemStack.Data);
         CloseContextMenu();
     }
 
@@ -105,7 +105,7 @@ public class SlotController : MonoBehaviour
     {
         Debug.Log("Discarding " + itemStack.Data.itemName);
         DropItemInScene(itemStack.Data);
-        Inventory.Instance.MaterialCollection.DiscardItem(itemStack.Data);
+        GameManager.Instance.Inventory.MaterialCollection.DiscardItem(itemStack.Data);
         CloseContextMenu();
     }
 

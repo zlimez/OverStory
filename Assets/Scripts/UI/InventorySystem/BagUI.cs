@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Abyss.EventSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,21 +12,21 @@ public class BagUI : MonoBehaviour
     public Button FarmablesButton;
     public GameObject scrollViewContent;
     public GameObject SlotPrefab;
-    private Collection playerInventory; 
+    private Collection playerInventory;
 
-    public int level = 1; 
+    public int level = 1;
     public Sprite[] ConsumablesButtonInactive;
     public Sprite[] ConsumablesButtonActive;
-    public Image ConsumablesButtonImage; 
+    public Image ConsumablesButtonImage;
     public Sprite[] WeaponsButtonInactive;
     public Sprite[] WeaponsButtonActive;
-    public Image WeaponsButtonImage; 
+    public Image WeaponsButtonImage;
     public Sprite[] MaterialsButtonInactive;
     public Sprite[] MaterialsButtonActive;
-    public Image MaterialsButtonImage; 
+    public Image MaterialsButtonImage;
     public Sprite[] FarmablesButtonInactive;
     public Sprite[] FarmablesButtonActive;
-    public Image FarmablesButtonImage; 
+    public Image FarmablesButtonImage;
 
     private bool showConsumables = false;
     private bool showWeapons = false;
@@ -45,13 +46,18 @@ public class BagUI : MonoBehaviour
 
     void OnEnable()
     {
-        UpdateBagUI();
-        Inventory.Instance.MaterialCollection.onItemChanged += UpdateBagUI;
+        if (GameManager.Instance == null)
+            EventManager.StartListening(SystemEventCollection.SystemsReady, AddUpdateBagUITask);
+        else GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
     }
-    void OnDisable()
+
+    void AddUpdateBagUITask(object input = null)
     {
-        Inventory.Instance.MaterialCollection.onItemChanged -= UpdateBagUI;
+        GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
+        EventManager.StopListening(SystemEventCollection.SystemsReady, AddUpdateBagUITask);
     }
+
+    void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
 
     void ToggleShowConsumables()
     {
@@ -105,14 +111,14 @@ public class BagUI : MonoBehaviour
     }
     public void UpdateButton()
     {
-        if(showConsumables) ConsumablesButtonImage.sprite = ConsumablesButtonActive[level-1];
-        else ConsumablesButtonImage.sprite = ConsumablesButtonInactive[level-1];
-        if(showWeapons) WeaponsButtonImage.sprite = WeaponsButtonActive[level-1];
-        else WeaponsButtonImage.sprite = WeaponsButtonInactive[level-1];
-        if(showMaterials) MaterialsButtonImage.sprite = MaterialsButtonActive[level-1];
-        else MaterialsButtonImage.sprite = MaterialsButtonInactive[level-1];
-        if(showFarmables) FarmablesButtonImage.sprite = FarmablesButtonActive[level-1];
-        else FarmablesButtonImage.sprite = FarmablesButtonInactive[level-1];
+        if (showConsumables) ConsumablesButtonImage.sprite = ConsumablesButtonActive[level - 1];
+        else ConsumablesButtonImage.sprite = ConsumablesButtonInactive[level - 1];
+        if (showWeapons) WeaponsButtonImage.sprite = WeaponsButtonActive[level - 1];
+        else WeaponsButtonImage.sprite = WeaponsButtonInactive[level - 1];
+        if (showMaterials) MaterialsButtonImage.sprite = MaterialsButtonActive[level - 1];
+        else MaterialsButtonImage.sprite = MaterialsButtonInactive[level - 1];
+        if (showFarmables) FarmablesButtonImage.sprite = FarmablesButtonActive[level - 1];
+        else FarmablesButtonImage.sprite = FarmablesButtonInactive[level - 1];
     }
     public void UpdateBagUI()
     {
@@ -123,7 +129,7 @@ public class BagUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        playerInventory = Inventory.Instance.MaterialCollection;
+        playerInventory = GameManager.Instance.Inventory.MaterialCollection;
         foreach (var itemStack in playerInventory.Items)
         {
             if (showConsumables && itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables) continue;
@@ -134,7 +140,7 @@ public class BagUI : MonoBehaviour
 
             if (itemStack.Count <= 0) continue;
             GameObject slot = Instantiate(SlotPrefab, scrollViewContent.transform);
-            
+
             SlotController slotController = slot.GetComponent<SlotController>();
             if (slotController != null)
             {

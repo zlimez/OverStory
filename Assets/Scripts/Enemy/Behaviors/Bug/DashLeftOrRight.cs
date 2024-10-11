@@ -141,9 +141,6 @@ namespace BehaviorTree.Actions
             _duration = Math.Abs(_destPos.x - _startPos.x) / _speed;
         }
 
-        void DashHit(float str)
-        {
-            Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _damage, true, _enemyManager.transform.position);
-        }
+        void DashHit(float str) => Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _damage, true, _enemyManager.transform.position);
     }
 }

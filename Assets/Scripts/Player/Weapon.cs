@@ -30,7 +30,7 @@ namespace Abyss.Player
 
         void Equip(object obj)
         {
-            if(_weaponItem!=null) Inventory.Instance.AddTo(_weaponItem);
+            if (_weaponItem != null) GameManager.Instance.Inventory.AddTo(_weaponItem);
             _weaponItem = (WeaponItem)obj;
         }
 

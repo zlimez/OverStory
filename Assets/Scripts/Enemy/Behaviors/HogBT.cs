@@ -74,15 +74,19 @@ public class HogBT : MonoBT
             new("aggro", aggro),
             new("hog", transform),
             new("hogSprite", GetComponent<SpriteManager>()),
-            new("hogAnim", GetComponent<PortraitAnim>()),
+            new("hogAnimator", GetComponent<PortraitAnim>()),
+            new("hogWalkAnim", HogAnim.State.Walk.ToString()),
+            new("hogIdleAnim", HogAnim.State.Idle.ToString()),
+
+
 
             new("chargeDamage", chargeDamage),
             new("chargeDamageCooldown", chargeDamageCooldown),
             new("hogManager", GetComponent<EnemyManager>())
         };
 
-        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist", "chargeDamage", "hogManager" };
-        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnim", "stunRaycastDist", "chargeDamage", "hogManager" };
+        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager" };
+        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
                 new CheckPlayerInAggro(new string[] { "aggro" }),
@@ -103,7 +107,7 @@ public class HogBT : MonoBT
                     },
                     new string[][] { new string[] { "target", "hog" }, new string[] { "target", "hog" }}
                 )
-            }), new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnim" })
+            }), new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnimator", "hogIdleAnim", "hogWalkAnim" })
         }, new string[] { aggro.EEEvent }, (obj) => { return true; })
         , hogParams, new Blackboard[] { bb });
     }
