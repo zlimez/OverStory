@@ -6,9 +6,9 @@ namespace Abyss.Environment.Enemy
     {
         [SerializeField] Transform[] waypoints;
 
-        public override bool Spawn(object attr)
+        public override bool Setup(object attr)
         {
-            if (!base.Spawn(attr)) return false;
+            if (!base.Setup(attr)) return false;
             HogBT hogBT = _instance.GetComponent<HogBT>();
             hogBT.waypoints = waypoints;
             hogBT.Setup();

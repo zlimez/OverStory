@@ -60,7 +60,11 @@ public class Charge : CfAction
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Wake.ToString());
             }
             else if (restTimer >= pauseTime)
+            {
+                isResting = false;
+                restTimer = 0;
                 State = State.SUCCESS; // One set of charge is done
+            }
             else
                 restTimer += Time.deltaTime;
         }
@@ -77,6 +81,7 @@ public class Charge : CfAction
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Idle.ToString());
                 _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;
+                chargeTimer = 0;
                 pauseTime = _restTime;
                 return;
             }
@@ -88,6 +93,7 @@ public class Charge : CfAction
                 _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;
                 isStunned = true;
+                chargeTimer = 0;
                 pauseTime = _restTime + _stunTime;
                 return;
             }
@@ -104,17 +110,8 @@ public class Charge : CfAction
         }
     }
 
-    protected override void OnInit()
-    {
-        base.OnInit();
-        chargeTimer = 0;
-        isResting = false;
-        isStunned = false;
-        restTimer = 0;
-    }
-
     void ChargeHit(float str)
     {
-        Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg, true, _enemyManager.transform.position);
+        Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg);
     }
 }

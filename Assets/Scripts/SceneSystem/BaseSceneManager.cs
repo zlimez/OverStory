@@ -9,9 +9,11 @@ namespace Abyss.SceneSystem
     {
         protected virtual void Awake()
         {
-            // Load the master scene if it is not already loaded
+            // Load the base scene if base scene is not already loaded in the background
             if (SceneLoader.Instance == null || SceneManager.GetActiveScene().name != AbyssScene.Master.ToString())
+            {
                 SceneManager.LoadSceneAsync(AbyssScene.Master.ToString(), LoadSceneMode.Additive);
+            }
         }
     }
 }

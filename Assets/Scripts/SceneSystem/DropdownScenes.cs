@@ -1,4 +1,3 @@
-using Abyss.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,7 +40,7 @@ namespace Abyss.SceneSystem
 
         public void PlayGame()
         {
-            SceneLoader.Instance.PrepLoadWithMaster(Parser.GetSceneFromText(dropdown.options[dropdown.value].text));
+            SceneLoader.Instance.PrepLoadWithMaster(dropdown.options[dropdown.value].text);
         }
     }
 }

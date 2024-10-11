@@ -15,7 +15,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         if (GameManager.Instance == null)
         {
             Debug.Log("GameManager not initialized yet");
-            EventManager.StartListening(SystemEventCollection.SystemsReady, StartConvoIfPresent);
+            EventManager.StartListening(SystemEventCollection.GameManagerReady, StartConvoIfPresent);
         }
         else
         {
