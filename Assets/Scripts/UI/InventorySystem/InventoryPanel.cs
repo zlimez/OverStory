@@ -41,25 +41,18 @@ public class InventorySystem : MonoBehaviour
         inventoryPanel.SetActive(false);
 
         UpdateInventoryImage(level - 1);
-
-        BagButton.onClick.AddListener(OpenBag);
-        SpellButton.onClick.AddListener(OpenSpell);
-        ConstructionButton.onClick.AddListener(OpenConstruction);
-        JournalButton.onClick.AddListener(OpenJournal);
-        CloseButton.onClick.AddListener(ToggleInventory);
     }
 
     public void OnOpenInventory(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Debug.Log("I key pressed, toggling inventory.");
             ToggleInventory();
             OpenBag();
         }
     }
 
-    void ToggleInventory()
+    public void ToggleInventory()
     {
         isInventoryOpen = !isInventoryOpen;
         inventoryPanel.SetActive(isInventoryOpen);
@@ -84,7 +77,7 @@ public class InventorySystem : MonoBehaviour
         UpdateInventoryImage(level - 1);
     }
 
-    void OpenBag()
+    public void OpenBag()
     {
         isBagOpen = true;
         Bag.SetActive(isBagOpen);
@@ -100,7 +93,7 @@ public class InventorySystem : MonoBehaviour
         Bag.SetActive(isBagOpen);
     }
 
-    void OpenSpell()
+    public void OpenSpell()
     {
         isSpellOpen = true;
         Spell.SetActive(isSpellOpen);
@@ -116,7 +109,7 @@ public class InventorySystem : MonoBehaviour
         Spell.SetActive(isSpellOpen);
     }
 
-    void OpenConstruction()
+    public void OpenConstruction()
     {
         isConstructionOpen = true;
         Construction.SetActive(isConstructionOpen);
@@ -132,7 +125,7 @@ public class InventorySystem : MonoBehaviour
         Construction.SetActive(isConstructionOpen);
     }
 
-    void OpenJournal()
+    public void OpenJournal()
     {
         isJournalOpen = true;
         Journal.SetActive(isJournalOpen);
