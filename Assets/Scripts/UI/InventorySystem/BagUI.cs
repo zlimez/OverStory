@@ -35,12 +35,6 @@ public class BagUI : MonoBehaviour
 
     void Start()
     {
-        ConsumablesButton.onClick.AddListener(ToggleShowConsumables);
-        WeaponsButton.onClick.AddListener(ToggleShowWeapons);
-        MaterialsButton.onClick.AddListener(ToggleShowMaterials);
-        FarmablesButton.onClick.AddListener(ToggleShowFarmables);
-
-        // Initial update to show all items
         UpdateBagUI();
     }
 
@@ -48,18 +42,23 @@ public class BagUI : MonoBehaviour
     {
         if (GameManager.Instance == null)
             EventManager.StartListening(SystemEventCollection.SystemsReady, AddUpdateBagUITask);
-        else GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
+        else
+        {
+            UpdateBagUI();
+            GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
+        }
     }
 
     void AddUpdateBagUITask(object input = null)
     {
+        UpdateBagUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
         EventManager.StopListening(SystemEventCollection.SystemsReady, AddUpdateBagUITask);
     }
 
     void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
 
-    void ToggleShowConsumables()
+    public void ToggleShowConsumables()
     {
         showConsumables = !showConsumables;
         if (showConsumables)
@@ -70,7 +69,7 @@ public class BagUI : MonoBehaviour
         }
         UpdateBagUI();
     }
-    void ToggleShowWeapons()
+    public void ToggleShowWeapons()
     {
         showWeapons = !showWeapons;
         if (showWeapons)
@@ -81,7 +80,7 @@ public class BagUI : MonoBehaviour
         }
         UpdateBagUI();
     }
-    void ToggleShowMaterials()
+    public void ToggleShowMaterials()
     {
         showMaterials = !showMaterials;
         if (showMaterials)
@@ -92,7 +91,7 @@ public class BagUI : MonoBehaviour
         }
         UpdateBagUI();
     }
-    void ToggleShowFarmables()
+    public void ToggleShowFarmables()
     {
         showFarmables = !showFarmables;
         if (showFarmables)
