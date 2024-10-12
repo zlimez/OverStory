@@ -78,7 +78,7 @@ public class BloomBT : MonoBT
         , bloomParams, new Blackboard[] { bb });
     }
 
-#if DEBUG
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

@@ -8,9 +8,9 @@ namespace Abyss.EventSystem
     {
         NoEvent = 0,
         SystemsReady = 1,
-        SceneTransitWithMasterStart = 2,
-        SceneTransitWithMasterDone = 3,
-        SceneTransition = 4,
+        SceneTransitStart = 2,
+        SceneTransitDone = 3,
+        SceneTransitPrep = 4,
         BlackIn = 5,
         BlackOut = 6,
         PrepToTeleport = 7,

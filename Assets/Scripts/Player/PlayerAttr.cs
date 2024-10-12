@@ -3,12 +3,21 @@ using System;
 namespace Abyss.Player
 {
     [Serializable]
-    public class PlayerAttr
+    public struct PlayerAttr
     {
-        public float strength;
-        public float intelligence;
-        public float agility;
-        public float health;
-        public float purity;
+        public float Strength;
+        public float Intelligence;
+        public float Agility;
+        public float Health;
+        public float Purity;
+
+        public PlayerAttr(float strength, float intelligence, float agility, float health, float purity)
+        {
+            this.Strength = strength;
+            this.Intelligence = intelligence;
+            this.Agility = agility;
+            this.Health = health;
+            this.Purity = purity;
+        }
     }
 }

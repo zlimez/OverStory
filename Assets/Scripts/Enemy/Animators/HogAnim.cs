@@ -34,7 +34,7 @@ namespace Abyss.Environment.Enemy.Anim
 
         public void StateBySpeed(float speed)
         {
-#if DEBUG
+#if UNITY_EDITOR
             Assert.IsTrue(speed >= 0);
 #endif
             if (speed == 0)

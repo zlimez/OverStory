@@ -33,19 +33,15 @@ namespace Abyss.SceneSystem
 
         public void PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
         {
-            InTransit = true;
-            GameManager.Instance.PauseGame();
-            EventManager.InvokeEvent(SystemEventCollection.SceneTransitWithMasterStart);
-
             if (currLoadWithMaster != null)
             {
                 Debug.LogWarning("Last Scene have not completed loading");
                 return;
             }
+            EventManager.InvokeEvent(SystemEventCollection.SceneTransitPrep);
             currLoadWithMaster = (object input) =>
             {
                 if (ActiveScene != AbyssScene.Master) LastScene = ActiveScene;
-
                 UnloadScenes(discardedScenes);
                 StartCoroutine(LoadSceneAsync(newScene, removeMasterAftTransit));
             };
@@ -76,11 +72,13 @@ namespace Abyss.SceneSystem
             }
         }
 
-        private IEnumerator LoadSceneAsync(AbyssScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool isQueued = true)
+        private IEnumerator LoadSceneAsync(AbyssScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool byPrep = true)
         {
+            InTransit = true;
+            EventManager.InvokeEvent(SystemEventCollection.SceneTransitStart);
             ActiveScene = scene;
 
-            if (isQueued)
+            if (byPrep)
             {
                 EventManager.StopListening(UIEventCollection.BlackIn, currLoadWithMaster);
                 currLoadWithMaster = null;
@@ -92,11 +90,7 @@ namespace Abyss.SceneSystem
                 loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString(), LoadSceneMode.Additive);
                 loadedScenes.Add(scene);
             }
-            else
-            {
-                loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
-                EventManager.InvokeEvent(SystemEventCollection.Transition);
-            }
+            else loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
 
             while (!loadingAsyncOperation.isDone)
                 yield return null;
@@ -104,14 +98,8 @@ namespace Abyss.SceneSystem
             InTransit = false;
             sceneTransitCamera.enabled = false;
 
-            if (isQueued)
-            {
-                GameManager.Instance.ResumeGame();
-                yield return new WaitForSecondsRealtime(0.5f);
-            }
-
             ActiveScene = scene;
-            EventManager.InvokeEvent(SystemEventCollection.SceneTransitWithMasterDone);
+            EventManager.InvokeEvent(SystemEventCollection.SceneTransitDone);
             EventManager.InvokeQueueEvents();
             if (removeMasterAftTransit) UnloadScene(AbyssScene.Master);
 

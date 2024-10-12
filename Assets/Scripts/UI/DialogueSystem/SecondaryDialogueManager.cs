@@ -53,12 +53,12 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 
     void OnEnable()
     {
-        EventManager.StartListening(SystemEventCollection.SceneTransitWithMasterStart, ForceCloseDialogueUI);
+        EventManager.StartListening(SystemEventCollection.SceneTransitStart, ForceCloseDialogueUI);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(SystemEventCollection.SceneTransitWithMasterStart, ForceCloseDialogueUI);
+        EventManager.StopListening(SystemEventCollection.SceneTransitStart, ForceCloseDialogueUI);
     }
 
     private void PreserveSpriteAspect()

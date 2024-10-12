@@ -3,17 +3,17 @@ namespace Abyss.EventSystem
     public static class SystemEventCollection
     {
         public static readonly StaticEvent SystemsReady;
-        public static readonly StaticEvent SceneTransitWithMasterStart;
-        public static readonly StaticEvent SceneTransitWithMasterDone;
-        public static readonly StaticEvent Transition;
+        public static readonly StaticEvent SceneTransitStart;
+        public static readonly StaticEvent SceneTransitDone;
+        public static readonly StaticEvent SceneTransitPrep;
 
 
         static SystemEventCollection()
         {
             SystemsReady = StaticEvent.SystemsReady;
-            SceneTransitWithMasterStart = StaticEvent.SceneTransitWithMasterStart;
-            SceneTransitWithMasterDone = StaticEvent.SceneTransitWithMasterDone;
-            Transition = StaticEvent.SceneTransition;
+            SceneTransitStart = StaticEvent.SceneTransitStart;
+            SceneTransitDone = StaticEvent.SceneTransitDone;
+            SceneTransitPrep = StaticEvent.SceneTransitPrep;
         }
     }
 

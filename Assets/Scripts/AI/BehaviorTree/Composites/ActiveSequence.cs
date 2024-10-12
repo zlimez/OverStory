@@ -36,7 +36,7 @@ namespace BehaviorTree
         // INVARIANT: Restarted is false end of each turn
         public override State Tick()
         {
-            if (State == State.SUSPENDED) 
+            if (State == State.SUSPENDED)
             {
                 Done();
             }
@@ -57,7 +57,7 @@ namespace BehaviorTree
                 {
                     Restarted = true;
                     _prevChild = Children[_currChildInd];
-                    if (_currChildInd != 0) 
+                    if (_currChildInd != 0)
                         OnInit();
                     else Restarted = false;
                 }
@@ -70,7 +70,7 @@ namespace BehaviorTree
             else if (Restarted)
             {
                 // Success means prevChild have alse been executed this turn and succeeded violating at most one tick starting at running state per turn
-#if DEBUG
+#if UNITY_EDITOR
                 Assert.IsTrue(State == State.FAILURE);
 #endif
                 _prevChild.Abort();

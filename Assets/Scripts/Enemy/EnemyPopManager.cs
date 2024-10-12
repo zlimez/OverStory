@@ -137,7 +137,7 @@ namespace Abyss.Environment.Enemy
                     enemies.Item3.Add(enemy);
                 }
 
-#if DEBUG
+#if UNITY_EDITOR
                 int activePop = 0;
                 foreach (var specyInstance in enemies.Item3)
                     if (specyInstance.isAlive) activePop++;

@@ -5,9 +5,6 @@ namespace Abyss.SceneSystem
         None,
         Master,
         Lab,
-        JackVerdantFaraVillage,
-        JackVerdantHakemOutpost,
-        JackVerdantFirstMeadowJungle,
-        JackVerdantCliffAndStream,
+        Room1
     }
 }

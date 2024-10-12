@@ -71,7 +71,7 @@ namespace BehaviorTree
             else if (Restarted)
             {
                 // Failure means prevChild have alse been executed this turn and failed violating at most one tick starting at running state per turn
-#if DEBUG
+#if UNITY_EDITOR
                 Assert.IsTrue(State == State.SUCCESS);
 #endif
                 _prevChild.Abort();

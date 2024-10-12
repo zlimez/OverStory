@@ -91,7 +91,7 @@ namespace BehaviorTree
             }
             else if (Restarted)
             {
-#if DEBUG
+#if UNITY_EDITOR
                 Assert.IsTrue(State == State.FAILURE);
 #endif
                 _prevChild.Abort();

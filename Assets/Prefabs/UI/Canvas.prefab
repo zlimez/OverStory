@@ -247,7 +247,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4449540471284584053}
   m_Direction: 3
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 05111024f9c5545adb3abf3a20c814f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 60ecf002198494c038220f2446cff5c4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -503,7 +503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 05111024f9c5545adb3abf3a20c814f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0dc29b7ad8eb946098d1fee81d2f883f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -645,7 +645,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3020c5409459d4e288dd4b68b2c25c65, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6d0049abffef64be9ac4928626866c93, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -720,7 +720,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5161d447c179641aaab4bc4f49668f1d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79d37d85f8f1742dbbbb35e9d4159583, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -744,6 +744,7 @@ GameObject:
   - component: {fileID: 1050036210033004337}
   - component: {fileID: 6474858017417153714}
   - component: {fileID: 1924522097092304628}
+  - component: {fileID: 6109354196358252507}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -860,9 +861,9 @@ MonoBehaviour:
   CloseButton: {fileID: 2488923797732095543}
   level: 2
   backgroundImages:
-  - {fileID: 21300000, guid: 5161d447c179641aaab4bc4f49668f1d, type: 3}
-  - {fileID: 21300000, guid: 7b92d8d5d50c84396b58ca404e87013c, type: 3}
-  - {fileID: 21300000, guid: 9dc1669d653fa4c66b50c9f5ed8f16f7, type: 3}
+  - {fileID: 21300000, guid: 79d37d85f8f1742dbbbb35e9d4159583, type: 3}
+  - {fileID: 21300000, guid: 76d50ec6e2100421c97b9fc1a0dade4e, type: 3}
+  - {fileID: 21300000, guid: 5e62d8ce5e7c84a4685be96e46f943c8, type: 3}
   inventoryBackground: {fileID: 5263126279188143186}
   BagImages:
   - {fileID: 21300000, guid: bd48618f183fa426da68bed5652f8e82, type: 3}
@@ -870,19 +871,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6fd2abf6a8a89426498b29da7a6d6f7e, type: 3}
   BagBG: {fileID: 2913516295339788776}
   SpellImages:
-  - {fileID: 21300000, guid: 05111024f9c5545adb3abf3a20c814f3, type: 3}
-  - {fileID: 21300000, guid: c16cb2f1c42dd42b0b484fbf6b22599d, type: 3}
-  - {fileID: 21300000, guid: 8df5c387494ad4ecfa0d05ddbd42974d, type: 3}
+  - {fileID: 21300000, guid: 3b66edada59dc477e91dc63dea3938bc, type: 3}
+  - {fileID: 21300000, guid: e2771e8d965c94b44a16e2e50042f2d8, type: 3}
+  - {fileID: 21300000, guid: 3173358d78b68499cbaea775a04c7579, type: 3}
   SpellBG: {fileID: 7141126076392777975}
   ConstructionImages:
-  - {fileID: 21300000, guid: d7a67839e8bc54d54bfdd627abdbc872, type: 3}
-  - {fileID: 21300000, guid: 19d56832bb0e94b14b39f737bb2229d2, type: 3}
-  - {fileID: 21300000, guid: 32e3a9328d6914472ab047baa3d2e6a1, type: 3}
+  - {fileID: 21300000, guid: 60ecf002198494c038220f2446cff5c4, type: 3}
+  - {fileID: 21300000, guid: f6a26c8e46bd243d9b5ae11f92cd1b38, type: 3}
+  - {fileID: 21300000, guid: cb2f77748fee740bd86a3aa7690fa2f3, type: 3}
   ConstructionBG: {fileID: 2631848248271375534}
   JournalImages:
-  - {fileID: 21300000, guid: 138029900cbf144f9a8d5cd8fa223ced, type: 3}
-  - {fileID: 21300000, guid: a4e0e14867f2c4f96a1d4bf4a4e23501, type: 3}
-  - {fileID: 21300000, guid: a71d5c2886f5f401c843f41cfc6469f6, type: 3}
+  - {fileID: 21300000, guid: 0dc29b7ad8eb946098d1fee81d2f883f, type: 3}
+  - {fileID: 21300000, guid: 22fcd2da7f49246d1a7f253658350e0a, type: 3}
+  - {fileID: 21300000, guid: 17305cb1e40b34e1ca880980b183e011, type: 3}
   JournalBG: {fileID: 4524213330610152159}
 --- !u!114 &1924522097092304628
 MonoBehaviour:
@@ -897,6 +898,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoPanel: {fileID: 5463330651482491633}
+--- !u!114 &6109354196358252507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721082257799919993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 5583aee29886b46679994b1ec06a89cf,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6474858017417153714}
+        m_TargetAssemblyTypeName: InventorySystem, Assembly-CSharp
+        m_MethodName: OnOpenInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b681a225-6ebe-4ab4-9e88-369328a29c01
+    m_ActionName: UI/OpenInventory[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 519b0b98-5018-4e7e-bc88-ec9bf4363d0a
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1fdd588a-c52d-4bbf-be7b-f98281fd79b9
+    m_ActionName: UI/Left Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 61d63687-1fe5-4383-9f02-8b8a7f8b1983
+    m_ActionName: UI/Right Click[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c4518dc3-da37-422e-8082-072bf00df1ad
+    m_ActionName: UI/Scroll Wheel[/Mouse/scroll]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &2406533707448625583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1500,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1759715359413197991}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6474858017417153714}
+        m_TargetAssemblyTypeName: InventorySystem, Assembly-CSharp
+        m_MethodName: ToggleInventory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4466327028159885228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,7 +1632,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8369993518129204626}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6474858017417153714}
+        m_TargetAssemblyTypeName: InventorySystem, Assembly-CSharp
+        m_MethodName: OpenBag
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4632284819147889268
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,7 +1764,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2709358619114615253}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6474858017417153714}
+        m_TargetAssemblyTypeName: InventorySystem, Assembly-CSharp
+        m_MethodName: OpenConstruction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4650420067194860038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,7 +2172,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7973291108386597923}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6474858017417153714}
+        m_TargetAssemblyTypeName: InventorySystem, Assembly-CSharp
+        m_MethodName: OpenSpell
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5441792703332204132
 GameObject:
   m_ObjectHideFlags: 0
@@ -2192,7 +2304,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4793580439642276234}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 739297164642247204}
+        m_TargetAssemblyTypeName: BagUI, Assembly-CSharp
+        m_MethodName: ToggleShowMaterials
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5463330651482491633
 GameObject:
   m_ObjectHideFlags: 0
@@ -2523,7 +2647,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3742617983216223473}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6474858017417153714}
+        m_TargetAssemblyTypeName: InventorySystem, Assembly-CSharp
+        m_MethodName: OpenJournal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5756035058275596835
 GameObject:
   m_ObjectHideFlags: 0
@@ -2589,7 +2725,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 57d377d60567e42029d67c1589d56f84, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8354635d2f9ef4bc49ef9aec8faa41b3, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2982,7 +3118,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5574927502971856054}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 739297164642247204}
+        m_TargetAssemblyTypeName: BagUI, Assembly-CSharp
+        m_MethodName: ToggleShowConsumables
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7101274773363361787
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,7 +3250,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1935192065688822447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 739297164642247204}
+        m_TargetAssemblyTypeName: BagUI, Assembly-CSharp
+        m_MethodName: ToggleShowWeapons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7348356246901115873
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,7 +3491,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8161246023209739478}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 739297164642247204}
+        m_TargetAssemblyTypeName: BagUI, Assembly-CSharp
+        m_MethodName: ToggleShowFarmables
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7983873554624446806
 GameObject:
   m_ObjectHideFlags: 0
@@ -3567,7 +3739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 05111024f9c5545adb3abf3a20c814f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3b66edada59dc477e91dc63dea3938bc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
