@@ -44,6 +44,7 @@ public class BagUI : MonoBehaviour
             EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
         else
         {
+            level = GameManager.Instance.PlayerPersistence.InventoryLevel;
             UpdateBagUI();
             GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
         }
@@ -52,6 +53,7 @@ public class BagUI : MonoBehaviour
     // NOTE: TO SUPPORT DEV FLOW WHERE BASESCENEMANAGER IS USED TO LOAD MASTER AFTER SCENE IN EDITOR
     void InitUpdateBagUI(object input = null)
     {
+        level = GameManager.Instance.PlayerPersistence.InventoryLevel;
         UpdateBagUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
         EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
