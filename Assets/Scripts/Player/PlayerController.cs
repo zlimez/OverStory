@@ -56,7 +56,7 @@ namespace Abyss.Player
 		[SerializeField] float dashImpulse = 2000f;
 		[SerializeField] float dashCooldown = 1.0f;
 		[SerializeField] float dashTime = 0.3f;
-		private bool isDashAvailable = true;
+		private bool isDashAvailable = true, hasGroundedSinceDash = true;
 		private bool isDashing = false;
 		private float remainingDashTime;
 		private float dashCountdown;
@@ -106,7 +106,7 @@ namespace Abyss.Player
 			if (!isDashAvailable)
 				dashCountdown -= Time.deltaTime;
 
-			if (dashCountdown <= 0)
+			if (dashCountdown <= 0 && hasGroundedSinceDash)
 			{
 				isDashAvailable = true;
 				dashCountdown = dashCooldown;
@@ -134,15 +134,22 @@ namespace Abyss.Player
 		private void OnCollisionEnter2D(Collision2D coll2D)
 		{
 			// Check if player is on the ground
-			if (coll2D.gameObject.CompareTag("Ground"))
+			if (coll2D.gameObject.CompareTag("Ground")) {
 				isGrounded = true;
+				hasGroundedSinceDash = true;
+			}
 		}
 
 		private void OnCollisionExit2D(Collision2D coll2D)
 		{
 			// Check if player is leaving the ground
-			if (coll2D.gameObject.CompareTag("Ground"))
+			if (coll2D.gameObject.CompareTag("Ground")) {
+				if (isDashing) 
+				{
+					hasGroundedSinceDash = false;
+				}
 				isGrounded = false;
+			}
 		}
 
 		private void FlipSprite()
@@ -289,6 +296,7 @@ namespace Abyss.Player
 				isDashing = true;
 				remainingDashTime = dashTime;
 				isDashAvailable = false;
+				hasGroundedSinceDash = false;
 				rb2D.AddForce((IsFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
 				TransitionToState(State.Dash);
 			}
