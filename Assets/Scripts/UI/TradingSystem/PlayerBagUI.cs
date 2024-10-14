@@ -56,7 +56,7 @@ public class PlayerBagUI : MonoBehaviour
         EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
     }
 
-    void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
+    // void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
 
     public void ToggleShowConsumables()
     {
@@ -135,7 +135,7 @@ public class PlayerBagUI : MonoBehaviour
             if (itemStack.Count <= 0) continue;
             GameObject slot = Instantiate(SlotPrefab, scrollViewContent.transform);
 
-            SlotControllerNoMenu slotController = slot.GetComponent<SlotControllerNoMenu>();
+            SlotForTrading slotController = slot.GetComponent<SlotForTrading>();
             if (slotController != null)
             {
                 slotController.InitializeSlot(itemStack);

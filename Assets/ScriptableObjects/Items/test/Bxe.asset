@@ -26,6 +26,7 @@ MonoBehaviour:
     type: 3}
   canUseFromInventory: 0
   isConsumable: 0
+  value: 10
   itemType: 2
   damage: 10
   radius: 1.25

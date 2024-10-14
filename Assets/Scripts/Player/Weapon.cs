@@ -18,7 +18,11 @@ namespace Abyss.Player
         void OnEnable() => EventManager.StartListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
         void OnDisable() => EventManager.StopListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
 
-        void Equip(object obj) => weaponItem = (WeaponItem)obj;
+        void Equip(object obj)
+        {
+            if (weaponItem != null) GameManager.Instance.Inventory.AddTo(weaponItem);
+            weaponItem = (WeaponItem)obj;
+        }
 
         public void Strike(float str)
         {
