@@ -60,7 +60,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
     /// <param name="index">The index of the choice in the array.</param>
     public void SetChoice(int index)
     {
-        UiStatus.CloseUI();
+        GameManager.Instance.UiStatus.CloseUI();
         choiceIndex = index;
     }
 
@@ -69,7 +69,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
     /// </summary>
     private void ActivateChoices()
     {
-        UiStatus.OpenUI();
+        GameManager.Instance.UiStatus.OpenUI();
         InChoice = true;
         choiceHolder.SetActive(true);
 
@@ -138,7 +138,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
     {
         // Don't change UiStatus to !isOpen if the choice is followed by Dialogue or Item Selection
         if (!DialogueManager.Instance.InDialogue)
-            UiStatus.CloseUI();
+            GameManager.Instance.UiStatus.CloseUI();
 
         choiceIndex = -1;
         choiceHolder.SetActive(false);

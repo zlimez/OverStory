@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
 
     public Inventory Inventory = new();
     public PlayerPersistence PlayerPersistence = new();
+    public UiStatus UiStatus = new();
 
     protected override void Awake()
     {

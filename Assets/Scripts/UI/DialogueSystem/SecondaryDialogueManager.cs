@@ -169,9 +169,9 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
     private void UpdateSpeakerUI(SecondaryDialogueLine currentLine)
     {
         Speaker currentSpeaker = currentLine.Speaker;
-        if (currentSpeaker.SpeakerSprite != null)
+        if (currentSpeaker.Sprite != null)
         {
-            sprite.sprite = currentSpeaker.SpeakerSprite;
+            sprite.sprite = currentSpeaker.Sprite;
         }
         speakerName.text = currentSpeaker.SpeakerName;
     }

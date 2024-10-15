@@ -17,13 +17,6 @@ public class PickupHint : MonoBehaviour
         EventManager.StopListening(PlayEventCollection.InteractableExited, HideInfoPanel);
     }
 
-    void ShowInfoPanel(object obj = null)
-    {
-        infoPanel.SetActive(true);
-    }
-
-    void HideInfoPanel(object obj = null)
-    {
-        infoPanel.SetActive(false);
-    }
+    void ShowInfoPanel(object obj = null) => infoPanel.SetActive(true);
+    void HideInfoPanel(object obj = null) => infoPanel.SetActive(false);
 }

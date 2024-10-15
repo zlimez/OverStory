@@ -30,7 +30,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         // Needed for cutscenes - to start a convo after transitioning to new scene
         if (GameManager.Instance.CutsceneConversation != null)
         {
-            DialogueManager.Instance.StartConversation(GameManager.Instance.CutsceneConversation);
+            DialogueManager.Instance.StartConvo(GameManager.Instance.CutsceneConversation);
             GameManager.Instance.CutsceneConversation = null;
         }
         // may not look right?
