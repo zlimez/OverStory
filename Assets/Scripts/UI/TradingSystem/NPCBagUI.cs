@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System;
 
 public class NPCBagUI : MonoBehaviour
 {
@@ -50,26 +51,25 @@ public class NPCBagUI : MonoBehaviour
             if (inventoryInitializer != null)
             {
                 inventoryInitializer.initNPCInventory.AddListener(OnInventoryInitialized);
-                // inventoryInitializer.InitializeInventory();
             }
             else
             {
-                Debug.LogWarning("目标 NPC 上没有找到 NPCInventoryInitializer 组件");
+                Debug.LogWarning("Can not find NPCInventoryInitializer in NPC.");
             }
         }
         else
         {
-            Debug.LogWarning("目标 NPC 未设置");
+            Debug.LogWarning("No NPC.");
         }
         
     }
 
     void OnInventoryInitialized(Collection initializedInventory)
     {
-        // inventoryInitializer.initNPCInventory.RemoveListener(OnInventoryInitialized);
         NPCInventory = initializedInventory;
         UpdateBagUI();
         NPCInventory.OnItemChanged += UpdateBagUI;
+        EventManager.StartListening(UIEventCollection.ChangeNPCInventory, ChangeInventory);
         Debug.Log("NPCInventory initialized with " + NPCInventory.Items.Count + " items.");
     }
 
@@ -163,4 +163,21 @@ public class NPCBagUI : MonoBehaviour
             }
         }
     }
+
+    private void ChangeInventory(object args)
+    {
+        if (args is ItemWithCount ItemArgs)
+        {
+            Item item = ItemArgs.item;
+            int count = ItemArgs.count;
+            
+            if(count > 0) NPCInventory.Add(item, count);
+            if(count < 0) NPCInventory.DiscardItem(item, -count);
+        }
+        else
+        {
+            Debug.LogWarning("Event args are not of type ItemWithCount.");
+        }
+    }
+
 }

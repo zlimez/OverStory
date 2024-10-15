@@ -23,7 +23,9 @@ namespace Abyss.EventSystem
         InteractableEntered = 14,
         InteractableExited = 15,
         PlayerHealthChange = 16,
-        PlayerPurityChange = 17
+        PlayerPurityChange = 17,
+        DragedItem = 18,
+        ChangeNPCInventory = 19,
     }
 
 

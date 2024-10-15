@@ -24,6 +24,8 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent PrepToTeleport;
         public static readonly StaticEvent OpenInventory;
         public static readonly StaticEvent DialogStarted;
+        public static readonly StaticEvent DragedItem;
+        public static readonly StaticEvent ChangeNPCInventory;
 
         static UIEventCollection()
         {
@@ -32,6 +34,8 @@ namespace Abyss.EventSystem
             OpenInventory = StaticEvent.OpenInventory;
             BlackOut = StaticEvent.BlackOut;
             DialogStarted = StaticEvent.DialogStarted;
+            DragedItem = StaticEvent.DragedItem;
+            ChangeNPCInventory = StaticEvent.ChangeNPCInventory;
         }
     }
 

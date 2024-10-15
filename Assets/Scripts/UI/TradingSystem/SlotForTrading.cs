@@ -1,3 +1,4 @@
+using Abyss.EventSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,17 +12,14 @@ public class SlotForTrading : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public TextMeshProUGUI itemCount;
 
 
-    public GameObject tooltipPanel; // Reference to the tooltip panel
+    public GameObject tooltipPanel; 
     public TextMeshProUGUI tooltipText;
+    private EventTrigger hoverEventTrigger;
 
     public Canvas canvas;
-    private Transform originalParent;
+    private Vector2 originalPosition;
     public GameObject SlotDragPrefab;
     private GameObject draggingSlot;
-
-    [System.Serializable]
-    public class DragEvent : UnityEvent<Transform, Transform, Item> { }
-    public DragEvent onItemDragged;
 
     public Button slotButton;
 
@@ -37,25 +35,36 @@ public class SlotForTrading : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     void Start()
     {
         CloseTooltip();
-        if (onItemDragged == null)
-            onItemDragged = new DragEvent();
     }
 
     public void ShowTooltip()
     {
-        tooltipPanel.SetActive(true);
-        tooltipText.text = itemStack.Data.description;
+        if (tooltipPanel != null && tooltipText != null && itemStack != null)
+        {
+            tooltipPanel.SetActive(true);
+            tooltipText.text = itemStack.Data.description;
+        }
     }
 
     public void CloseTooltip()
     {
-        tooltipPanel.SetActive(false);
+        if (tooltipPanel != null)
+        {
+            tooltipPanel.SetActive(false);
+        }
     }
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalParent = transform.parent;
+        hoverEventTrigger = GetComponent<EventTrigger>();
+        if (hoverEventTrigger != null)
+        {
+            hoverEventTrigger.enabled = false;
+        }
+        CloseTooltip();
+
+        originalPosition = eventData.position;
 
         draggingSlot = Instantiate(SlotDragPrefab, canvas.transform, true);
         draggingSlot.transform.position = transform.position;
@@ -82,9 +91,15 @@ public class SlotForTrading : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Transform destinationParent = originalParent; 
+        if (hoverEventTrigger != null)
+        {
+            hoverEventTrigger.enabled = true;
+        }
 
-        // onItemDragged.Invoke(originalParent, destinationParent, itemStack.Data);
+        Vector2 destinationPosition = eventData.position;
+
+        DragEventArgs dragArgs = new DragEventArgs(originalPosition, destinationPosition, itemStack.Data);
+        EventManager.InvokeEvent(UIEventCollection.DragedItem, dragArgs);
 
         Destroy(draggingSlot);
         
@@ -92,3 +107,18 @@ public class SlotForTrading : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
 
 }
+
+public class DragEventArgs
+{
+    public Vector2 OriginalPosition { get; }
+    public Vector2 DestinationPosition { get; }
+    public Item Item { get; }
+
+    public DragEventArgs(Vector2 originalPosition, Vector2 destinationPosition, Item item)
+    {
+        OriginalPosition = originalPosition;
+        DestinationPosition = destinationPosition;
+        Item = item;
+    }
+}
+
