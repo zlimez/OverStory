@@ -26,6 +26,8 @@ MonoBehaviour:
     type: 3}
   canUseFromInventory: 0
   isConsumable: 0
+  isAcceptableToFara: 1
+  isAcceptableToHakem: 0
   value: 10
   itemType: 2
   damage: 10

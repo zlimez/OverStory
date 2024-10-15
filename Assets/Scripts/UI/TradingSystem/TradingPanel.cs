@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public class TradingSystem : MonoBehaviour
 {
+    public NPCType NPC;
     public GameObject tradingPanel;
     public Button CloseButton;
     private bool isTradingOpen = false;
@@ -107,12 +108,15 @@ public class TradingSystem : MonoBehaviour
         }
         else if(destination == AreaType.Bottom)
         {
-            if(BottomArea.tag == AreaType.None) MarkBottomArea(original);
-            if(BottomArea.tag == original)
+            if((NPC == NPCType.Fara && item.isAcceptableToFara) || (NPC == NPCType.Hakem && item.isAcceptableToHakem))
             {
-                if(original == AreaType.Player) changePlayerInventory(item, -1);
-                else if(original == AreaType.NPC) changeNPCInventory(item, -1);
-                BottomArea.AddItem(item);
+                if(BottomArea.tag == AreaType.None) MarkBottomArea(original);
+                if(BottomArea.tag == original)
+                {
+                    if(original == AreaType.Player) changePlayerInventory(item, -1);
+                    else if(original == AreaType.NPC) changeNPCInventory(item, -1);
+                    BottomArea.AddItem(item);
+                }
             }
         }
         else if(original == AreaType.Bottom)
@@ -447,4 +451,10 @@ public class TradingArea
         this.tag = AreaType.None;
     }
     
+}
+
+public enum NPCType
+{
+    Fara,
+    Hakem
 }
