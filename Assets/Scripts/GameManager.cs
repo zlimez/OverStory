@@ -1,6 +1,7 @@
 using UnityEngine;
 using Abyss.Utils;
 using Abyss.EventSystem;
+using Abyss.Player;
 
 /// <summary>
 /// Manages game-related data and states that persist throughout the session.
@@ -12,6 +13,8 @@ public class GameManager : Singleton<GameManager>
     public GameObject InteractableHint;
 
     public Inventory Inventory = new();
+    public PlayerPersistence PlayerPersistence = new();
+    public UiStatus UiStatus = new();
 
     protected override void Awake()
     {

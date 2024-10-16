@@ -8,15 +8,10 @@ namespace BehaviorTree
         protected BT _bT;
         protected readonly List<Blackboard> _bbs = new(); // local blackboards for this instance
 
-        protected virtual void OnEnable()
-        {
-            Setup();
-        }
-
-        protected virtual void OnDisable()
-        {
-            StopBT();
-        }
+#if UNITY_EDITOR
+        protected virtual void OnEnable() => Setup();
+        protected virtual void OnDisable() => StopBT();
+#endif
 
         public abstract void Setup();
 
@@ -26,10 +21,7 @@ namespace BehaviorTree
             _bT = null;
         }
 
-        void Update()
-        {
-            _bT?.Tick();
-        }
+        void Update() => _bT?.Tick();
 
         protected virtual void OnDestroy()
         {

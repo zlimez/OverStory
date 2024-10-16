@@ -1,3 +1,5 @@
+using Abyss.EventSystem;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -18,7 +20,7 @@ public class InventorySystem : MonoBehaviour
     public Button CloseButton;
 
 
-    public int level = 3;
+    public int level;
     public Sprite[] backgroundImages;
     public Image inventoryBackground;
     public Sprite[] BagImages;
@@ -39,8 +41,24 @@ public class InventorySystem : MonoBehaviour
     void Start()
     {
         inventoryPanel.SetActive(false);
+    }
 
+    void OnEnable()
+    {
+        if (GameManager.Instance == null)
+            EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateInventory);
+        else
+        {
+            level = GameManager.Instance.PlayerPersistence.InventoryLevel;
+            UpdateInventoryImage(level - 1);
+        }
+    }
+
+    void InitUpdateInventory(object input = null)
+    {
+        level = GameManager.Instance.PlayerPersistence.InventoryLevel;
         UpdateInventoryImage(level - 1);
+        EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateInventory);
     }
 
     public void OnOpenInventory(InputAction.CallbackContext context)

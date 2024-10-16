@@ -15,14 +15,14 @@ public class GameControlUi : MonoBehaviour
     // The button is deactivated in Cutscenes by CutSceneGameControl
     public bool isButtonActive = true;
 
-    void Awake() 
+    void Awake()
     {
         if (Instance == null)
             Instance = this;
-    
+
     }
 
-    public void Toggle() 
+    public void Toggle()
     {
         if (gameControl.activeInHierarchy)
         {
@@ -34,14 +34,14 @@ public class GameControlUi : MonoBehaviour
         }
     }
 
-    public void ShowButton() 
+    public void ShowButton()
     {
         // Show the button after Cutsecne
         isButtonActive = true;
         button.SetActive(true);
     }
 
-    public void HideButton() 
+    public void HideButton()
     {
         // Hide the button when in Cutsecne
         Debug.Log("hide button");
@@ -50,23 +50,23 @@ public class GameControlUi : MonoBehaviour
         button.SetActive(false);
     }
 
-    public void Open() 
+    public void Open()
     {
-        if (UiStatus.IsOpen)
+        if (GameManager.Instance.UiStatus.IsOpen)
             return;
         text.text = startingInstruction;
 
-        UiStatus.OpenUI();
+        GameManager.Instance.UiStatus.OpenUI();
         gameControl.SetActive(true);
     }
 
-    public void Close() 
+    public void Close()
     {
-        UiStatus.CloseUI();
+        GameManager.Instance.UiStatus.CloseUI();
         gameControl.SetActive(false);
     }
 
-    public void CloseIndependently(object o = null) 
+    public void CloseIndependently(object o = null)
     {
         // Called when dialog is activated
         // UiStatus.CloseUI() not called as the game is still in dialog

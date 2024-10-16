@@ -16,7 +16,7 @@ namespace BehaviorTree.Actions
 
         public override void Update()
         {
-#if DEBUG
+#if DEBUG || UNITY_EDITOR
             Debug.Log("Reversed");
 #endif
             _spriteManager.Flip();

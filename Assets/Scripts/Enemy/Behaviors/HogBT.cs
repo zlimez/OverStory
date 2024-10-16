@@ -30,11 +30,8 @@ public class HogBT : MonoBT
     [SerializeField] float waitTime;
     public Transform[] waypoints;
 
-#if DEBUG
-    protected override void OnEnable()
-    {
-        Setup();
-    }
+#if UNITY_EDITOR
+    protected override void OnEnable() => Setup();
 
     protected override void OnDisable()
     {
@@ -78,8 +75,6 @@ public class HogBT : MonoBT
             new("hogWalkAnim", HogAnim.State.Walk.ToString()),
             new("hogIdleAnim", HogAnim.State.Idle.ToString()),
 
-
-
             new("chargeDamage", chargeDamage),
             new("chargeDamageCooldown", chargeDamageCooldown),
             new("hogManager", GetComponent<EnemyManager>())
@@ -118,7 +113,7 @@ public class HogBT : MonoBT
         base.OnDestroy();
     }
 
-#if DEBUG
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

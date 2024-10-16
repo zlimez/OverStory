@@ -11,7 +11,7 @@ namespace Abyss.Environment.Enemy
         void Awake()
         {
             enemyManager = GetComponentInParent<EnemyManager>();
-#if DEBUG
+#if UNITY_EDITOR
             Assert.IsNotNull(enemyManager, "EnemyManager not found in parent");
             Assert.IsNotNull(GetComponent<Collider2D>(), "Collider2D not found");
 #endif

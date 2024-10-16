@@ -13,7 +13,7 @@ namespace Abyss.EventSystem
         {
             if (hasTriggered) return;
             if (optionalInvokeEvent != null && optionalInvokeEvent.RelatedStaticEvent != StaticEvent.NoEvent) EventManager.InvokeEvent(optionalInvokeEvent);
-            DialogueManager.Instance.StartConversation(convo);
+            DialogueManager.Instance.StartConvo(convo);
             hasTriggered = true;
 
         }

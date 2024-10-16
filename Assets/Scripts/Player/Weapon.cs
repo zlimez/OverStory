@@ -9,62 +9,51 @@ namespace Abyss.Player
     {
         // TODO: Add removable obstacle to mask, currently only inc. enemy
         static readonly int _layerMask = 1 << 6;
-        [SerializeField] WeaponItem _weaponItem;
-        public HashSet<int> hits = new();
+        public WeaponItem weaponItem;
+        readonly HashSet<int> _hits = new();
         ParticleSystem _particleSystem;
 
-        void Awake()
-        {
-            _particleSystem = GetComponent<ParticleSystem>();
-        }
+        void Awake() => _particleSystem = GetComponent<ParticleSystem>();
 
-        void OnEnable()
-        {
-            EventManager.StartListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
-        }
-
-        void OnDisable()
-        {
-            EventManager.StopListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
-        }
+        void OnEnable() => EventManager.StartListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
+        void OnDisable() => EventManager.StopListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
 
         void Equip(object obj)
         {
-            if (_weaponItem != null) GameManager.Instance.Inventory.AddTo(_weaponItem);
-            _weaponItem = (WeaponItem)obj;
+            if (weaponItem != null) GameManager.Instance.Inventory.AddTo(weaponItem);
+            weaponItem = (WeaponItem)obj;
         }
 
         public void Strike(float str)
         {
+            if (weaponItem == null) return;
             // TODO: Change position based on weapon movement
-            var hitEnemies = Physics2D.OverlapCircleAll(transform.position, _weaponItem.radius, _layerMask);
+            var hitEnemies = Physics2D.OverlapCircleAll(transform.position, weaponItem.radius, _layerMask);
             bool psPlayed = false;
             foreach (var hitEnemy in hitEnemies)
             {
                 if (hitEnemy.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
                 {
-                    if (hits.Contains(enemyPart.EnemyIntanceId)) continue;
+                    if (_hits.Contains(enemyPart.EnemyIntanceId)) continue;
                     if (!psPlayed)
                     {
                         _particleSystem.Play();
                         psPlayed = true;
                     }
-                    hits.Add(enemyPart.EnemyIntanceId);
-                    enemyPart.TakeHit(_weaponItem.damage + str);
+                    _hits.Add(enemyPart.EnemyIntanceId);
+                    enemyPart.TakeHit(weaponItem.damage + str);
                 }
             }
         }
 
-        public void Reset()
-        {
-            hits.Clear();
-        }
+        public void Reset() => _hits.Clear();
 
-#if DEBUG
+#if UNITY_EDITOR
         void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _weaponItem.radius);
+            if (weaponItem != null)
+                Gizmos.DrawWireSphere(transform.position, weaponItem.radius);
         }
 #endif
     }

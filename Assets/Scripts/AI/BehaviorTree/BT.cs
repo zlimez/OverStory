@@ -8,7 +8,7 @@ namespace BehaviorTree
 {
     public class BT
     {
-#if DEBUG
+#if UNITY_EDITOR
         private int _idCounter = 0;
 #endif
 
@@ -41,7 +41,7 @@ namespace BehaviorTree
             while (q.Count > 0)
             {
                 Node node = q.Dequeue();
-#if DEBUG
+#if UNITY_EDITOR
                 node.Id = _idCounter++;
 #endif
                 node.Setup(this);

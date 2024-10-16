@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-namespace BehaviorTree {
+namespace BehaviorTree
+{
     public class Root : Node
     {
         public Node Child { get; private set; }
         public Root(Node child)
         {
-#if DEBUG
+#if UNITY_EDITOR
             Assert.IsNull(Parent);
             Assert.IsNotNull(child);
 #endif
@@ -16,7 +17,8 @@ namespace BehaviorTree {
             Child.Parent = this;
         }
 
-        public override void OnChildComplete(Node child, State childState) { 
+        public override void OnChildComplete(Node child, State childState)
+        {
             State = childState;
             base.OnChildComplete(child, childState);
         }

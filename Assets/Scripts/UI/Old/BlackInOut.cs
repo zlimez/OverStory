@@ -5,7 +5,7 @@ using Abyss.EventSystem;
 
 public class BlackInOut : MonoBehaviour
 {
-    public Image blackCurtain;
+    public Image blackImage;
     [SerializeField] private float fadeInDuration = 1f;
     [SerializeField] private float fadeOutDuration = 1f;
     [SerializeField] private float closedInterval = 1.5f;
@@ -57,7 +57,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeInDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackCurtain.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
+            blackImage.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
         EventManager.InvokeEvent(UIEventCollection.BlackIn);
@@ -69,7 +69,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeOutDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackCurtain.color = Color.LerpUnclamped(Color.black, ColorUtils.transparent, timeElapsed / fadeOutDuration);
+            blackImage.color = Color.LerpUnclamped(Color.black, ColorUtils.transparent, timeElapsed / fadeOutDuration);
             yield return null;
         }
 
@@ -82,7 +82,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeInDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackCurtain.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
+            blackImage.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
         EventManager.InvokeEvent(UIEventCollection.BlackIn);
@@ -96,7 +96,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeOutDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackCurtain.color = Color.LerpUnclamped(Color.black, ColorUtils.transparent, timeElapsed / fadeOutDuration);
+            blackImage.color = Color.LerpUnclamped(Color.black, ColorUtils.transparent, timeElapsed / fadeOutDuration);
             yield return null;
         }
 
