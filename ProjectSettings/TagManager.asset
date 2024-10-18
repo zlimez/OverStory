@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Enemy
   - Obstacle
+  - Burnable
   layers:
   - Default
   - TransparentFX
