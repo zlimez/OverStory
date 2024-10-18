@@ -7,14 +7,14 @@ public class PickupHint : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEventCollection.InteractableEntered, ShowInfoPanel);
-        EventManager.StartListening(PlayEventCollection.InteractableExited, HideInfoPanel);
+        EventManager.StartListening(PlayEvents.InteractableEntered, ShowInfoPanel);
+        EventManager.StartListening(PlayEvents.InteractableExited, HideInfoPanel);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(PlayEventCollection.InteractableEntered, ShowInfoPanel);
-        EventManager.StopListening(PlayEventCollection.InteractableExited, HideInfoPanel);
+        EventManager.StopListening(PlayEvents.InteractableEntered, ShowInfoPanel);
+        EventManager.StopListening(PlayEvents.InteractableExited, HideInfoPanel);
     }
 
     void ShowInfoPanel(object obj = null) => infoPanel.SetActive(true);

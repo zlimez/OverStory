@@ -10,12 +10,12 @@ public class AudioManager : Singleton<AudioManager>
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEventCollection.InteractableEntered, PlayInteractableHint);
+        EventManager.StartListening(PlayEvents.InteractableEntered, PlayInteractableHint);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(PlayEventCollection.InteractableEntered, PlayInteractableHint);
+        EventManager.StopListening(PlayEvents.InteractableEntered, PlayInteractableHint);
     }
 
     public void PlayInteractableHint(object o = null)

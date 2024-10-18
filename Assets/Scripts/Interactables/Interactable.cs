@@ -81,7 +81,7 @@ public abstract class Interactable : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            EventManager.InvokeEvent(PlayEventCollection.InteractableEntered);
+            EventManager.InvokeEvent(PlayEvents.InteractableEntered);
             collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
             SpawnHint();
         }
@@ -91,7 +91,7 @@ public abstract class Interactable : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            EventManager.InvokeEvent(PlayEventCollection.InteractableExited);
+            EventManager.InvokeEvent(PlayEvents.InteractableExited);
             collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
             DestroyHint();
         }

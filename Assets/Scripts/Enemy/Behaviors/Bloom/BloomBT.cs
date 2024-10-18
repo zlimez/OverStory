@@ -28,6 +28,12 @@ public class BloomBT : MonoBT
         GetComponent<EnemyManager>().OnDeath += StopBT;
     }
 
+    protected override void OnDisable()
+    {
+        GetComponent<EnemyManager>().OnDeath -= StopBT;
+        base.OnDisable();
+    }
+
     IEnumerator SetupRoutine()
     {
         yield return new WaitForSeconds(0.4f);

@@ -12,7 +12,7 @@ public class SlotForTrading : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public TextMeshProUGUI itemCount;
 
 
-    public GameObject tooltipPanel; 
+    public GameObject tooltipPanel;
     public TextMeshProUGUI tooltipText;
     private EventTrigger hoverEventTrigger;
 
@@ -99,10 +99,10 @@ public class SlotForTrading : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         Vector2 destinationPosition = eventData.position;
 
         DragEventArgs dragArgs = new DragEventArgs(originalPosition, destinationPosition, itemStack.Data);
-        EventManager.InvokeEvent(UIEventCollection.DragedItem, dragArgs);
+        EventManager.InvokeEvent(UIEvents.DraggedItem, dragArgs);
 
         Destroy(draggingSlot);
-        
+
     }
 
 

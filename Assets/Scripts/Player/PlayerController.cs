@@ -134,7 +134,8 @@ namespace Abyss.Player
 		private void OnCollisionEnter2D(Collision2D coll2D)
 		{
 			// Check if player is on the ground
-			if (coll2D.gameObject.CompareTag("Ground")) {
+			if (coll2D.gameObject.CompareTag("Ground"))
+			{
 				isGrounded = true;
 				hasGroundedSinceDash = true;
 			}
@@ -143,8 +144,9 @@ namespace Abyss.Player
 		private void OnCollisionExit2D(Collision2D coll2D)
 		{
 			// Check if player is leaving the ground
-			if (coll2D.gameObject.CompareTag("Ground")) {
-				if (isDashing) 
+			if (coll2D.gameObject.CompareTag("Ground"))
+			{
+				if (isDashing)
 				{
 					hasGroundedSinceDash = false;
 				}
@@ -365,7 +367,7 @@ namespace Abyss.Player
 
 		void DeathEnd()
 		{
-			EventManager.InvokeEvent(PlayEventCollection.PlayerDeath);
+			EventManager.InvokeEvent(PlayEvents.PlayerDeath);
 		}
 		#endregion
 	}

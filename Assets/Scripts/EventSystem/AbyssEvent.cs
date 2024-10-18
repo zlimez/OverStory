@@ -24,8 +24,10 @@ namespace Abyss.EventSystem
         InteractableExited = 15,
         PlayerHealthChange = 16,
         PlayerPurityChange = 17,
-        DragedItem = 18,
+        DraggedItem = 18,
         ChangeNPCInventory = 19,
+        TimeBcastEvent = 20,
+        EnemyPopManagerReady = 21,
     }
 
 

@@ -46,7 +46,7 @@ public class InventorySystem : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateInventory);
+            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateInventory);
         else
         {
             level = GameManager.Instance.PlayerPersistence.InventoryLevel;
@@ -58,7 +58,7 @@ public class InventorySystem : MonoBehaviour
     {
         level = GameManager.Instance.PlayerPersistence.InventoryLevel;
         UpdateInventoryImage(level - 1);
-        EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateInventory);
+        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateInventory);
     }
 
     public void OnOpenInventory(InputAction.CallbackContext context)

@@ -13,9 +13,9 @@ namespace Abyss.Environment.Enemy
     // NOTE: Population for each specy should be large compared to the number of spawning locations
     public class EnemyPopManager : PersistentSystem<EnemyPopManager>
     {
-        public static readonly GameEvent EnemyPopManagerReady = new("EnemyPopManager Ready");
-        [Tooltip("Species attributes and initial population count")]
-        public Pair<SpecyAttr, int>[] SpeciesAttrAndInitCount;
+        [Tooltip("Species attributes and initial population count")] public Pair<SpecyAttr, int>[] SpeciesAttrAndInitCount;
+        [SerializeField][Tooltip("Should be multiples of broadcast interval in TimeCycle")] float breedInterval = 12;
+        float _nextBreedTime;
         readonly GA _ga = new();
         // str enemy type, 1st int for genpop count, instances before 2nd int pointer spawned for scene, list contains all instances for that type
         // only first pointer number of instance could be dead killed by player in scene
@@ -25,6 +25,7 @@ namespace Abyss.Environment.Enemy
         protected override void Awake()
         {
             base.Awake();
+            _nextBreedTime = breedInterval;
             if (!LoadNPCs())
             {
                 _allEnemies = new();
@@ -57,8 +58,21 @@ namespace Abyss.Environment.Enemy
                     _speciesConfig.Add(specyAttr.specyName, specyAttr);
                 }
             }
-            EventManager.InvokeEvent(EnemyPopManagerReady);
+            EventManager.InvokeEvent(SystemEvents.EnemyPopManagerReady);
             IsReady = true;
+        }
+
+        void OnEnable() => EventManager.StartListening(SystemEvents.TimeBcastEvent, Breed);
+        void OnDisable() => EventManager.StopListening(SystemEvents.TimeBcastEvent, Breed);
+
+        void Breed(object input = null)
+        {
+            (_, float ttTime) = (ValueTuple<float, float>)input;
+            if (ttTime < _nextBreedTime) return;
+            NextGeneration();
+            _nextBreedTime = (ttTime - _nextBreedTime) % breedInterval == 0 ? ttTime + breedInterval : ttTime + breedInterval - (ttTime - _nextBreedTime) % breedInterval;
+            Debug.Log("Next breed at " + _nextBreedTime);
+            // SaveNPCs();
         }
 
         public void SaveNPCs(string fileName = "npcData.json")

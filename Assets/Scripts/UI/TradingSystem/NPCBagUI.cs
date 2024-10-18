@@ -61,7 +61,7 @@ public class NPCBagUI : MonoBehaviour
         {
             Debug.LogWarning("No NPC.");
         }
-        
+
     }
 
     void OnInventoryInitialized(Collection initializedInventory)
@@ -69,7 +69,7 @@ public class NPCBagUI : MonoBehaviour
         NPCInventory = initializedInventory;
         UpdateBagUI();
         NPCInventory.OnItemChanged += UpdateBagUI;
-        EventManager.StartListening(UIEventCollection.ChangeNPCInventory, ChangeInventory);
+        EventManager.StartListening(UIEvents.ChangeNPCInventory, ChangeInventory);
         Debug.Log("NPCInventory initialized with " + NPCInventory.Items.Count + " items.");
     }
 
@@ -170,9 +170,9 @@ public class NPCBagUI : MonoBehaviour
         {
             Item item = ItemArgs.item;
             int count = ItemArgs.count;
-            
-            if(count > 0) NPCInventory.Add(item, count);
-            if(count < 0) NPCInventory.DiscardItem(item, -count);
+
+            if (count > 0) NPCInventory.Add(item, count);
+            if (count < 0) NPCInventory.DiscardItem(item, -count);
         }
         else
         {

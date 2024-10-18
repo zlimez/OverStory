@@ -53,12 +53,12 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 
     void OnEnable()
     {
-        EventManager.StartListening(SystemEventCollection.SceneTransitStart, ForceCloseDialogueUI);
+        EventManager.StartListening(SystemEvents.SceneTransitStart, ForceCloseDialogueUI);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(SystemEventCollection.SceneTransitStart, ForceCloseDialogueUI);
+        EventManager.StopListening(SystemEvents.SceneTransitStart, ForceCloseDialogueUI);
     }
 
     private void PreserveSpriteAspect()
@@ -104,7 +104,7 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 
     private void PrepareConversationUI(SecondaryConversation conversation)
     {
-        EventManager.InvokeEvent(UIEventCollection.DialogStarted);
+        EventManager.InvokeEvent(UIEvents.DialogStarted);
 
         currentIndex = 0;
         currentConversation = conversation;

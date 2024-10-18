@@ -41,7 +41,7 @@ public class BagUI : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
+            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateBagUI);
         else
         {
             level = GameManager.Instance.PlayerPersistence.InventoryLevel;
@@ -56,7 +56,7 @@ public class BagUI : MonoBehaviour
         level = GameManager.Instance.PlayerPersistence.InventoryLevel;
         UpdateBagUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
-        EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
+        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
     void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;

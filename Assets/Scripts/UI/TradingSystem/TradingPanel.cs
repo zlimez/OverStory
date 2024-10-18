@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Abyss.EventSystem;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class TradingSystem : MonoBehaviour
@@ -15,8 +11,8 @@ public class TradingSystem : MonoBehaviour
     public Button CloseButton;
     private bool isTradingOpen = false;
 
-    public TradingArea TopArea = new TradingArea(1);
-    public TradingArea BottomArea= new TradingArea(5);
+    public TradingArea TopArea = new(1);
+    public TradingArea BottomArea = new(5);
     public GameObject PlayerSlots;
     public GameObject NPCSlots;
     public GameObject TopSlot;
@@ -34,8 +30,8 @@ public class TradingSystem : MonoBehaviour
     public Sprite TradeButtonActive;
     public Image TradeButtonImage;
 
-    private bool BargainButtonState = false;
-    private bool TradeButtonState = false;
+    private readonly bool bargainButtonState = false;
+    private readonly bool tradeButtonState = false;
     private bool BargainFailed = false;
 
     void Start()
@@ -44,15 +40,8 @@ public class TradingSystem : MonoBehaviour
         // UpDateTradingArea();
     }
 
-    void OnEnable()
-    {
-        EventManager.StartListening(UIEventCollection.DragedItem, DragEnd);
-    }
-
-    void OnDisable()
-    {
-        EventManager.StopListening(UIEventCollection.DragedItem, DragEnd);
-    }
+    void OnEnable() => EventManager.StartListening(UIEvents.DraggedItem, DragEnd);
+    void OnDisable() => EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
 
     public void ToggleTrading()
     {
@@ -75,57 +64,54 @@ public class TradingSystem : MonoBehaviour
 
             Debug.Log($"Item dragged from {original} to {destination}");
 
-            if(isValidDarg(original, destination)) ChangeItemPosition(original, destination, item);
+            if (IsValidDarg(original, destination)) ChangeItemPosition(original, destination, item);
             else Debug.Log("Invalid Darg.");
         }
-        else
-        {
-            Debug.LogWarning("Event args are not of type DragEventArgs.");
-        }
+        else Debug.LogWarning("Event args are not of type DragEventArgs.");
     }
 
     private void ChangeItemPosition(AreaType original, AreaType destination, Item item)
     {
         Debug.Log("Item changed.");
 
-        if(destination == AreaType.Top)
+        if (destination == AreaType.Top)
         {
-            if(TopArea.tag != original) ClearArea();
-            if(TopArea.tag == AreaType.None) MarkTopArea(original);
+            if (TopArea.tag != original) ClearArea();
+            if (TopArea.tag == AreaType.None) MarkTopArea(original);
 
-            if(original == AreaType.Player) changePlayerInventory(item, -1);
-            else if(original == AreaType.NPC) changeNPCInventory(item, -1);
+            if (original == AreaType.Player) ChangePlayerInventory(item, -1);
+            else if (original == AreaType.NPC) changeNPCInventory(item, -1);
             TopArea.AddItem(item);
         }
-        else if(original == AreaType.Top)
+        else if (original == AreaType.Top)
         {
-            if(destination == TopArea.tag)
+            if (destination == TopArea.tag)
             {
                 TopArea.RemoveItem(item);
-                if(destination == AreaType.Player) changePlayerInventory(item, 1);
-                else if(destination == AreaType.NPC) changeNPCInventory(item, 1);
+                if (destination == AreaType.Player) ChangePlayerInventory(item, 1);
+                else if (destination == AreaType.NPC) changeNPCInventory(item, 1);
             }
         }
-        else if(destination == AreaType.Bottom)
+        else if (destination == AreaType.Bottom)
         {
-            if((NPC == NPCType.Fara && item.isAcceptableToFara) || (NPC == NPCType.Hakem && item.isAcceptableToHakem))
+            if ((NPC == NPCType.Fara && item.isAcceptableToFara) || (NPC == NPCType.Hakem && item.isAcceptableToHakem))
             {
-                if(BottomArea.tag == AreaType.None) MarkBottomArea(original);
-                if(BottomArea.tag == original)
+                if (BottomArea.tag == AreaType.None) MarkBottomArea(original);
+                if (BottomArea.tag == original)
                 {
-                    if(original == AreaType.Player) changePlayerInventory(item, -1);
-                    else if(original == AreaType.NPC) changeNPCInventory(item, -1);
+                    if (original == AreaType.Player) ChangePlayerInventory(item, -1);
+                    else if (original == AreaType.NPC) changeNPCInventory(item, -1);
                     BottomArea.AddItem(item);
                 }
             }
         }
-        else if(original == AreaType.Bottom)
+        else if (original == AreaType.Bottom)
         {
-            if(BottomArea.tag == destination)
+            if (BottomArea.tag == destination)
             {
                 BottomArea.RemoveItem(item);
-                if(destination == AreaType.Player) changePlayerInventory(item, 1);
-                else if(destination == AreaType.NPC) changeNPCInventory(item, 1);
+                if (destination == AreaType.Player) ChangePlayerInventory(item, 1);
+                else if (destination == AreaType.NPC) changeNPCInventory(item, 1);
             }
         }
         UpDateTradingArea();
@@ -152,17 +138,16 @@ public class TradingSystem : MonoBehaviour
             if (TopArea.Items.Count > 0) nestedText.text = TopArea.Items[0].count.ToString();
             else nestedText.text = "";
         }
-        SlotForTrading slotForTrading = TopSlot.GetComponent<SlotForTrading>();
-        if (slotForTrading != null)
+        if (TopSlot.TryGetComponent<SlotForTrading>(out var slotForTrading))
         {
-            if (TopArea.Items.Count > 0) 
+            if (TopArea.Items.Count > 0)
             {
                 Countable<Item> newItemStack = new(TopArea.Items[0].item, TopArea.Items[0].count);
                 slotForTrading.itemStack = newItemStack;
             }
             else slotForTrading.itemStack = null;
         }
-        
+
 
         //Bottom Slots
         foreach (Transform child in scrollViewContent.transform)
@@ -185,26 +170,26 @@ public class TradingSystem : MonoBehaviour
 
         //Value Bar
         //1:0.85
-        int topVal = TopArea.totalValue();
-        int bottomVal = BottomArea.totalValue();
+        int topVal = TopArea.TotalValue();
+        int bottomVal = BottomArea.TotalValue();
         float proportion = 0;
-        if(topVal == 0 || bottomVal == 0) ValueBarImage.fillAmount = 0;
+        if (topVal == 0 || bottomVal == 0) ValueBarImage.fillAmount = 0;
         else
         {
-            proportion = (float)bottomVal / (float)topVal;
+            proportion = (float)bottomVal / topVal;
             float propBar = proportion * 0.85f;
-            if(propBar > 1) ValueBarImage.fillAmount = 1;
+            if (propBar > 1) ValueBarImage.fillAmount = 1;
             else ValueBarImage.fillAmount = propBar;
         }
         //Button
-        if(TopArea.tag == AreaType.NPC)
+        if (TopArea.tag == AreaType.NPC)
         {
-            if(proportion == 0)
+            if (proportion == 0)
             {
                 SetBargainButton(false);
                 SetTradeButton(false);
             }
-            else if(proportion < 1)
+            else if (proportion < 1)
             {
                 SetBargainButton(!BargainFailed);
                 SetTradeButton(false);
@@ -215,14 +200,14 @@ public class TradingSystem : MonoBehaviour
                 SetTradeButton(true);
             }
         }
-        else if(TopArea.tag == AreaType.Player)
+        else if (TopArea.tag == AreaType.Player)
         {
-            if(proportion == 0)
+            if (proportion == 0)
             {
                 SetBargainButton(false);
                 SetTradeButton(false);
             }
-            else if(proportion > 1)
+            else if (proportion > 1)
             {
                 SetBargainButton(!BargainFailed);
                 SetTradeButton(false);
@@ -233,25 +218,25 @@ public class TradingSystem : MonoBehaviour
                 SetTradeButton(true);
             }
         }
-        
+
     }
 
     public void BargainOnClick()
     {
-        int topVal = TopArea.totalValue();
-        int bottomVal = BottomArea.totalValue();
+        int topVal = TopArea.TotalValue();
+        int bottomVal = BottomArea.TotalValue();
         float proportion = (float)bottomVal / (float)topVal;
         // Discount% = purity% - 60%；
         float purity = GameManager.Instance.PlayerPersistence.PlayerAttr.Purity / 100f;
-        if(TopArea.tag == AreaType.NPC)
+        if (TopArea.tag == AreaType.NPC)
         {
-            if(proportion + purity - 0.6f < 1) BargainFailed = true;
+            if (proportion + purity - 0.6f < 1) BargainFailed = true;
             else SetTradeButton(true);
             SetBargainButton(false);
         }
-        else if(TopArea.tag == AreaType.Player)
+        else if (TopArea.tag == AreaType.Player)
         {
-            if(proportion - purity + 0.6f > 1) BargainFailed = true;
+            if (proportion - purity + 0.6f > 1) BargainFailed = true;
             else SetTradeButton(true);
             SetBargainButton(false);
         }
@@ -276,15 +261,15 @@ public class TradingSystem : MonoBehaviour
         TradeButton.GetComponent<Button>().interactable = state;
     }
 
-    private void changePlayerInventory(Item item, int count = 1)
+    private void ChangePlayerInventory(Item item, int count = 1)
     {
-        if(count > 0) GameManager.Instance.Inventory.MaterialCollection.Add(item, count);
-        if(count < 0) GameManager.Instance.Inventory.MaterialCollection.DiscardItem(item, -count);
+        if (count > 0) GameManager.Instance.Inventory.MaterialCollection.Add(item, count);
+        if (count < 0) GameManager.Instance.Inventory.MaterialCollection.DiscardItem(item, -count);
     }
     private void changeNPCInventory(Item item, int count = 1)
     {
         ItemWithCount itemWithCount = new(item, count);
-        EventManager.InvokeEvent(UIEventCollection.ChangeNPCInventory, itemWithCount);
+        EventManager.InvokeEvent(UIEvents.ChangeNPCInventory, itemWithCount);
     }
 
     private void TradeDone()
@@ -328,11 +313,11 @@ public class TradingSystem : MonoBehaviour
         else Debug.Log("Tag error.");
     }
 
-    private bool isValidDarg(AreaType original, AreaType destination)
+    private bool IsValidDarg(AreaType original, AreaType destination)
     {
-        if((original == AreaType.Player || original == AreaType.NPC) && (destination == AreaType.Player || destination == AreaType.NPC))
+        if ((original == AreaType.Player || original == AreaType.NPC) && (destination == AreaType.Player || destination == AreaType.NPC))
             return false;
-        if((original == AreaType.Top || original == AreaType.Bottom) && (destination == AreaType.Top || destination == AreaType.Bottom))
+        if ((original == AreaType.Top || original == AreaType.Bottom) && (destination == AreaType.Top || destination == AreaType.Bottom))
             return false;
         return true;
     }
@@ -354,9 +339,7 @@ public class TradingSystem : MonoBehaviour
         Canvas canvas = rectTransform.GetComponentInParent<Canvas>();
         Camera cam = null;
         if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-        {
-            cam = canvas.worldCamera; 
-        }
+            cam = canvas.worldCamera;
 
         return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, position, cam);
     }
@@ -383,14 +366,13 @@ public class TradingArea
         this.capability = cap;
     }
 
-    public int totalValue()
+    public int TotalValue()
     {
-        int value=0;
-        foreach (var itemStack in this.Items)
-        {
-            value += itemStack.item.value * itemStack.count ;
-        }
-        if (this.capability == 1 && this.tag == AreaType.Player) value = value / 2;
+        int value = 0;
+        foreach (var itemStack in Items)
+            value += itemStack.item.value * itemStack.count;
+
+        if (capability == 1 && tag == AreaType.Player) value /= 2;
         return value;
     }
 
@@ -402,55 +384,52 @@ public class TradingArea
             existingItem.count += quantity;
             return;
         }
-        if (this.Items.Count >= this.capability)
+        if (Items.Count >= capability)
         {
-            ItemWithCount lastItem = this.Items[this.Items.Count - 1];
+            ItemWithCount lastItem = Items[^1];
 
-            if(this.tag == AreaType.Player) GameManager.Instance.Inventory.AddTo(lastItem.item, lastItem.count);
-            else if(this.tag == AreaType.NPC)  EventManager.InvokeEvent(UIEventCollection.ChangeNPCInventory, lastItem);
-            this.Items.RemoveAt(this.Items.Count - 1);
+            if (tag == AreaType.Player) GameManager.Instance.Inventory.AddTo(lastItem.item, lastItem.count);
+            else if (tag == AreaType.NPC) EventManager.InvokeEvent(UIEvents.ChangeNPCInventory, lastItem);
+            Items.RemoveAt(Items.Count - 1);
         }
         ItemWithCount itemStack = new(item, quantity);
-        this.Items.Add(itemStack);
-            
+        Items.Add(itemStack);
+
     }
 
     public void RemoveItem(Item item, int quantity = 1)
     {
-        var existingItem = this.Items.Find(x => x.item == item);
+        var existingItem = Items.Find(x => x.item == item);
         if (existingItem != null)
         {
             existingItem.count -= quantity;
             if (existingItem.count <= 0)
-            {
-                this.Items.Remove(existingItem);
-            }
-            
-        } 
+                Items.Remove(existingItem);
+        }
     }
 
     public void Clear()
     {
         foreach (ItemWithCount item in this.Items)
         {
-            if(this.tag == AreaType.Player) GameManager.Instance.Inventory.AddTo(item.item, item.count);
-            else if(this.tag == AreaType.NPC)  EventManager.InvokeEvent(UIEventCollection.ChangeNPCInventory, item);
+            if (tag == AreaType.Player) GameManager.Instance.Inventory.AddTo(item.item, item.count);
+            else if (tag == AreaType.NPC) EventManager.InvokeEvent(UIEvents.ChangeNPCInventory, item);
         }
-        this.Items.Clear();
-        this.tag = AreaType.None;
+        Items.Clear();
+        tag = AreaType.None;
     }
 
     public void ReverseClear()
     {
         foreach (ItemWithCount item in this.Items)
         {
-            if(this.tag == AreaType.NPC) GameManager.Instance.Inventory.AddTo(item.item, item.count);
-            else if(this.tag == AreaType.Player)  EventManager.InvokeEvent(UIEventCollection.ChangeNPCInventory, item);
+            if (this.tag == AreaType.NPC) GameManager.Instance.Inventory.AddTo(item.item, item.count);
+            else if (this.tag == AreaType.Player) EventManager.InvokeEvent(UIEvents.ChangeNPCInventory, item);
         }
-        this.Items.Clear();
-        this.tag = AreaType.None;
+        Items.Clear();
+        tag = AreaType.None;
     }
-    
+
 }
 
 public enum NPCType

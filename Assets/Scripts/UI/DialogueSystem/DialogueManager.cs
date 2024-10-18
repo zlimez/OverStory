@@ -81,7 +81,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void PrepConvoUI(Conversation convo)
     {
-        EventManager.InvokeEvent(UIEventCollection.DialogStarted);
+        EventManager.InvokeEvent(UIEvents.DialogStarted);
 
         dialogBox.SetActive(true);
         GameManager.Instance.UiStatus.OpenUI();

@@ -60,7 +60,7 @@ public class BlackInOut : MonoBehaviour
             blackImage.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
-        EventManager.InvokeEvent(UIEventCollection.BlackIn);
+        EventManager.InvokeEvent(UIEvents.BlackIn);
     }
 
     IEnumerator Open()
@@ -73,7 +73,7 @@ public class BlackInOut : MonoBehaviour
             yield return null;
         }
 
-        EventManager.InvokeEvent(UIEventCollection.BlackOut);
+        EventManager.InvokeEvent(UIEvents.BlackOut);
     }
 
     IEnumerator CloseOpen()
@@ -85,7 +85,7 @@ public class BlackInOut : MonoBehaviour
             blackImage.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
-        EventManager.InvokeEvent(UIEventCollection.BlackIn);
+        EventManager.InvokeEvent(UIEvents.BlackIn);
         timeElapsed = 0;
         while (timeElapsed < closedInterval)
         {
@@ -100,6 +100,6 @@ public class BlackInOut : MonoBehaviour
             yield return null;
         }
 
-        EventManager.InvokeEvent(UIEventCollection.BlackOut);
+        EventManager.InvokeEvent(UIEvents.BlackOut);
     }
 }

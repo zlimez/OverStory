@@ -22,12 +22,12 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     private void OnEnable()
     {
-        EventManager.StartListening(UIEventCollection.DialogStarted, Close);
+        EventManager.StartListening(UIEvents.DialogStarted, Close);
     }
 
     private void OnDisable()
     {
-        EventManager.StopListening(UIEventCollection.DialogStarted, Close);
+        EventManager.StopListening(UIEvents.DialogStarted, Close);
     }
 
     private void Update()

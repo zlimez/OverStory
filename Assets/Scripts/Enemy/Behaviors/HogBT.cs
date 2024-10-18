@@ -30,15 +30,12 @@ public class HogBT : MonoBT
     [SerializeField] float waitTime;
     public Transform[] waypoints;
 
-#if UNITY_EDITOR
-    protected override void OnEnable() => Setup();
-
     protected override void OnDisable()
     {
         GetComponent<EnemyManager>().OnDeath -= StopBT;
-        StopBT();
+        base.OnDisable();
     }
-#endif
+
     public override void Setup()
     {
         StartCoroutine(SetupRoutine());
@@ -105,12 +102,6 @@ public class HogBT : MonoBT
             }), new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnimator", "hogIdleAnim", "hogWalkAnim" })
         }, new string[] { aggro.EEEvent }, (obj) => { return true; })
         , hogParams, new Blackboard[] { bb });
-    }
-
-    protected override void OnDestroy()
-    {
-        GetComponent<EnemyManager>().OnDeath -= StopBT;
-        base.OnDestroy();
     }
 
 #if UNITY_EDITOR

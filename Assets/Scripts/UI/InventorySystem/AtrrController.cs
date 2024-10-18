@@ -14,7 +14,7 @@ public class AttrController : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
+            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateBagUI);
         else
         {
             UpdateAttr();
@@ -24,7 +24,7 @@ public class AttrController : MonoBehaviour
     void InitUpdateBagUI(object input = null)
     {
         UpdateAttr();
-        EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
+        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
 
@@ -35,7 +35,7 @@ public class AttrController : MonoBehaviour
         UpdateAgility(GameManager.Instance.PlayerPersistence.PlayerAttr.Agility);
         UpdateIntelligence(GameManager.Instance.PlayerPersistence.PlayerAttr.Intelligence);
     }
-    
+
     void UpdatePurity(float input)
     {
         int roundedPurity = Mathf.RoundToInt(input);

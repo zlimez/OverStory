@@ -1,45 +1,49 @@
 namespace Abyss.EventSystem
 {
-    public static class SystemEventCollection
+    public static class SystemEvents
     {
         public static readonly StaticEvent SystemsReady;
         public static readonly StaticEvent SceneTransitStart;
         public static readonly StaticEvent SceneTransitDone;
         public static readonly StaticEvent SceneTransitPrep;
+        public static readonly StaticEvent TimeBcastEvent;
+        public static readonly StaticEvent EnemyPopManagerReady;
 
 
-        static SystemEventCollection()
+        static SystemEvents()
         {
             SystemsReady = StaticEvent.SystemsReady;
             SceneTransitStart = StaticEvent.SceneTransitStart;
             SceneTransitDone = StaticEvent.SceneTransitDone;
             SceneTransitPrep = StaticEvent.SceneTransitPrep;
+            TimeBcastEvent = StaticEvent.TimeBcastEvent;
+            EnemyPopManagerReady = StaticEvent.EnemyPopManagerReady;
         }
     }
 
-    public static class UIEventCollection
+    public static class UIEvents
     {
         public static readonly StaticEvent BlackIn;
         public static readonly StaticEvent BlackOut;
         public static readonly StaticEvent PrepToTeleport;
         public static readonly StaticEvent OpenInventory;
         public static readonly StaticEvent DialogStarted;
-        public static readonly StaticEvent DragedItem;
+        public static readonly StaticEvent DraggedItem;
         public static readonly StaticEvent ChangeNPCInventory;
 
-        static UIEventCollection()
+        static UIEvents()
         {
             BlackIn = StaticEvent.BlackIn;
             PrepToTeleport = StaticEvent.PrepToTeleport;
             OpenInventory = StaticEvent.OpenInventory;
             BlackOut = StaticEvent.BlackOut;
             DialogStarted = StaticEvent.DialogStarted;
-            DragedItem = StaticEvent.DragedItem;
+            DraggedItem = StaticEvent.DraggedItem;
             ChangeNPCInventory = StaticEvent.ChangeNPCInventory;
         }
     }
 
-    public static class PlayEventCollection
+    public static class PlayEvents
     {
         public static readonly StaticEvent PlayerDeath;
         public static readonly StaticEvent InteractableEntered;
@@ -47,7 +51,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent PlayerHealthChange;
         public static readonly StaticEvent PlayerPurityChange;
 
-        static PlayEventCollection()
+        static PlayEvents()
         {
             PlayerDeath = StaticEvent.PlayerDeath;
             PlayerHealthChange = StaticEvent.PlayerHealthChange;

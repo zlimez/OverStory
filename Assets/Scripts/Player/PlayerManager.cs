@@ -13,17 +13,16 @@ namespace Abyss.Player
         {
             playerController.OnAttackEnded += _weapon.Reset;
             if (GameManager.Instance == null)
-                EventManager.StartListening(SystemEventCollection.SystemsReady, InitLoad);
+                EventManager.StartListening(SystemEvents.SystemsReady, Load);
             else Load();
-            EventManager.StartListening(SystemEventCollection.SceneTransitDone, Load);
-            EventManager.StartListening(SystemEventCollection.SceneTransitStart, Save);
+            EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
         }
 
         void OnDisable()
         {
             playerController.OnAttackEnded -= _weapon.Reset;
-            EventManager.StopListening(SystemEventCollection.SceneTransitDone, Load);
-            EventManager.StopListening(SystemEventCollection.SceneTransitStart, Save);
+            EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.StopListening(SystemEvents.SystemsReady, Load);
         }
 
         void FixedUpdate()
@@ -32,24 +31,14 @@ namespace Abyss.Player
                 _weapon.Strike(_playerAttr.Strength);
         }
 
-
-        // NOTE: TO SUPPORT DEV FLOW WHERE BASESCENEMANAGER IS USED TO LOAD MASTER AFTER SCENE IN EDITOR
-        void InitLoad(object input = null)
+        void Load(object input = null)
         {
             _playerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             // FOR TESTING WHEN WANT TO ASSIGN WEAPON FROM SCENE ITSELF NOT MASTER
             if (_weapon.weaponItem == null) _weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
-            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, _playerAttr.Health);
-            EventManager.InvokeEvent(PlayEventCollection.PlayerPurityChange, _playerAttr.Purity);
-            EventManager.StopListening(SystemEventCollection.SystemsReady, InitLoad);
-        }
-
-        void Load(object input = null)
-        {
-            _playerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
-            _weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
-            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, _playerAttr.Health);
-            EventManager.InvokeEvent(PlayEventCollection.PlayerPurityChange, _playerAttr.Purity);
+            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, _playerAttr.Health);
+            EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, _playerAttr.Purity);
+            EventManager.StopListening(SystemEvents.SystemsReady, Load);
         }
 
         void Save(object input = null)
@@ -64,7 +53,7 @@ namespace Abyss.Player
             if (_playerAttr.Health == 0) return;
             if (playerController.TakeHit(hasKnockback, from)) return; // Is still taking last damage or isDead
             _playerAttr.Health -= Mathf.Min(_playerAttr.Health, baseDamage);
-            EventManager.InvokeEvent(PlayEventCollection.PlayerHealthChange, _playerAttr.Health);
+            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, _playerAttr.Health);
             if (_playerAttr.Health == 0) playerController.Die();
         }
     }
