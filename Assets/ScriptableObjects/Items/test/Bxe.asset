@@ -28,7 +28,8 @@ MonoBehaviour:
   isConsumable: 0
   isAcceptableToFara: 1
   isAcceptableToHakem: 0
-  value: 10
+  valueToFara: 1
+  valueToHakem: 1
   itemType: 2
   damage: 10
   radius: 1.25

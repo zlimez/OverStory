@@ -25,10 +25,10 @@ namespace Abyss.EventSystem
         PlayerHealthChange = 16,
         PlayerPurityChange = 17,
         DraggedItem = 18,
-        ChangeNPCInventory = 19,
+        UpdateNPCInventory = 19,
         TimeBcastEvent = 20,
         EnemyPopManagerReady = 21,
-        OpenTrading = 22,
+        TradePostEntered = 22,
     }
 
 

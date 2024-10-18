@@ -1,5 +1,4 @@
 using Abyss.EventSystem;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -38,10 +37,7 @@ public class InventorySystem : MonoBehaviour
     private bool isConstructionOpen = false;
     private bool isJournalOpen = false;
 
-    void Start()
-    {
-        inventoryPanel.SetActive(false);
-    }
+    void Start() => inventoryPanel.SetActive(false);
 
     void OnEnable()
     {

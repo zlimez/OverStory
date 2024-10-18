@@ -29,8 +29,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent OpenInventory;
         public static readonly StaticEvent DialogStarted;
         public static readonly StaticEvent DraggedItem;
-        public static readonly StaticEvent ChangeNPCInventory;
-        public static readonly StaticEvent OpenTrading;
+        public static readonly StaticEvent UpdateNPCInventory;
 
         static UIEvents()
         {
@@ -40,8 +39,7 @@ namespace Abyss.EventSystem
             BlackOut = StaticEvent.BlackOut;
             DialogStarted = StaticEvent.DialogStarted;
             DraggedItem = StaticEvent.DraggedItem;
-            ChangeNPCInventory = StaticEvent.ChangeNPCInventory;
-            OpenTrading = StaticEvent.OpenTrading;
+            UpdateNPCInventory = StaticEvent.UpdateNPCInventory;
         }
     }
 
@@ -52,6 +50,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent InteractableExited;
         public static readonly StaticEvent PlayerHealthChange;
         public static readonly StaticEvent PlayerPurityChange;
+        public static readonly StaticEvent TradePostEntered;
 
         static PlayEvents()
         {
@@ -60,6 +59,7 @@ namespace Abyss.EventSystem
             PlayerPurityChange = StaticEvent.PlayerPurityChange;
             InteractableEntered = StaticEvent.InteractableEntered;
             InteractableExited = StaticEvent.InteractableExited;
+            TradePostEntered = StaticEvent.TradePostEntered;
         }
     }
 }

@@ -25,8 +25,8 @@ MonoBehaviour:
     type: 3}
   canUseFromInventory: 0
   isConsumable: 0
-  isAcceptableToFara: 0
-  isAcceptableToHakem: 0
+  isAcceptableToFara: 1
+  isAcceptableToHakem: 1
   valueToFara: 2
   valueToHakem: 2
   itemType: 2

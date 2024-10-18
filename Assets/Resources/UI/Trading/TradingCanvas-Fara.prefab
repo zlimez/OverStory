@@ -263,7 +263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -22.748, y: -97.50469}
+  m_AnchoredPosition: {x: -22.748, y: -97.50471}
   m_SizeDelta: {x: 42.496, y: 191.9453}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1975595278500743511
@@ -1377,7 +1377,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7492197645929420829}
   m_Direction: 3
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1393,7 +1393,7 @@ GameObject:
   - component: {fileID: 4675604611341122577}
   - component: {fileID: 632230176075357739}
   m_Layer: 5
-  m_Name: FaraBag
+  m_Name: NpcBag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1460,8 +1460,6 @@ MonoBehaviour:
   FarmablesButtonActive: {fileID: 21300000, guid: 28d306e3b9c8642059219c0501163079,
     type: 3}
   FarmablesButtonImage: {fileID: 1803046859533702181}
-  targetNPC: {fileID: 2471422557921269830}
-  inventoryInitializer: {fileID: 0}
 --- !u!1 &1495460202823286839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,7 +1563,7 @@ GameObject:
   - component: {fileID: 4502896474724986464}
   - component: {fileID: 6543559470817956226}
   m_Layer: 5
-  m_Name: FaraSlots
+  m_Name: NpcSlots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2011,7 +2009,6 @@ GameObject:
   - component: {fileID: 9048933609132650361}
   - component: {fileID: 3732071349366633861}
   - component: {fileID: 3498065874719771438}
-  - component: {fileID: 4855046192188577341}
   m_Layer: 5
   m_Name: TradingCanvas-Fara
   m_TagString: Untagged
@@ -2114,48 +2111,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c778bc76191a49d89dce473a475723c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPC: 0
+  tribe: 0
   tradingPanel: {fileID: 605288040675037085}
-  CloseButton: {fileID: 3712596824733163405}
-  PlayerSlots: {fileID: 3563184807774113196}
-  NPCSlots: {fileID: 1595915669262551575}
-  TopSlot: {fileID: 121519192318817752}
-  BottomSlots: {fileID: 6071824541892228343}
+  playerSlots: {fileID: 3563184807774113196}
+  npcSlots: {fileID: 1595915669262551575}
+  topSlot: {fileID: 121519192318817752}
+  bottomSlots: {fileID: 6071824541892228343}
   scrollViewContent: {fileID: 501692734236355067}
-  SlotPrefab: {fileID: 5408800241123736967, guid: 736dc9d04d31740f88aaccfb1aadf0e8,
+  slotPrefab: {fileID: 5408800241123736967, guid: 736dc9d04d31740f88aaccfb1aadf0e8,
     type: 3}
-  ValueBarImage: {fileID: 2089905235808455401}
-  BargainButton: {fileID: 842157858737832643}
-  TradeButton: {fileID: 1965017413264107382}
-  BargainButtonInactive: {fileID: 21300000, guid: ac860c80b073646ea96a8ef735e7d2cd,
+  valueBarImage: {fileID: 2089905235808455401}
+  bargainButton: {fileID: 842157858737832643}
+  tradeButton: {fileID: 1965017413264107382}
+  bargainButtonInactive: {fileID: 21300000, guid: ac860c80b073646ea96a8ef735e7d2cd,
     type: 3}
-  BargainButtonActive: {fileID: 21300000, guid: 6e34dc440de8c4ddba662705df4a0a8b,
+  bargainButtonActive: {fileID: 21300000, guid: 6e34dc440de8c4ddba662705df4a0a8b,
     type: 3}
-  BargainButtonImage: {fileID: 7792211742927868903}
-  TradeButtonInactive: {fileID: 21300000, guid: a83668c7e94654ac48165598a0d3da98,
+  bargainButtonImage: {fileID: 7792211742927868903}
+  tradeButtonInactive: {fileID: 21300000, guid: a83668c7e94654ac48165598a0d3da98,
     type: 3}
-  TradeButtonActive: {fileID: 21300000, guid: 8f2714bfcb402465e95a30b80b4b8f90, type: 3}
-  TradeButtonImage: {fileID: 5186499391440496938}
---- !u!114 &4855046192188577341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2471422557921269830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5f24e9b7e3e147cb81ddc0e7b3b019f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initNPCInventory:
-    m_PersistentCalls:
-      m_Calls: []
-  initialItems:
-  - item: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
-    count: 99
-  - item: {fileID: 11400000, guid: a59b28e673d7f41049ab585c730797a8, type: 2}
-    count: 20
+  tradeButtonActive: {fileID: 21300000, guid: 8f2714bfcb402465e95a30b80b4b8f90, type: 3}
+  tradeButtonImage: {fileID: 5186499391440496938}
+  npcBagUI: {fileID: 632230176075357739}
 --- !u!1 &2533886615600952017
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,7 +3207,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4122812394373144823}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.5000001
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3951,8 +3928,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6915876658668360727}
   m_HandleRect: {fileID: 2264930354995161623}
   m_Direction: 3
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4857,7 +4834,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3498065874719771438}
         m_TargetAssemblyTypeName: TradingSystem, Assembly-CSharp
-        m_MethodName: ToggleTrading
+        m_MethodName: CloseTrading
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5736,7 +5713,7 @@ PrefabInstance:
     - target: {fileID: 5408800241123736967, guid: 736dc9d04d31740f88aaccfb1aadf0e8,
         type: 3}
       propertyPath: m_Name
-      value: TopSlot
+      value: TopSlot-Fara
       objectReference: {fileID: 0}
     - target: {fileID: 5408800241123736967, guid: 736dc9d04d31740f88aaccfb1aadf0e8,
         type: 3}
