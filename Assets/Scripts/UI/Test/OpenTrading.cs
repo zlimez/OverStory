@@ -1,16 +1,15 @@
+using Abyss.EventSystem;
+using Abyss.Player;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class OpenTrading : MonoBehaviour
 {
-    public UnityEvent onTrading;
+    public Tribe tribe;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collision with: " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            onTrading.Invoke();
-        }
+        Debug.Log("Collision with: " + other.gameObject.name);
+        if (other.CompareTag("Player"))
+            EventManager.InvokeEvent(UIEvents.OpenTrading, (tribe, other.GetComponent<PlayerManager>().PlayerAttr));
     }
 }

@@ -1,15 +1,16 @@
+using System;
 using System.Collections.Generic;
 using Abyss.EventSystem;
+using Abyss.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TradingSystem : MonoBehaviour
 {
-    public NPCType NPC;
     public GameObject tradingPanel;
     public Button CloseButton;
-    private bool isTradingOpen = false;
+    public bool IsTradingOpen { get; private set; } = false;
 
     public TradingArea TopArea = new(1);
     public TradingArea BottomArea = new(5);
@@ -30,9 +31,12 @@ public class TradingSystem : MonoBehaviour
     public Sprite TradeButtonActive;
     public Image TradeButtonImage;
 
-    private readonly bool bargainButtonState = false;
-    private readonly bool tradeButtonState = false;
+    // private readonly bool bargainButtonState = false;
+    // private readonly bool tradeButtonState = false;
     private bool BargainFailed = false;
+
+    PlayerAttr _playerAttr;
+    Tribe _tribe;
 
     void Start()
     {
@@ -40,15 +44,35 @@ public class TradingSystem : MonoBehaviour
         // UpDateTradingArea();
     }
 
-    void OnEnable() => EventManager.StartListening(UIEvents.DraggedItem, DragEnd);
-    void OnDisable() => EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
+    void OnEnable()
+    {
+        EventManager.StartListening(UIEvents.OpenTrading, OpenTrading);
+        EventManager.StartListening(UIEvents.DraggedItem, DragEnd);
+    }
 
-    public void ToggleTrading()
+    void OnDisable()
+    {
+        EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
+        EventManager.StopListening(UIEvents.OpenTrading, OpenTrading);
+    }
+
+    public void CloseTrading()
     {
         ClearArea();
-        UpDateTradingArea();
-        isTradingOpen = !isTradingOpen;
-        tradingPanel.SetActive(isTradingOpen);
+        UpdateTradingArea();
+        IsTradingOpen = false;
+        tradingPanel.SetActive(false);
+    }
+
+    public void OpenTrading(object input)
+    {
+        (Tribe tribe, PlayerAttr playerAttr) = ((Tribe, PlayerAttr))input;
+        _playerAttr = playerAttr;
+        _tribe = tribe;
+        ClearArea();
+        UpdateTradingArea();
+        IsTradingOpen = true;
+        tradingPanel.SetActive(true);
     }
 
     void DragEnd(object args)
@@ -80,7 +104,7 @@ public class TradingSystem : MonoBehaviour
             if (TopArea.tag == AreaType.None) MarkTopArea(original);
 
             if (original == AreaType.Player) ChangePlayerInventory(item, -1);
-            else if (original == AreaType.NPC) changeNPCInventory(item, -1);
+            else if (original == AreaType.NPC) ChangeNPCInventory(item, -1);
             TopArea.AddItem(item);
         }
         else if (original == AreaType.Top)
@@ -89,18 +113,18 @@ public class TradingSystem : MonoBehaviour
             {
                 TopArea.RemoveItem(item);
                 if (destination == AreaType.Player) ChangePlayerInventory(item, 1);
-                else if (destination == AreaType.NPC) changeNPCInventory(item, 1);
+                else if (destination == AreaType.NPC) ChangeNPCInventory(item, 1);
             }
         }
         else if (destination == AreaType.Bottom)
         {
-            if ((NPC == NPCType.Fara && item.isAcceptableToFara) || (NPC == NPCType.Hakem && item.isAcceptableToHakem))
+            if ((_tribe == Tribe.Fara && item.isAcceptableToFara) || (_tribe == Tribe.Hakem && item.isAcceptableToHakem))
             {
                 if (BottomArea.tag == AreaType.None) MarkBottomArea(original);
                 if (BottomArea.tag == original)
                 {
                     if (original == AreaType.Player) ChangePlayerInventory(item, -1);
-                    else if (original == AreaType.NPC) changeNPCInventory(item, -1);
+                    else if (original == AreaType.NPC) ChangeNPCInventory(item, -1);
                     BottomArea.AddItem(item);
                 }
             }
@@ -111,13 +135,13 @@ public class TradingSystem : MonoBehaviour
             {
                 BottomArea.RemoveItem(item);
                 if (destination == AreaType.Player) ChangePlayerInventory(item, 1);
-                else if (destination == AreaType.NPC) changeNPCInventory(item, 1);
+                else if (destination == AreaType.NPC) ChangeNPCInventory(item, 1);
             }
         }
-        UpDateTradingArea();
+        UpdateTradingArea();
     }
 
-    private void UpDateTradingArea()
+    private void UpdateTradingArea()
     {
         //TopSlot
         Transform spriteObject = TopSlot.transform.Find("ItemIcon");
@@ -170,8 +194,8 @@ public class TradingSystem : MonoBehaviour
 
         //Value Bar
         //1:0.85
-        int topVal = TopArea.TotalValue();
-        int bottomVal = BottomArea.TotalValue();
+        int topVal = TopArea.TotalValue(_tribe);
+        int bottomVal = BottomArea.TotalValue(_tribe);
         float proportion = 0;
         if (topVal == 0 || bottomVal == 0) ValueBarImage.fillAmount = 0;
         else
@@ -223,11 +247,11 @@ public class TradingSystem : MonoBehaviour
 
     public void BargainOnClick()
     {
-        int topVal = TopArea.TotalValue();
-        int bottomVal = BottomArea.TotalValue();
-        float proportion = (float)bottomVal / (float)topVal;
+        int topVal = TopArea.TotalValue(_tribe);
+        int bottomVal = BottomArea.TotalValue(_tribe);
+        float proportion = (float)bottomVal / topVal;
         // Discount% = purity% - 60%；
-        float purity = GameManager.Instance.PlayerPersistence.PlayerAttr.Purity / 100f;
+        float purity = _playerAttr.Purity / 100f;
         if (TopArea.tag == AreaType.NPC)
         {
             if (proportion + purity - 0.6f < 1) BargainFailed = true;
@@ -246,7 +270,7 @@ public class TradingSystem : MonoBehaviour
     {
         BargainFailed = false;
         TradeDone();
-        UpDateTradingArea();
+        UpdateTradingArea();
     }
 
     private void SetBargainButton(bool state)
@@ -266,7 +290,7 @@ public class TradingSystem : MonoBehaviour
         if (count > 0) GameManager.Instance.Inventory.MaterialCollection.Add(item, count);
         if (count < 0) GameManager.Instance.Inventory.MaterialCollection.DiscardItem(item, -count);
     }
-    private void changeNPCInventory(Item item, int count = 1)
+    private void ChangeNPCInventory(Item item, int count = 1)
     {
         ItemWithCount itemWithCount = new(item, count);
         EventManager.InvokeEvent(UIEvents.ChangeNPCInventory, itemWithCount);
@@ -361,16 +385,16 @@ public class TradingArea
     public AreaType tag = AreaType.None;
     public int capability;
 
-    public TradingArea(int cap)
-    {
-        this.capability = cap;
-    }
+    public TradingArea(int cap) => capability = cap;
 
-    public int TotalValue()
+    public int TotalValue(Tribe npcType)
     {
         int value = 0;
         foreach (var itemStack in Items)
-            value += itemStack.item.value * itemStack.count;
+        {
+            if (npcType == Tribe.Fara) value += itemStack.item.valueToFara * itemStack.count;
+            else if (npcType == Tribe.Hakem) value += itemStack.item.valueToHakem * itemStack.count;
+        }
 
         if (capability == 1 && tag == AreaType.Player) value /= 2;
         return value;
@@ -432,7 +456,8 @@ public class TradingArea
 
 }
 
-public enum NPCType
+[Serializable]
+public enum Tribe
 {
     Fara,
     Hakem

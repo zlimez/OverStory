@@ -37958,8 +37958,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 5589660221033615386}
-  _weapon: {fileID: 2408469263094139058}
-  _playerAttr:
+  weapon: {fileID: 2408469263094139058}
+  playerAttr:
     Strength: 0
     Intelligence: 0
     Agility: 0
@@ -44215,7 +44215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3a23a21ae354889957d7f8ca00b1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponItem: {fileID: 0}
+  weaponItem: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
 --- !u!198 &5300505356400320811
 ParticleSystem:
   m_ObjectHideFlags: 0

@@ -28,6 +28,7 @@ namespace Abyss.EventSystem
         ChangeNPCInventory = 19,
         TimeBcastEvent = 20,
         EnemyPopManagerReady = 21,
+        OpenTrading = 22,
     }
 
 

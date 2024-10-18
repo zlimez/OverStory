@@ -37,11 +37,6 @@ public class NPCBagUI : MonoBehaviour
     public GameObject targetNPC;
     public NPCInventoryInitializer inventoryInitializer;
 
-    void Start()
-    {
-        // UpdateBagUI();
-    }
-
     void OnEnable()
     {
         if (NPCInventory != null) UpdateBagUI();
@@ -49,19 +44,10 @@ public class NPCBagUI : MonoBehaviour
         {
             NPCInventoryInitializer inventoryInitializer = targetNPC.GetComponent<NPCInventoryInitializer>();
             if (inventoryInitializer != null)
-            {
-                inventoryInitializer.initNPCInventory.AddListener(OnInventoryInitialized);
-            }
-            else
-            {
-                Debug.LogWarning("Can not find NPCInventoryInitializer in NPC.");
-            }
+                inventoryInitializer.InitNPCInventory.AddListener(OnInventoryInitialized);
+            else Debug.LogWarning("Can not find NPCInventoryInitializer in NPC.");
         }
-        else
-        {
-            Debug.LogWarning("No NPC.");
-        }
-
+        else Debug.LogWarning("No NPC.");
     }
 
     void OnInventoryInitialized(Collection initializedInventory)

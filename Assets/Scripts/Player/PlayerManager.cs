@@ -6,12 +6,13 @@ namespace Abyss.Player
     public class PlayerManager : MonoBehaviour
     {
         [SerializeField] PlayerController playerController;
-        [SerializeField] Weapon _weapon;
-        [SerializeField] PlayerAttr _playerAttr;
+        [SerializeField] Weapon weapon;
+        [SerializeField] PlayerAttr playerAttr;
+        public PlayerAttr PlayerAttr => playerAttr;
 
         void OnEnable()
         {
-            playerController.OnAttackEnded += _weapon.Reset;
+            playerController.OnAttackEnded += weapon.Reset;
             if (GameManager.Instance == null)
                 EventManager.StartListening(SystemEvents.SystemsReady, Load);
             else Load();
@@ -20,7 +21,7 @@ namespace Abyss.Player
 
         void OnDisable()
         {
-            playerController.OnAttackEnded -= _weapon.Reset;
+            playerController.OnAttackEnded -= weapon.Reset;
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
             EventManager.StopListening(SystemEvents.SystemsReady, Load);
         }
@@ -28,33 +29,33 @@ namespace Abyss.Player
         void FixedUpdate()
         {
             if (playerController.IsAttacking)
-                _weapon.Strike(_playerAttr.Strength);
+                weapon.Strike(playerAttr.Strength);
         }
 
         void Load(object input = null)
         {
-            _playerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
+            playerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             // FOR TESTING WHEN WANT TO ASSIGN WEAPON FROM SCENE ITSELF NOT MASTER
-            if (_weapon.weaponItem == null) _weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
-            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, _playerAttr.Health);
-            EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, _playerAttr.Purity);
+            if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
+            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, playerAttr.Health);
+            EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, playerAttr.Purity);
             EventManager.StopListening(SystemEvents.SystemsReady, Load);
         }
 
         void Save(object input = null)
         {
-            GameManager.Instance.PlayerPersistence.PlayerAttr = _playerAttr;
-            GameManager.Instance.PlayerPersistence.WeaponItem = _weapon.weaponItem;
+            GameManager.Instance.PlayerPersistence.PlayerAttr = playerAttr;
+            GameManager.Instance.PlayerPersistence.WeaponItem = weapon.weaponItem;
         }
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
         public void TakeHit(float baseDamage, bool hasKnockback = false, Vector3 from = default)
         {
-            if (_playerAttr.Health == 0) return;
+            if (playerAttr.Health == 0) return;
             if (playerController.TakeHit(hasKnockback, from)) return; // Is still taking last damage or isDead
-            _playerAttr.Health -= Mathf.Min(_playerAttr.Health, baseDamage);
-            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, _playerAttr.Health);
-            if (_playerAttr.Health == 0) playerController.Die();
+            playerAttr.Health -= Mathf.Min(playerAttr.Health, baseDamage);
+            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, playerAttr.Health);
+            if (playerAttr.Health == 0) playerController.Die();
         }
     }
 }

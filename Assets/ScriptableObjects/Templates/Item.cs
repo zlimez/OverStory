@@ -13,15 +13,12 @@ public class Item : ScriptableObject
     public bool isConsumable = true; // Items like map or files are not consumable and thus cannot decrease in amount
     public bool isAcceptableToFara = false;
     public bool isAcceptableToHakem = false;
-    public int value;
+    public int valueToFara, valueToHakem;
 
     public ItemType itemType;
     protected GameEvent itemUsedEvent;
 
-    protected virtual void Awake()
-    {
-        itemUsedEvent = new GameEvent($"{itemName} used");
-    }
+    protected virtual void Awake() => itemUsedEvent = new GameEvent($"{itemName} used");
 
     public virtual void Use()
     {
@@ -38,10 +35,7 @@ public class Item : ScriptableObject
         return false;
     }
 
-    public override int GetHashCode()
-    {
-        return itemName.GetHashCode();
-    }
+    public override int GetHashCode() => itemName.GetHashCode();
 }
 
 public enum ItemType

@@ -20,23 +20,17 @@ public class ItemWithCount
 
 public class NPCInventoryInitializer : MonoBehaviour
 {
-    public Collection NPCItems = new Collection(null, 999);
-    public CollectionEvent initNPCInventory; 
-    public List<ItemWithCount> initialItems; 
+    public Collection NPCItems = new(null, 999);
+    public CollectionEvent InitNPCInventory;
+    public List<ItemWithCount> initialItems;
 
-    private void Start()
-    {
-        InitializeInventory();
-    }
+    private void Start() => InitializeInventory();
 
     public void InitializeInventory()
     {
-
         foreach (var itemStack in initialItems)
-        {
             NPCItems.Add(itemStack.item, itemStack.count);
-        }
 
-        initNPCInventory.Invoke(NPCItems);
+        InitNPCInventory.Invoke(NPCItems);
     }
 }
