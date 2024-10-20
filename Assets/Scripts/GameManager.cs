@@ -2,6 +2,7 @@ using UnityEngine;
 using Abyss.Utils;
 using Abyss.EventSystem;
 using Abyss.DataPersistence;
+using System.Collections.Generic;
 
 /// <summary>
 /// Manages game-related data and states that persist throughout the session.
@@ -17,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     public Inventory Inventory = new();
     public PlayerPersistence PlayerPersistence = new();
     public TimePersistence TimePersistence = new();
+    public Dictionary<string, float> RestsitesPersistence = new();
 
     protected override void Awake()
     {

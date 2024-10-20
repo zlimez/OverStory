@@ -31,6 +31,7 @@ namespace Abyss.EventSystem
         TradePostEntered = 22,
         WeaponEquipped = 23,
         WeaponUnequipped = 24,
+        Rested = 25,
     }
 
 

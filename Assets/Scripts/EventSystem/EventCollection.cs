@@ -53,6 +53,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent TradePostEntered;
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
+        public static readonly StaticEvent Rested;
 
         static PlayEvents()
         {
@@ -64,6 +65,7 @@ namespace Abyss.EventSystem
             TradePostEntered = StaticEvent.TradePostEntered;
             WeaponEquipped = StaticEvent.WeaponEquipped;
             WeaponUnequipped = StaticEvent.WeaponUnequipped;
+            Rested = StaticEvent.Rested;
         }
     }
 }

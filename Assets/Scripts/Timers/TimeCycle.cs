@@ -1,16 +1,18 @@
 using System.Collections;
 using Abyss.EventSystem;
+using Abyss.Utils;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Abyss.TimeManagers
 {
-    public class TimeCycle : MonoBehaviour
+    public class TimeCycle : StaticInstance<TimeCycle>
     {
         public static readonly float CYCLE_LENGTH = 24;
         [SerializeField] float speedMod;
         [SerializeField][Tooltip("The interval of in game time passage that an event will be emitted to broadcast the current time (should evenly divide 24)")] float broadcastInterval = 1;
         [SerializeField] float timeOfCycle, totalTime;
+        public float TotalTime => totalTime;
         float _nextBcast;
         IEnumerator _cycle;
 
@@ -22,12 +24,14 @@ namespace Abyss.TimeManagers
                 EventManager.StartListening(SystemEvents.SystemsReady, LoadStartCycle);
             else LoadStartCycle();
             EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.StartListening(PlayEvents.Rested, Forward);
         }
 
         void OnDisable()
         {
             EventManager.StopListening(SystemEvents.SystemsReady, LoadStartCycle);
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.StopListening(PlayEvents.Rested, Forward);
         }
 
         void LoadStartCycle(object input = null)
@@ -68,8 +72,9 @@ namespace Abyss.TimeManagers
             }
         }
 
-        public void Forward(float fwdTime)
+        void Forward(object input)
         {
+            float fwdTime = (float)input;
             timeOfCycle = (timeOfCycle + fwdTime) % CYCLE_LENGTH;
             totalTime += fwdTime;
             _nextBcast = timeOfCycle % broadcastInterval == 0 ? timeOfCycle : timeOfCycle - timeOfCycle % broadcastInterval;

@@ -5,10 +5,10 @@ public class PickupItem : MonoBehaviour
     public Item item;
     bool picked = false;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("Collision with: " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player") && !picked)
+        Debug.Log("Collision with: " + collider.name);
+        if (collider.CompareTag("Player") && !picked)
         {
             picked = true;
             Pickup();

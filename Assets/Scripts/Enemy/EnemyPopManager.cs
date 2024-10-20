@@ -11,7 +11,7 @@ using UnityEngine.Assertions;
 namespace Abyss.Environment.Enemy
 {
     // NOTE: Population for each specy should be large compared to the number of spawning locations
-    public class EnemyPopManager : PersistentSystem<EnemyPopManager>
+    public class EnemyPopManager : SystemSingleton<EnemyPopManager>
     {
         [Tooltip("Species attributes and initial population count")] public Pair<SpecyAttr, int>[] SpeciesAttrAndInitCount;
         [SerializeField][Tooltip("Should be multiples of broadcast interval in TimeCycle")] float breedInterval = 12;
@@ -69,8 +69,11 @@ namespace Abyss.Environment.Enemy
         {
             (_, float ttTime) = (ValueTuple<float, float>)input;
             if (ttTime < _nextBreedTime) return;
-            NextGeneration();
-            _nextBreedTime = (ttTime - _nextBreedTime) % breedInterval == 0 ? ttTime + breedInterval : ttTime + breedInterval - (ttTime - _nextBreedTime) % breedInterval;
+            while (ttTime >= _nextBreedTime)
+            {
+                NextGeneration();
+                _nextBreedTime += breedInterval;
+            }
             Debug.Log("Next breed at " + _nextBreedTime);
             // SaveNPCs();
         }

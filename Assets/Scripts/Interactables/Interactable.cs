@@ -20,6 +20,7 @@ public abstract class Interactable : MonoBehaviour
 
     // protected Choice useItem, interact, leave;
     private GameObject hint;
+    protected GameObject player;
     // public static string EventPrefix => "Interacted With: ";
 
     // protected void InitialiseItemChoice()
@@ -83,6 +84,7 @@ public abstract class Interactable : MonoBehaviour
         {
             EventManager.InvokeEvent(PlayEvents.InteractableEntered);
             collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
+            player = collider.gameObject;
             SpawnHint();
         }
     }
@@ -93,6 +95,7 @@ public abstract class Interactable : MonoBehaviour
         {
             EventManager.InvokeEvent(PlayEvents.InteractableExited);
             collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
+            player = null;
             DestroyHint();
         }
     }

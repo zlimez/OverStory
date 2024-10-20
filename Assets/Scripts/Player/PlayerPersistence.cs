@@ -1,5 +1,7 @@
 using System;
 using Abyss.Player;
+using Abyss.SceneSystem;
+using Tuples;
 
 namespace Abyss.DataPersistence
 {
@@ -8,7 +10,8 @@ namespace Abyss.DataPersistence
     {
         public PlayerAttr PlayerAttr = new(1, 1, 1, 100, 80);
         public WeaponItem WeaponItem;
-        public int InventoryLevel = 1;
+        public Pair<AbyssScene, UnityEngine.Vector3> LastRest;
+        public bool JustDied = false;
     }
 
     [Serializable]

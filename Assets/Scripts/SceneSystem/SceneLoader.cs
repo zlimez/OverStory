@@ -31,12 +31,12 @@ namespace Abyss.SceneSystem
             if (ActiveScene != AbyssScene.Master) loadedScenes.Add(AbyssScene.Master);
         }
 
-        public void PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
+        public bool PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
         {
             if (currLoadWithMaster != null)
             {
                 Debug.LogWarning("Last Scene have not completed loading");
-                return;
+                return false;
             }
             EventManager.InvokeEvent(SystemEvents.SceneTransitPrep);
             currLoadWithMaster = (object input) =>
@@ -47,27 +47,20 @@ namespace Abyss.SceneSystem
             };
 
             EventManager.StartListening(UIEvents.BlackIn, currLoadWithMaster);
+            return true;
         }
 
         private void UnloadScenes(AbyssScene[] discardedScenes)
         {
             if (discardedScenes == null)
-            {
-                foreach (AbyssScene scene in loadedScenes)
-                    UnloadScene(scene);
-                loadedScenes.Clear();
-            }
+                UnloadScene(LastScene);
             else
             {
                 foreach (AbyssScene scene in discardedScenes)
                 {
                     if (scene == AbyssScene.Master)
                         Debug.LogWarning("Unloading master scene risks disabling core functionalities hence ignored");
-                    else
-                    {
-                        UnloadScene(scene);
-                        loadedScenes.Remove(scene);
-                    }
+                    else UnloadScene(scene);
                 }
             }
         }
@@ -106,11 +99,12 @@ namespace Abyss.SceneSystem
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene.ToString()));
         }
 
-        public void LoadWithMaster(AbyssScene newScene, AbyssScene[] discardedScenes = null)
+        public bool LoadWithMaster(AbyssScene newScene, AbyssScene[] discardedScenes = null)
         {
             if (ActiveScene != AbyssScene.Master) LastScene = ActiveScene;
             UnloadScenes(discardedScenes);
             StartCoroutine(LoadSceneAsync(newScene, false, true, false));
+            return true;
         }
 
         public float GetLoadingProgress()
@@ -122,8 +116,12 @@ namespace Abyss.SceneSystem
 
         private void UnloadScene(AbyssScene scene)
         {
+            Debug.Log("Unloading " + scene);
             if (loadedScenes.Contains(scene))
+            {
                 SceneManager.UnloadSceneAsync(scene.ToString());
+                loadedScenes.Remove(scene);
+            }
         }
     }
 }

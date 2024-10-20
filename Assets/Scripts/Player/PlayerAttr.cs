@@ -5,6 +5,12 @@ namespace Abyss.Player
     [Serializable]
     public struct PlayerAttr
     {
+        public static readonly float MaxStrength = 50;
+        public static readonly float MaxIntelligence = 50;
+        public static readonly float MaxAgility = 50;
+        public static readonly float MaxHealth = 100;
+        public static readonly float MaxPurity = 100;
+
         public float Strength;
         public float Intelligence;
         public float Agility;
