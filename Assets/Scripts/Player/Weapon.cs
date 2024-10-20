@@ -15,14 +15,10 @@ namespace Abyss.Player
 
         void Awake() => _particleSystem = GetComponent<ParticleSystem>();
 
-        void OnEnable() => EventManager.StartListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
-        void OnDisable() => EventManager.StopListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
+        void OnEnable() => EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
+        void OnDisable() => EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
 
-        void Equip(object obj)
-        {
-            if (weaponItem != null) GameManager.Instance.Inventory.AddTo(weaponItem);
-            weaponItem = (WeaponItem)obj;
-        }
+        void Equip(object obj) => weaponItem = (WeaponItem)obj;
 
         public void Strike(float str)
         {

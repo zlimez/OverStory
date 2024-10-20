@@ -29,6 +29,8 @@ namespace Abyss.EventSystem
         TimeBcastEvent = 20,
         EnemyPopManagerReady = 21,
         TradePostEntered = 22,
+        WeaponEquipped = 23,
+        WeaponUnequipped = 24,
     }
 
 

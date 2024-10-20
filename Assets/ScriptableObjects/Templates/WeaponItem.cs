@@ -7,11 +7,10 @@ public class WeaponItem : Item
     [Header("Attributes")]
     public float damage;
     public float radius;
-    public readonly static string WeaponEquippedPrefix = "Weapon equipped";
 
     protected override void Awake()
     {
-        itemUsedEvent = new GameEvent($"{WeaponEquippedPrefix}: ${itemName}");
+        itemUsedEvent = new GameEvent($"{PlayEvents.WeaponEquipped}: ${itemName}");
         canUseFromInventory = false;
         isConsumable = false;
     }
@@ -19,6 +18,6 @@ public class WeaponItem : Item
     public override void Use()
     {
         base.Use();
-        EventManager.InvokeEvent(new GameEvent(WeaponEquippedPrefix), this);
+        EventManager.InvokeEvent(PlayEvents.WeaponEquipped, this);
     }
 }

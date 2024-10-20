@@ -34,10 +34,7 @@ namespace Abyss.EventSystem
             }
         }
 
-        public static void StartListening(StaticEvent gameEvent, UnityAction<object> listener)
-        {
-            StartListening(new GameEvent(gameEvent.ToString()), listener);
-        }
+        public static void StartListening(StaticEvent gameEvent, UnityAction<object> listener) => StartListening(new GameEvent(gameEvent.ToString()), listener);
 
         /// <summary>
         /// Stops listening to the specified game event and removes a single specified listener from it.
@@ -59,10 +56,7 @@ namespace Abyss.EventSystem
             }
         }
 
-        public static void StopListening(StaticEvent gameEvent, UnityAction<object> listener)
-        {
-            StopListening(new GameEvent(gameEvent.ToString()), listener);
-        }
+        public static void StopListening(StaticEvent gameEvent, UnityAction<object> listener) => StopListening(new GameEvent(gameEvent.ToString()), listener);
 
         /// <summary>
         /// Removes all listeners from the specified game event.
@@ -74,24 +68,14 @@ namespace Abyss.EventSystem
                 thisEvent.RemoveAllListeners();
         }
 
-        public static void StopListeningAll(StaticEvent gameEvent)
-        {
-            StopListeningAll(new GameEvent(gameEvent.ToString()));
-        }
+        public static void StopListeningAll(StaticEvent gameEvent) => StopListeningAll(new GameEvent(gameEvent.ToString()));
 
         /// <summary>
         /// Queues the specified game event.
         /// </summary>
         /// <param name="gameEvent">The game event to queue.</param>
-        public static void QueueEvent(GameEvent gameEvent)
-        {
-            sceneTransitionQueuedEvents.Enqueue(gameEvent);
-        }
-
-        public static void QueueEvent(StaticEvent gameEvent)
-        {
-            QueueEvent(new GameEvent(gameEvent.ToString()));
-        }
+        public static void QueueEvent(GameEvent gameEvent) => sceneTransitionQueuedEvents.Enqueue(gameEvent);
+        public static void QueueEvent(StaticEvent gameEvent) => QueueEvent(new GameEvent(gameEvent.ToString()));
 
         /// <summary>
         /// Invokes all queued game events.
@@ -113,14 +97,11 @@ namespace Abyss.EventSystem
         /// <param name="inputParam">Optional input parameter for the event.</param>
         public static void InvokeEvent(GameEvent gameEvent, object inputParam = null)
         {
-            Debug.Log($"{gameEvent.EventName} invoked");
+            // Debug.Log($"{gameEvent.EventName} invoked");
             if (eventTable.TryGetValue(gameEvent, out UnityEvent<object> thisEvent))
                 thisEvent.Invoke(inputParam);
         }
 
-        public static void InvokeEvent(StaticEvent gameEvent, object inputParam = null)
-        {
-            InvokeEvent(new GameEvent(gameEvent.ToString()), inputParam);
-        }
+        public static void InvokeEvent(StaticEvent gameEvent, object inputParam = null) => InvokeEvent(new GameEvent(gameEvent.ToString()), inputParam);
     }
 }

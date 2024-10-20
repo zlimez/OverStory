@@ -51,6 +51,8 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent PlayerHealthChange;
         public static readonly StaticEvent PlayerPurityChange;
         public static readonly StaticEvent TradePostEntered;
+        public static readonly StaticEvent WeaponEquipped;
+        public static readonly StaticEvent WeaponUnequipped;
 
         static PlayEvents()
         {
@@ -60,6 +62,8 @@ namespace Abyss.EventSystem
             InteractableEntered = StaticEvent.InteractableEntered;
             InteractableExited = StaticEvent.InteractableExited;
             TradePostEntered = StaticEvent.TradePostEntered;
+            WeaponEquipped = StaticEvent.WeaponEquipped;
+            WeaponUnequipped = StaticEvent.WeaponUnequipped;
         }
     }
 }

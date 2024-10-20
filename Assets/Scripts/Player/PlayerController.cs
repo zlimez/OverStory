@@ -1,6 +1,7 @@
 using System;
 using Abyss.EventSystem;
 using AnyPortrait;
+using Tuples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,19 +12,22 @@ namespace Abyss.Player
 	{
 		#region Fields
 
-		private enum State
+		private enum State // For reference only
 		{
-			Idle,
-			Walk,
-			Run,
-			Jump,
-			Dash,
-			Damage,
-			Attack,
-			Death
+			Idle_Nil, Walk_Nil, Run_Nil, Jump_Nil, Dash_Nil, Damage_Nil, Attack_Nil, Death_Nil,
+			Idle_Axe_t1, Walk_Axe_t1, Run_Axe_t1, Jump_Axe_t1, Dash_Axe_t1, Damage_Axe_t1, Attack_Axe_t1, Death_Axe_t1,
 		}
 
-		// GameObject Components
+		bool IsIdleState => currState.ToString().StartsWith("Idle");
+		bool IsWalkState => currState.ToString().StartsWith("Walk");
+		bool IsRunState => currState.ToString().StartsWith("Run");
+		bool IsJumpState => currState.ToString().StartsWith("Jump");
+		bool IsDashState => currState.ToString().StartsWith("Dash");
+		bool IsDamageState => currState.ToString().StartsWith("Damage");
+		bool IsAttackState => currState.ToString().StartsWith("Attack");
+		bool IsDeathState => currState.ToString().StartsWith("Death");
+		string BaseState => currState.ToString().Split('_')[0];
+
 		private Rigidbody2D rb2D;
 
 		// Animation support
@@ -61,8 +65,8 @@ namespace Abyss.Player
 		private float remainingDashTime;
 		private float dashCountdown;
 
-		[Header("Damage")]
-		[SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
+		[Header("Damage")][SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
+		[Header("Weapon Mapping")][SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
 
 		public bool IsAttacking { get; private set; } = false;
 		bool isTakingDamage = false, isDead = false;
@@ -70,6 +74,7 @@ namespace Abyss.Player
 		public Action OnAttemptInteract;
 
 		private State currState;
+		[NonSerialized] public string Weapon = "Nil";
 
 		#endregion
 
@@ -82,7 +87,7 @@ namespace Abyss.Player
 			_playerSfx = GetComponent<PlayerSfx>();
 
 			portrait.Initialize();
-			currState = State.Idle;
+			currState = Enum.Parse<State>($"Idle_{Weapon}");
 			dashCountdown = dashCooldown;
 		}
 
@@ -147,12 +152,35 @@ namespace Abyss.Player
 			if (coll2D.gameObject.CompareTag("Ground"))
 			{
 				if (isDashing)
-				{
 					hasGroundedSinceDash = false;
-				}
 				isGrounded = false;
 			}
 		}
+
+		void OnEnable()
+		{
+			EventManager.StartListening(PlayEvents.WeaponEquipped, EquipWeapon);
+			EventManager.StartListening(PlayEvents.WeaponUnequipped, UnequipWeapon);
+		}
+		void OnDisable()
+		{
+			EventManager.StopListening(PlayEvents.WeaponEquipped, EquipWeapon);
+			EventManager.StopListening(PlayEvents.WeaponUnequipped, UnequipWeapon);
+		}
+
+		public void EquipWeapon(object input)
+		{
+			int ind = Array.FindIndex(weaponMapping, pair => pair.Head == (WeaponItem)input);
+			if (ind == -1)
+				Debug.LogWarning("Weapon not found in mapping");
+			else
+			{
+				Weapon = weaponMapping[ind].Tail;
+				TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
+			}
+		}
+
+		void UnequipWeapon(object input = null) => Weapon = "Nil";
 
 		private void FlipSprite()
 		{
@@ -166,66 +194,64 @@ namespace Abyss.Player
 		// Animation stuff
 		private void HandleState()
 		{
-			switch (currState)
+			if (IsAttackState)
 			{
-				case State.Attack:
-					if (!isGrounded)
-						TransitionToState(State.Jump);
-					else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
-						TransitionToState(State.Run);
+				if (!isGrounded)
+					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
+				else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
+				else if (currHorizontalSpeed == 0)
+					TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
+				else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+			}
+			else if (IsDamageState)
+			{
+				if (!isGrounded)
+					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
+				else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
+				else if (currHorizontalSpeed == 0)
+					TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
+				else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+			}
+			else if (IsIdleState)
+			{
+				if (currHorizontalSpeed != 0)
+					TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+			}
+			else if (IsWalkState)
+			{
+				if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + .1f)
+					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
+				else if (currHorizontalSpeed == 0)
+					TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
+			}
+			else if (IsRunState)
+			{
+				if (Mathf.Abs(currHorizontalSpeed) < walkSpeed + 0.1f)
+					TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+			}
+			else if (IsDashState)
+			{
+				if (!isDashing)
+				{
+					if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
 					else if (currHorizontalSpeed == 0)
-						TransitionToState(State.Idle);
-					else TransitionToState(State.Walk);
-					break;
-
-				case State.Damage:
-					if (!isGrounded)
-						TransitionToState(State.Jump);
-					else if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
-						TransitionToState(State.Run);
+						TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
+					else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+				}
+			}
+			else if (IsJumpState)
+			{
+				if (isGrounded && Mathf.Abs(rb2D.velocity.y) < .1f)
+				{
+					if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
+						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
 					else if (currHorizontalSpeed == 0)
-						TransitionToState(State.Idle);
-					else TransitionToState(State.Walk);
-					break;
-
-				case State.Idle:
-					if (currHorizontalSpeed != 0)
-						TransitionToState(State.Walk);
-					break;
-
-				case State.Walk:
-					if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + .1f)
-						TransitionToState(State.Run);
-					else if (currHorizontalSpeed == 0)
-						TransitionToState(State.Idle);
-					break;
-
-				case State.Run:
-					if (Mathf.Abs(currHorizontalSpeed) < walkSpeed + 0.1f)
-						TransitionToState(State.Walk);
-					break;
-
-				case State.Jump:
-					if (isGrounded && Mathf.Abs(rb2D.velocity.y) < .1f)
-					{
-						if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
-							TransitionToState(State.Run);
-						else if (currHorizontalSpeed == 0)
-							TransitionToState(State.Idle);
-						else TransitionToState(State.Walk);
-					}
-					break;
-
-				case State.Dash:
-					if (!isDashing)
-					{
-						if (Mathf.Abs(currHorizontalSpeed) > walkSpeed + 0.1f)
-							TransitionToState(State.Run);
-						else if (currHorizontalSpeed == 0)
-							TransitionToState(State.Idle);
-						else TransitionToState(State.Walk);
-					}
-					break;
+						TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
+					else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+				}
 			}
 		}
 
@@ -266,7 +292,7 @@ namespace Abyss.Player
 				rb2D.AddForce(Vector2.up * initialJumpImpulse, ForceMode2D.Impulse);
 				remainingJumpTime = MAX_JUMP_TIME;
 				isJumping = true;
-				TransitionToState(State.Jump);
+				TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 			}
 			else if (context.canceled)
 			{
@@ -284,10 +310,7 @@ namespace Abyss.Player
 				shouldRun = false;
 		}
 
-		public void OnMove(InputAction.CallbackContext context)
-		{
-			moveDir = context.ReadValue<float>();
-		}
+		public void OnMove(InputAction.CallbackContext context) => moveDir = context.ReadValue<float>();
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
@@ -300,7 +323,7 @@ namespace Abyss.Player
 				isDashAvailable = false;
 				hasGroundedSinceDash = false;
 				rb2D.AddForce((IsFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
-				TransitionToState(State.Dash);
+				TransitionToState(Enum.Parse<State>($"Dash_{Weapon}"));
 			}
 		}
 
@@ -311,8 +334,8 @@ namespace Abyss.Player
 			{
 				if (IsAttacking) return;
 				IsAttacking = true;
-				currState = State.Attack;
-				portrait.Play(State.Attack.ToString()); // CrossFade is glitchy here
+				currState = Enum.Parse<State>($"Attack_{Weapon}");
+				portrait.Play($"Attack_{Weapon}"); // CrossFade is glitchy here
 			}
 		}
 
@@ -338,7 +361,7 @@ namespace Abyss.Player
 			remainingJumpTime = 0f;
 			isTakingDamage = true;
 			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * knockbackImpulse, ForceMode2D.Impulse);
-			TransitionToState(State.Damage);
+			TransitionToState(Enum.Parse<State>($"Damage_{Weapon}"));
 			return false;
 		}
 
@@ -351,13 +374,10 @@ namespace Abyss.Player
 			remainingJumpTime = 0f;
 			isTakingDamage = false;
 			isDead = true;
-			TransitionToState(State.Death);
+			TransitionToState(Enum.Parse<State>($"Death_{Weapon}"));
 		}
 
-		void DamageEnd()
-		{
-			isTakingDamage = false;
-		}
+		void DamageEnd() => isTakingDamage = false;
 
 		void AttackEnd()
 		{
@@ -365,10 +385,7 @@ namespace Abyss.Player
 			OnAttackEnded?.Invoke();
 		}
 
-		void DeathEnd()
-		{
-			EventManager.InvokeEvent(PlayEvents.PlayerDeath);
-		}
+		void DeathEnd() => EventManager.InvokeEvent(PlayEvents.PlayerDeath);
 		#endregion
 	}
 }

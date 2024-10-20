@@ -37,6 +37,7 @@ namespace Abyss.Player
             playerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             // FOR TESTING WHEN WANT TO ASSIGN WEAPON FROM SCENE ITSELF NOT MASTER
             if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
+            if (weapon.weaponItem != null) playerController.EquipWeapon(weapon.weaponItem);
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, playerAttr.Health);
             EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, playerAttr.Purity);
             EventManager.StopListening(SystemEvents.SystemsReady, Load);
