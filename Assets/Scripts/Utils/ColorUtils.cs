@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class ColorUtils {
-    public static Color transparent = new Color(0, 0, 0, 0);
+public class ColorUtils
+{
+    public static Color transparent = new(0, 0, 0, 0);
 
-    public static Color CubicLerpColor(Color from, Color to, float t) {
+    public static Color CubicLerpColor(Color from, Color to, float t)
+    {
         float clampedT = Mathf.Clamp(t, 0, 1);
         return Color.LerpUnclamped(from, to, 1 + Mathf.Pow(clampedT - 1, 3));
     }

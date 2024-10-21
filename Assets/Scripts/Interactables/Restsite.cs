@@ -10,7 +10,7 @@ public class RestSite : Interactable
     [SerializeField] float purityRestoration;
     [SerializeField][Tooltip("Cooldown period before purity restoration effect can be applied again")] float purityRestoreCooldown;
     [SerializeField] float timeFastForward;
-    float lastPurityRestoreTime = -1; // cooldown for purity to be restored
+    [SerializeField] float lastPurityRestoreTime = -1; // cooldown for purity to be restored
     // TODO: Include crafting, some functions to transferred to eventual rest site menu
 
     void OnEnable()
@@ -29,7 +29,7 @@ public class RestSite : Interactable
 
     void Load(object input = null)
     {
-        if (GameManager.Instance.RestsitesPersistence.TryGetValue(restSiteName, out var purityRestoreTime)) lastPurityRestoreTime = purityRestoreTime;
+        if (GameManager.Instance.RestsitesPersistence.ContainsKey(restSiteName)) lastPurityRestoreTime = GameManager.Instance.RestsitesPersistence[restSiteName];
         EventManager.StopListening(SystemEvents.SystemsReady, Load);
     }
 

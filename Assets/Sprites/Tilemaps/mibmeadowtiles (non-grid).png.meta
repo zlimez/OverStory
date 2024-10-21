@@ -1,0 +1,1192 @@
+fileFormatVersion: 2
+guid: 9f19250bfdf1e41a6aa4770f0149f24b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 704
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc6befd174ea74a55b1c312aeb3a2f94
+      internalID: -1051793933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 704
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74204af73ff664bb5ab71a7de756de0d
+      internalID: -820032649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1109255f5ec004201877cd89800c2b32
+      internalID: 1064606861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_3
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 704
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc3a32059bf164086af4c9d2fe6d3f7f
+      internalID: -1970861673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_4
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1d0154b9c94b4286927d5b8ab97acc6
+      internalID: -1030511346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_5
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f00dd65cb71641dda62c417a3e96d0f
+      internalID: -1111451635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_6
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 832
+        width: 192
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9040fd1b33c8849b59bda78fcdf52805
+      internalID: -1461595005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_7
+      rect:
+        serializedVersion: 2
+        x: 1408
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecb8c9f0aab024b47b47d4eaae235cff
+      internalID: 1117788341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_8
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53bcb88f4c0424fee93d7ca1860e3716
+      internalID: 147311435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_9
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 704
+        width: 192
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaa793d7a524f46bab3e2e5736cf5dd6
+      internalID: -2021694963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eafb841d0c5c343c9b113f44dbd2aa8a
+      internalID: 472572230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c5e165887d504357bd7c6294af52e09
+      internalID: -799807760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_12
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ede9137208a4474dafb840f95caaa63
+      internalID: -917496088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_13
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c50a254f56c314ccca6c60220f090040
+      internalID: 739995957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_14
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bef03bc9f1d6b41758273d07015ad35d
+      internalID: -1034164703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_15
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e1678b949b964cc79a7fc0c53988b1a
+      internalID: 1274171106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_16
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 576
+        width: 192
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b90178d0e6dd5412a98e8197dc8525ab
+      internalID: 46596982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_17
+      rect:
+        serializedVersion: 2
+        x: 1412
+        y: 576
+        width: 56
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c5c6446a71cc4e589a6ad6e6d8a7260
+      internalID: -713588825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_18
+      rect:
+        serializedVersion: 2
+        x: 1542
+        y: 256
+        width: 186
+        height: 383
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4a360c39e171423d8c3d4b59f981a42
+      internalID: -1535408641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_19
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 384
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 302eae7e26edc49b496fddb7e5a996b0
+      internalID: -507346481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_20
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 384
+        width: 56
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1f1cef5b13284a23b1e8789435b7f9f
+      internalID: 955011969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_21
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 383
+        width: 56
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 355ebd9ac40dc492bab78c51bee5181e
+      internalID: -46885777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_22
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 384
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdbdd872028454b6381b303d51f2c05a
+      internalID: 489302097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_23
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 384
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79fbc8e559e3b44dd8e7749ea17f2ccf
+      internalID: 729632437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_24
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 383
+        width: 56
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ad3b95b5ec84430f8d8f3bd16214e74
+      internalID: -562019436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_25
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 384
+        width: 56
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67fc613ea7fa9490cbf1d4b515a4644c
+      internalID: 1541584697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_26
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 384
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30709486ced914e8f88404b4bfa572fb
+      internalID: 1707846971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_27
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 256
+        width: 177
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57c38ac5dc1854ad8a15ceb87327dfd6
+      internalID: -748112925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_28
+      rect:
+        serializedVersion: 2
+        x: 1288
+        y: 256
+        width: 177
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06861470e823b41ba914c8cadd1009e7
+      internalID: -820109759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_29
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 256
+        width: 56
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a8a064812ecc45ddb640fd7f78fc02f
+      internalID: 1698233530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_30
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 256
+        width: 56
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79d3c05afa3de4da980ce0e59b19f53c
+      internalID: -2144511200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_31
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 256
+        width: 56
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa33a21bcbf3d440b956ee49f28fb5e6
+      internalID: 61593223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_32
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 256
+        width: 56
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03dafe8cef1524cf3b7bc75ca418e1d6
+      internalID: 576379403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_33
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 256
+        width: 56
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bfb90737682a4953b4f4d92bdb123e6
+      internalID: 951412888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_34
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 256
+        width: 56
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35d9d658f2cfd44c980932d6bbe7aafd
+      internalID: 492906822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_35
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 256
+        width: 56
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d4081e53b987497e9941a6d5f2dbcc1
+      internalID: 861131617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_36
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 256
+        width: 56
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77bf5c62c6b954ce4aa926f1362a898d
+      internalID: -1092834064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_37
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 63
+        width: 56
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 173c997bce2224304bba82cda1fd8556
+      internalID: -340053489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_38
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 63
+        width: 56
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac56871a732f342318f4664fdbc9f49c
+      internalID: 214246029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_39
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 64
+        width: 60
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4c8d0c28cee54ce08ccc28ed4fa0332
+      internalID: -1143249788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_40
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 64
+        width: 56
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aad6671292a6e46909a57173504dd085
+      internalID: -1355664618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_41
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 64
+        width: 56
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0585cc98f6e3349c2b33cd5cd4a3b784
+      internalID: -1495486592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_42
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 64
+        width: 60
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6598dddab492d44da8a0c497aa14340c
+      internalID: -1298390155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_43
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 64
+        width: 56
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90fa335d0f7d7475e89e6d4f472b8832
+      internalID: -867017737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_44
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 64
+        width: 56
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d1bdd31e6d1c4982b33ecce3e96c496
+      internalID: -2013035070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_45
+      rect:
+        serializedVersion: 2
+        x: 1028
+        y: 64
+        width: 122
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0e72b1f5820b4968aee80f878814956
+      internalID: -1579326589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_46
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 64
+        width: 60
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2cdaa318ab43444584f870ec22e0ace
+      internalID: -1814580319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_47
+      rect:
+        serializedVersion: 2
+        x: 1348
+        y: 64
+        width: 90
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2127e7f217d04a13ab158ce42cde417
+      internalID: -1782735832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibmeadowtiles (non-grid)_48
+      rect:
+        serializedVersion: 2
+        x: 1505
+        y: 64
+        width: 126
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4f0d9bc059f54cbabbe34587a9cc080
+      internalID: -1108290444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 252c83c887ad74879917290169d0d845
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      mibmeadowtiles (non-grid)_0: -1051793933
+      mibmeadowtiles (non-grid)_1: -820032649
+      mibmeadowtiles (non-grid)_10: 472572230
+      mibmeadowtiles (non-grid)_11: -799807760
+      mibmeadowtiles (non-grid)_12: -917496088
+      mibmeadowtiles (non-grid)_13: 739995957
+      mibmeadowtiles (non-grid)_14: -1034164703
+      mibmeadowtiles (non-grid)_15: 1274171106
+      mibmeadowtiles (non-grid)_16: 46596982
+      mibmeadowtiles (non-grid)_17: -713588825
+      mibmeadowtiles (non-grid)_18: -1535408641
+      mibmeadowtiles (non-grid)_19: -507346481
+      mibmeadowtiles (non-grid)_2: 1064606861
+      mibmeadowtiles (non-grid)_20: 955011969
+      mibmeadowtiles (non-grid)_21: -46885777
+      mibmeadowtiles (non-grid)_22: 489302097
+      mibmeadowtiles (non-grid)_23: 729632437
+      mibmeadowtiles (non-grid)_24: -562019436
+      mibmeadowtiles (non-grid)_25: 1541584697
+      mibmeadowtiles (non-grid)_26: 1707846971
+      mibmeadowtiles (non-grid)_27: -748112925
+      mibmeadowtiles (non-grid)_28: -820109759
+      mibmeadowtiles (non-grid)_29: 1698233530
+      mibmeadowtiles (non-grid)_3: -1970861673
+      mibmeadowtiles (non-grid)_30: -2144511200
+      mibmeadowtiles (non-grid)_31: 61593223
+      mibmeadowtiles (non-grid)_32: 576379403
+      mibmeadowtiles (non-grid)_33: 951412888
+      mibmeadowtiles (non-grid)_34: 492906822
+      mibmeadowtiles (non-grid)_35: 861131617
+      mibmeadowtiles (non-grid)_36: -1092834064
+      mibmeadowtiles (non-grid)_37: -340053489
+      mibmeadowtiles (non-grid)_38: 214246029
+      mibmeadowtiles (non-grid)_39: -1143249788
+      mibmeadowtiles (non-grid)_4: -1030511346
+      mibmeadowtiles (non-grid)_40: -1355664618
+      mibmeadowtiles (non-grid)_41: -1495486592
+      mibmeadowtiles (non-grid)_42: -1298390155
+      mibmeadowtiles (non-grid)_43: -867017737
+      mibmeadowtiles (non-grid)_44: -2013035070
+      mibmeadowtiles (non-grid)_45: -1579326589
+      mibmeadowtiles (non-grid)_46: -1814580319
+      mibmeadowtiles (non-grid)_47: -1782735832
+      mibmeadowtiles (non-grid)_48: -1108290444
+      mibmeadowtiles (non-grid)_5: -1111451635
+      mibmeadowtiles (non-grid)_6: -1461595005
+      mibmeadowtiles (non-grid)_7: 1117788341
+      mibmeadowtiles (non-grid)_8: 147311435
+      mibmeadowtiles (non-grid)_9: -2021694963
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

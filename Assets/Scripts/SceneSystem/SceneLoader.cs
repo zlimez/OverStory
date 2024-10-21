@@ -11,7 +11,7 @@ namespace Abyss.SceneSystem
     // Must be placed under "Master" scene
     public class SceneLoader : StaticInstance<SceneLoader>
     {
-        [SerializeField] Camera sceneTransitCamera;
+        // [SerializeField] Camera sceneTransitCamera;
         public AbyssScene LastScene { get; private set; }
         public bool InTransit { get; private set; } = false;
         private AsyncOperation loadingAsyncOperation;
@@ -79,7 +79,7 @@ namespace Abyss.SceneSystem
 
             if (isAdditive)
             {
-                sceneTransitCamera.enabled = true;
+                // sceneTransitCamera.enabled = true;
                 loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString(), LoadSceneMode.Additive);
                 loadedScenes.Add(scene);
             }
@@ -89,7 +89,7 @@ namespace Abyss.SceneSystem
                 yield return null;
 
             InTransit = false;
-            sceneTransitCamera.enabled = false;
+            // sceneTransitCamera.enabled = false;
 
             ActiveScene = scene;
             EventManager.InvokeEvent(SystemEvents.SceneTransitDone);

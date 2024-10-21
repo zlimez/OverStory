@@ -36,20 +36,9 @@ public class BlackInOut : MonoBehaviour
             EventManager.StopListening(closeOpenTrigger, CloseOpen);
     }
 
-    public void Close(object input = null)
-    {
-        StartCoroutine(Close());
-    }
-
-    public void Open(object input = null)
-    {
-        StartCoroutine(Open());
-    }
-
-    public void CloseOpen(object input = null)
-    {
-        StartCoroutine(CloseOpen());
-    }
+    public void Close(object input = null) => StartCoroutine(Close());
+    public void Open(object input = null) => StartCoroutine(Open());
+    public void CloseOpen(object input = null) => StartCoroutine(CloseOpen());
 
     IEnumerator Close()
     {
