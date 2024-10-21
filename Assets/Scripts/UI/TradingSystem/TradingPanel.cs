@@ -237,6 +237,11 @@ public class TradingSystem : MonoBehaviour
                 SetTradeButton(true);
             }
         }
+        else
+        {
+            SetBargainButton(false);
+            SetTradeButton(false);
+        }
 
     }
 

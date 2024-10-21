@@ -54,6 +54,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
         public static readonly StaticEvent Rested;
+        public static readonly StaticEvent SpellEquippedStateChange;
 
         static PlayEvents()
         {
@@ -66,6 +67,7 @@ namespace Abyss.EventSystem
             WeaponEquipped = StaticEvent.WeaponEquipped;
             WeaponUnequipped = StaticEvent.WeaponUnequipped;
             Rested = StaticEvent.Rested;
+            SpellEquippedStateChange = StaticEvent.SpellEquippedStateChange;
         }
     }
 }

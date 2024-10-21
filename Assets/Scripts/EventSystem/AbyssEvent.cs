@@ -32,6 +32,7 @@ namespace Abyss.EventSystem
         WeaponEquipped = 23,
         WeaponUnequipped = 24,
         Rested = 25,
+        SpellEquippedStateChange = 26,
     }
 
 
