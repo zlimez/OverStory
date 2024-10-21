@@ -34,7 +34,4 @@ namespace Abyss.EventSystem
         Rested = 25,
         SpellEquippedStateChange = 26,
     }
-
-
-    public static class DynamicEvent { }
 }

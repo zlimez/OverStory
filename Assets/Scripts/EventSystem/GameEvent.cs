@@ -4,6 +4,12 @@ using UnityEngine.Serialization;
 
 namespace Abyss.EventSystem
 {
+    [CreateAssetMenu(menuName = "Dynamic Event")]
+    public class DynamicEvent : ScriptableObject
+    {
+        public string EventName;
+    }
+
     [Serializable]
     public struct GameEvent
     {

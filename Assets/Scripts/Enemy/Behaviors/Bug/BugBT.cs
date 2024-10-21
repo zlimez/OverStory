@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class BugBT : MonoBT
 {
-    [SerializeField] Arena arena;
+    public Arena Arena;
     [SerializeField] float aftJumpDashTime;
     [Header("Drop Settings")]
     [SerializeField] AnimationCurve dropCurve;
@@ -17,8 +17,8 @@ public class BugBT : MonoBT
     [SerializeField][Tooltip("Space that must be available to the bug to drop into")] float minSpace;
 
     [Header("Dash Settings")]
-    [SerializeField] Transform leftEnd;
-    [SerializeField] Transform rightEnd;
+    public Transform LeftEnd;
+    public Transform RightEnd;
     [SerializeField] AnimationCurve dashCurve;
     [SerializeField] float dashSpeed;
     [SerializeField] float dashDamage;
@@ -46,8 +46,8 @@ public class BugBT : MonoBT
             new("dropDuration", dropDuration),
             new("minSpace", minSpace),
 
-            new("leftEnd", leftEnd),
-            new("rightEnd", rightEnd),
+            new("leftEnd", LeftEnd),
+            new("rightEnd", RightEnd),
             new("dashCurve", dashCurve),
             new("dashSpeed", dashSpeed),
             new("dashDamage", dashDamage),
@@ -61,7 +61,7 @@ public class BugBT : MonoBT
             new("bugSprite", GetComponent<SpriteManager>()),
             new("bugManager", GetComponent<EnemyManager>()),
             new("aftJumpDashTime", aftJumpDashTime),
-            new("arena",arena)
+            new("arena",Arena)
         };
 
         _bT = new BT(

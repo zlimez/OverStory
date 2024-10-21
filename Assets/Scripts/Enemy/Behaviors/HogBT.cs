@@ -28,7 +28,7 @@ public class HogBT : MonoBT
     [Header("Patrol Settings")]
     [SerializeField] float patrolSpeed;
     [SerializeField] float waitTime;
-    public Transform[] waypoints;
+    public Transform[] Waypoints;
 
     protected override void OnDisable()
     {
@@ -63,7 +63,7 @@ public class HogBT : MonoBT
 
             new("patrolSpeed", patrolSpeed),
             new("waitTime", waitTime),
-            new("waypoints", waypoints),
+            new("waypoints", Waypoints),
 
             new("aggro", aggro),
             new("hog", transform),

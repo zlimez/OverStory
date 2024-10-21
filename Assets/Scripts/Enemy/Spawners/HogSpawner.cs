@@ -10,7 +10,7 @@ namespace Abyss.Environment.Enemy
         {
             if (!base.Spawn(attr)) return false;
             HogBT hogBT = _instance.GetComponent<HogBT>();
-            hogBT.waypoints = waypoints;
+            hogBT.Waypoints = waypoints;
             hogBT.Setup();
             return true;
         }
