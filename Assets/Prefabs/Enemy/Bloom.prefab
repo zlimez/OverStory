@@ -912,7 +912,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802386053101811234}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 45.3073, y: -2.82, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -925,6 +925,8 @@ Transform:
   - {fileID: 4377409293960974441}
   - {fileID: 6998230556249337796}
   - {fileID: 6683808181406036235}
+  - {fileID: 7661847344468975196}
+  - {fileID: 4405318274228898151}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3157385855424546698
@@ -960,6 +962,14 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 50
+  drops:
+  - Head: {fileID: 1520851749018624176, guid: 68f22f5baabc146228b55f27fae765f2, type: 3}
+    Tail: 2
+  - Head: {fileID: 6575146312904711976, guid: 1e1521065be5b43c795e807630e6a8a4, type: 3}
+    Tail: 4
+  dropRange:
+    Head: {fileID: 7661847344468975196}
+    Tail: {fileID: 4405318274228898151}
 --- !u!114 &2361636175091823635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7549,6 +7559,37 @@ MonoBehaviour:
   _jiggle_AngleLimit_Max: 30
   _jiggle_IsControlParamWeight: 0
   _jiggle_WeightControlParamID: -1
+--- !u!1 &3662595937021368918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4405318274228898151}
+  m_Layer: 6
+  m_Name: DropRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4405318274228898151
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3662595937021368918}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.57, y: -2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4322774981055549084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4003049688459597230
 GameObject:
   m_ObjectHideFlags: 0
@@ -19178,6 +19219,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _param: -1
+--- !u!1 &7035532003633242703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7661847344468975196}
+  m_Layer: 6
+  m_Name: DropLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7661847344468975196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035532003633242703}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.15, y: -2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4322774981055549084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7043347823563047690
 GameObject:
   m_ObjectHideFlags: 0

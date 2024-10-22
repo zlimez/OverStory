@@ -2858,8 +2858,8 @@ Transform:
   m_GameObject: {fileID: 537967867112616509}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 459, y: 104, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -459, y: 104, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6615005986183298322}
@@ -2894,7 +2894,7 @@ MonoBehaviour:
     _pos_Local: {x: -419, y: -46.142857}
     _uv: {x: 0.09082031, y: 0.45493862}
     _zDepth: 0
-    _vertPos_World: {x: -130, y: -3.1428566}
+    _vertPos_World: {x: 130, y: -3.1428585}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -2917,11 +2917,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -6.570542e-11
       _m02: 289
-      _m10: 0
+      _m10: 0.000000013620205
       _m11: 1
-      _m12: 43
+      _m12: 43.000004
       _m20: 0
       _m21: 0
       _m22: 1
@@ -2932,7 +2932,7 @@ MonoBehaviour:
     _pos_Local: {x: -515.0714, y: -150.7857}
     _uv: {x: -0.002999425, y: 0.35274833}
     _zDepth: 0
-    _vertPos_World: {x: -226.07141, y: -107.785706}
+    _vertPos_World: {x: 226.07141, y: -107.785706}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -2955,11 +2955,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000011745989
       _m02: 289
-      _m10: 0
+      _m10: 0.000000011711148
       _m11: 1
-      _m12: 43
+      _m12: 43.000004
       _m20: 0
       _m21: 0
       _m22: 1
@@ -2970,7 +2970,7 @@ MonoBehaviour:
     _pos_Local: {x: -486.14285, y: -84}
     _uv: {x: 0.02525112, y: 0.41796875}
     _zDepth: 0
-    _vertPos_World: {x: -197.14285, y: -41}
+    _vertPos_World: {x: 197.14285, y: -41}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -2993,11 +2993,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000011745989
       _m02: 289
-      _m10: 0
+      _m10: 0.000000011711148
       _m11: 1
-      _m12: 43
+      _m12: 43.000004
       _m20: 0
       _m21: 0
       _m22: 1
@@ -3008,7 +3008,7 @@ MonoBehaviour:
     _pos_Local: {x: -401.14285, y: -60.071426}
     _uv: {x: 0.10825893, y: 0.4413365}
     _zDepth: 0
-    _vertPos_World: {x: -112.14285, y: -17.071426}
+    _vertPos_World: {x: 112.14285, y: -17.071428}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3031,11 +3031,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -6.570542e-11
       _m02: 289
-      _m10: 0
+      _m10: 0.000000013620205
       _m11: 1
-      _m12: 43
+      _m12: 43.000004
       _m20: 0
       _m21: 0
       _m22: 1
@@ -3046,7 +3046,7 @@ MonoBehaviour:
     _pos_Local: {x: -447.92856, y: -116.14286}
     _uv: {x: 0.06256977, y: 0.38657925}
     _zDepth: 0
-    _vertPos_World: {x: -158.92856, y: -73.14286}
+    _vertPos_World: {x: 158.92856, y: -73.14286}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3069,11 +3069,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000011745989
       _m02: 289
-      _m10: 0
+      _m10: 0.000000011711148
       _m11: 1
-      _m12: 43
+      _m12: 43.000004
       _m20: 0
       _m21: 0
       _m22: 1
@@ -3084,7 +3084,7 @@ MonoBehaviour:
     _pos_Local: {x: -497.9286, y: -155.42857}
     _uv: {x: 0.013741612, y: 0.34821427}
     _zDepth: 0
-    _vertPos_World: {x: -208.92859, y: -112.42857}
+    _vertPos_World: {x: 208.92859, y: -112.42857}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3107,11 +3107,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000011745989
       _m02: 289
-      _m10: 0
+      _m10: 0.000000011711148
       _m11: 1
-      _m12: 43
+      _m12: 43.000004
       _m20: 0
       _m21: 0
       _m22: 1
@@ -3339,8 +3339,8 @@ Transform:
   m_GameObject: {fileID: 568502607580265325}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 464.5, y: -163.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -464.5, y: -163.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7927324405280422790}
@@ -3375,7 +3375,7 @@ MonoBehaviour:
     _pos_Local: {x: -517.8333, y: 135.16666}
     _uv: {x: -0.0056965947, y: 0.63199866}
     _zDepth: 0
-    _vertPos_World: {x: -67.83331, y: -179.83334}
+    _vertPos_World: {x: 67.83331, y: -179.83333}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3398,9 +3398,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000044864343
       _m02: 450
-      _m10: 0
+      _m10: -0.000000031719928
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3413,7 +3413,7 @@ MonoBehaviour:
     _pos_Local: {x: -485.75, y: 127.666664}
     _uv: {x: 0.025634766, y: 0.6246745}
     _zDepth: 0
-    _vertPos_World: {x: -35.75, y: -187.33334}
+    _vertPos_World: {x: 35.75, y: -187.33331}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3436,9 +3436,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000044864343
       _m02: 450
-      _m10: 0
+      _m10: -0.000000031719928
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3451,7 +3451,7 @@ MonoBehaviour:
     _pos_Local: {x: -451.58334, y: 173.5}
     _uv: {x: 0.05900064, y: 0.6694336}
     _zDepth: 0
-    _vertPos_World: {x: -1.5833435, y: -141.5}
+    _vertPos_World: {x: 1.5833435, y: -141.5}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3474,9 +3474,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 2.9471683e-10
       _m02: 450
-      _m10: 0
+      _m10: -0.000000009878331
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3489,7 +3489,7 @@ MonoBehaviour:
     _pos_Local: {x: -427.83334, y: 159.33333}
     _uv: {x: 0.082194, y: 0.65559894}
     _zDepth: 0
-    _vertPos_World: {x: 22.166656, y: -155.66667}
+    _vertPos_World: {x: -22.166656, y: -155.66667}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3512,9 +3512,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000046163606
       _m02: 450
-      _m10: 0
+      _m10: 0.000000013379281
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3527,7 +3527,7 @@ MonoBehaviour:
     _pos_Local: {x: -415.75, y: 191.83334}
     _uv: {x: 0.09399414, y: 0.6873373}
     _zDepth: 0
-    _vertPos_World: {x: 34.25, y: -123.16666}
+    _vertPos_World: {x: -34.25, y: -123.16666}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3550,9 +3550,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000008396059
       _m02: 450
-      _m10: 0
+      _m10: 9.175771e-11
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3565,7 +3565,7 @@ MonoBehaviour:
     _pos_Local: {x: -428.66666, y: 198.08334}
     _uv: {x: 0.08138022, y: 0.6934408}
     _zDepth: 0
-    _vertPos_World: {x: 21.333344, y: -116.91666}
+    _vertPos_World: {x: -21.333342, y: -116.916664}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3588,9 +3588,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000005870689
       _m02: 450
-      _m10: 0
+      _m10: 0.00000001758283
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3603,7 +3603,7 @@ MonoBehaviour:
     _pos_Local: {x: -436.16666, y: 186.41667}
     _uv: {x: 0.074056, y: 0.68204755}
     _zDepth: 0
-    _vertPos_World: {x: 13.8333435, y: -128.58333}
+    _vertPos_World: {x: -13.833343, y: -128.58333}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3626,9 +3626,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000045915582
       _m02: 450
-      _m10: 0
+      _m10: 0.000000013296162
       _m11: 1
       _m12: -315
       _m20: 0
@@ -3641,7 +3641,7 @@ MonoBehaviour:
     _pos_Local: {x: -462.83334, y: 200.58334}
     _uv: {x: 0.048014313, y: 0.6958822}
     _zDepth: 0
-    _vertPos_World: {x: -12.8333435, y: -114.41666}
+    _vertPos_World: {x: 12.8333435, y: -114.41665}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -3664,9 +3664,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000012495769
       _m02: 450
-      _m10: 0
+      _m10: -0.000000014853778
       _m11: 1
       _m12: -315
       _m20: 0
@@ -4323,8 +4323,8 @@ Transform:
   m_GameObject: {fileID: 1021886848193967892}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -187.5, y: 476.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 187.5, y: 476.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1691300262894431142}
@@ -4359,7 +4359,7 @@ MonoBehaviour:
     _pos_Local: {x: 141.38889, y: -452.6111}
     _uv: {x: 0.6380751, y: 0.05799696}
     _zDepth: 0
-    _vertPos_World: {x: 33.388885, y: -127.611115}
+    _vertPos_World: {x: -33.38889, y: -127.611115}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4382,9 +4382,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000008396059
       _m02: -108
-      _m10: 0
+      _m10: 9.175771e-11
       _m11: 1
       _m12: 325
       _m20: 0
@@ -4397,7 +4397,7 @@ MonoBehaviour:
     _pos_Local: {x: 152.5, y: -480.3889}
     _uv: {x: 0.6489258, y: 0.030870229}
     _zDepth: 0
-    _vertPos_World: {x: 44.5, y: -155.38889}
+    _vertPos_World: {x: -44.500004, y: -155.38889}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4420,9 +4420,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000007539215
       _m02: -108
-      _m10: 0
+      _m10: 5.2036797e-10
       _m11: 1
       _m12: 325
       _m20: 0
@@ -4435,7 +4435,7 @@ MonoBehaviour:
     _pos_Local: {x: 171.94444, y: -467.6111}
     _uv: {x: 0.6679145, y: 0.04334852}
     _zDepth: 0
-    _vertPos_World: {x: 63.944443, y: -142.61111}
+    _vertPos_World: {x: -63.94444, y: -142.61111}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4458,9 +4458,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: -108
-      _m10: 0
+      _m01: -0.000000024806996
+      _m02: -108.000015
+      _m10: -5.4104665e-10
       _m11: 1
       _m12: 325
       _m20: 0
@@ -4473,7 +4473,7 @@ MonoBehaviour:
     _pos_Local: {x: 213.61111, y: -517.05554}
     _uv: {x: 0.7086046, y: -0.0049370527}
     _zDepth: 0
-    _vertPos_World: {x: 105.611115, y: -192.05554}
+    _vertPos_World: {x: -105.611115, y: -192.05551}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4496,11 +4496,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: -108
-      _m10: 0
+      _m01: -0.000000032758194
+      _m02: -108.000015
+      _m10: -0.0000000012714203
       _m11: 1
-      _m12: 325
+      _m12: 325.00003
       _m20: 0
       _m21: 0
       _m22: 1
@@ -4511,7 +4511,7 @@ MonoBehaviour:
     _pos_Local: {x: 241.38889, y: -502.05554}
     _uv: {x: 0.73573136, y: 0.009711385}
     _zDepth: 0
-    _vertPos_World: {x: 133.38889, y: -177.05554}
+    _vertPos_World: {x: -133.38889, y: -177.05551}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4534,11 +4534,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: -108
-      _m10: 0
+      _m01: -0.000000032758194
+      _m02: -108.000015
+      _m10: -0.0000000012714203
       _m11: 1
-      _m12: 325
+      _m12: 325.00003
       _m20: 0
       _m21: 0
       _m22: 1
@@ -4549,7 +4549,7 @@ MonoBehaviour:
     _pos_Local: {x: 179.72223, y: -435.94446}
     _uv: {x: 0.67551, y: 0.07427299}
     _zDepth: 0
-    _vertPos_World: {x: 71.72223, y: -110.94446}
+    _vertPos_World: {x: -71.72222, y: -110.94446}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4572,9 +4572,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: -108
-      _m10: 0
+      _m01: -0.000000024806996
+      _m02: -108.000015
+      _m10: -5.4104665e-10
       _m11: 1
       _m12: 325
       _m20: 0
@@ -4587,7 +4587,7 @@ MonoBehaviour:
     _pos_Local: {x: 159.16667, y: -450.3889}
     _uv: {x: 0.6554362, y: 0.060167104}
     _zDepth: 0
-    _vertPos_World: {x: 51.16667, y: -125.388885}
+    _vertPos_World: {x: -51.166676, y: -125.388885}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4610,9 +4610,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000073178277
       _m02: -108
-      _m10: 0
+      _m10: 6.3111005e-10
       _m11: 1
       _m12: 325
       _m20: 0
@@ -4625,7 +4625,7 @@ MonoBehaviour:
     _pos_Local: {x: 149.16666, y: -442.05554}
     _uv: {x: 0.64567053, y: 0.068305135}
     _zDepth: 0
-    _vertPos_World: {x: 41.166656, y: -117.05554}
+    _vertPos_World: {x: -41.16666, y: -117.05554}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -4648,9 +4648,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000008396059
       _m02: -108
-      _m10: 0
+      _m10: 9.175771e-11
       _m11: 1
       _m12: 325
       _m20: 0
@@ -5811,8 +5811,8 @@ Transform:
   m_GameObject: {fileID: 1826015578877582869}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 128, y: 462, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -128, y: 462, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1166734413707483715}
@@ -5847,7 +5847,7 @@ MonoBehaviour:
     _pos_Local: {x: -149.36363, y: -412}
     _uv: {x: 0.35413706, y: 0.09765625}
     _zDepth: 0
-    _vertPos_World: {x: -108.36363, y: 197}
+    _vertPos_World: {x: 108.36364, y: 197}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -5870,9 +5870,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: 41
-      _m10: 0
+      _m01: -0.000000025202095
+      _m02: 40.999985
+      _m10: -0.0000000108959775
       _m11: 1
       _m12: 609
       _m20: 0
@@ -5885,7 +5885,7 @@ MonoBehaviour:
     _pos_Local: {x: -65.27273, y: -424.27274}
     _uv: {x: 0.4362571, y: 0.08567116}
     _zDepth: 0
-    _vertPos_World: {x: -24.272728, y: 184.72726}
+    _vertPos_World: {x: 24.272732, y: 184.72726}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -5908,9 +5908,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: 41
-      _m10: 0
+      _m01: -0.000000025202095
+      _m02: 40.999985
+      _m10: -0.0000000108959775
       _m11: 1
       _m12: 609
       _m20: 0
@@ -5923,7 +5923,7 @@ MonoBehaviour:
     _pos_Local: {x: -88, y: -482}
     _uv: {x: 0.4140625, y: 0.029296875}
     _zDepth: 0
-    _vertPos_World: {x: -47, y: 127}
+    _vertPos_World: {x: 47.000004, y: 127}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -5946,9 +5946,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: 41
-      _m10: 0
+      _m01: -0.000000025202095
+      _m02: 40.999985
+      _m10: -0.0000000108959775
       _m11: 1
       _m12: 609
       _m20: 0
@@ -5961,7 +5961,7 @@ MonoBehaviour:
     _pos_Local: {x: -185.72726, y: -512.90906}
     _uv: {x: 0.31862572, y: -0.0008877516}
     _zDepth: 0
-    _vertPos_World: {x: -144.72726, y: 96.09094}
+    _vertPos_World: {x: 144.72726, y: 96.09094}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -5984,9 +5984,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: 41
-      _m10: 0
+      _m01: -0.000000025202095
+      _m02: 40.999985
+      _m10: -0.0000000108959775
       _m11: 1
       _m12: 609
       _m20: 0
@@ -5999,7 +5999,7 @@ MonoBehaviour:
     _pos_Local: {x: -185.72726, y: -452}
     _uv: {x: 0.31862572, y: 0.05859375}
     _zDepth: 0
-    _vertPos_World: {x: -144.72726, y: 157}
+    _vertPos_World: {x: 144.72726, y: 157}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -6022,9 +6022,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
-      _m02: 41
-      _m10: 0
+      _m01: -0.000000025202095
+      _m02: 40.999985
+      _m10: -0.0000000108959775
       _m11: 1
       _m12: 609
       _m20: 0
@@ -6142,6 +6142,37 @@ MeshRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1980062685338251973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5294852697596318191}
+  m_Layer: 6
+  m_Name: DropLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5294852697596318191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980062685338251973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.425303, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2671474976077277531}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1983291134246125145
 GameObject:
   m_ObjectHideFlags: 0
@@ -6268,8 +6299,8 @@ Transform:
   m_GameObject: {fileID: 2210796385367365535}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 476.5, y: -82.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -476.5, y: -82.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6677442709303609802}
@@ -6304,7 +6335,7 @@ MonoBehaviour:
     _pos_Local: {x: -515.9222, y: 49.50633}
     _uv: {x: -0.003830254, y: 0.54834604}
     _zDepth: 0
-    _vertPos_World: {x: -76.92218, y: -61.49367}
+    _vertPos_World: {x: 76.92218, y: -61.49367}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -6327,9 +6358,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000001536625
       _m02: 439
-      _m10: 0
+      _m10: -8.3120355e-10
       _m11: 1
       _m12: -111
       _m20: 0
@@ -6342,7 +6373,7 @@ MonoBehaviour:
     _pos_Local: {x: -500.5055, y: 37.00633}
     _uv: {x: 0.011225104, y: 0.536139}
     _zDepth: 0
-    _vertPos_World: {x: -61.505493, y: -73.99367}
+    _vertPos_World: {x: 61.505493, y: -73.99367}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -6365,9 +6396,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000001536625
       _m02: 439
-      _m10: 0
+      _m10: -8.3120355e-10
       _m11: 1
       _m12: -111
       _m20: 0
@@ -6380,7 +6411,7 @@ MonoBehaviour:
     _pos_Local: {x: -438.42215, y: 104.08967}
     _uv: {x: 0.07185337, y: 0.60165006}
     _zDepth: 0
-    _vertPos_World: {x: 0.57785034, y: -6.9103317}
+    _vertPos_World: {x: -0.5778466, y: -6.9103293}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -6402,10 +6433,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: 0
-      _m02: 439
-      _m10: 0
+      _m00: 0.99999994
+      _m01: 0.0000000058737477
+      _m02: 438.99997
+      _m10: -0.0000000051570694
       _m11: 1
       _m12: -111
       _m20: 0
@@ -6418,7 +6449,7 @@ MonoBehaviour:
     _pos_Local: {x: -456.33884, y: 117.00633}
     _uv: {x: 0.054356605, y: 0.614264}
     _zDepth: 0
-    _vertPos_World: {x: -17.338837, y: 6.0063324}
+    _vertPos_World: {x: 17.338837, y: 6.006335}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -6441,9 +6472,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.00000000562249
       _m02: 439
-      _m10: 0
+      _m10: -0.0000000047847086
       _m11: 1
       _m12: -111
       _m20: 0
@@ -7328,8 +7359,8 @@ Transform:
   m_GameObject: {fileID: 2851334050161661000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11, y: 460, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -11, y: 460, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3295338887232358564}
@@ -7364,7 +7395,7 @@ MonoBehaviour:
     _pos_Local: {x: -71.90909, y: -500.45453}
     _uv: {x: 0.42977628, y: 0.011274874}
     _zDepth: 0
-    _vertPos_World: {x: -193.90909, y: -105.45453}
+    _vertPos_World: {x: 193.90907, y: -105.45453}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -7386,10 +7417,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
+      _m00: 0.99999994
+      _m01: -0.000000011547968
       _m02: -122
-      _m10: 0
+      _m10: -0.000000021117145
       _m11: 1
       _m12: 395
       _m20: 0
@@ -7402,7 +7433,7 @@ MonoBehaviour:
     _pos_Local: {x: -52.81818, y: -514.0909}
     _uv: {x: 0.44841975, y: -0.0020418763}
     _zDepth: 0
-    _vertPos_World: {x: -174.81818, y: -119.09088}
+    _vertPos_World: {x: 174.81818, y: -119.09088}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -7424,10 +7455,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
+      _m00: 0.99999994
+      _m01: -0.000000011547968
       _m02: -122
-      _m10: 0
+      _m10: -0.000000021117145
       _m11: 1
       _m12: 395
       _m20: 0
@@ -7440,7 +7471,7 @@ MonoBehaviour:
     _pos_Local: {x: 14, y: -456.36365}
     _uv: {x: 0.5136719, y: 0.054332376}
     _zDepth: 0
-    _vertPos_World: {x: -108, y: -61.363647}
+    _vertPos_World: {x: 107.99999, y: -61.363647}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -7462,10 +7493,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
+      _m00: 0.99999994
+      _m01: -0.000000011547968
       _m02: -122
-      _m10: 0
+      _m10: -0.000000021117145
       _m11: 1
       _m12: 395
       _m20: 0
@@ -7478,7 +7509,7 @@ MonoBehaviour:
     _pos_Local: {x: 45.363636, y: -415.9091}
     _uv: {x: 0.54430044, y: 0.09383878}
     _zDepth: 0
-    _vertPos_World: {x: -76.63637, y: -20.909088}
+    _vertPos_World: {x: 76.63636, y: -20.909088}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -7500,10 +7531,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
+      _m00: 0.99999994
+      _m01: -0.000000009132575
       _m02: -122
-      _m10: 0
+      _m10: -0.000000013424092
       _m11: 1
       _m12: 395
       _m20: 0
@@ -7516,7 +7547,7 @@ MonoBehaviour:
     _pos_Local: {x: 24.454544, y: -404.0909}
     _uv: {x: 0.5238814, y: 0.10537997}
     _zDepth: 0
-    _vertPos_World: {x: -97.545456, y: -9.090912}
+    _vertPos_World: {x: 97.545456, y: -9.090912}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -7538,10 +7569,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
+      _m00: 0.99999994
+      _m01: -0.000000009132575
       _m02: -122
-      _m10: 0
+      _m10: -0.000000013424092
       _m11: 1
       _m12: 395
       _m20: 0
@@ -7554,7 +7585,7 @@ MonoBehaviour:
     _pos_Local: {x: -26, y: -436.81818}
     _uv: {x: 0.47460938, y: 0.07341975}
     _zDepth: 0
-    _vertPos_World: {x: -148, y: -41.818176}
+    _vertPos_World: {x: 148, y: -41.818176}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -7576,10 +7607,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
+      _m00: 0.99999994
+      _m01: -0.000000011547968
       _m02: -122
-      _m10: 0
+      _m10: -0.000000021117145
       _m11: 1
       _m12: 395
       _m20: 0
@@ -8748,8 +8779,8 @@ Transform:
   m_GameObject: {fileID: 3958843553026663146}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -283.5, y: 476.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 283.5, y: 476.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4778959318227965429}
@@ -8784,7 +8815,7 @@ MonoBehaviour:
     _pos_Local: {x: 236, y: -453.5}
     _uv: {x: 0.73046875, y: 0.057128906}
     _zDepth: 0
-    _vertPos_World: {x: 64, y: -128.5}
+    _vertPos_World: {x: -64, y: -128.5}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -8807,9 +8838,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000027144011
       _m02: -172
-      _m10: 0
+      _m10: -0.0000000033329783
       _m11: 1
       _m12: 325
       _m20: 0
@@ -8822,7 +8853,7 @@ MonoBehaviour:
     _pos_Local: {x: 272, y: -466}
     _uv: {x: 0.765625, y: 0.044921875}
     _zDepth: 0
-    _vertPos_World: {x: 100, y: -141}
+    _vertPos_World: {x: -100.00001, y: -141}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -8845,9 +8876,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000016269206
       _m02: -172
-      _m10: 0
+      _m10: 0.0000000063507186
       _m11: 1
       _m12: 325
       _m20: 0
@@ -8860,7 +8891,7 @@ MonoBehaviour:
     _pos_Local: {x: 313.5, y: -517.5}
     _uv: {x: 0.80615234, y: -0.0053710938}
     _zDepth: 0
-    _vertPos_World: {x: 141.5, y: -192.5}
+    _vertPos_World: {x: -141.5, y: -192.49998}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -8883,9 +8914,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000066419723
       _m02: -172
-      _m10: 0
+      _m10: 0.000000040451894
       _m11: 1
       _m12: 325
       _m20: 0
@@ -8898,7 +8929,7 @@ MonoBehaviour:
     _pos_Local: {x: 336.5, y: -502.5}
     _uv: {x: 0.8286133, y: 0.009277344}
     _zDepth: 0
-    _vertPos_World: {x: 164.5, y: -177.5}
+    _vertPos_World: {x: -164.5, y: -177.49998}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -8921,9 +8952,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000066419723
       _m02: -172
-      _m10: 0
+      _m10: 0.000000040451894
       _m11: 1
       _m12: 325
       _m20: 0
@@ -8936,7 +8967,7 @@ MonoBehaviour:
     _pos_Local: {x: 276, y: -438.5}
     _uv: {x: 0.76953125, y: 0.071777344}
     _zDepth: 0
-    _vertPos_World: {x: 104, y: -113.5}
+    _vertPos_World: {x: -104.00001, y: -113.5}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -8959,9 +8990,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000016270283
       _m02: -172
-      _m10: 0
+      _m10: 0.0000000063469052
       _m11: 1
       _m12: 325
       _m20: 0
@@ -8974,7 +9005,7 @@ MonoBehaviour:
     _pos_Local: {x: 256, y: -455.5}
     _uv: {x: 0.75, y: 0.05517578}
     _zDepth: 0
-    _vertPos_World: {x: 84, y: -130.5}
+    _vertPos_World: {x: -84.00001, y: -130.5}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -8997,9 +9028,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000014061908
       _m02: -172
-      _m10: 0
+      _m10: -0.000000015287851
       _m11: 1
       _m12: 325
       _m20: 0
@@ -9012,7 +9043,7 @@ MonoBehaviour:
     _pos_Local: {x: 248.5, y: -443.5}
     _uv: {x: 0.7426758, y: 0.06689453}
     _zDepth: 0
-    _vertPos_World: {x: 76.5, y: -118.5}
+    _vertPos_World: {x: -76.5, y: -118.5}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -9035,9 +9066,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000027144011
       _m02: -172
-      _m10: 0
+      _m10: -0.0000000033329783
       _m11: 1
       _m12: 325
       _m20: 0
@@ -9050,7 +9081,7 @@ MonoBehaviour:
     _pos_Local: {x: 249.4145, y: -479.5595}
     _uv: {x: 0.74356884, y: 0.031680167}
     _zDepth: 0
-    _vertPos_World: {x: 77.414505, y: -154.55951}
+    _vertPos_World: {x: -77.41451, y: -154.55951}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -9073,9 +9104,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000014306497
       _m02: -172
-      _m10: 0
+      _m10: -0.000000015545531
       _m11: 1
       _m12: 325
       _m20: 0
@@ -10100,8 +10131,8 @@ Transform:
   m_GameObject: {fileID: 4066295766855135069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 351.5, y: 425, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -351.5, y: 425, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 809716487193264260}
@@ -10136,7 +10167,7 @@ MonoBehaviour:
     _pos_Local: {x: -494.83334, y: -356.66666}
     _uv: {x: 0.016764313, y: 0.15169272}
     _zDepth: 0
-    _vertPos_World: {x: -69.83334, y: 8.3333435}
+    _vertPos_World: {x: 69.83334, y: 8.333345}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10159,9 +10190,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000004544883
       _m02: 425
-      _m10: 0
+      _m10: -0.0000000036074257
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10174,7 +10205,7 @@ MonoBehaviour:
     _pos_Local: {x: -431.5, y: -332.22223}
     _uv: {x: 0.07861328, y: 0.17556423}
     _zDepth: 0
-    _vertPos_World: {x: -6.5, y: 32.77777}
+    _vertPos_World: {x: 6.500002, y: 32.777775}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10197,9 +10228,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000006174171
       _m02: 425
-      _m10: 0
+      _m10: -0.000000005423649
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10212,7 +10243,7 @@ MonoBehaviour:
     _pos_Local: {x: -377.33334, y: -376.45834}
     _uv: {x: 0.1315104, y: 0.1323649}
     _zDepth: 0
-    _vertPos_World: {x: 47.666656, y: -11.4583435}
+    _vertPos_World: {x: -47.666656, y: -11.4583435}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10235,9 +10266,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -3.1116196e-10
       _m02: 425
-      _m10: 0
+      _m10: 7.016402e-10
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10250,7 +10281,7 @@ MonoBehaviour:
     _pos_Local: {x: -182.6111, y: -431.1111}
     _uv: {x: 0.32166886, y: 0.07899305}
     _zDepth: 0
-    _vertPos_World: {x: 242.3889, y: -66.111115}
+    _vertPos_World: {x: -242.3889, y: -66.111115}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10273,9 +10304,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000011640318
       _m02: 425
-      _m10: 0
+      _m10: -4.5639492e-11
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10288,7 +10319,7 @@ MonoBehaviour:
     _pos_Local: {x: -205.38889, y: -490.55554}
     _uv: {x: 0.29942492, y: 0.020941854}
     _zDepth: 0
-    _vertPos_World: {x: 219.61111, y: -125.55554}
+    _vertPos_World: {x: -219.61111, y: -125.55554}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10311,9 +10342,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000011640318
       _m02: 425
-      _m10: 0
+      _m10: -4.5639492e-11
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10326,7 +10357,7 @@ MonoBehaviour:
     _pos_Local: {x: -457.05554, y: -515.55554}
     _uv: {x: 0.053656697, y: -0.003472209}
     _zDepth: 0
-    _vertPos_World: {x: -32.055542, y: -150.55554}
+    _vertPos_World: {x: 32.05557, y: -150.55554}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10348,12 +10379,12 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: 0
-      _m02: 425
-      _m10: 0
-      _m11: 1
-      _m12: 365
+      _m00: 1.0000001
+      _m01: 0.0000000066145502
+      _m02: 425.00003
+      _m10: -0.000000007923281
+      _m11: 1.0000001
+      _m12: 365.00006
       _m20: 0
       _m21: 0
       _m22: 1
@@ -10364,7 +10395,7 @@ MonoBehaviour:
     _pos_Local: {x: -518.7222, y: -470}
     _uv: {x: -0.0065646768, y: 0.041015625}
     _zDepth: 0
-    _vertPos_World: {x: -93.72223, y: -105}
+    _vertPos_World: {x: 93.72223, y: -105}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10387,9 +10418,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000026014106
       _m02: 425
-      _m10: 0
+      _m10: -0.0000000060921224
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10402,7 +10433,7 @@ MonoBehaviour:
     _pos_Local: {x: -444.27777, y: -427.77777}
     _uv: {x: 0.06613499, y: 0.08224827}
     _zDepth: 0
-    _vertPos_World: {x: -19.277771, y: -62.77777}
+    _vertPos_World: {x: 19.277771, y: -62.77777}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10425,9 +10456,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000014818318
       _m02: 425
-      _m10: 0
+      _m10: -0.0000000023027464
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10440,7 +10471,7 @@ MonoBehaviour:
     _pos_Local: {x: -356.91666, y: -458.54166}
     _uv: {x: 0.15144858, y: 0.052205414}
     _zDepth: 0
-    _vertPos_World: {x: 68.08334, y: -93.54166}
+    _vertPos_World: {x: -68.08334, y: -93.54166}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10463,9 +10494,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 1.2861921e-10
       _m02: 425
-      _m10: 0
+      _m10: 4.7886295e-10
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10478,7 +10509,7 @@ MonoBehaviour:
     _pos_Local: {x: -273.16666, y: -461.875}
     _uv: {x: 0.23323569, y: 0.048950195}
     _zDepth: 0
-    _vertPos_World: {x: 151.83334, y: -96.875}
+    _vertPos_World: {x: -151.83334, y: -96.875}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10501,9 +10532,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000011640318
       _m02: 425
-      _m10: 0
+      _m10: -4.5639492e-11
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10516,7 +10547,7 @@ MonoBehaviour:
     _pos_Local: {x: -266.0833, y: -429.79166}
     _uv: {x: 0.24015301, y: 0.080281585}
     _zDepth: 0
-    _vertPos_World: {x: 158.91669, y: -64.79166}
+    _vertPos_World: {x: -158.91669, y: -64.79166}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10539,9 +10570,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000011640318
       _m02: 425
-      _m10: 0
+      _m10: -4.5639492e-11
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10554,7 +10585,7 @@ MonoBehaviour:
     _pos_Local: {x: -334.41666, y: -414.375}
     _uv: {x: 0.17342123, y: 0.095336914}
     _zDepth: 0
-    _vertPos_World: {x: 90.58334, y: -49.375}
+    _vertPos_World: {x: -90.58334, y: -49.375}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10577,9 +10608,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 6.3337763e-10
       _m02: 425
-      _m10: 0
+      _m10: 2.2317065e-10
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10592,7 +10623,7 @@ MonoBehaviour:
     _pos_Local: {x: -358.58334, y: -505.625}
     _uv: {x: 0.14982095, y: 0.006225586}
     _zDepth: 0
-    _vertPos_World: {x: 66.41666, y: -140.625}
+    _vertPos_World: {x: -66.416664, y: -140.625}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10615,9 +10646,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000011627737
       _m02: 425
-      _m10: 0
+      _m10: 2.043795e-11
       _m11: 1
       _m12: 365
       _m20: 0
@@ -10630,7 +10661,7 @@ MonoBehaviour:
     _pos_Local: {x: -275.66666, y: -498.5417}
     _uv: {x: 0.23079428, y: 0.013142884}
     _zDepth: 0
-    _vertPos_World: {x: 149.33334, y: -133.54169}
+    _vertPos_World: {x: -149.33334, y: -133.54169}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -10653,9 +10684,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000011640318
       _m02: 425
-      _m10: 0
+      _m10: -4.5639492e-11
       _m11: 1
       _m12: 365
       _m20: 0
@@ -11248,8 +11279,8 @@ Transform:
   m_GameObject: {fileID: 4709746888199027492}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 486.5, y: -224, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -486.5, y: -224, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8689089013403724016}
@@ -11284,7 +11315,7 @@ MonoBehaviour:
     _pos_Local: {x: -511.51077, y: 234.74283}
     _uv: {x: 0.00047776103, y: 0.729241}
     _zDepth: 0
-    _vertPos_World: {x: -142.51077, y: -33.25717}
+    _vertPos_World: {x: 142.51077, y: -33.25718}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -11307,9 +11338,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000064270655
       _m02: 369
-      _m10: 0
+      _m10: 0.000000014648356
       _m11: 1
       _m12: -268
       _m20: 0
@@ -11322,7 +11353,7 @@ MonoBehaviour:
     _pos_Local: {x: -469.72504, y: 197.59998}
     _uv: {x: 0.041284144, y: 0.6929687}
     _zDepth: 0
-    _vertPos_World: {x: -100.72504, y: -70.400024}
+    _vertPos_World: {x: 100.72504, y: -70.400024}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -11345,9 +11376,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000023778544
       _m02: 369
-      _m10: 0
+      _m10: -0.0000000024465
       _m11: 1
       _m12: -268
       _m20: 0
@@ -11360,7 +11391,7 @@ MonoBehaviour:
     _pos_Local: {x: -457.22504, y: 213.6714}
     _uv: {x: 0.053491175, y: 0.70866346}
     _zDepth: 0
-    _vertPos_World: {x: -88.22504, y: -54.328598}
+    _vertPos_World: {x: 88.22504, y: -54.328598}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -11383,9 +11414,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000023778544
       _m02: 369
-      _m10: 0
+      _m10: -0.0000000024465
       _m11: 1
       _m12: -268
       _m20: 0
@@ -11398,7 +11429,7 @@ MonoBehaviour:
     _pos_Local: {x: -503.29648, y: 250.09998}
     _uv: {x: 0.008499533, y: 0.74423826}
     _zDepth: 0
-    _vertPos_World: {x: -134.29648, y: -17.900024}
+    _vertPos_World: {x: 134.29648, y: -17.900032}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -11421,9 +11452,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000011686419
       _m02: 369
-      _m10: 0
+      _m10: 0.000000015498395
       _m11: 1
       _m12: -268
       _m20: 0
@@ -14618,6 +14649,8 @@ Transform:
   m_Children:
   - {fileID: 704579638293031615}
   - {fileID: 243099579753262781}
+  - {fileID: 5294852697596318191}
+  - {fileID: 4709568720818880033}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2272580761718438712
@@ -14640,6 +14673,18 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 0
+  drops:
+  - Head: {fileID: 187993010069644091, guid: 87f80615f37ca425997afa7fa2de128b, type: 3}
+    Tail: 2
+  - Head: {fileID: 8333903897979866840, guid: 367caae737c1c44d8bf6f011b9feb12f, type: 3}
+    Tail: 3
+  - Head: {fileID: 2147576239185726581, guid: 39069390f54b845b48d92c16e3a8fc92, type: 3}
+    Tail: 4
+  - Head: {fileID: 3666791956295866859, guid: 9457c31fa5ecd43ac8973650582b50a3, type: 3}
+    Tail: 4
+  dropRange:
+    Head: {fileID: 5294852697596318191}
+    Tail: {fileID: 4709568720818880033}
 --- !u!114 &3737872316884255872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16109,8 +16154,8 @@ Transform:
   m_GameObject: {fileID: 7644830288479961451}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 440, y: 247.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -440, y: 247.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2633356387424381846}
@@ -16145,7 +16190,7 @@ MonoBehaviour:
     _pos_Local: {x: -470, y: -336.6667}
     _uv: {x: 0.041015625, y: 0.17122394}
     _zDepth: 0
-    _vertPos_World: {x: -65, y: -24.666687}
+    _vertPos_World: {x: 65, y: -24.666683}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16168,9 +16213,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000026014106
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000060921224
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16183,7 +16228,7 @@ MonoBehaviour:
     _pos_Local: {x: -433.33334, y: -338.33334}
     _uv: {x: 0.07682291, y: 0.16959634}
     _zDepth: 0
-    _vertPos_World: {x: -28.333344, y: -26.333344}
+    _vertPos_World: {x: 28.333344, y: -26.333342}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16206,9 +16251,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000026014106
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000060921224
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16221,7 +16266,7 @@ MonoBehaviour:
     _pos_Local: {x: -370.41666, y: -260.83334}
     _uv: {x: 0.13826498, y: 0.24527994}
     _zDepth: 0
-    _vertPos_World: {x: 34.583344, y: 51.166656}
+    _vertPos_World: {x: -34.58334, y: 51.166656}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16244,9 +16289,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000084382945
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000034394876
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16259,7 +16304,7 @@ MonoBehaviour:
     _pos_Local: {x: -367.91666, y: -205}
     _uv: {x: 0.14070639, y: 0.2998047}
     _zDepth: 0
-    _vertPos_World: {x: 37.083344, y: 107}
+    _vertPos_World: {x: -37.083336, y: 107}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16281,10 +16326,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: 0
-      _m02: 405
-      _m10: 0
+      _m00: 0.99999994
+      _m01: 1.4559484e-10
+      _m02: 404.99997
+      _m10: -0.0000000063672316
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16297,7 +16342,7 @@ MonoBehaviour:
     _pos_Local: {x: -432.5, y: -155.41666}
     _uv: {x: 0.07763672, y: 0.34822592}
     _zDepth: 0
-    _vertPos_World: {x: -27.5, y: 156.58334}
+    _vertPos_World: {x: 27.5, y: 156.58334}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16319,10 +16364,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
-      _m02: 405
-      _m10: 0
+      _m00: 0.99999994
+      _m01: -0.000000025068157
+      _m02: 404.99997
+      _m10: -0.000000012446627
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16335,7 +16380,7 @@ MonoBehaviour:
     _pos_Local: {x: -498.75, y: -171.25}
     _uv: {x: 0.012939453, y: 0.33276367}
     _zDepth: 0
-    _vertPos_World: {x: -93.75, y: 140.75}
+    _vertPos_World: {x: 93.75, y: 140.75}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16357,10 +16402,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
-      _m02: 405
-      _m10: 0
+      _m00: 0.99999994
+      _m01: -0.000000025107008
+      _m02: 404.99997
+      _m10: -0.000000011996826
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16373,7 +16418,7 @@ MonoBehaviour:
     _pos_Local: {x: -520, y: -201.25}
     _uv: {x: -0.0078125, y: 0.3034668}
     _zDepth: 0
-    _vertPos_World: {x: -115, y: 110.75}
+    _vertPos_World: {x: 114.99999, y: 110.75001}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16395,10 +16440,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
-      _m02: 405
-      _m10: 0
+      _m00: 0.99999994
+      _m01: -0.000000025010756
+      _m02: 404.99997
+      _m10: -0.00000001311119
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16411,7 +16456,7 @@ MonoBehaviour:
     _pos_Local: {x: -505.83334, y: -233.33333}
     _uv: {x: 0.0060221255, y: 0.27213544}
     _zDepth: 0
-    _vertPos_World: {x: -100.83334, y: 78.66667}
+    _vertPos_World: {x: 100.83334, y: 78.66667}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16433,10 +16478,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
-      _m02: 405
-      _m10: 0
+      _m00: 0.99999994
+      _m01: -0.0000000055272977
+      _m02: 404.99997
+      _m10: -0.000000006123651
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16449,7 +16494,7 @@ MonoBehaviour:
     _pos_Local: {x: -493.33334, y: -259.58334}
     _uv: {x: 0.018229157, y: 0.24650064}
     _zDepth: 0
-    _vertPos_World: {x: -88.33334, y: 52.416656}
+    _vertPos_World: {x: 88.33334, y: 52.41666}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16472,9 +16517,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000010466176
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000041371497
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16487,7 +16532,7 @@ MonoBehaviour:
     _pos_Local: {x: -483.75, y: -292.08334}
     _uv: {x: 0.02758789, y: 0.21476236}
     _zDepth: 0
-    _vertPos_World: {x: -78.75, y: 19.916656}
+    _vertPos_World: {x: 78.75, y: 19.916658}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16510,9 +16555,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000060734946
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000052837916
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16525,7 +16570,7 @@ MonoBehaviour:
     _pos_Local: {x: -471.25, y: -194.58333}
     _uv: {x: 0.039794922, y: 0.30997723}
     _zDepth: 0
-    _vertPos_World: {x: -66.25, y: 117.41667}
+    _vertPos_World: {x: 66.25, y: 117.41667}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16547,10 +16592,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: -0
-      _m02: 405
-      _m10: 0
+      _m00: 0.99999994
+      _m01: -0.0000000055272977
+      _m02: 404.99997
+      _m10: -0.000000006123651
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16563,7 +16608,7 @@ MonoBehaviour:
     _pos_Local: {x: -446.25, y: -236.66667}
     _uv: {x: 0.064208984, y: 0.2688802}
     _zDepth: 0
-    _vertPos_World: {x: -41.25, y: 75.33333}
+    _vertPos_World: {x: 41.250004, y: 75.33333}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16586,9 +16631,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000010926889
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000034769636
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16601,7 +16646,7 @@ MonoBehaviour:
     _pos_Local: {x: -437.91666, y: -285.41666}
     _uv: {x: 0.072347015, y: 0.2212728}
     _zDepth: 0
-    _vertPos_World: {x: -32.916656, y: 26.583344}
+    _vertPos_World: {x: 32.916656, y: 26.583345}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16624,9 +16669,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000006552898
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000059497665
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16639,7 +16684,7 @@ MonoBehaviour:
     _pos_Local: {x: -399.58334, y: -326.25}
     _uv: {x: 0.10978189, y: 0.18139648}
     _zDepth: 0
-    _vertPos_World: {x: 5.4166565, y: -14.25}
+    _vertPos_World: {x: -5.4166555, y: -14.249997}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -16662,9 +16707,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000026014106
       _m02: 405
-      _m10: 0
+      _m10: -0.0000000060921224
       _m11: 1
       _m12: 312
       _m20: 0
@@ -16997,6 +17042,37 @@ MonoBehaviour:
   _isUseModMeshSet: 1
   _riggingBones: []
   _isCheckFlippingByRiggingBones: 0
+--- !u!1 &7876315937349229931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4709568720818880033}
+  m_Layer: 6
+  m_Name: DropRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4709568720818880033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7876315937349229931}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.074697, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2671474976077277531}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7897167729062584404
 GameObject:
   m_ObjectHideFlags: 0
@@ -17203,8 +17279,8 @@ Transform:
   m_GameObject: {fileID: 7945720052925264178}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 476.5, y: 5.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -476.5, y: 5.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4730704003507775825}
@@ -17239,7 +17315,7 @@ MonoBehaviour:
     _pos_Local: {x: -516.8914, y: -38.992462}
     _uv: {x: -0.004776776, y: 0.46192142}
     _zDepth: 0
-    _vertPos_World: {x: -114.89142, y: -57.992462}
+    _vertPos_World: {x: 114.89142, y: -57.992462}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -17262,11 +17338,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000023778544
       _m02: 402
-      _m10: 0
+      _m10: -0.0000000024465
       _m11: 1
-      _m12: -19
+      _m12: -19.000002
       _m20: 0
       _m21: 0
       _m22: 1
@@ -17277,7 +17353,7 @@ MonoBehaviour:
     _pos_Local: {x: -500.22473, y: -51.214684}
     _uv: {x: 0.011499286, y: 0.44998565}
     _zDepth: 0
-    _vertPos_World: {x: -98.22473, y: -70.21468}
+    _vertPos_World: {x: 98.22473, y: -70.21468}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -17300,11 +17376,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.0000000023778544
       _m02: 402
-      _m10: 0
+      _m10: -0.0000000024465
       _m11: 1
-      _m12: -19
+      _m12: -19.000002
       _m20: 0
       _m21: 0
       _m22: 1
@@ -17315,7 +17391,7 @@ MonoBehaviour:
     _pos_Local: {x: -450.22473, y: 34.340874}
     _uv: {x: 0.06032741, y: 0.533536}
     _zDepth: 0
-    _vertPos_World: {x: -48.22473, y: 15.340874}
+    _vertPos_World: {x: 48.22473, y: 15.340874}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -17338,11 +17414,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000013559994
       _m02: 402
-      _m10: 0
+      _m10: -0.00000001285872
       _m11: 1
-      _m12: -19
+      _m12: -19.000006
       _m20: 0
       _m21: 0
       _m22: 1
@@ -17353,7 +17429,7 @@ MonoBehaviour:
     _pos_Local: {x: -438.55807, y: 20.451984}
     _uv: {x: 0.07172063, y: 0.5199726}
     _zDepth: 0
-    _vertPos_World: {x: -36.558075, y: 1.4519844}
+    _vertPos_World: {x: 36.558075, y: 1.4519843}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -17376,11 +17452,11 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000013559994
       _m02: 402
-      _m10: 0
+      _m10: -0.00000001285872
       _m11: 1
-      _m12: -19
+      _m12: -19.000006
       _m20: 0
       _m21: 0
       _m22: 1
@@ -19868,8 +19944,8 @@ Transform:
   m_GameObject: {fileID: 8469570197131476384}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -357.5, y: 488, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 357.5, y: 488, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8087313947358188458}
@@ -19904,7 +19980,7 @@ MonoBehaviour:
     _pos_Local: {x: 330.41666, y: -475.5}
     _uv: {x: 0.8226725, y: 0.03564453}
     _zDepth: 0
-    _vertPos_World: {x: -107.58334, y: -35.5}
+    _vertPos_World: {x: 107.58334, y: -35.500004}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -19927,9 +20003,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000007522313
       _m02: -438
-      _m10: 0
+      _m10: -0.000000008295391
       _m11: 1
       _m12: 440
       _m20: 0
@@ -19942,7 +20018,7 @@ MonoBehaviour:
     _pos_Local: {x: 344.58334, y: -460.5}
     _uv: {x: 0.8365072, y: 0.05029297}
     _zDepth: 0
-    _vertPos_World: {x: -93.41666, y: -20.5}
+    _vertPos_World: {x: 93.41666, y: -20.500002}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -19965,9 +20041,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: -0
+      _m01: -0.000000007522313
       _m02: -438
-      _m10: 0
+      _m10: -0.000000008295391
       _m11: 1
       _m12: 440
       _m20: 0
@@ -19980,7 +20056,7 @@ MonoBehaviour:
     _pos_Local: {x: 385, y: -500.91666}
     _uv: {x: 0.87597656, y: 0.010823578}
     _zDepth: 0
-    _vertPos_World: {x: -53, y: -60.916656}
+    _vertPos_World: {x: 52.999992, y: -60.916656}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -20002,10 +20078,10 @@ MonoBehaviour:
       _m21: -0
       _m22: 1
     _matrix_ToWorld:
-      _m00: 1
-      _m01: 0
-      _m02: -438
-      _m10: 0
+      _m00: 0.99999994
+      _m01: 0.0000000015366248
+      _m02: -437.99997
+      _m10: -8.312034e-10
       _m11: 1
       _m12: 440
       _m20: 0
@@ -20018,7 +20094,7 @@ MonoBehaviour:
     _pos_Local: {x: 374.58334, y: -511.33334}
     _uv: {x: 0.8658041, y: 0.00065103173}
     _zDepth: 0
-    _vertPos_World: {x: -63.416656, y: -71.33334}
+    _vertPos_World: {x: 63.416656, y: -71.33334}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -20041,9 +20117,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000001536625
       _m02: -438
-      _m10: 0
+      _m10: -8.3120355e-10
       _m11: 1
       _m12: 440
       _m20: 0
@@ -22592,8 +22668,8 @@ Transform:
   m_GameObject: {fileID: 9182580969817800441}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -91.5, y: 476.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 91.5, y: 476.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8754519382018721431}
@@ -22628,7 +22704,7 @@ MonoBehaviour:
     _pos_Local: {x: 39.277775, y: -506.5}
     _uv: {x: 0.5383572, y: 0.0053710938}
     _zDepth: 0
-    _vertPos_World: {x: -130.72223, y: -180.5}
+    _vertPos_World: {x: 130.72223, y: -180.5}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22651,9 +22727,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000009684236
       _m02: -170
-      _m10: 0
+      _m10: 0.000000004441951
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22666,7 +22742,7 @@ MonoBehaviour:
     _pos_Local: {x: 69.27778, y: -517.05554}
     _uv: {x: 0.5676541, y: -0.0049370527}
     _zDepth: 0
-    _vertPos_World: {x: -100.72222, y: -191.05554}
+    _vertPos_World: {x: 100.72223, y: -191.05554}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22689,9 +22765,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000009684236
       _m02: -170
-      _m10: 0
+      _m10: 0.000000004441951
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22704,7 +22780,7 @@ MonoBehaviour:
     _pos_Local: {x: 105.388885, y: -465.94446}
     _uv: {x: 0.60291886, y: 0.044976115}
     _zDepth: 0
-    _vertPos_World: {x: -64.611115, y: -139.94446}
+    _vertPos_World: {x: 64.61112, y: -139.94446}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22727,9 +22803,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000009353265
       _m02: -170
-      _m10: 0
+      _m10: -0.000000010827149
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22742,7 +22818,7 @@ MonoBehaviour:
     _pos_Local: {x: 125.388885, y: -482.05554}
     _uv: {x: 0.6224501, y: 0.029242635}
     _zDepth: 0
-    _vertPos_World: {x: -44.611115, y: -156.05554}
+    _vertPos_World: {x: 44.61112, y: -156.05554}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22765,9 +22841,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.0000000118365096
       _m02: -170
-      _m10: 0
+      _m10: -0.000000010574145
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22780,7 +22856,7 @@ MonoBehaviour:
     _pos_Local: {x: 142.05556, y: -445.94446}
     _uv: {x: 0.6387261, y: 0.064507365}
     _zDepth: 0
-    _vertPos_World: {x: -27.944443, y: -119.94446}
+    _vertPos_World: {x: 27.944448, y: -119.94446}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22803,9 +22879,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000014683755
       _m02: -170
-      _m10: 0
+      _m10: 0.000000006471767
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22818,7 +22894,7 @@ MonoBehaviour:
     _pos_Local: {x: 124.27778, y: -440.3889}
     _uv: {x: 0.621365, y: 0.06993273}
     _zDepth: 0
-    _vertPos_World: {x: -45.72222, y: -114.388885}
+    _vertPos_World: {x: 45.72223, y: -114.388885}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22841,9 +22917,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000014683755
       _m02: -170
-      _m10: 0
+      _m10: 0.000000006471767
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22856,7 +22932,7 @@ MonoBehaviour:
     _pos_Local: {x: 120.388885, y: -452.6111}
     _uv: {x: 0.6175673, y: 0.05799696}
     _zDepth: 0
-    _vertPos_World: {x: -49.611115, y: -126.611115}
+    _vertPos_World: {x: 49.61112, y: -126.611115}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22879,9 +22955,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000012214262
       _m02: -170
-      _m10: 0
+      _m10: -0.000000008312616
       _m11: 1
       _m12: 326
       _m20: 0
@@ -22894,7 +22970,7 @@ MonoBehaviour:
     _pos_Local: {x: 93.72222, y: -437.05554}
     _uv: {x: 0.5915256, y: 0.07318795}
     _zDepth: 0
-    _vertPos_World: {x: -76.27778, y: -111.05554}
+    _vertPos_World: {x: 76.27779, y: -111.05554}
     _matrix_Static_Vert2Mesh:
       _m00: 1
       _m01: -0
@@ -22917,9 +22993,9 @@ MonoBehaviour:
       _m22: 1
     _matrix_ToWorld:
       _m00: 1
-      _m01: 0
+      _m01: 0.000000009567245
       _m02: -170
-      _m10: 0
+      _m10: -9.553303e-10
       _m11: 1
       _m12: 326
       _m20: 0

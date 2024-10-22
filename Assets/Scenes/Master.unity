@@ -161,6 +161,10 @@ MonoBehaviour:
       Health: 100
       Purity: 65
     WeaponItem: {fileID: 0}
+    SpellItems:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     LastRest:
       Head: 0
       Tail: {x: 0, y: 0, z: 0}
@@ -168,6 +172,7 @@ MonoBehaviour:
   TimePersistence:
     TimeOfCycle: 0
     TtTime: 0
+  DebugEnableInventory: 1
 --- !u!4 &334158140
 Transform:
   m_ObjectHideFlags: 0
@@ -485,6 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a331ac3d95d1e40d9aafe777aa9b5393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RecentEventsSize: 5
 --- !u!4 &627291772
 Transform:
   m_ObjectHideFlags: 0

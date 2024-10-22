@@ -5,6 +5,7 @@ namespace Abyss.Environment
     public class Spawner : MonoBehaviour
     {
         public GameObject entityPrefab;
+        public Transform spawnPoint;
         protected GameObject _instance;
 
         // Passes any required auxiliary info to the instance via fields and attr
@@ -16,7 +17,7 @@ namespace Abyss.Environment
                 _instance = null;
                 return false;
             }
-            _instance = Instantiate(entityPrefab, transform.position, Quaternion.identity);
+            _instance = Instantiate(entityPrefab, spawnPoint.position, Quaternion.identity);
             return true;
         }
     }

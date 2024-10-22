@@ -19,11 +19,17 @@ public class GameManager : Singleton<GameManager>
     public PlayerPersistence PlayerPersistence = new();
     public TimePersistence TimePersistence = new();
     public Dictionary<string, float> RestsitesPersistence = new();
+#if UNITY_EDITOR
+    public bool DebugEnableInventory = false;
+#endif
 
     protected override void Awake()
     {
         base.Awake();
         EventManager.InvokeEvent(SystemEvents.SystemsReady);
+#if UNITY_EDITOR
+        Inventory.Enabled = DebugEnableInventory;
+#endif
     }
 
     public void PauseGame() => Time.timeScale = 0;
