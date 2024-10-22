@@ -52,11 +52,11 @@ TagManager:
   - name: Buildings
     uniqueID: 1553467001
     locked: 0
-  - name: Pickable Item
-    uniqueID: 2553922309
-    locked: 0
   - name: Characters
     uniqueID: 1528761381
+    locked: 0
+  - name: Pickable Item
+    uniqueID: 2553922309
     locked: 0
   - name: Player
     uniqueID: 1619572195
