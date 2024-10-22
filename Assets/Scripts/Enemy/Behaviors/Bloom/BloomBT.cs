@@ -25,12 +25,12 @@ public class BloomBT : MonoBT
     public override void Setup()
     {
         StartCoroutine(SetupRoutine());
-        GetComponent<EnemyManager>().OnDeath += StopBT;
+        GetComponent<EnemyManager>().OnDefeated += StopBT;
     }
 
     protected override void OnDisable()
     {
-        GetComponent<EnemyManager>().OnDeath -= StopBT;
+        GetComponent<EnemyManager>().OnDefeated -= StopBT;
         base.OnDisable();
     }
 

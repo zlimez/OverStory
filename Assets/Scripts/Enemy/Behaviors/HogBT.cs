@@ -32,14 +32,14 @@ public class HogBT : MonoBT
 
     protected override void OnDisable()
     {
-        GetComponent<EnemyManager>().OnDeath -= StopBT;
+        GetComponent<EnemyManager>().OnDefeated -= StopBT;
         base.OnDisable();
     }
 
     public override void Setup()
     {
         StartCoroutine(SetupRoutine());
-        GetComponent<EnemyManager>().OnDeath += StopBT;
+        GetComponent<EnemyManager>().OnDefeated += StopBT;
     }
 
     // Invoked by spawner

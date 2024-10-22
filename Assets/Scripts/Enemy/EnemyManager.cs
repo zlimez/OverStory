@@ -8,26 +8,31 @@ namespace Abyss.Environment.Enemy
         public SpecyAttr specyAttr;
         public EnemyAttr attributes;
         public float health;
-        public System.Action OnDeath;
+        public System.Action OnDefeated, OnDeath;
         public System.Action<float> OnStrikePlayer; // Subscribed by moveset in BT for the enemy
         [SerializeField] Pair<GameObject, int>[] drops;
         [SerializeField][Tooltip("Left and right endpoint where drops are spawned")] Pair<Transform, Transform> dropRange;
+        bool _isDefeated = false;
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
-        public bool TakeHit(float baseDamage)
+        public void TakeHit(float baseDamage)
         {
-            if (!attributes.isAlive) return false;
-            Debug.Log($"{name} took {baseDamage} damage");
-            health -= Mathf.Min(health, baseDamage);
-            bool isDead = health == 0;
-            if (isDead)
+            if (!attributes.isAlive) return;
+            if (_isDefeated)
             {
                 attributes.isAlive = false;
                 OnDeath?.Invoke();
                 Drop();
+                return;
+            }
+            Debug.Log($"{name} took {baseDamage} damage");
+            health -= Mathf.Min(health, baseDamage);
+            _isDefeated = health == 0;
+            if (_isDefeated) // Can spare enemy
+            {
+                OnDefeated?.Invoke();
                 OnStrikePlayer = null;
             }
-            return isDead;
         }
 
         public void Strike()

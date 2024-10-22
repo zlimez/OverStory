@@ -31,7 +31,7 @@ public class BugBT : MonoBT
     public override void Setup()
     {
         StartCoroutine(SetupRoutine());
-        GetComponent<EnemyManager>().OnDeath += StopBT;
+        GetComponent<EnemyManager>().OnDefeated += StopBT;
     }
 
     // Invoked by spawner
