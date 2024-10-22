@@ -19,7 +19,7 @@ namespace Abyss.Environment.Enemy
         readonly GA _ga = new();
         // str enemy type, 1st int for genpop count, instances before 2nd int pointer spawned for scene, list contains all instances for that type
         // only first pointer number of instance could be dead killed by player in scene
-        Dictionary<string, RefTriplet<int, int, List<EnemyAttr>>> _allEnemies;
+        Dictionary<string, RefTriplet<int, int, List<EnemyAttr>>> _allEnemies = new();
         readonly Dictionary<string, SpecyAttr> _speciesConfig = new();
 
         protected override void Awake()

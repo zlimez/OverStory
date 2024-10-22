@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9152b1e15af30400bb5ff829ac325731, type: 3}
+  m_Script: {fileID: 11500000, guid: c5b899cc4c754440ea7236752c71e565, type: 3}
   m_Name: BagPicked
   m_EditorClassIdentifier: 
   EventName: Bag Picked
