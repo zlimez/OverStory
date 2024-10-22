@@ -2,22 +2,24 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour
 {
-    public Item item;
+    [SerializeField] Item item;
+    [SerializeField] Conversation onPickupConvo;
     bool picked = false;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("Collision with: " + collider.name);
-        if (collider.CompareTag("Player") && !picked)
-        {
-            picked = true;
-            Pickup();
-        }
+        if (collider.CompareTag("Player") && !picked) Pickup();
     }
-    void Pickup()
+
+    bool Pickup()
     {
+        if (!GameManager.Instance.Inventory.Enabled) return false;
         Debug.Log("Picked up " + item.itemName);
+        if (onPickupConvo != null) DialogueManager.Instance.StartConvo(onPickupConvo);
+        picked = true;
         GameManager.Instance.Inventory.AddTo(item);
         Destroy(gameObject);
+        return true;
     }
 }

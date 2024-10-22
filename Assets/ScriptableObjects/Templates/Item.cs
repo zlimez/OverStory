@@ -1,7 +1,7 @@
 using UnityEngine;
 using Abyss.EventSystem;
 
-[CreateAssetMenu(menuName = "Item")]
+[CreateAssetMenu(menuName = "Item/General")]
 public class Item : ScriptableObject
 {
     public string itemName;

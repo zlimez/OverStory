@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1720053623463443880}
   - component: {fileID: 4497582411289861376}
   - component: {fileID: 4345928645401403394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: axe_t1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,3 +224,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
+  onPickupConvo: {fileID: 0}
+  promptBagConvo: {fileID: 0}

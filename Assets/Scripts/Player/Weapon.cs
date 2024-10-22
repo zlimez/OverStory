@@ -7,8 +7,7 @@ namespace Abyss.Player
 {
     public class Weapon : MonoBehaviour
     {
-        // TODO: Add removable obstacle to mask, currently only inc. enemy
-        static readonly int _layerMask = 1 << 6;
+        static readonly int _layerMask = (1 << 6) | (1 << 12); // 6 for enemy, 12 for breakable
         public WeaponItem weaponItem;
         readonly HashSet<int> _hits = new();
         ParticleSystem _particleSystem;
@@ -20,15 +19,15 @@ namespace Abyss.Player
 
         void Equip(object obj) => weaponItem = (WeaponItem)obj;
 
-        public void Strike(float str)
+        public void Strike(float str) // Can be called multiple times in one single "attack", hence the need to track which has already been hit
         {
             if (weaponItem == null) return;
             // TODO: Change position based on weapon movement
-            var hitEnemies = Physics2D.OverlapCircleAll(transform.position, weaponItem.radius, _layerMask);
+            var hits = Physics2D.OverlapCircleAll(transform.position, weaponItem.radius, _layerMask);
             bool psPlayed = false;
-            foreach (var hitEnemy in hitEnemies)
+            foreach (var hit in hits)
             {
-                if (hitEnemy.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
+                if (hit.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
                 {
                     if (_hits.Contains(enemyPart.EnemyIntanceId)) continue;
                     if (!psPlayed)
@@ -39,6 +38,8 @@ namespace Abyss.Player
                     _hits.Add(enemyPart.EnemyIntanceId);
                     enemyPart.TakeHit(weaponItem.damage + str);
                 }
+                else if (hit.gameObject.TryGetComponent<Breakable>(out var breakable))
+                    breakable.TakeHit(weaponItem.damage + str);
             }
         }
 

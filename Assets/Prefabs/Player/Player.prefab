@@ -27544,7 +27544,7 @@ Rigidbody2D:
   m_Mass: 8
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -27570,10 +27570,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portrait: {fileID: 6794293284907382098}
   crossFadeSeconds: 0.2
-  walkSpeed: 5
-  runSpeed: 8
-  jumpForce: 200
-  initialJumpImpulse: 75
+  walkSpeed: 7
+  runSpeed: 10
+  jumpForce: 300
+  initialJumpImpulse: 90
   isGrounded: 0
   dashImpulse: 125
   dashCooldown: 1
@@ -27614,8 +27614,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0934906, y: 0.2159288}
-  m_Size: {x: 2.7783508, y: 4.68967}
+  m_Offset: {x: 0.0934906, y: 0.1796124}
+  m_Size: {x: 2.7783508, y: 4.762303}
   m_Direction: 0
 --- !u!114 &6421215665509773657
 MonoBehaviour:
@@ -27629,14 +27629,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08d15f9023290496aab4b344204a6a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  getPlayerAttrFrmMaster: 1
+  getLastRestFrmMaster: 1
   playerController: {fileID: 5589660221033615386}
   weapon: {fileID: 2408469263094139058}
-  playerAttr:
+  PlayerAttr:
     Strength: 0
     Intelligence: 0
     Agility: 0
     Health: 0
     Purity: 0
+  LastRest:
+    Head: 0
+    Tail: {x: 0, y: 0, z: 0}
 --- !u!82 &194525144408556434
 AudioSource:
   m_ObjectHideFlags: 0
@@ -28844,7 +28849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3a23a21ae354889957d7f8ca00b1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponItem: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
+  weaponItem: {fileID: 0}
 --- !u!198 &5300505356400320811
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -103204,7 +103209,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.10684204, y: 0.16569328}
+  m_Offset: {x: 0.10684204, y: 0.12398243}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -103215,7 +103220,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.9744873, y: 3.5995598}
+  m_Size: {x: 2.9744873, y: 3.0632763}
   m_EdgeRadius: 0
 --- !u!1 &8968165274653268215
 GameObject:

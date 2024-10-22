@@ -1,7 +1,7 @@
 using Abyss.EventSystem;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Weapon")]
+[CreateAssetMenu(menuName = "Item/Weapon")]
 public class WeaponItem : Item
 {
     [Header("Attributes")]

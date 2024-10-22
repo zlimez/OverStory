@@ -4,19 +4,22 @@ using UnityEngine;
 using Tuples;
 using System.Collections.Generic;
 
-// TODO: Add persistence or refresh items logic
-public class TradePost : Interactable
+namespace Abyss.Interactables
 {
-    [SerializeField] Tribe tribe;
-    [SerializeField][Tooltip("Initial items and their count available")] List<RefPair<Item, int>> initialItems;
-
-    private readonly Collection itemCollection = new(null, 999);
-
-    void Start()
+    // TODO: Add persistence or refresh items logic
+    public class TradePost : Interactable
     {
-        foreach (var itemStack in initialItems)
-            itemCollection.Add(itemStack.Head, itemStack.Tail);
-    }
+        [SerializeField] Tribe tribe;
+        [SerializeField][Tooltip("Initial items and their count available")] List<RefPair<Item, int>> initialItems;
 
-    public override void Interact() => EventManager.InvokeEvent(PlayEvents.TradePostEntered, (tribe, player.GetComponent<PlayerManager>().PlayerAttr, itemCollection));
+        private readonly Collection itemCollection = new(null, 999);
+
+        void Start()
+        {
+            foreach (var itemStack in initialItems)
+                itemCollection.Add(itemStack.Head, itemStack.Tail);
+        }
+
+        public override void Interact() => EventManager.InvokeEvent(PlayEvents.TradePostEntered, (tribe, player.GetComponent<PlayerManager>().PlayerAttr, itemCollection));
+    }
 }

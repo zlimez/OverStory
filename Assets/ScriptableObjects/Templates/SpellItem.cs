@@ -1,7 +1,7 @@
 using Abyss.EventSystem;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Spell")]
+[CreateAssetMenu(menuName = "Item/Spell")]
 public class SpellItem : Item
 {
     // public float damage;

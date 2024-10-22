@@ -59,6 +59,7 @@ public class InventorySystem : MonoBehaviour
 
     public void OnOpenInventory(InputAction.CallbackContext context)
     {
+        if (!GameManager.Instance.Inventory.Enabled) return;
         if (context.performed)
         {
             ToggleInventory();
