@@ -8,6 +8,7 @@ namespace Abyss.Environment
     public class SpawnerManager : MonoBehaviour
     {
         public Spawner[] spawners;
+        [SerializeField] Transform instancesParent;
         readonly Dictionary<string, List<Spawner>> enemyTypes = new();
 
         void Start()
@@ -35,7 +36,7 @@ namespace Abyss.Environment
                 var instancesAttr = EnemyPopManager.Instance.GetSpecyInstances(enemyType.Key, enemyType.Value.Count);
                 if (instancesAttr == null) continue;
                 for (int i = 0; i < enemyType.Value.Count; i++)
-                    enemyType.Value[i].Spawn(instancesAttr[i]);
+                    enemyType.Value[i].Spawn(instancesAttr[i], instancesParent);
             }
         }
     }

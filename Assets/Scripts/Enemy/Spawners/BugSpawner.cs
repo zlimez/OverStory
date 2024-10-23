@@ -8,9 +8,9 @@ namespace Abyss.Environment.Enemy
         [SerializeField] Transform leftEnd;
         [SerializeField] Transform rightEnd;
 
-        public override bool Spawn(object attr)
+        public override bool Spawn(object attr, Transform parent)
         {
-            if (!base.Spawn(attr)) return false;
+            if (!base.Spawn(attr, parent)) return false;
             BugBT bugBT = _instance.GetComponent<BugBT>();
             bugBT.Arena = arena;
             bugBT.LeftEnd = leftEnd;
