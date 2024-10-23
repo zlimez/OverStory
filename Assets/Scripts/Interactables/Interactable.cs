@@ -7,10 +7,11 @@ namespace Abyss.Interactables
     public abstract class Interactable : MonoBehaviour
     {
         [Header("Hint")]
-        [SerializeField] private bool hasHint = true; // TODO: Collapse the rest of hint related configs if set to false
-        [SerializeField] private Vector3 offSetPosition;
-        [SerializeField] private float hintScale = 1;
+        [SerializeField] bool hasHint = false; // TODO: Collapse the rest of hint related configs if set to false
+        [SerializeField] Vector3 offSetPosition;
+        [SerializeField] float hintScale = 1;
         [SerializeField] GameObject hintPrefab;
+        [SerializeField] string infoText;
 
         // [Header("Use Item")]
         // [SerializeField] private bool isItemUsable = false;
@@ -22,6 +23,7 @@ namespace Abyss.Interactables
 
         // protected Choice useItem, interact, leave;
         private GameObject hint;
+
         protected GameObject player;
 
         // protected void InitialiseItemChoice()
@@ -83,7 +85,7 @@ namespace Abyss.Interactables
         {
             if (collider.CompareTag("Player"))
             {
-                EventManager.InvokeEvent(PlayEvents.InteractableEntered);
+                EventManager.InvokeEvent(PlayEvents.InteractableEntered, infoText);
                 collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
                 player = collider.gameObject;
                 SpawnHint();

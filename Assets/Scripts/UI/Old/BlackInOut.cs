@@ -46,7 +46,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeInDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackImage.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
+            blackImage.color = Color.LerpUnclamped(ColorUtils.Transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
         EventManager.InvokeEvent(UIEvents.BlackIn);
@@ -58,7 +58,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeOutDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackImage.color = Color.LerpUnclamped(Color.black, ColorUtils.transparent, timeElapsed / fadeOutDuration);
+            blackImage.color = Color.LerpUnclamped(Color.black, ColorUtils.Transparent, timeElapsed / fadeOutDuration);
             yield return null;
         }
 
@@ -71,7 +71,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeInDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackImage.color = Color.LerpUnclamped(ColorUtils.transparent, Color.black, timeElapsed / fadeInDuration);
+            blackImage.color = Color.LerpUnclamped(ColorUtils.Transparent, Color.black, timeElapsed / fadeInDuration);
             yield return null;
         }
         EventManager.InvokeEvent(UIEvents.BlackIn);
@@ -85,7 +85,7 @@ public class BlackInOut : MonoBehaviour
         while (timeElapsed < fadeOutDuration)
         {
             timeElapsed += Time.unscaledDeltaTime;
-            blackImage.color = Color.LerpUnclamped(Color.black, ColorUtils.transparent, timeElapsed / fadeOutDuration);
+            blackImage.color = Color.LerpUnclamped(Color.black, ColorUtils.Transparent, timeElapsed / fadeOutDuration);
             yield return null;
         }
 

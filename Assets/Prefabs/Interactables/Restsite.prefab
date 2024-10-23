@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3498560458565771626}
   - component: {fileID: 7473495167230644151}
   - component: {fileID: 8801983461525733965}
+  - component: {fileID: 8496804522582030049}
   m_Layer: 0
   m_Name: Restsite
   m_TagString: Untagged
@@ -26,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734192849373705136}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 75.5, y: -3.5, z: -0.13603638}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.2125, y: 2.2125, z: 2.2125}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8773523095380589850}
@@ -68,7 +69,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.17940044}
+  m_Offset: {x: 1.4440154, y: -0.17940044}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -79,7 +80,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.3299637, y: 2.7284546}
+  m_Size: {x: 3.778817, y: 2.7284546}
   m_EdgeRadius: 0
 --- !u!114 &8801983461525733965
 MonoBehaviour:
@@ -97,11 +98,30 @@ MonoBehaviour:
   offSetPosition: {x: 0, y: 0, z: 0}
   hintScale: 1
   hintPrefab: {fileID: 0}
+  infoText: E to Rest
   restSiteName: Fara Village
   purityRestoration: 10
   purityRestoreCooldown: 24
   timeFastForward: 12
   lastPurityRestoreTime: -1
+--- !u!114 &8496804522582030049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734192849373705136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429cdca865e0c41139ccfd4f35146641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstDeath: {fileID: 11400000, guid: 31be2e4aca906489ab3cd06d97e322d8, type: 2}
+  firstRecover: {fileID: 11400000, guid: 728f211022a034763bd5fbd2812f5c18, type: 2}
+  firstLost: {fileID: 11400000, guid: 0b4a8b8b8728d411c9f1bfa033a27935, type: 2}
+  HadFirstRecover: {fileID: 11400000, guid: ce7110600db0f442fb8e08200e265aca, type: 2}
+  HadFirstLost: {fileID: 11400000, guid: 05386c0b3112e46018a9fb2b14e5884a, type: 2}
+  HadFirstDeathConvo: {fileID: 11400000, guid: 334c3570bcf3d45a9ab6d227822ad6c3, type: 2}
 --- !u!1 &1833475001420937058
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,8 +148,8 @@ Transform:
   m_GameObject: {fileID: 1833475001420937058}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.28, y: -0.67, z: 0}
-  m_LocalScale: {x: 1.1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.64, y: -0.44, z: 0}
+  m_LocalScale: {x: 1.4241434, y: 1.2946758, z: 1.2946758}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3498560458565771626}
@@ -212,8 +232,8 @@ Transform:
   m_GameObject: {fileID: 3923826054246703173}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.3379978, y: -0.49999994, z: 0}
-  m_LocalScale: {x: 1, y: 1.2, z: 1.2}
+  m_LocalPosition: {x: 3.733, y: 0.22, z: 0}
+  m_LocalScale: {x: 1.7728, y: 2.12736, z: 2.12736}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3498560458565771626}
@@ -296,8 +316,8 @@ Transform:
   m_GameObject: {fileID: 4303301263696850803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.028997779, y: -0.912, z: 0}
-  m_LocalScale: {x: 1.1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.4125, y: -0.49, z: 0}
+  m_LocalScale: {x: 1.95008, y: 1.7728, z: 1.7728}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3498560458565771626}

@@ -32,7 +32,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     private void Update()
     {
-        if (UiStatus.IsDisabled()) return;
+        if (UiStatus.IsDisabled) return;
 
         HandleChoiceActivation();
         HandleChoiceSelection();
@@ -44,7 +44,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
     /// <param name="choices">An array of Choice objects to be displayed.</param>
     public void StartChoice(params Choice[] choices)
     {
-        if (UiStatus.IsDisabled()) return;
+        if (UiStatus.IsDisabled) return;
         if (justSelected)
         {
             justSelected = false;

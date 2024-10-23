@@ -189,13 +189,13 @@ public class TradingSystem : MonoBehaviour
 
         //Value Bar
         //1:0.85
-        int topVal = topArea.TotalValue(_tribe);
-        int bottomVal = bottomArea.TotalValue(_tribe);
+        float topVal = topArea.TotalValue(_tribe);
+        float bottomVal = bottomArea.TotalValue(_tribe);
         float proportion = 0;
         if (topVal == 0 || bottomVal == 0) valueBarImage.fillAmount = 0;
         else
         {
-            proportion = (float)bottomVal / topVal;
+            proportion = bottomVal / topVal;
             float propBar = proportion * 0.85f;
             if (propBar > 1) valueBarImage.fillAmount = 1;
             else valueBarImage.fillAmount = propBar;
@@ -247,9 +247,9 @@ public class TradingSystem : MonoBehaviour
 
     public void BargainOnClick()
     {
-        int topVal = topArea.TotalValue(_tribe);
-        int bottomVal = bottomArea.TotalValue(_tribe);
-        float proportion = (float)bottomVal / topVal;
+        float topVal = topArea.TotalValue(_tribe);
+        float bottomVal = bottomArea.TotalValue(_tribe);
+        float proportion = bottomVal / topVal;
         // Discount% = purity% - 60%；
         float purity = _playerAttr.Purity / 100f;
         if (topArea.tag == AreaType.NPC)
@@ -387,16 +387,16 @@ public class TradingArea
 
     public TradingArea(int cap) => capability = cap;
 
-    public int TotalValue(Tribe npcType)
+    public float TotalValue(Tribe npcType)
     {
-        int value = 0;
+        float value = 0;
         foreach (var itemStack in Items)
         {
             if (npcType == Tribe.Fara) value += itemStack.Head.valueToFara * itemStack.Tail;
             else if (npcType == Tribe.Hakem) value += itemStack.Head.valueToHakem * itemStack.Tail;
         }
 
-        if (capability == 1 && tag == AreaType.Player) value /= 2;
+        if (capability == 1 && tag == AreaType.Player) value /= 2.0f;
         return value;
     }
 

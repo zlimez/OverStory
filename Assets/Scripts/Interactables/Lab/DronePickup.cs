@@ -18,7 +18,7 @@ namespace Abyss.Interactables
             GameEvent gameEvent = new(dronePickedEvent.EventName);
             EventManager.InvokeEvent(gameEvent);
             EventLedger.Instance.Record(gameEvent);
-            DialogueManager.Instance.StartConvo(awake);
+            DialogueManager.Instance.HardStartConvo(awake);
         }
     }
 }

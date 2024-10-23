@@ -914,8 +914,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 45.3073, y: -2.82, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: -1.3, y: 1.3, z: 1.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6708774441942698786}
   - {fileID: 4784948223508994067}
@@ -957,6 +957,7 @@ MonoBehaviour:
   specyAttr: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
   attributes:
     isAlive: 1
+    priority: 0
     strength: 0
     speed: 0
     alertness: 0
@@ -997,6 +998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aggro: {fileID: 987908518188331893}
   chompTime: 1
+  preChompTime: 0.3
   chompRestTime: 0.5
   chompDamage: 10
   chompCurve:
@@ -21516,7 +21518,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.0500526, y: 6.2166224}
+  m_Size: {x: 8.751999, y: 6.2166224}
   m_EdgeRadius: 0
 --- !u!114 &987908518188331893
 MonoBehaviour:

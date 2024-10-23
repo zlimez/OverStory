@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fb95306952743789c2fd1bd5b2c344, type: 3}
-  m_Name: Narrator
+  m_Script: {fileID: 11500000, guid: c5b899cc4c754440ea7236752c71e565, type: 3}
+  m_Name: SpokeWithFaraMerch
   m_EditorClassIdentifier: 
-  speakerName: 
-  speakerSprite: {fileID: 0}
+  EventName: 

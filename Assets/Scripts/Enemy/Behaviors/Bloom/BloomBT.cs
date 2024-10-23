@@ -13,7 +13,7 @@ public class BloomBT : MonoBT
     [SerializeField] Aggro aggro;
     [Header("Chomp Settings")]
     [SerializeField] float chompTime;
-    [SerializeField] float chompRestTime, chompDamage;
+    [SerializeField] float preChompTime, chompRestTime, chompDamage;
     [SerializeField] AnimationCurve chompCurve;
     [SerializeField] Transform neck1Tfm, neck2Tfm, neck3Tfm, headTfm;
     [Header("Pollen AOE Settings")]
@@ -48,7 +48,7 @@ public class BloomBT : MonoBT
         else if (attr.friendliness > 0.5f) probNoAttack = attr.friendliness;
         else probNoAttack = 0.0f;
         probAttack = 1.0f - probNoAttack;
-        if(attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
+        if (attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
         else attr.speed *= 1.0f - (attr.friendliness - 0.5f);
 
         Pair<string, object>[] bloomParams = {
@@ -58,6 +58,7 @@ public class BloomBT : MonoBT
             new("bloomTfm", transform),
 
             new("chompTime", chompTime / attr.speed),
+            new("preChompTime", preChompTime/ attr.speed),
             new("chompRestTime", chompRestTime / attr.speed),
             new("chompDmg", chompDamage),
             new("chompCurve", chompCurve),
@@ -79,7 +80,7 @@ public class BloomBT : MonoBT
                     new List<Node> {
                         new Sequence(new List<Node> {
                             new XFaceTarget(new string[] { "bloomSprite" }),
-                            new Chomp(new string[] { "chompTime", "chompRestTime", "chompDmg", "chompCurve", "bloomAnim", "neck1Tfm", "neck2Tfm", "neck3Tfm", "headTfm", "bloomManager" })
+                            new Chomp(new string[] { "preChompTime", "chompTime", "chompRestTime", "chompDmg", "chompCurve", "bloomAnim", "neck1Tfm", "neck2Tfm", "neck3Tfm", "headTfm", "bloomManager" })
                         }),
                         new Sequence(new List<Node> {
                             new Aoe(new string[] { "aoeEmitter", "bloomAnim", "aoeTime" }),

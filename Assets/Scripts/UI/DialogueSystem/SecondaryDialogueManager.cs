@@ -93,7 +93,7 @@ public class SecondaryDialogueManager : Singleton<SecondaryDialogueManager>
 
     private bool CanStartConversation(SecondaryConversation conversation)
     {
-        if (UiStatus.IsDisabled())
+        if (UiStatus.IsDisabled)
         {
             Debug.Log($"{conversation.name} not started because scene in transition");
             return false;

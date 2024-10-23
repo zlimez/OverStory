@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ColorUtils
 {
-    public static Color transparent = new(0, 0, 0, 0);
+    public static Color Transparent = new(0, 0, 0, 0);
 
     public static Color CubicLerpColor(Color from, Color to, float t)
     {

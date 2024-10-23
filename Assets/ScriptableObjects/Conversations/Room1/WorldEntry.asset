@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fd9bf9ca7674ccf9fbb58cbe9468e4, type: 3}
+  m_Name: WorldEntry
+  m_EditorClassIdentifier: 
+  leftSpeaker: {fileID: 11400000, guid: 709f6cd2576264491aa7e3b92eeaaeb9, type: 2}
+  rightSpeaker: {fileID: 11400000, guid: 3ec48901f2d584550be9284bdc909e76, type: 2}
+  allLines:
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: We've made it out. Now back to where we left off, your first steps
+      were graced by blaring alarms, tolling of bells of some sort, shall we call
+      you Bell?
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: Bell.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: "Right, Bell Cancer, Cancer Bell. We seem to be in a cave, and a deep
+      one at that. For now, let\u2019s look arou..zzz\u2026nd."
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 11400000, guid: c9724d051ed9f41c0b734118984563c1, type: 2}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: (Looks up) [A blue glowing veil spans the sky]
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 

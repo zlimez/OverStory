@@ -1,9 +1,11 @@
 using Abyss.EventSystem;
+using TMPro;
 using UnityEngine;
 
-public class PickupHint : MonoBehaviour
+public class InfoHint : MonoBehaviour
 {
     public GameObject infoPanel;
+    public TextMeshProUGUI infoText;
 
     void OnEnable()
     {
@@ -17,6 +19,15 @@ public class PickupHint : MonoBehaviour
         EventManager.StopListening(PlayEvents.InteractableExited, HideInfoPanel);
     }
 
-    void ShowInfoPanel(object obj = null) => infoPanel.SetActive(true);
-    void HideInfoPanel(object obj = null) => infoPanel.SetActive(false);
+    void ShowInfoPanel(object obj)
+    {
+        infoPanel.SetActive(true);
+        infoText.text = (string)obj;
+    }
+
+    void HideInfoPanel(object obj)
+    {
+        infoPanel.SetActive(false);
+        infoText.text = "";
+    }
 }

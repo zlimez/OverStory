@@ -7,7 +7,7 @@ using Abyss.Environment.Enemy;
 
 public class Charge : CfAction
 {
-    static readonly int _obstacleLayerMask = 1 << 7;
+    static readonly int _obstacleLayerMask = 1 << 7 | 1 << 11;
     float _stunTime;
     float _restTime;
     float _chargeDist;

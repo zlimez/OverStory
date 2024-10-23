@@ -11,7 +11,7 @@ namespace Abyss.Interactables
         protected override void OnTriggerEnter2D(Collider2D collider)
         {
             base.OnTriggerEnter2D(collider);
-            if (EventLedger.Instance.HasOccurred(new GameEvent(dronePickedEvent.EventName)) && player != null) DialogueManager.Instance.StartConvo(foundBagConvo);
+            if (EventLedger.Instance.HasOccurred(new GameEvent(dronePickedEvent.EventName)) && player != null) DialogueManager.Instance.HardStartConvo(foundBagConvo);
         }
 
         public override void Interact()

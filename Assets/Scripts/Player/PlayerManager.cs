@@ -21,11 +21,14 @@ namespace Abyss.Player
         public PlayerAttr PlayerAttr;
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
 
+        public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;
+
         void Start()
         {
             if (GameManager.Instance && GameManager.Instance.PlayerPersistence.JustDied)
             {
                 GameManager.Instance.PlayerPersistence.JustDied = false;
+                EventLedger.Instance.Record(PlayEvents.Respawn);
                 transform.position = LastRest.Tail;
             }
         }
@@ -117,7 +120,7 @@ namespace Abyss.Player
 
         public void UpdateActionPurity(object input)
         {
-            float actionPurityChange = (float) (int) input;
+            float actionPurityChange = (float)input;
             PlayerAttr.ActionPurity = Mathf.Clamp(PlayerAttr.ActionPurity + actionPurityChange, 0, PlayerAttr.MaxActionPurity);
         }
 

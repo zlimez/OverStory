@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fd9bf9ca7674ccf9fbb58cbe9468e4, type: 3}
   m_Name: PromptBag
   m_EditorClassIdentifier: 
-  leftSpeaker: {fileID: 11400000, guid: c9724d051ed9f41c0b734118984563c1, type: 2}
+  leftSpeaker: {fileID: 11400000, guid: 709f6cd2576264491aa7e3b92eeaaeb9, type: 2}
   rightSpeaker: {fileID: 11400000, guid: 3ec48901f2d584550be9284bdc909e76, type: 2}
   allLines:
   - isLeft: 0
