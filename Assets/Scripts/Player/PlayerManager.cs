@@ -111,8 +111,8 @@ namespace Abyss.Player
 
         public void UpdateActionPurity(object input)
         {
-            float actionPurityChange = (float) input;
-            PlayerAttr.ActionPurity = Mathf.Clamp(PlayerAttr.ActionPurity + actionPurityChange, 0, PlayerAttr.ActionPurity);
+            float actionPurityChange = (float) (int) input;
+            PlayerAttr.ActionPurity = Mathf.Clamp(PlayerAttr.ActionPurity + actionPurityChange, 0, PlayerAttr.MaxActionPurity);
         }
 
         public void UpdateFriendlinessPurity(object input)

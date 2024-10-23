@@ -1,3 +1,4 @@
+using Abyss.EventSystem;
 using Tuples;
 using UnityEngine;
 
@@ -13,15 +14,26 @@ namespace Abyss.Environment.Enemy
         [SerializeField] Pair<GameObject, int>[] drops;
         [SerializeField][Tooltip("Left and right endpoint where drops are spawned")] Pair<Transform, Transform> dropRange;
         bool _isDefeated = false;
+        bool _haveFightWithPlayer = false;
+        bool _beAttacked = false;
+
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
         public void TakeHit(float baseDamage)
         {
             if (!attributes.isAlive) return;
+            if (!_haveFightWithPlayer)
+            {
+                attributes.friendliness -= 3.0f;
+                _haveFightWithPlayer = true;
+                _beAttacked = true;
+            }
             if (_isDefeated)
             {
                 attributes.isAlive = false;
                 OnDeath?.Invoke();
+                // ActionPurity -10
+                EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10);
                 Drop();
                 return;
             }
@@ -32,12 +44,17 @@ namespace Abyss.Environment.Enemy
             {
                 OnDefeated?.Invoke();
                 OnStrikePlayer = null;
+                // Forgive
+                attributes.friendliness += 2.0f;
             }
         }
 
         public void Strike()
         {
+            if (!_haveFightWithPlayer) _haveFightWithPlayer = true;
             OnStrikePlayer?.Invoke(attributes.strength);
+            // prority to reproduce
+            if (GameManager.Instance.PlayerPersistence.JustDied) attributes.priority = true;
         }
 
         void Drop()

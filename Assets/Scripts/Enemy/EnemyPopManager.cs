@@ -26,6 +26,8 @@ namespace Abyss.Environment.Enemy
         Dictionary<string, RefTriplet<int, int, List<EnemyAttr>>> _allEnemies = new();
         readonly Dictionary<string, SpecyAttr> _speciesConfig = new();
 
+        int priorityLevel = 5;
+
         protected override void Awake()
         {
             base.Awake();
@@ -127,8 +129,7 @@ namespace Abyss.Environment.Enemy
 
         public void NextGeneration()
         {
-            float FriendlinessCount = 0.0f;
-            int EnemyCount = 0;
+            float EnemyCount = 0.0f, FriendlinessCount = 0.0f;
             foreach (var enemyType in _allEnemies)
             {
                 var specyName = enemyType.Key;
@@ -136,27 +137,40 @@ namespace Abyss.Environment.Enemy
                 var specyConfig = _speciesConfig[specyName];
                 var parentPop = enemies.Item3.Count;
                 var chromoLen = specyConfig.attrRanges.Length;
-                float[,] parentsDNA = new float[parentPop, chromoLen];
-                int aliveSpawnedPop = enemies.Item2;
+                int deathPop = 0, aliveSpawnedPop = enemies.Item2, priorityPop = 0;
 
                 for (int i = 0; i < parentPop; i++)
                 {
                     var enemy = enemies.Item3[i];
-                    if (!enemy.isAlive)
-                    {
-                        parentPop--;
-                        aliveSpawnedPop--;
-                        continue;
-                    }
-                    for (int j = 0; j < chromoLen; j++) parentsDNA[i, j] = enemy.DNA[j];
+                    if (!enemy.isAlive) deathPop++;
+                    if (enemy.priority) priorityPop++;
                 }
+                float[,] parentsDNA = new float[parentPop - deathPop + priorityLevel * priorityPop, chromoLen];
+                for (int i = 0, j = 0; i < parentPop; i++)
+                {
+                    var enemy = enemies.Item3[i];
+                    if (enemy.isAlive)
+                    {
+                        for (int k = 0; k < chromoLen; k++) parentsDNA[j, k] = enemy.DNA[k];
+                        j++;
+                        if (enemy.priority)
+                        {
+                            for (int ii = 0; ii < priorityLevel; ii++)
+                            {
+                                for (int k = 0; k < chromoLen; k++) parentsDNA[j, k] = enemy.DNA[k];
+                                j++;
+                            }
+                        }
+                    }
+                }
+                parentPop -= deathPop;
 
                 float[,] childrenDNA = _ga.GetChildren(parentsDNA, specyConfig.mutationRate, specyConfig.AllAttrRanges(), Mathf.Min((float)specyConfig.maxPopulation / parentPop, specyConfig.generationRate));
                 enemies.Item3.RemoveRange(enemies.Item2, enemies.Item3.Count - enemies.Item2);
                 enemies.Item1 = childrenDNA.GetLength(0);
 
-                // Alive spawned enemies in the active scene remains as part of pop, first k children discarded
-                for (int i = aliveSpawnedPop; i < childrenDNA.GetLength(0); i++)
+                // Spawned enemies in the active scene remains as part of pop, first k children discarded, dead ones removed at next get specy instance call
+                for (int i = aliveSpawnedPop - deathPop; i < childrenDNA.GetLength(0); i++)
                 {
                     float[] dna = new float[chromoLen];
                     for (int j = 0; j < chromoLen; j++) dna[j] = childrenDNA[i, j];

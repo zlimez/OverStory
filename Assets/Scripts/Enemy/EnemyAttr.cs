@@ -6,10 +6,11 @@ namespace Abyss.Environment.Enemy
     public class EnemyAttr
     {
         public bool isAlive = true;
+        public bool priority = false;
         public float strength;
         public float speed;
         public float alertness;
-        public float friendliness;
+        public float friendliness; 
 
         public float[] DNA => new float[] { strength, speed, alertness, friendliness };
 
