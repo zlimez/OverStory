@@ -35,6 +35,7 @@ namespace Abyss.Environment.Enemy
                 // ActionPurity -10
                 EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10);
                 Drop();
+                Destroy(gameObject);
                 return;
             }
             Debug.Log($"{name} took {baseDamage} damage");
