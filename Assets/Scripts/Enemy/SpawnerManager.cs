@@ -33,6 +33,7 @@ namespace Abyss.Environment
             foreach (var enemyType in enemyTypes)
             {
                 var instancesAttr = EnemyPopManager.Instance.GetSpecyInstances(enemyType.Key, enemyType.Value.Count);
+                if (instancesAttr == null) continue;
                 for (int i = 0; i < enemyType.Value.Count; i++)
                     enemyType.Value[i].Spawn(instancesAttr[i]);
             }

@@ -159,7 +159,9 @@ MonoBehaviour:
       Intelligence: 1
       Agility: 1
       Health: 100
-      Purity: 65
+      Purity: 80
+      ActionPurity: 60
+      FriendlinessPurity: 20
     WeaponItem: {fileID: 0}
     SpellItems:
     - {fileID: 0}
@@ -937,7 +939,7 @@ PrefabInstance:
     - target: {fileID: 3996304966928032551, guid: 285a42ff10f5540a1b0ed2018c9896bc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -97.50469
+      value: -97.5047
       objectReference: {fileID: 0}
     - target: {fileID: 4122812394373144823, guid: 285a42ff10f5540a1b0ed2018c9896bc,
         type: 3}
@@ -1876,7 +1878,7 @@ PrefabInstance:
     - target: {fileID: 4765619232351784935, guid: 5d635b83e7bdd4066b5071709803d774,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -97.50471
+      value: -97.50469
       objectReference: {fileID: 0}
     - target: {fileID: 5435516352894746449, guid: 5d635b83e7bdd4066b5071709803d774,
         type: 3}
@@ -2137,6 +2139,10 @@ MonoBehaviour:
   - Head: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
     Tail: 20
   breedInterval: 12
+  FriendlinessAverage: 0
+  FriendlinessRange:
+    Head: 0
+    Tail: 0
 --- !u!1 &1600987382
 GameObject:
   m_ObjectHideFlags: 0

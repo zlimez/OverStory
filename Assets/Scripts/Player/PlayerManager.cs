@@ -1,3 +1,4 @@
+using Abyss.Environment.Enemy;
 using Abyss.EventSystem;
 using Abyss.SceneSystem;
 using Tuples;
@@ -35,6 +36,8 @@ namespace Abyss.Player
                 EventManager.StartListening(SystemEvents.SystemsReady, Load);
             else Load();
             EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.StartListening(PlayEvents.PlayerActionPurityChange, UpdateActionPurity);
+            EventManager.StartListening(PlayEvents.PlayerFriendlinessPurityChange, UpdateFriendlinessPurity);
         }
 
         void OnDisable()
@@ -42,6 +45,8 @@ namespace Abyss.Player
             playerController.OnAttackEnded -= weapon.Reset;
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
             EventManager.StopListening(SystemEvents.SystemsReady, Load);
+            EventManager.StopListening(PlayEvents.PlayerActionPurityChange, UpdateActionPurity);
+            EventManager.StopListening(PlayEvents.PlayerFriendlinessPurityChange, UpdateFriendlinessPurity);
         }
 
         void FixedUpdate()
@@ -98,10 +103,24 @@ namespace Abyss.Player
             EventManager.StopListening(PlayEvents.PlayerDeath, ReturnToRestScene);
         }
 
-        public void UpdatePurity(float purityChange)
+        public void UpdatePurity()
         {
-            PlayerAttr.Purity = Mathf.Clamp(PlayerAttr.Purity + purityChange, 0, PlayerAttr.MaxPurity);
+            PlayerAttr.Purity = PlayerAttr.ActionPurity + PlayerAttr.FriendlinessPurity;
             EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
+        }
+
+        public void UpdateActionPurity(object input)
+        {
+            float actionPurityChange = (float) input;
+            PlayerAttr.ActionPurity = Mathf.Clamp(PlayerAttr.ActionPurity + actionPurityChange, 0, PlayerAttr.ActionPurity);
+        }
+
+        public void UpdateFriendlinessPurity(object input)
+        {
+            float averageFriendliness = EnemyPopManager.Instance.FriendlinessAverage;
+            Pair<float, float> friendlinessRange = EnemyPopManager.Instance.FriendlinessRange;
+            PlayerAttr.FriendlinessPurity = averageFriendliness * 40.0f / friendlinessRange.Tail;
+            UpdatePurity();
         }
     }
 }

@@ -40,6 +40,12 @@ public class BugBT : MonoBT
     {
         yield return new WaitForSeconds(0.1f);
         // Blackboard bb = new(new Pair<string, string>[] { new(arena.EEEvent, arena.EEEvent) });
+        EnemyAttr attr = GetComponent<EnemyManager>().attributes;
+        attr = NormalizeEnemyAttr(attr);
+        if(attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
+        else attr.speed *= 1.0f - (attr.friendliness - 0.5f);
+
+
         Pair<string, object>[] bugParams = {
             new("bugTfm", transform),
             new("dropCurve", dropCurve),
@@ -49,7 +55,7 @@ public class BugBT : MonoBT
             new("leftEnd", LeftEnd),
             new("rightEnd", RightEnd),
             new("dashCurve", dashCurve),
-            new("dashSpeed", dashSpeed),
+            new("dashSpeed", dashSpeed * attr.speed),
             new("dashDamage", dashDamage),
 
             new("jumpDest", "jumpDest"),
@@ -60,7 +66,7 @@ public class BugBT : MonoBT
 
             new("bugSprite", GetComponent<SpriteManager>()),
             new("bugManager", GetComponent<EnemyManager>()),
-            new("aftJumpDashTime", aftJumpDashTime),
+            new("aftJumpDashTime", aftJumpDashTime / attr.speed),
             new("arena",Arena)
         };
 

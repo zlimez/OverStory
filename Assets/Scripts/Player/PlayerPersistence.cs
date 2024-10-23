@@ -9,7 +9,7 @@ namespace Abyss.DataPersistence
     [Serializable]
     public class PlayerPersistence
     {
-        public PlayerAttr PlayerAttr = new(1, 1, 1, 100, 80);
+        public PlayerAttr PlayerAttr = new(1, 1, 1, 100, 60, 20);
         public WeaponItem WeaponItem;
         public SpellItem[] SpellItems = new SpellItem[3];
         public Pair<AbyssScene, UnityEngine.Vector3> LastRest;

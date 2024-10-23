@@ -43,7 +43,8 @@ namespace Abyss.Interactables
             {
                 if (lastPurityRestoreTime == -1 || TimeCycle.Instance.TotalTime - lastPurityRestoreTime >= purityRestoreCooldown)
                 {
-                    playerManager.UpdatePurity(purityRestoration);
+                    EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, purityRestoration);
+                    playerManager.UpdatePurity();
                     lastPurityRestoreTime = TimeCycle.Instance.TotalTime;
                 }
                 playerManager.LastRest.Head = SceneLoader.Instance.ActiveScene;

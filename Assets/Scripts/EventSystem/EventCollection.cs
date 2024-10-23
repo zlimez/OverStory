@@ -50,17 +50,22 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent InteractableExited;
         public static readonly StaticEvent PlayerHealthChange;
         public static readonly StaticEvent PlayerPurityChange;
+        public static readonly StaticEvent PlayerActionPurityChange;
+        public static readonly StaticEvent PlayerFriendlinessPurityChange;
         public static readonly StaticEvent TradePostEntered;
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
         public static readonly StaticEvent Rested;
         public static readonly StaticEvent SpellEquippedStateChange;
 
+
         static PlayEvents()
         {
             PlayerDeath = StaticEvent.PlayerDeath;
             PlayerHealthChange = StaticEvent.PlayerHealthChange;
             PlayerPurityChange = StaticEvent.PlayerPurityChange;
+            PlayerActionPurityChange = StaticEvent.PlayerActionPurityChange;
+            PlayerFriendlinessPurityChange = StaticEvent.PlayerFriendlinessPurityChange;
             InteractableEntered = StaticEvent.InteractableEntered;
             InteractableExited = StaticEvent.InteractableExited;
             TradePostEntered = StaticEvent.TradePostEntered;

@@ -15,6 +15,10 @@ namespace Abyss.Environment.Enemy
     {
         [Tooltip("Species attributes and initial population count")] public Pair<SpecyAttr, int>[] SpeciesAttrAndInitCount;
         [SerializeField][Tooltip("Should be multiples of broadcast interval in TimeCycle")] float breedInterval = 12;
+
+        public float FriendlinessAverage;
+        public Pair<float, float> FriendlinessRange;
+
         float _nextBreedTime;
         readonly GA _ga = new();
         // str enemy type, 1st int for genpop count, instances before 2nd int pointer spawned for scene, list contains all instances for that type
@@ -46,9 +50,13 @@ namespace Abyss.Environment.Enemy
                         for (int j = 0; j < attrRanges.Length; j++) dna[j] = popDNA[i, j];
                         EnemyAttr enemyAttr = new();
                         enemyAttr.UseDNA(dna);
+                        enemyAttr.friendliness = 5.0f;
                         _allEnemies[enemyAttrSO.specyName].Item3.Add(enemyAttr);
                     }
                 }
+                FriendlinessAverage = 5.0f;
+                FriendlinessRange.Head = 0.0f;
+                FriendlinessRange.Tail = 10.0f;
             }
             else
             {
@@ -60,6 +68,7 @@ namespace Abyss.Environment.Enemy
             }
             EventManager.InvokeEvent(SystemEvents.EnemyPopManagerReady);
             IsReady = true;
+            EventManager.InvokeEvent(PlayEvents.PlayerFriendlinessPurityChange);
         }
 
         void OnEnable() => EventManager.StartListening(SystemEvents.TimeBcastEvent, Breed);
@@ -118,6 +127,8 @@ namespace Abyss.Environment.Enemy
 
         public void NextGeneration()
         {
+            float FriendlinessCount = 0.0f;
+            int EnemyCount = 0;
             foreach (var enemyType in _allEnemies)
             {
                 var specyName = enemyType.Key;
@@ -151,6 +162,8 @@ namespace Abyss.Environment.Enemy
                     for (int j = 0; j < chromoLen; j++) dna[j] = childrenDNA[i, j];
                     EnemyAttr enemy = new();
                     enemy.UseDNA(dna);
+                    FriendlinessCount += enemy.friendliness;
+                    EnemyCount ++;
                     enemies.Item3.Add(enemy);
                 }
 
@@ -162,11 +175,19 @@ namespace Abyss.Environment.Enemy
                 Debug.Log("Next generation for " + specyName + " with " + parentPop + " parents and " + childrenDNA.GetLength(0) + " children");
 #endif
             }
+            FriendlinessAverage = FriendlinessCount / (float) EnemyCount;
+            EventManager.InvokeEvent(PlayEvents.PlayerFriendlinessPurityChange);
         }
 
         // Invoked at the start of each scene by the SpawnManager
         public List<EnemyAttr> GetSpecyInstances(string specyName, int k)
         {
+            if (!_allEnemies.ContainsKey(specyName))
+            {
+                Debug.LogWarning($"Species '{specyName}' not found in _allEnemies.");
+                return null;
+            }
+
             var specyPop = _allEnemies[specyName].Item3;
             int bpt = specyPop.Count;
 
