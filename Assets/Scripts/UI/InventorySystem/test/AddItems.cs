@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AddItems : MonoBehaviour
 {
-    [Tooltip("Press B to submit")] 
+    [Tooltip("Press B to submit")]
     public List<Item> items;
 
     public int quantity = 1;
@@ -20,6 +20,6 @@ public class AddItems : MonoBehaviour
 
     public void PutItem()
     {
-        foreach(Item item in items) GameManager.Instance.Inventory.AddTo(item, quantity);
+        foreach (Item item in items) GameManager.Instance.Inventory.Add(item, quantity);
     }
 }

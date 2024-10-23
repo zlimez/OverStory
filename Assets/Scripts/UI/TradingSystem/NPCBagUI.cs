@@ -137,7 +137,7 @@ public class NPCBagUI : MonoBehaviour
             int count = ItemArgs.Tail;
 
             if (count > 0) _npcItemCollection.Add(item, count);
-            if (count < 0) _npcItemCollection.DiscardItem(item, -count);
+            if (count < 0) _npcItemCollection.RemoveStock(item, -count);
         }
         else Debug.LogWarning("Event args are not of type ItemWithCount.");
     }

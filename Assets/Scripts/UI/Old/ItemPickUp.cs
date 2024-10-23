@@ -18,7 +18,7 @@ public class PickupItem : MonoBehaviour
         Debug.Log("Picked up " + item.itemName);
         if (onPickupConvo != null) DialogueManager.Instance.StartConvo(onPickupConvo);
         picked = true;
-        GameManager.Instance.Inventory.AddTo(item);
+        GameManager.Instance.Inventory.Add(item);
         Destroy(gameObject);
         return true;
     }

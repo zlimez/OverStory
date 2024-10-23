@@ -16,9 +16,10 @@ namespace Abyss.Player
         [Header("References")]
         [SerializeField] PlayerController playerController;
         [SerializeField] Weapon weapon;
-        [Header("Attributes")]
-        public PlayerAttr PlayerAttr;
         public Pair<AbyssScene, Vector3> LastRest;
+        [Header("Settings")]
+        public PlayerAttr PlayerAttr;
+        [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
 
         void Start()
         {
@@ -99,7 +100,12 @@ namespace Abyss.Player
 
         void ReturnToRestScene(object input = null)
         {
-            SceneLoader.Instance.LoadWithMaster(LastRest.Head);
+            PlayerAttr.Health = PlayerAttr.MaxHealth;
+            if (PlayerAttr.Purity < purityLoseItemsThreshold)
+                GameManager.Instance.Inventory.Clear();
+            else GameManager.Instance.Inventory.RanRemovePortion(portionLost);
+
+            SceneLoader.Instance.PrepLoadWithMaster(LastRest.Head);
             EventManager.StopListening(PlayEvents.PlayerDeath, ReturnToRestScene);
         }
 

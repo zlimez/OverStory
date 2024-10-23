@@ -287,8 +287,8 @@ public class TradingSystem : MonoBehaviour
 
     private void ChangePlayerInventory(Item item, int count = 1)
     {
-        if (count > 0) GameManager.Instance.Inventory.MaterialCollection.Add(item, count);
-        if (count < 0) GameManager.Instance.Inventory.MaterialCollection.DiscardItem(item, -count);
+        if (count > 0) GameManager.Instance.Inventory.Add(item, count);
+        if (count < 0) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(item, -count);
     }
     private void ChangeNPCInventory(Item item, int count = 1)
     {
@@ -412,7 +412,7 @@ public class TradingArea
         {
             var lastItem = Items[^1];
 
-            if (tag == AreaType.Player) GameManager.Instance.Inventory.AddTo(lastItem.Head, lastItem.Tail);
+            if (tag == AreaType.Player) GameManager.Instance.Inventory.Add(lastItem.Head, lastItem.Tail);
             else if (tag == AreaType.NPC) EventManager.InvokeEvent(UIEvents.UpdateNPCInventory, lastItem);
             Items.RemoveAt(Items.Count - 1);
         }
@@ -436,7 +436,7 @@ public class TradingArea
     {
         foreach (var item in Items)
         {
-            if (tag == AreaType.Player) GameManager.Instance.Inventory.AddTo(item.Head, item.Tail);
+            if (tag == AreaType.Player) GameManager.Instance.Inventory.Add(item.Head, item.Tail);
             else if (tag == AreaType.NPC) EventManager.InvokeEvent(UIEvents.UpdateNPCInventory, item);
         }
         Items.Clear();
@@ -447,7 +447,7 @@ public class TradingArea
     {
         foreach (var item in Items)
         {
-            if (tag == AreaType.NPC) GameManager.Instance.Inventory.AddTo(item.Head, item.Tail);
+            if (tag == AreaType.NPC) GameManager.Instance.Inventory.Add(item.Head, item.Tail);
             else if (tag == AreaType.Player) EventManager.InvokeEvent(UIEvents.UpdateNPCInventory, item);
         }
         Items.Clear();
