@@ -174,7 +174,7 @@ MonoBehaviour:
   TimePersistence:
     TimeOfCycle: 0
     TtTime: 0
-  DebugEnableInventory: 1
+  DebugEnableInventory: 0
 --- !u!4 &334158140
 Transform:
   m_ObjectHideFlags: 0
