@@ -8,7 +8,7 @@ public class ConvoTrigger : MonoBehaviour
     [SerializeField] Conversation conversation;
     [SerializeField][Tooltip("Conditions to trigger this convo")] EventCondChecker condChecker; // TODO: Expand to include ors and parantheses
     [SerializeField] bool noRepeat = false;
-    [SerializeField] DynamicEvent[] eventsToTrigger;
+    [SerializeField] Pair<DynamicEvent, bool>[] eventsToTriggerAndRecord;
     bool _triggered = false;
     protected GameObject player;
 
@@ -25,8 +25,11 @@ public class ConvoTrigger : MonoBehaviour
     {
         DialogueManager.Instance.HardStartConvo(conversation);
         _triggered = true;
-        foreach (var evt in eventsToTrigger)
-            EventManager.InvokeEvent(new GameEvent(evt.EventName));
+        foreach (var evt in eventsToTriggerAndRecord)
+        {
+            EventManager.InvokeEvent(new GameEvent(evt.Head.EventName));
+            if (evt.Tail) EventLedger.Instance.Record(new GameEvent(evt.Head.EventName));
+        }
     }
 
     protected bool CheckConditionsMet()

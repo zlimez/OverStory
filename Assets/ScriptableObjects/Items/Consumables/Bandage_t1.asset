@@ -24,4 +24,5 @@ MonoBehaviour:
   isAcceptableToHakem: 0
   valueToFara: 0
   valueToHakem: 0
+  itemUsedEvent: {fileID: 11400000, guid: 8499fae4f2a5e4b7c8e93d5f728545c8, type: 2}
   itemType: 1

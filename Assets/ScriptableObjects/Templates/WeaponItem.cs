@@ -8,9 +8,8 @@ public class WeaponItem : Item
     public float damage;
     public float radius;
 
-    protected override void Awake()
+    void Awake()
     {
-        itemUsedEvent = new GameEvent($"{PlayEvents.WeaponEquipped}: ${itemName}");
         canUseFromInventory = false;
         isConsumable = false;
     }

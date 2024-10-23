@@ -61,6 +61,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public void HardStartConvo(Conversation convo, OnDialogFinished callback = null)
     {
         if (UiStatus.IsDisabled) return;
+        queuedConvos.Clear();
         queuedConvos.Enqueue(convo);
         StartConvo(convo, callback);
     }

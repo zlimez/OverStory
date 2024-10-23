@@ -8,7 +8,7 @@ public class SpellItem : Item
     // public float radius;
     public Sprite iconInactive;
 
-    protected override void Awake()
+    void Awake()
     {
         canUseFromInventory = false;
         isConsumable = false;

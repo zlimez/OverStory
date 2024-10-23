@@ -27376,6 +27376,7 @@ GameObject:
   - component: {fileID: 6421215665509773657}
   - component: {fileID: 194525144408556434}
   - component: {fileID: 2925049495632632246}
+  - component: {fileID: 1675421828440835502}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -27758,6 +27759,21 @@ MonoBehaviour:
   jumpSfx: {fileID: 8300000, guid: d2db7dc0a40fd435ebf294ce230c0c49, type: 3}
   dashSfx: {fileID: 8300000, guid: 581b59af31c274fb2935083b7883a801, type: 3}
   hurtSfx: {fileID: 8300000, guid: 3d9b9847e021b4368ab71e64845b16c0, type: 3}
+--- !u!114 &1675421828440835502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762209603272800578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813147f65d27047f580145e468539cd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicBandageUsed: {fileID: 11400000, guid: 8499fae4f2a5e4b7c8e93d5f728545c8, type: 2}
+  basicHealPortion: 0.33
+  duration: 3
 --- !u!1 &2813103739145877073
 GameObject:
   m_ObjectHideFlags: 0

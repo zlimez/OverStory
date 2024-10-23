@@ -90,8 +90,7 @@ namespace Abyss.Player
         {
             if (PlayerAttr.Health == 0) return;
             if (playerController.TakeHit(hasKnockback, from, kbImpulse)) return; // Is still taking last damage or isDead
-            PlayerAttr.Health -= Mathf.Min(PlayerAttr.Health, baseDamage);
-            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
+            UpdateHealth(-baseDamage);
             if (PlayerAttr.Health == 0)
             {
                 Save();
@@ -110,6 +109,12 @@ namespace Abyss.Player
 
             SceneLoader.Instance.PrepLoadWithMaster(LastRest.Head);
             EventManager.StopListening(PlayEvents.PlayerDeath, ReturnToRestScene);
+        }
+
+        public void UpdateHealth(float healthChange)
+        {
+            PlayerAttr.Health = Mathf.Clamp(PlayerAttr.Health + healthChange, 0, PlayerAttr.MaxHealth);
+            EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
         }
 
         public void UpdatePurity()
