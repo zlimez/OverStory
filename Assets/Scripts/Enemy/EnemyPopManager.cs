@@ -85,7 +85,7 @@ namespace Abyss.Environment.Enemy
                 NextGeneration();
                 _nextBreedTime += breedInterval;
             }
-            Debug.Log("Next breed at " + _nextBreedTime);
+            // Debug.Log("Next breed at " + _nextBreedTime);
             // SaveNPCs();
         }
 
@@ -177,7 +177,7 @@ namespace Abyss.Environment.Enemy
                     EnemyAttr enemy = new();
                     enemy.UseDNA(dna);
                     FriendlinessCount += enemy.friendliness;
-                    EnemyCount ++;
+                    EnemyCount++;
                     enemies.Item3.Add(enemy);
                 }
 
@@ -189,7 +189,7 @@ namespace Abyss.Environment.Enemy
                 Debug.Log("Next generation for " + specyName + " with " + parentPop + " parents and " + childrenDNA.GetLength(0) + " children");
 #endif
             }
-            FriendlinessAverage = FriendlinessCount / (float) EnemyCount;
+            FriendlinessAverage = FriendlinessCount / (float)EnemyCount;
             EventManager.InvokeEvent(PlayEvents.PlayerFriendlinessPurityChange);
         }
 

@@ -6,10 +6,16 @@ public class PickupItem : MonoBehaviour
     [SerializeField] Conversation onPickupConvo;
     bool picked = false;
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("Collision with: " + collider.name);
         if (collider.CompareTag("Player") && !picked) Pickup();
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && !picked)
+            Pickup();
     }
 
     bool Pickup()

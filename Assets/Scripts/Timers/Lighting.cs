@@ -37,7 +37,7 @@ public class Lighting : MonoBehaviour
             _activeTransition = null;
         }
         if (transitTarget == -1) transitTarget = lightingAts.Count - 1;
-        Debug.Log("Lighting " + transitTarget);
+        // Debug.Log("Lighting " + transitTarget);
         _activeTransition = TransitionRoutine(lightingAts[transitTarget]);
         StartCoroutine(_activeTransition);
     }
