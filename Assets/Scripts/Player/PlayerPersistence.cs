@@ -1,12 +1,25 @@
 using System;
+using System.Collections.Generic;
+using Abyss.Player;
+using Abyss.SceneSystem;
+using Tuples;
 
-namespace Abyss.Player
+namespace Abyss.DataPersistence
 {
     [Serializable]
     public class PlayerPersistence
     {
-        public PlayerAttr PlayerAttr = new(1, 1, 1, 100, 80);
+        public PlayerAttr PlayerAttr = new(1, 1, 1, 100, 60, 20);
         public WeaponItem WeaponItem;
-        public int InventoryLevel = 1;
+        public SpellItem[] SpellItems = new SpellItem[3];
+        public Pair<AbyssScene, UnityEngine.Vector3> LastRest;
+        public bool JustDied = false;
+    }
+
+    [Serializable]
+    public class TimePersistence
+    {
+        public float TimeOfCycle = 0;
+        public float TtTime = 0;
     }
 }

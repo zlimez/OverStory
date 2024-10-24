@@ -8,18 +8,18 @@ using Abyss.Utils;
 
 namespace Abyss.SceneSystem
 {
-    /// <summary>
-    /// Manages the loading and unloading of scenes.
-    /// </summary>
+    // Must be placed under "Master" scene
     public class SceneLoader : StaticInstance<SceneLoader>
     {
-        [SerializeField] private Camera sceneTransitCamera;
+        // [SerializeField] Camera sceneTransitCamera;
         public AbyssScene LastScene { get; private set; }
         public bool InTransit { get; private set; } = false;
         private AsyncOperation loadingAsyncOperation;
         private UnityAction<object> currLoadWithMaster;
         private readonly HashSet<AbyssScene> loadedScenes = new();
         public AbyssScene ActiveScene { get; private set; }
+
+        public bool HasScene(AbyssScene scene) => loadedScenes.Contains(scene);
 
         protected override void Awake()
         {
@@ -31,14 +31,14 @@ namespace Abyss.SceneSystem
             if (ActiveScene != AbyssScene.Master) loadedScenes.Add(AbyssScene.Master);
         }
 
-        public void PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
+        public bool PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
         {
             if (currLoadWithMaster != null)
             {
                 Debug.LogWarning("Last Scene have not completed loading");
-                return;
+                return false;
             }
-            EventManager.InvokeEvent(SystemEventCollection.SceneTransitPrep);
+            EventManager.InvokeEvent(SystemEvents.SceneTransitPrep);
             currLoadWithMaster = (object input) =>
             {
                 if (ActiveScene != AbyssScene.Master) LastScene = ActiveScene;
@@ -46,28 +46,21 @@ namespace Abyss.SceneSystem
                 StartCoroutine(LoadSceneAsync(newScene, removeMasterAftTransit));
             };
 
-            EventManager.StartListening(UIEventCollection.BlackIn, currLoadWithMaster);
+            EventManager.StartListening(UIEvents.BlackIn, currLoadWithMaster);
+            return true;
         }
 
         private void UnloadScenes(AbyssScene[] discardedScenes)
         {
             if (discardedScenes == null)
-            {
-                foreach (AbyssScene scene in loadedScenes)
-                    UnloadScene(scene);
-                loadedScenes.Clear();
-            }
+                UnloadScene(LastScene);
             else
             {
                 foreach (AbyssScene scene in discardedScenes)
                 {
                     if (scene == AbyssScene.Master)
                         Debug.LogWarning("Unloading master scene risks disabling core functionalities hence ignored");
-                    else
-                    {
-                        UnloadScene(scene);
-                        loadedScenes.Remove(scene);
-                    }
+                    else UnloadScene(scene);
                 }
             }
         }
@@ -75,18 +68,18 @@ namespace Abyss.SceneSystem
         private IEnumerator LoadSceneAsync(AbyssScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool byPrep = true)
         {
             InTransit = true;
-            EventManager.InvokeEvent(SystemEventCollection.SceneTransitStart);
+            EventManager.InvokeEvent(SystemEvents.SceneTransitStart);
             ActiveScene = scene;
 
             if (byPrep)
             {
-                EventManager.StopListening(UIEventCollection.BlackIn, currLoadWithMaster);
+                EventManager.StopListening(UIEvents.BlackIn, currLoadWithMaster);
                 currLoadWithMaster = null;
             }
 
             if (isAdditive)
             {
-                sceneTransitCamera.enabled = true;
+                // sceneTransitCamera.enabled = true;
                 loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString(), LoadSceneMode.Additive);
                 loadedScenes.Add(scene);
             }
@@ -96,21 +89,22 @@ namespace Abyss.SceneSystem
                 yield return null;
 
             InTransit = false;
-            sceneTransitCamera.enabled = false;
+            // sceneTransitCamera.enabled = false;
 
             ActiveScene = scene;
-            EventManager.InvokeEvent(SystemEventCollection.SceneTransitDone);
+            EventManager.InvokeEvent(SystemEvents.SceneTransitDone);
             EventManager.InvokeQueueEvents();
             if (removeMasterAftTransit) UnloadScene(AbyssScene.Master);
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene.ToString()));
         }
 
-        public void LoadWithMaster(AbyssScene newScene, AbyssScene[] discardedScenes = null)
+        public bool LoadWithMaster(AbyssScene newScene, AbyssScene[] discardedScenes = null)
         {
             if (ActiveScene != AbyssScene.Master) LastScene = ActiveScene;
             UnloadScenes(discardedScenes);
             StartCoroutine(LoadSceneAsync(newScene, false, true, false));
+            return true;
         }
 
         public float GetLoadingProgress()
@@ -122,8 +116,12 @@ namespace Abyss.SceneSystem
 
         private void UnloadScene(AbyssScene scene)
         {
+            Debug.Log("Unloading " + scene);
             if (loadedScenes.Contains(scene))
+            {
                 SceneManager.UnloadSceneAsync(scene.ToString());
+                loadedScenes.Remove(scene);
+            }
         }
     }
 }

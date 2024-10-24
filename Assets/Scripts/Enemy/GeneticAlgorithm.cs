@@ -50,7 +50,12 @@ namespace Abyss.Environment
             for (int i = 0; i < populationSize; i++)
             {
                 for (int j = 0; j < chromosomeLength; j++)
-                    population[i, j] = (float)(ranges[j].Head + (random.NextDouble() * (ranges[j].Tail - ranges[j].Head)));
+                {
+                    float randonNum = (float)(ranges[j].Head + (random.NextDouble() * (ranges[j].Tail - ranges[j].Head)));
+                    float midRange = (ranges[j].Tail + ranges[j].Head) / 2.0f;
+                    // Scale Size = 0.2
+                    population[i, j] = (randonNum - midRange ) * 0.2f + midRange;
+                }
             }
 
             return population;

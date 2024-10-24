@@ -19,5 +19,5 @@ public class UiStatus
         OnCloseUI?.Invoke();
     }
 
-    public static bool IsDisabled() => SceneLoader.Instance.InTransit;
+    public static bool IsDisabled => SceneLoader.Instance.InTransit;
 }

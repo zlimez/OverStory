@@ -17,7 +17,7 @@ namespace Abyss.Environment
 
         void OnEnable()
         {
-            enemyManager.OnDeath += _ps.Stop;
+            enemyManager.OnDefeated += _ps.Stop;
         }
 
         void OnParticleCollision(GameObject other)
@@ -29,7 +29,7 @@ namespace Abyss.Environment
 
         void OnDisable()
         {
-            enemyManager.OnDeath -= _ps.Stop;
+            enemyManager.OnDefeated -= _ps.Stop;
         }
     }
 }

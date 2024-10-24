@@ -1,5 +1,4 @@
 using Abyss.EventSystem;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -38,31 +37,29 @@ public class InventorySystem : MonoBehaviour
     private bool isConstructionOpen = false;
     private bool isJournalOpen = false;
 
-    void Start()
-    {
-        inventoryPanel.SetActive(false);
-    }
+    void Start() => inventoryPanel.SetActive(false);
 
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateInventory);
+            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateInventory);
         else
         {
-            level = GameManager.Instance.PlayerPersistence.InventoryLevel;
+            level = GameManager.Instance.Inventory.Level;
             UpdateInventoryImage(level - 1);
         }
     }
 
     void InitUpdateInventory(object input = null)
     {
-        level = GameManager.Instance.PlayerPersistence.InventoryLevel;
+        level = GameManager.Instance.Inventory.Level;
         UpdateInventoryImage(level - 1);
-        EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateInventory);
+        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateInventory);
     }
 
     public void OnOpenInventory(InputAction.CallbackContext context)
     {
+        if (!GameManager.Instance.Inventory.Enabled) return;
         if (context.performed)
         {
             ToggleInventory();

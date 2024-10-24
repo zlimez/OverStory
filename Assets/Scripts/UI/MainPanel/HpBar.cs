@@ -11,8 +11,8 @@ public class HpBar : MonoBehaviour
     public GameObject HpPoint;
     public int hp4eachGem = 20;
 
-    void OnEnable() => EventManager.StartListening(PlayEventCollection.PlayerHealthChange, UpdateHpBar);
-    void OnDisable() => EventManager.StopListening(PlayEventCollection.PlayerHealthChange, UpdateHpBar);
+    void OnEnable() => EventManager.StartListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+    void OnDisable() => EventManager.StopListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
 
     void UpdateHpBar(object input)
     {

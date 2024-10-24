@@ -9,6 +9,7 @@ namespace Abyss.Environment.Enemy.Anim
         [SerializeField] protected apPortrait portrait;
         protected bool isFirstFrame = true;
         EnemyManager _enemyManager;
+        protected Action _playDefeatAnim;
         protected Action _playDeathAnim;
         protected string currState;
 
@@ -29,11 +30,13 @@ namespace Abyss.Environment.Enemy.Anim
 
         protected virtual void OnEnable()
         {
+            _enemyManager.OnDefeated += _playDefeatAnim;
             _enemyManager.OnDeath += _playDeathAnim;
         }
 
         void OnDisable()
         {
+            _enemyManager.OnDefeated -= _playDefeatAnim;
             _enemyManager.OnDeath -= _playDeathAnim;
         }
 

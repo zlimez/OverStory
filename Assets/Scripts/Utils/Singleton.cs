@@ -50,7 +50,7 @@ namespace Abyss.Utils
         }
     }
 
-    public abstract class PersistentSystem<T> : PersistentSingleton<T> where T : MonoBehaviour
+    public abstract class SystemSingleton<T> : Singleton<T> where T : MonoBehaviour
     {
         public bool IsReady { get; protected set; } = false;
     }

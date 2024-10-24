@@ -6,16 +6,11 @@ namespace Abyss.TimeManagers
 {
     public class TimerSliderManager : MonoBehaviour
     {
-        [SerializeField]
-        private CountdownTimer timer;
-        [SerializeField]
-        private Slider slider;
-        [SerializeField]
-        protected GameObject timerSliderObject;
-        [SerializeField]
-        private PlayableDirector timeline;
-        [SerializeField]
-        private Image fillColor;
+        [SerializeField] private CountdownTimer timer;
+        [SerializeField] private Slider slider;
+        [SerializeField] protected GameObject timerSliderObject;
+        [SerializeField] private PlayableDirector timeline;
+        [SerializeField] private Image fillColor;
         private Vector3 startColor, endColor, currColor, gradient;
 
         protected virtual void OnEnable()
@@ -51,16 +46,11 @@ namespace Abyss.TimeManagers
             // Debug.Log("Timer Slider Manager Time Left Change");
             // Update the slider value
             if (newTimeLeft > 0.2f)
-            {
                 slider.value = newTimeLeft;
-            }
             UpdateColor(newTimeLeft);
         }
 
-        private void OnTimerExpire()
-        {
-            timerSliderObject.SetActive(false);
-        }
+        private void OnTimerExpire() => timerSliderObject.SetActive(false);
 
         private void InitialiseColor(float totalDuration)
         {

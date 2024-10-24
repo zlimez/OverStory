@@ -8,7 +8,8 @@ namespace Abyss.Environment
     public class SpawnerManager : MonoBehaviour
     {
         public Spawner[] spawners;
-        Dictionary<string, List<Spawner>> enemyTypes = new();
+        [SerializeField] Transform instancesParent;
+        readonly Dictionary<string, List<Spawner>> enemyTypes = new();
 
         void Start()
         {
@@ -22,22 +23,20 @@ namespace Abyss.Environment
             }
 
             if (EnemyPopManager.Instance == null || !EnemyPopManager.Instance.IsReady)
-                EventManager.StartListening(EnemyPopManager.EnemyPopManagerReady, Setup);
+                EventManager.StartListening(SystemEvents.EnemyPopManagerReady, Setup);
             else Setup();
         }
 
-        void OnDisable()
-        {
-            EventManager.StopListening(EnemyPopManager.EnemyPopManagerReady, Setup);
-        }
+        void OnDisable() => EventManager.StopListening(SystemEvents.EnemyPopManagerReady, Setup);
 
         void Setup(object input = null)
         {
             foreach (var enemyType in enemyTypes)
             {
                 var instancesAttr = EnemyPopManager.Instance.GetSpecyInstances(enemyType.Key, enemyType.Value.Count);
+                if (instancesAttr == null) continue;
                 for (int i = 0; i < enemyType.Value.Count; i++)
-                    enemyType.Value[i].Spawn(instancesAttr[i]);
+                    enemyType.Value[i].Spawn(instancesAttr[i], instancesParent);
             }
         }
     }

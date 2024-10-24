@@ -1,7 +1,7 @@
 using UnityEngine;
 using Abyss.EventSystem;
 
-[CreateAssetMenu(menuName = "Item")]
+[CreateAssetMenu(menuName = "Item/General")]
 public class Item : ScriptableObject
 {
     public string itemName;
@@ -13,22 +13,17 @@ public class Item : ScriptableObject
     public bool isConsumable = true; // Items like map or files are not consumable and thus cannot decrease in amount
     public bool isAcceptableToFara = false;
     public bool isAcceptableToHakem = false;
-    public int value;
+    public int valueToFara, valueToHakem;
+    [SerializeField] DynamicEvent itemUsedEvent;
 
     public ItemType itemType;
-    protected GameEvent itemUsedEvent;
-
-    protected virtual void Awake()
-    {
-        itemUsedEvent = new GameEvent($"{itemName} used");
-    }
 
     public virtual void Use()
     {
         // Non consumables will be inspected instead via zoom box
         if (!isConsumable)
             GameManager.Instance.Inventory.OnItemInspected?.Invoke(this);
-        EventManager.InvokeEvent(itemUsedEvent);
+        if (itemUsedEvent != null) EventManager.InvokeEvent(new GameEvent(itemUsedEvent.EventName));
     }
 
     public override bool Equals(object other)
@@ -38,10 +33,7 @@ public class Item : ScriptableObject
         return false;
     }
 
-    public override int GetHashCode()
-    {
-        return itemName.GetHashCode();
-    }
+    public override int GetHashCode() => itemName.GetHashCode();
 }
 
 public enum ItemType

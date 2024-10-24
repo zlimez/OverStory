@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System;
 using DataStructures;
+
 namespace Abyss.TimeManagers
 {
     /// <summary>
@@ -11,23 +12,16 @@ namespace Abyss.TimeManagers
     public class CountdownTimer : MonoBehaviour
     {
         public float TimeLeft;
-
-        /// <summary>
-        /// Total duration of the timer in seconds.
-        /// </summary>
         public float TotalDuration = 60f;
 
-        [System.NonSerialized] public UnityEvent<float> OnTimerChange = new UnityEvent<float>();
-        [System.NonSerialized] public UnityEvent OnTimerStart = new UnityEvent();
-        [System.NonSerialized] public UnityEvent OnTimerExpire = new UnityEvent();
-        private readonly PriorityQueue<TimeSensitiveAction> scheduledActions = new PriorityQueue<TimeSensitiveAction>();
+        [System.NonSerialized] public UnityEvent<float> OnTimerChange = new();
+        [System.NonSerialized] public UnityEvent OnTimerStart = new();
+        [System.NonSerialized] public UnityEvent OnTimerExpire = new();
+        private readonly PriorityQueue<TimeSensitiveAction> scheduledActions = new();
 
         private IEnumerator _timerCoroutine;
 
-        void Awake()
-        {
-            TimeLeft = TotalDuration;
-        }
+        void Awake() => TimeLeft = TotalDuration;
 
         public void ScheduleAction(float time, Action action)
         {
@@ -45,9 +39,8 @@ namespace Abyss.TimeManagers
             TimeLeft = TotalDuration;
             OnTimerStart.Invoke();
             if (_timerCoroutine != null)
-            {
                 StopCoroutine(_timerCoroutine);
-            }
+
             _timerCoroutine = TimerCoroutine();
             StartCoroutine(_timerCoroutine);
         }
@@ -87,9 +80,7 @@ namespace Abyss.TimeManagers
         {
             TimeLeft += timeToAdd;
             if (TimeLeft > TotalDuration)
-            {
                 TimeLeft = TotalDuration;
-            }
             OnTimerChange.Invoke(TimeLeft);
         }
 
@@ -105,16 +96,10 @@ namespace Abyss.TimeManagers
                 TimeLeft -= Time.deltaTime;
                 OnTimerChange.Invoke(TimeLeft);
                 while (!scheduledActions.IsEmpty && scheduledActions.Peek().ScheduledTime > TimeLeft)
-                {
-                    Debug.Log("Executing scheduled action");
                     scheduledActions.Dequeue().Execute();
-                }
 
                 if (TimeLeft <= 0)
-                {
-                    Debug.Log("Timer Expire");
                     OnTimerExpire.Invoke();
-                }
             }
         }
     }

@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using Abyss.EventSystem;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
+using Abyss.Player;
+using Tuples;
 
 public class NPCBagUI : MonoBehaviour
 {
@@ -33,44 +32,16 @@ public class NPCBagUI : MonoBehaviour
     private bool showMaterials = false;
     private bool showFarmables = false;
 
-    private Collection NPCInventory;
-    public GameObject targetNPC;
-    public NPCInventoryInitializer inventoryInitializer;
+    private Collection _npcItemCollection;
 
-    void Start()
-    {
-        // UpdateBagUI();
-    }
 
-    void OnEnable()
+    public void Init(Collection npcItemCollection)
     {
-        if (NPCInventory != null) UpdateBagUI();
-        else if (targetNPC != null)
-        {
-            NPCInventoryInitializer inventoryInitializer = targetNPC.GetComponent<NPCInventoryInitializer>();
-            if (inventoryInitializer != null)
-            {
-                inventoryInitializer.initNPCInventory.AddListener(OnInventoryInitialized);
-            }
-            else
-            {
-                Debug.LogWarning("Can not find NPCInventoryInitializer in NPC.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No NPC.");
-        }
-        
-    }
-
-    void OnInventoryInitialized(Collection initializedInventory)
-    {
-        NPCInventory = initializedInventory;
+        _npcItemCollection = npcItemCollection;
         UpdateBagUI();
-        NPCInventory.OnItemChanged += UpdateBagUI;
-        EventManager.StartListening(UIEventCollection.ChangeNPCInventory, ChangeInventory);
-        Debug.Log("NPCInventory initialized with " + NPCInventory.Items.Count + " items.");
+        _npcItemCollection.OnItemChanged += UpdateBagUI;
+        EventManager.StartListening(UIEvents.UpdateNPCInventory, OnInventoryUpdate);
+        Debug.Log("NPCInventory initialized with " + _npcItemCollection.Items.Count + " items.");
     }
 
     // void OnDisable() => NPCInventory.OnItemChanged -= UpdateBagUI;
@@ -141,7 +112,7 @@ public class NPCBagUI : MonoBehaviour
         }
 
         // NPCInventory = GameManager.Instance.Inventory.MaterialCollection;
-        foreach (var itemStack in NPCInventory.Items)
+        foreach (var itemStack in _npcItemCollection.Items)
         {
             if (showConsumables && itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables) continue;
             if (showWeapons && itemStack.Data.itemType != ItemType.Weapons) continue;
@@ -153,31 +124,21 @@ public class NPCBagUI : MonoBehaviour
             GameObject slot = Instantiate(SlotPrefab, scrollViewContent.transform);
 
             SlotForTrading slotController = slot.GetComponent<SlotForTrading>();
-            if (slotController != null)
-            {
-                slotController.InitializeSlot(itemStack);
-            }
-            else
-            {
-                Debug.LogError("SlotController 组件未找到!");
-            }
+            if (slotController != null) slotController.InitializeSlot(itemStack);
+            else Debug.LogError("SlotController 组件未找到!");
         }
     }
 
-    private void ChangeInventory(object args)
+    private void OnInventoryUpdate(object args)
     {
-        if (args is ItemWithCount ItemArgs)
+        if (args is RefPair<Item, int> ItemArgs)
         {
-            Item item = ItemArgs.item;
-            int count = ItemArgs.count;
-            
-            if(count > 0) NPCInventory.Add(item, count);
-            if(count < 0) NPCInventory.DiscardItem(item, -count);
-        }
-        else
-        {
-            Debug.LogWarning("Event args are not of type ItemWithCount.");
-        }
-    }
+            Item item = ItemArgs.Head;
+            int count = ItemArgs.Tail;
 
+            if (count > 0) _npcItemCollection.Add(item, count);
+            if (count < 0) _npcItemCollection.RemoveStock(item, -count);
+        }
+        else Debug.LogWarning("Event args are not of type ItemWithCount.");
+    }
 }

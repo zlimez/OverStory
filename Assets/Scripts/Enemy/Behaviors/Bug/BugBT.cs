@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class BugBT : MonoBT
 {
-    [SerializeField] Arena arena;
+    public Arena Arena;
     [SerializeField] float aftJumpDashTime;
     [Header("Drop Settings")]
     [SerializeField] AnimationCurve dropCurve;
@@ -17,8 +17,8 @@ public class BugBT : MonoBT
     [SerializeField][Tooltip("Space that must be available to the bug to drop into")] float minSpace;
 
     [Header("Dash Settings")]
-    [SerializeField] Transform leftEnd;
-    [SerializeField] Transform rightEnd;
+    public Transform LeftEnd;
+    public Transform RightEnd;
     [SerializeField] AnimationCurve dashCurve;
     [SerializeField] float dashSpeed;
     [SerializeField] float dashDamage;
@@ -31,7 +31,7 @@ public class BugBT : MonoBT
     public override void Setup()
     {
         StartCoroutine(SetupRoutine());
-        GetComponent<EnemyManager>().OnDeath += StopBT;
+        GetComponent<EnemyManager>().OnDefeated += StopBT;
     }
 
     // Invoked by spawner
@@ -40,16 +40,22 @@ public class BugBT : MonoBT
     {
         yield return new WaitForSeconds(0.1f);
         // Blackboard bb = new(new Pair<string, string>[] { new(arena.EEEvent, arena.EEEvent) });
+        EnemyAttr attr = GetComponent<EnemyManager>().attributes;
+        attr = NormalizeEnemyAttr(attr);
+        if(attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
+        else attr.speed *= 1.0f - (attr.friendliness - 0.5f);
+
+
         Pair<string, object>[] bugParams = {
             new("bugTfm", transform),
             new("dropCurve", dropCurve),
             new("dropDuration", dropDuration),
             new("minSpace", minSpace),
 
-            new("leftEnd", leftEnd),
-            new("rightEnd", rightEnd),
+            new("leftEnd", LeftEnd),
+            new("rightEnd", RightEnd),
             new("dashCurve", dashCurve),
-            new("dashSpeed", dashSpeed),
+            new("dashSpeed", dashSpeed * attr.speed),
             new("dashDamage", dashDamage),
 
             new("jumpDest", "jumpDest"),
@@ -60,8 +66,8 @@ public class BugBT : MonoBT
 
             new("bugSprite", GetComponent<SpriteManager>()),
             new("bugManager", GetComponent<EnemyManager>()),
-            new("aftJumpDashTime", aftJumpDashTime),
-            new("arena",arena)
+            new("aftJumpDashTime", aftJumpDashTime / attr.speed),
+            new("arena",Arena)
         };
 
         _bT = new BT(

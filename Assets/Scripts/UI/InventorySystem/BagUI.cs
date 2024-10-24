@@ -41,10 +41,10 @@ public class BagUI : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
+            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateBagUI);
         else
         {
-            level = GameManager.Instance.PlayerPersistence.InventoryLevel;
+            level = GameManager.Instance.Inventory.Level;
             UpdateBagUI();
             GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
         }
@@ -53,10 +53,10 @@ public class BagUI : MonoBehaviour
     // NOTE: TO SUPPORT DEV FLOW WHERE BASESCENEMANAGER IS USED TO LOAD MASTER AFTER SCENE IN EDITOR
     void InitUpdateBagUI(object input = null)
     {
-        level = GameManager.Instance.PlayerPersistence.InventoryLevel;
+        level = GameManager.Instance.Inventory.Level;
         UpdateBagUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
-        EventManager.StopListening(SystemEventCollection.SystemsReady, InitUpdateBagUI);
+        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
     void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
@@ -134,6 +134,7 @@ public class BagUI : MonoBehaviour
         playerInventory = GameManager.Instance.Inventory.MaterialCollection;
         foreach (var itemStack in playerInventory.Items)
         {
+            if (itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables && itemStack.Data.itemType != ItemType.Weapons && itemStack.Data.itemType != ItemType.Materials && itemStack.Data.itemType != ItemType.Farmables) continue;
             if (showConsumables && itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables) continue;
             if (showWeapons && itemStack.Data.itemType != ItemType.Weapons) continue;
             if (showMaterials && itemStack.Data.itemType != ItemType.Materials) continue;

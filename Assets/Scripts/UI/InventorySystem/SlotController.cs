@@ -88,7 +88,7 @@ public class SlotController : MonoBehaviour
     {
         Debug.Log("Equipping " + itemStack.Data.itemName);
         GameManager.Instance.Inventory.MaterialCollection.UseItem(itemStack.Data);
-        GameManager.Instance.Inventory.MaterialCollection.DiscardItem(itemStack.Data);
+        GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStack.Data);
         CloseContextMenu();
     }
 
@@ -105,7 +105,7 @@ public class SlotController : MonoBehaviour
     {
         Debug.Log("Discarding " + itemStack.Data.itemName);
         DropItemInScene(itemStack.Data);
-        GameManager.Instance.Inventory.MaterialCollection.DiscardItem(itemStack.Data);
+        GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStack.Data);
         CloseContextMenu();
     }
 

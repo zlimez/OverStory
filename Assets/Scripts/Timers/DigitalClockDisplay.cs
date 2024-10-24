@@ -9,17 +9,11 @@ public class DigitalClockDisplay : MonoBehaviour
 
     private TextMeshProUGUI _textMeshPro;
 
-    private void Awake()
-    {
-        _textMeshPro = GetComponent<TextMeshProUGUI>();
-    }
+    private void Awake() => _textMeshPro = GetComponent<TextMeshProUGUI>();
 
     private void OnEnable()
     {
-        if (clock != null)
-        {
-            clock.OnClockTick.AddListener(UpdateDisplay);
-        }
+        if (clock != null) clock.OnClockTick.AddListener(UpdateDisplay);
     }
 
     private void OnDisable()

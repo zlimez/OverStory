@@ -8,7 +8,7 @@ namespace BehaviorTree.Actions
 {
     public class Chomp : CfAction
     {
-        float _chompTime, _restTime, _chompDmg;
+        float _preChompTIme, _chompTime, _restTime, _chompDmg;
         AnimationCurve _chompCurve;
         BloomAnim _bloomAnim;
         Transform _neck1Tfm, _neck2Tfm, _neck3Tfm, _headTfm;
@@ -24,16 +24,17 @@ namespace BehaviorTree.Actions
         {
             base.Setup(tree);
             List<object> dataRef = Tree.GetData(_params);
-            _chompTime = (float)dataRef[0];
-            _restTime = (float)dataRef[1];
-            _chompDmg = (float)dataRef[2];
-            _chompCurve = (AnimationCurve)dataRef[3];
-            _bloomAnim = (BloomAnim)dataRef[4];
-            _neck1Tfm = (Transform)dataRef[5];
-            _neck2Tfm = (Transform)dataRef[6];
-            _neck3Tfm = (Transform)dataRef[7];
-            _headTfm = (Transform)dataRef[8];
-            _enemyManager = (EnemyManager)dataRef[9];
+            _preChompTIme = (float)dataRef[0];
+            _chompTime = (float)dataRef[1];
+            _restTime = (float)dataRef[2];
+            _chompDmg = (float)dataRef[3];
+            _chompCurve = (AnimationCurve)dataRef[4];
+            _bloomAnim = (BloomAnim)dataRef[5];
+            _neck1Tfm = (Transform)dataRef[6];
+            _neck2Tfm = (Transform)dataRef[7];
+            _neck3Tfm = (Transform)dataRef[8];
+            _headTfm = (Transform)dataRef[9];
+            _enemyManager = (EnemyManager)dataRef[10];
             hChompTime = _chompTime / 2;
         }
 
@@ -54,7 +55,7 @@ namespace BehaviorTree.Actions
                     _bloomAnim.TransitionToState(BloomAnim.State.MouthOpen.ToString());
                     _enemyManager.OnStrikePlayer += ChompHit;
                 }
-                if (chompTimer >= _chompTime)
+                if (chompTimer >= _preChompTIme + _chompTime)
                 {
                     isResting = true;
                     _bloomAnim.TransitionToState(BloomAnim.State.Idle.ToString());
@@ -63,14 +64,15 @@ namespace BehaviorTree.Actions
                 else
                 {
                     chompTimer += Time.deltaTime;
-                    if (chompTimer <= hChompTime)
+                    if (chompTimer <= _preChompTIme) return; // TODO: Add telegraph for incoming chomp
+                    if (chompTimer <= _preChompTIme + hChompTime)
                     {
-                        float nt = _chompCurve.Evaluate(chompTimer / hChompTime);
+                        float nt = _chompCurve.Evaluate(chompTimer - _preChompTIme / hChompTime);
                         _bloomAnim.MoveTo(startPos + new Vector3((targetPos.x - startPos.x) * nt, nt * nt * (targetPos.y - startPos.y), targetPos.z));
                     }
                     else
                     {
-                        float nt = _chompCurve.Evaluate((chompTimer - hChompTime) / hChompTime);
+                        float nt = _chompCurve.Evaluate((chompTimer - hChompTime - _preChompTIme) / hChompTime);
                         _bloomAnim.MoveTo(targetPos + new Vector3((startPos.x - targetPos.x) * nt, nt * nt * (startPos.y - targetPos.y), startPos.z));
                     }
                     _neck1Tfm.position = _bloomAnim.Neck1Pos;

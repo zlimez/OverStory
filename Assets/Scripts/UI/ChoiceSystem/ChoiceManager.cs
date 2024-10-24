@@ -22,17 +22,17 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     private void OnEnable()
     {
-        EventManager.StartListening(UIEventCollection.DialogStarted, Close);
+        EventManager.StartListening(UIEvents.DialogStarted, Close);
     }
 
     private void OnDisable()
     {
-        EventManager.StopListening(UIEventCollection.DialogStarted, Close);
+        EventManager.StopListening(UIEvents.DialogStarted, Close);
     }
 
     private void Update()
     {
-        if (UiStatus.IsDisabled()) return;
+        if (UiStatus.IsDisabled) return;
 
         HandleChoiceActivation();
         HandleChoiceSelection();
@@ -44,7 +44,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
     /// <param name="choices">An array of Choice objects to be displayed.</param>
     public void StartChoice(params Choice[] choices)
     {
-        if (UiStatus.IsDisabled()) return;
+        if (UiStatus.IsDisabled) return;
         if (justSelected)
         {
             justSelected = false;
