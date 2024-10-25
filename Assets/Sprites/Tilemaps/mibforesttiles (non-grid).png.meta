@@ -1,0 +1,1566 @@
+fileFormatVersion: 2
+guid: 8496e841bcd3940d39f786e69d6c9636
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 704
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb3814955992a42bfb4a50596ac15bea
+      internalID: 1122676372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 704
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29261ba2cb32b4732b369b43ab58a1da
+      internalID: 534570438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_2
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 852
+        width: 37
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c31213fe48e649e895d70390c6196e1
+      internalID: 55245801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_3
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 863
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec3b9da28fbf54029b82e0f816dcfd8c
+      internalID: -2102768734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_4
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfd41aa945b1748d6aae10f7f1c1c521
+      internalID: 76633564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_5
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 704
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6c8f2a85b9a44bc5b120dbd81b8dbe8
+      internalID: 278572471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_6
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bed08a2f8bc8f48749f5881549f69640
+      internalID: -1302094873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_7
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 704
+        width: 64
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 284e41893117c4df2a1466e9fc3005d7
+      internalID: 1935403428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_8
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 832
+        width: 192
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 383b872388abd4a89b2aa4cec78d44f6
+      internalID: 1581181806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_9
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 832
+        width: 192
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51e8e068c94204daba90f60b15c8c813
+      internalID: 334739659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_10
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 849
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd6babf33a126475799abdd67dc2b209
+      internalID: 175789203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_11
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 836
+        width: 34
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83e2f7fc7c46c4ea2971d232b9b9c55d
+      internalID: 2099040406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_12
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 784
+        width: 48
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 736063f5c592d46259cd4d21db76b40a
+      internalID: 676717211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_13
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 816
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29e1086a0e48343cb80ce9299032fe13
+      internalID: 1936694652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_14
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 807
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba1b15d9cc2c74811b5d35cb57467f42
+      internalID: 1678230347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_15
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 777
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 162b3f9ca05064b5ebd0cb006ec1ac9d
+      internalID: 989965351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_16
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 734
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b48252f566994716b2383bedaa72121
+      internalID: -856161689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_17
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 715
+        width: 39
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f083a324f3bc7443c98f1bbfe2185cb3
+      internalID: -1909506114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_18
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 704
+        width: 192
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46a60770051734e7badb6dbebac572fa
+      internalID: -593138312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_19
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 713
+        width: 7
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aca18c59086e74ee8b0ffd060e16bf85
+      internalID: 1462139162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_20
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c23f28391d024995acc50e70e83241f
+      internalID: -366948266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_21
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a065d7f86cd844617a48a196805f8223
+      internalID: 1667974463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_22
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c70906c009c4449debe413c9ab378401
+      internalID: -1163651376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_23
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11788515468eb4b26bf9d94564cc4c99
+      internalID: 487518577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_24
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1af28621910d84048960da4ced1637ba
+      internalID: 1496954194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_25
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac25f54237ce344cb8bb4467f53be6c0
+      internalID: -837430111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_26
+      rect:
+        serializedVersion: 2
+        x: 1153
+        y: 513
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ada8d22bd925343e78a2c6490d60c6df
+      internalID: -1246302044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_27
+      rect:
+        serializedVersion: 2
+        x: 1355
+        y: 576
+        width: 41
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4b376ae1fc354f369fe7b8ecbd2b4ab
+      internalID: -1913647894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_28
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 576
+        width: 40
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc6c05bcf9b8b4edf845e3d71e662c67
+      internalID: -1648463770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_29
+      rect:
+        serializedVersion: 2
+        x: 1607
+        y: 576
+        width: 57
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d17c6df0d6114cfe94bbde95853f2ec
+      internalID: -267399623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_30
+      rect:
+        serializedVersion: 2
+        x: 1352
+        y: 474
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72cc4926dfa054d5f942c8f16fe2be94
+      internalID: 1180588139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_31
+      rect:
+        serializedVersion: 2
+        x: 1379
+        y: 459
+        width: 26
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4117cd561d4924a3fb78c7b26c5ff362
+      internalID: 1212323792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_32
+      rect:
+        serializedVersion: 2
+        x: 1480
+        y: 448
+        width: 51
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0691ecf1d5ef44ce593317af02f4a9c7
+      internalID: -718528708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_33
+      rect:
+        serializedVersion: 2
+        x: 1350
+        y: 448
+        width: 27
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d750be7341c8841bd908bff0fb6b8283
+      internalID: 1444265051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_34
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 448
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62b09a189e6074050940486c8de07e2d
+      internalID: 1270671255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 64
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36eb989c62f024fd8ac9c0b30b9420cd
+      internalID: 49721713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_36
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 320
+        width: 64
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60ecdf58ee7d243e28cd7b100c6c59ec
+      internalID: -2093325830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_37
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 320
+        width: 118
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dac89d40f07164b0fb4b527999032906
+      internalID: 649153124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_38
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 320
+        width: 54
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80943ccc2ecfc4aa8bb4b8c31a2606b1
+      internalID: -1126623533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_39
+      rect:
+        serializedVersion: 2
+        x: 581
+        y: 320
+        width: 54
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cafd1d064fdc4a089c7497f8c89c2f9
+      internalID: -1806923665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_40
+      rect:
+        serializedVersion: 2
+        x: 709
+        y: 320
+        width: 53
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8098e82a27c1453da272ea274db4d2d
+      internalID: -696562166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_41
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 320
+        width: 247
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b91338afea7a74935ab6a375093e7f88
+      internalID: 398406312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_42
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 320
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e87dcb87bd7df4e81818aa5929a7841f
+      internalID: 1345800442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_43
+      rect:
+        serializedVersion: 2
+        x: 1347
+        y: 256
+        width: 238
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 276a23c2f090a4f2d88dbe049028490a
+      internalID: 874497173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_44
+      rect:
+        serializedVersion: 2
+        x: 1666
+        y: 256
+        width: 61
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03d20b51b01044e25b9086894b0aeb97
+      internalID: 1485904950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 445d64ce3e59841b2b13671bd76899e0
+      internalID: -1397539016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_46
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ec1916f765c944db854c1db5557639e
+      internalID: -2030156908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_47
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 128
+        width: 118
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8466ae54e5b904440ba61221885c4e9d
+      internalID: 1837967870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_48
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 128
+        width: 54
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b150beebd356144f492ff9e7114098c7
+      internalID: 930130951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_49
+      rect:
+        serializedVersion: 2
+        x: 581
+        y: 128
+        width: 54
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a45657c44b4054e5f84462079c29623a
+      internalID: 120423156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_50
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 128
+        width: 53
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fdc05083dec84370be71dc944093fa5
+      internalID: 88637098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_51
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 128
+        width: 247
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aff8283c1bb44193b23cb4fe8cfc1f9
+      internalID: 1234522476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_52
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 267e0b8c0a2a44f77a26960670685191
+      internalID: 1448268086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_53
+      rect:
+        serializedVersion: 2
+        x: 1359
+        y: 128
+        width: 238
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 239f83488b12847f7a8412d866080410
+      internalID: 1350082991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_54
+      rect:
+        serializedVersion: 2
+        x: 1665
+        y: 128
+        width: 61
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e59c0326bfafc4b5992cfdd23a200762
+      internalID: 83233443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_55
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 0
+        width: 246
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4968661a1adc4cae8367ac15ac1dbc7
+      internalID: -386927761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_56
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 0
+        width: 129
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6766f4f67e17d46f8bafe4faf0e89fce
+      internalID: 1996367062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_57
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 0
+        width: 51
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0995d357cb9b44f5bec6651b214869f
+      internalID: -1855667319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_58
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a07e47a4bcbb14aebafce3f8253afa5c
+      internalID: -1829551788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_59
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 0
+        width: 117
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96fd8a55b5a704c5e85d003b13ee7530
+      internalID: 1966322025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_60
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 0
+        width: 117
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5137b017d89a041c3826667d63031798
+      internalID: -1430988395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_61
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22ed56ecefa014cdba4e31a85d9a4a94
+      internalID: 415111942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_62
+      rect:
+        serializedVersion: 2
+        x: 1036
+        y: 0
+        width: 51
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfcf1860b2eb246ada3c9475b437bbb7
+      internalID: -1438785442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_63
+      rect:
+        serializedVersion: 2
+        x: 1149
+        y: 0
+        width: 129
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4b067cfbf5e547ca86450665bd40940
+      internalID: -1538004622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_64
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 0
+        width: 246
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2014431b8ed094797aa2bab624b12c29
+      internalID: 1318968011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mibforesttiles (non-grid)_65
+      rect:
+        serializedVersion: 2
+        x: 1666
+        y: 0
+        width: 61
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e593572e0aea4e42b9097cbea91e3c6
+      internalID: -1068820811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: ed107b224e1be4d04895535828dcfe8e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      mibforesttiles (non-grid)_0: 1122676372
+      mibforesttiles (non-grid)_1: 534570438
+      mibforesttiles (non-grid)_10: 175789203
+      mibforesttiles (non-grid)_11: 2099040406
+      mibforesttiles (non-grid)_12: 676717211
+      mibforesttiles (non-grid)_13: 1936694652
+      mibforesttiles (non-grid)_14: 1678230347
+      mibforesttiles (non-grid)_15: 989965351
+      mibforesttiles (non-grid)_16: -856161689
+      mibforesttiles (non-grid)_17: -1909506114
+      mibforesttiles (non-grid)_18: -593138312
+      mibforesttiles (non-grid)_19: 1462139162
+      mibforesttiles (non-grid)_2: 55245801
+      mibforesttiles (non-grid)_20: -366948266
+      mibforesttiles (non-grid)_21: 1667974463
+      mibforesttiles (non-grid)_22: -1163651376
+      mibforesttiles (non-grid)_23: 487518577
+      mibforesttiles (non-grid)_24: 1496954194
+      mibforesttiles (non-grid)_25: -837430111
+      mibforesttiles (non-grid)_26: -1246302044
+      mibforesttiles (non-grid)_27: -1913647894
+      mibforesttiles (non-grid)_28: -1648463770
+      mibforesttiles (non-grid)_29: -267399623
+      mibforesttiles (non-grid)_3: -2102768734
+      mibforesttiles (non-grid)_30: 1180588139
+      mibforesttiles (non-grid)_31: 1212323792
+      mibforesttiles (non-grid)_32: -718528708
+      mibforesttiles (non-grid)_33: 1444265051
+      mibforesttiles (non-grid)_34: 1270671255
+      mibforesttiles (non-grid)_35: 49721713
+      mibforesttiles (non-grid)_36: -2093325830
+      mibforesttiles (non-grid)_37: 649153124
+      mibforesttiles (non-grid)_38: -1126623533
+      mibforesttiles (non-grid)_39: -1806923665
+      mibforesttiles (non-grid)_4: 76633564
+      mibforesttiles (non-grid)_40: -696562166
+      mibforesttiles (non-grid)_41: 398406312
+      mibforesttiles (non-grid)_42: 1345800442
+      mibforesttiles (non-grid)_43: 874497173
+      mibforesttiles (non-grid)_44: 1485904950
+      mibforesttiles (non-grid)_45: -1397539016
+      mibforesttiles (non-grid)_46: -2030156908
+      mibforesttiles (non-grid)_47: 1837967870
+      mibforesttiles (non-grid)_48: 930130951
+      mibforesttiles (non-grid)_49: 120423156
+      mibforesttiles (non-grid)_5: 278572471
+      mibforesttiles (non-grid)_50: 88637098
+      mibforesttiles (non-grid)_51: 1234522476
+      mibforesttiles (non-grid)_52: 1448268086
+      mibforesttiles (non-grid)_53: 1350082991
+      mibforesttiles (non-grid)_54: 83233443
+      mibforesttiles (non-grid)_55: -386927761
+      mibforesttiles (non-grid)_56: 1996367062
+      mibforesttiles (non-grid)_57: -1855667319
+      mibforesttiles (non-grid)_58: -1829551788
+      mibforesttiles (non-grid)_59: 1966322025
+      mibforesttiles (non-grid)_6: -1302094873
+      mibforesttiles (non-grid)_60: -1430988395
+      mibforesttiles (non-grid)_61: 415111942
+      mibforesttiles (non-grid)_62: -1438785442
+      mibforesttiles (non-grid)_63: -1538004622
+      mibforesttiles (non-grid)_64: 1318968011
+      mibforesttiles (non-grid)_65: -1068820811
+      mibforesttiles (non-grid)_7: 1935403428
+      mibforesttiles (non-grid)_8: 1581181806
+      mibforesttiles (non-grid)_9: 334739659
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
