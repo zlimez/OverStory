@@ -5,8 +5,8 @@ using UnityEngine;
 public class WeaponItem : Item
 {
     [Header("Attributes")]
-    public float damage;
-    public float radius;
+    public float Damage;
+    public float Radius;
 
     void Awake()
     {

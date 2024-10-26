@@ -52,7 +52,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void SoftStartConvo(Conversation convo)
     {
-        if (UiStatus.IsDisabled) return;
+        // if (UiStatus.IsDisabled) return;
         queuedConvos.Enqueue(convo);
         if (queuedConvos.Count == 1)
             StartConvo(convo);
@@ -60,7 +60,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void HardStartConvo(Conversation convo, OnDialogFinished callback = null)
     {
-        if (UiStatus.IsDisabled) return;
+        // if (UiStatus.IsDisabled) return;
         queuedConvos.Clear();
         queuedConvos.Enqueue(convo);
         StartConvo(convo, callback);
@@ -141,9 +141,9 @@ public class DialogueManager : Singleton<DialogueManager>
         if (IsEndOfDialogue)
         {
             queuedConvos.Dequeue();
+            OnEndDialogue();
             if (queuedConvos.Count > 0)
                 StartConvo(queuedConvos.Peek());
-            OnEndDialogue();
         }
         else ProcessCurrLine();
     }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Abyss.EventSystem;
-using Abyss.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +8,25 @@ public class HpBar : MonoBehaviour
     public GameObject HpPoint;
     public int hp4eachGem = 20;
 
-    void OnEnable() => EventManager.StartListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
-    void OnDisable() => EventManager.StopListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+    void OnEnable()
+    {
+        if (GameManager.Instance != null)
+            Load();
+        else EventManager.StartListening(SystemEvents.SystemsReady, Load);
+        EventManager.StartListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening(SystemEvents.SystemsReady, Load);
+        EventManager.StopListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+    }
+
+    void Load(object input = null)
+    {
+        UpdateHpBar(GameManager.Instance.PlayerPersistence.PlayerAttr.Health);
+        EventManager.StopListening(PlayEvents.PlayerHealthChange, Load);
+    }
 
     void UpdateHpBar(object input)
     {

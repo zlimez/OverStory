@@ -31,7 +31,6 @@ namespace Abyss.Environment.Enemy.Anim
             base.OnEnable();
         }
 
-
         public void StateBySpeed(float speed)
         {
 #if UNITY_EDITOR

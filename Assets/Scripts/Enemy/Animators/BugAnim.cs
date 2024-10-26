@@ -12,7 +12,8 @@ namespace Abyss.Environment.Enemy.Anim
             Charge,
             Jump,
             Drop,
-            Land
+            Land,
+            Death
         }
 
 
@@ -20,6 +21,12 @@ namespace Abyss.Environment.Enemy.Anim
         {
             base.Awake();
             currState = State.Idle.ToString();
+        }
+
+        protected override void OnEnable()
+        {
+            _playDefeatAnim = () => TransitionToState(State.Death.ToString());
+            base.OnEnable();
         }
     }
 }

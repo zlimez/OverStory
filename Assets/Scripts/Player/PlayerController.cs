@@ -4,6 +4,7 @@ using AnyPortrait;
 using Tuples;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 // FIXME: When damaged seems to charge further
 namespace Abyss.Player
@@ -33,8 +34,6 @@ namespace Abyss.Player
 		// Animation support
 		[Header("Animation")]
 		[SerializeField] apPortrait portrait;
-		PlayerSfx _playerSfx;
-
 		[SerializeField] float crossFadeSeconds = .01f;
 
 		// Movement support
@@ -67,6 +66,10 @@ namespace Abyss.Player
 
 		[Header("Damage")][SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
 		[Header("Weapon Mapping")][SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
+		[SerializeField] VisualEffect weaponSlash;
+		[SerializeField] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
+		[SerializeField][Tooltip("COnversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
+		float _slashSize;
 
 		public bool IsAttacking { get; private set; } = false;
 		bool isTakingDamage = false, isDead = false;
@@ -76,6 +79,7 @@ namespace Abyss.Player
 		private State currState;
 		[NonSerialized] public string Weapon = "Nil";
 
+		PlayerSfx _playerSfx;
 		#endregion
 
 
@@ -176,11 +180,16 @@ namespace Abyss.Player
 			else
 			{
 				Weapon = weaponMapping[ind].Tail;
+				_slashSize = weaponMapping[ind].Head.Radius * slashSizeConversion;
 				TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
 			}
 		}
 
-		void UnequipWeapon(object input = null) => Weapon = "Nil";
+		void UnequipWeapon(object input = null)
+		{
+			_slashSize = 0;
+			Weapon = "Nil";
+		}
 
 		private void FlipSprite()
 		{
@@ -336,6 +345,9 @@ namespace Abyss.Player
 				IsAttacking = true;
 				currState = Enum.Parse<State>($"Attack_{Weapon}");
 				portrait.Play($"Attack_{Weapon}"); // CrossFade is glitchy here
+				weaponSlash.SetInt(xDirParam, IsFacingLeft ? -1 : 1);
+				weaponSlash.SetFloat(sizeParam, _slashSize);
+				weaponSlash.SendEvent(attackEvent);
 			}
 		}
 

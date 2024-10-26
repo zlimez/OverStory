@@ -34,6 +34,12 @@ public class BugBT : MonoBT
         GetComponent<EnemyManager>().OnDefeated += StopBT;
     }
 
+    protected override void OnDisable()
+    {
+        GetComponent<EnemyManager>().OnDefeated -= StopBT;
+        base.OnDisable();
+    }
+
     // Invoked by spawner
     // NOTE: Delayed due to apPortrait bug
     IEnumerator SetupRoutine()
@@ -42,7 +48,7 @@ public class BugBT : MonoBT
         // Blackboard bb = new(new Pair<string, string>[] { new(arena.EEEvent, arena.EEEvent) });
         EnemyAttr attr = GetComponent<EnemyManager>().attributes;
         attr = NormalizeEnemyAttr(attr);
-        if(attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
+        if (attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
         else attr.speed *= 1.0f - (attr.friendliness - 0.5f);
 
 

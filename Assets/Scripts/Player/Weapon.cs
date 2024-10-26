@@ -23,7 +23,7 @@ namespace Abyss.Player
         {
             if (weaponItem == null) return;
             // TODO: Change position based on weapon movement
-            var hits = Physics2D.OverlapCircleAll(transform.position, weaponItem.radius, _layerMask);
+            var hits = Physics2D.OverlapCircleAll(transform.position, weaponItem.Radius, _layerMask);
             bool psPlayed = false;
             foreach (var hit in hits)
             {
@@ -36,10 +36,10 @@ namespace Abyss.Player
                         psPlayed = true;
                     }
                     _enemyHits.Add(enemyPart.EnemyIntanceId);
-                    enemyPart.TakeHit(weaponItem.damage + str);
+                    enemyPart.TakeHit(weaponItem.Damage + str);
                 }
                 else if (hit.gameObject.TryGetComponent<Breakable>(out var breakable))
-                    breakable.TakeHit(weaponItem.damage + str);
+                    breakable.TakeHit(weaponItem.Damage + str);
                 else if (hit.gameObject.GetComponentInParent<MaterialDeposit>() is MaterialDeposit materialDeposit && !_depoHits.Contains(materialDeposit.DepoId))
                 {
                     materialDeposit.TakeHit();
@@ -59,7 +59,7 @@ namespace Abyss.Player
         {
             Gizmos.color = Color.red;
             if (weaponItem != null)
-                Gizmos.DrawWireSphere(transform.position, weaponItem.radius);
+                Gizmos.DrawWireSphere(transform.position, weaponItem.Radius);
         }
 #endif
     }

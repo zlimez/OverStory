@@ -6,8 +6,25 @@ public class PurityBar : MonoBehaviour
 {
     public Image PurityBarImage;
 
-    void OnEnable() => EventManager.StartListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
-    void OnDisable() => EventManager.StopListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
+    void OnEnable()
+    {
+        if (GameManager.Instance != null)
+            Load();
+        else EventManager.StartListening(SystemEvents.SystemsReady, Load);
+        EventManager.StartListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening(SystemEvents.SystemsReady, Load);
+        EventManager.StopListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
+    }
+
+    void Load(object input = null)
+    {
+        UpdatePurityBar(GameManager.Instance.PlayerPersistence.PlayerAttr.Purity);
+        EventManager.StopListening(PlayEvents.PlayerPurityChange, Load);
+    }
 
     void UpdatePurityBar(object input)
     {

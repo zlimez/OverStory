@@ -67,8 +67,8 @@ namespace Abyss.Player
             if (getLastRestFrmMaster)
                 LastRest = GameManager.Instance.PlayerPersistence.LastRest;
 #else
-            playerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
-            lastRest = GameManager.Instance.PlayerPersistence.LastRest;
+            PlayerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
+            LastRest = GameManager.Instance.PlayerPersistence.LastRest;
 #endif
             // For testing when want to assign weaponItem or lastRest from scene not from master
             if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
