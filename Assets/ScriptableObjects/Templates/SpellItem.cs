@@ -12,6 +12,7 @@ public class SpellItem : Item
     {
         canUseFromInventory = false;
         isConsumable = false;
+        itemType = ItemType.Spells;
     }
 
     public override void Use()

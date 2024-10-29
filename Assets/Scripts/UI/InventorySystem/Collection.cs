@@ -9,7 +9,7 @@ public class Collection
     public Action OnItemChanged;
     public int ItemCount { get; private set; } = 0;
 
-    public Collection(List<Countable<Item>> items = null, int capacity = 10)
+    public Collection(List<Countable<Item>> items = null, int capacity = 100)
     {
         Items = items ?? new List<Countable<Item>>();
         ItemsTable = new Dictionary<Item, Countable<Item>>();
