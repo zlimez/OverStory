@@ -37,5 +37,6 @@ namespace Abyss.EventSystem
         PlayerFriendlinessPurityChange = 28,
         Respawn = 29,
         LearningPostEntered = 30,
+        SelectItem = 31,
     }
 }

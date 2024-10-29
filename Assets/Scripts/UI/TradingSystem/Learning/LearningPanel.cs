@@ -15,18 +15,18 @@ public class LearningSystem : MonoBehaviour
     // [SerializeField] TradingArea bottomArea = new(5);
     // [SerializeField] GameObject playerSlots;
     // [SerializeField] GameObject npcSlots;
-    // [SerializeField] GameObject topSlot;
-    // [SerializeField] GameObject bottomSlots;
-    // [SerializeField] GameObject scrollViewContent;
-    // [SerializeField] GameObject slotPrefab;
-    // [SerializeField] Image valueBarImage;
+    [SerializeField] GameObject topSlot;
+    [SerializeField] List<GameObject> bottomSlots = new List<GameObject>(2);
+    [SerializeField] List<GameObject> bottomCover = new List<GameObject>(2);
+    [SerializeField] GameObject scrollViewContent;
+    [SerializeField] GameObject slotPrefab;
 
-    // [SerializeField] Button tradeButton;
-    // [SerializeField] Sprite tradeButtonInactive;
-    // [SerializeField] Sprite tradeButtonActive;
-    // [SerializeField] Image tradeButtonImage;
+    [SerializeField] Button learnButton;
+    [SerializeField] Sprite learnButtonInactive;
+    [SerializeField] Sprite learnButtonActive;
+    [SerializeField] Image learnButtonImage;
 
-    [SerializeField] Collection npcBagUI;
+    [SerializeField] Collection npcBag;
 
     public bool IsLearningOpen { get; private set; } = false;
     public Tribe Tribe => tribe;
@@ -36,6 +36,7 @@ public class LearningSystem : MonoBehaviour
     // private bool BargainFailed = false;
 
     Tribe _tribe;
+    BlueprintItem _chosenBlueprint;
 
     void Start() => learningPanel.SetActive(false);
 
@@ -44,8 +45,7 @@ public class LearningSystem : MonoBehaviour
 
     public void CloseLearning()
     {
-        // ClearArea();
-        // UpdateTradingArea();
+        _chosenBlueprint = null;
         IsLearningOpen = false;
         learningPanel.SetActive(false);
     }
@@ -55,136 +55,163 @@ public class LearningSystem : MonoBehaviour
         (Tribe tribe, Collection itemCollection) = ((Tribe, Collection))input;
         if (Tribe != tribe) return;
 
-        npcBagUI = itemCollection;
+        npcBag = itemCollection;
         _tribe = tribe;
-        // ClearArea();
-        // UpdateTradingArea();
+        _chosenBlueprint = null;
+        UpdateLearningPanel();
         IsLearningOpen = true;
         learningPanel.SetActive(true);
+        EventManager.StartListening(UIEvents.SelectItem, Select);
+    }
+
+    private void Select(object arg)
+    {
+        _chosenBlueprint = (BlueprintItem)arg;
+        UpdateLearningArea();
+    }
+
+    private void UpdateLearningPanel()
+    {
+        UpdateNPCBag();
+        UpdateLearningArea();
+
+    }
+
+    private void UpdateLearningArea()
+    {
+        bool canLearn = true;
+        Item topItem;
+        List<RefPair<Item, int>> materials;
+        if (_chosenBlueprint != null)
+        {
+            topItem = _chosenBlueprint.objectItem;
+            materials = _chosenBlueprint.materials;
+        }
+        else
+        {
+            topItem = null;
+            materials = null;
+            canLearn = false;
+        }
+
+        // TopSlot
+        Transform spriteObject = topSlot.transform.Find("ItemIcon");
+        if (spriteObject != null)
+        {
+            Image nestedImage = spriteObject.GetComponent<Image>();
+            if (topItem != null)
+            {
+                RectTransform iconRectTransform = nestedImage.GetComponent<RectTransform>();
+                if (topItem.itemType == ItemType.Spells) iconRectTransform.sizeDelta = new Vector2(42.49596f, 42.49596f);
+                else iconRectTransform.sizeDelta = new Vector2(25.0f, 25.0f);
+
+                nestedImage.sprite = topItem.icon;
+                nestedImage.gameObject.SetActive(true);
+            }
+            else nestedImage.gameObject.SetActive(false);
+        }
+        Transform textObject = topSlot.transform.Find("acount");
+        if (textObject != null)
+        {
+            TextMeshProUGUI nestedText = textObject.GetComponent<TextMeshProUGUI>();
+            nestedText.text = "";
+        }
+        if (topItem != null && topSlot.TryGetComponent<SlotForLearning>(out var slotForLearning))
+        {
+            Countable<Item> newItemStack = new(topItem, 1);
+            slotForLearning.itemStack = newItemStack;
+        }
+
+
+        // Bottom Slots
+        if (materials != null && materials.Count > bottomSlots.Count) Debug.LogError("Do not have enough Bottom Slots!");
+        for (int i = 0; i < bottomSlots.Count; i++)
+        {
+            RefPair<Item, int> item;
+            if (materials == null || i >= materials.Count) item = null;
+            else item = materials[i];
+
+            Transform bottomSpriteObject = bottomSlots[i].transform.Find("ItemIcon");
+            if (bottomSpriteObject != null)
+            {
+                Image nestedImage = bottomSpriteObject.GetComponent<Image>();
+                if (item != null)
+                {
+                    nestedImage.sprite = item.Head.icon;
+                    nestedImage.gameObject.SetActive(true);
+                }
+                else nestedImage.gameObject.SetActive(false);
+            }
+
+            Transform bottomTextObject = bottomSlots[i].transform.Find("acount");
+            if (bottomTextObject != null)
+            {
+                TextMeshProUGUI nestedText = bottomTextObject.GetComponent<TextMeshProUGUI>();
+                if (item != null)
+                {
+                    int needCount = item.Tail;
+                    int haveCount = GameManager.Instance.Inventory.MaterialCollection.StockOf(item.Head);
+                    if (haveCount < needCount) 
+                    {
+                        canLearn = false;
+                        bottomCover[i].gameObject.SetActive(true);
+                    }
+                    else bottomCover[i].gameObject.SetActive(false);
+                    nestedText.text = haveCount.ToString() + "/" + needCount.ToString();
+                }
+                else
+                {
+                    bottomCover[i].gameObject.SetActive(false);
+                    nestedText.text = "";
+                }
+            }
+
+            if (item != null && bottomSlots[i].TryGetComponent<SlotForLearning>(out var bottomSlotForLearning))
+            {
+                Countable<Item> newItemStack = new(item.Head, 1);
+                bottomSlotForLearning.itemStack = newItemStack;
+            }
+
+        }
+
+        // Buttom
+        SetLearnButton(canLearn);
+    }
+
+    private void UpdateNPCBag()
+    {
+        foreach (Transform child in scrollViewContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (var itemStack in npcBag.Items)
+        {
+            if (itemStack.Count <= 0) continue;
+            GameObject slot = Instantiate(slotPrefab, scrollViewContent.transform);
+
+            SlotForLearning slotController = slot.GetComponent<SlotForLearning>();
+            if (slotController != null) slotController.InitializeSlot(itemStack);
+            else Debug.LogError("SlotController 组件未找到!");
+        }
     }
 
 
+    public void LearnOnClick()
+    {
+        Item objectItem = _chosenBlueprint.objectItem;
+        List<RefPair<Item, int>> materials = _chosenBlueprint.materials;
+        foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
+        GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);
+        if(_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
+        UpdateLearningPanel();
+    }
 
-    // private void UpdateTradingArea()
-    // {
-    //     //TopSlot
-    //     Transform spriteObject = topSlot.transform.Find("ItemIcon");
-    //     if (spriteObject != null)
-    //     {
-    //         Image nestedImage = spriteObject.GetComponent<Image>();
-    //         if (topArea.Items.Count > 0)
-    //         {
-    //             nestedImage.sprite = topArea.Items[0].Head.icon;
-    //             nestedImage.gameObject.SetActive(true);
-    //         }
-    //         else nestedImage.gameObject.SetActive(false);
-    //     }
-    //     Transform textObject = topSlot.transform.Find("acount");
-    //     if (textObject != null)
-    //     {
-    //         TextMeshProUGUI nestedText = textObject.GetComponent<TextMeshProUGUI>();
-    //         if (topArea.Items.Count > 0) nestedText.text = topArea.Items[0].Tail.ToString();
-    //         else nestedText.text = "";
-    //     }
-    //     if (topSlot.TryGetComponent<SlotForTrading>(out var slotForTrading))
-    //     {
-    //         if (topArea.Items.Count > 0)
-    //         {
-    //             Countable<Item> newItemStack = new(topArea.Items[0].Head, topArea.Items[0].Tail);
-    //             slotForTrading.itemStack = newItemStack;
-    //         }
-    //         else slotForTrading.itemStack = null;
-    //     }
-
-
-    //     //Bottom Slots
-    //     foreach (Transform child in scrollViewContent.transform)
-    //     {
-    //         Destroy(child.gameObject);
-    //     }
-
-    //     foreach (var itemStack in bottomArea.Items)
-    //     {
-    //         if (itemStack.Tail <= 0) continue;
-    //         GameObject slot = Instantiate(slotPrefab, scrollViewContent.transform);
-
-    //         if (slot.TryGetComponent<SlotForTrading>(out var slotController))
-    //         {
-    //             Countable<Item> newItemStack = new(itemStack.Head, itemStack.Tail);
-    //             slotController.InitializeSlot(newItemStack);
-    //         }
-    //     }
-
-    //     //Value Bar
-    //     //1:0.85
-    //     float topVal = topArea.TotalValue(_tribe);
-    //     float bottomVal = bottomArea.TotalValue(_tribe);
-    //     float proportion = 0;
-    //     if (topVal == 0 || bottomVal == 0) valueBarImage.fillAmount = 0;
-    //     else
-    //     {
-    //         proportion = bottomVal / topVal;
-    //         float propBar = proportion * 0.85f;
-    //         if (propBar > 1) valueBarImage.fillAmount = 1;
-    //         else valueBarImage.fillAmount = propBar;
-    //     }
-    //     //Button
-    //     if (topArea.tag == AreaType.NPC)
-    //     {
-    //         if (proportion == 0)
-    //         {
-    //             SetBargainButton(false);
-    //             SetTradeButton(false);
-    //         }
-    //         else if (proportion < 1)
-    //         {
-    //             SetBargainButton(!BargainFailed);
-    //             SetTradeButton(false);
-    //         }
-    //         else
-    //         {
-    //             SetBargainButton(false);
-    //             SetTradeButton(true);
-    //         }
-    //     }
-    //     else if (topArea.tag == AreaType.Player)
-    //     {
-    //         if (proportion == 0)
-    //         {
-    //             SetBargainButton(false);
-    //             SetTradeButton(false);
-    //         }
-    //         else if (proportion > 1)
-    //         {
-    //             SetBargainButton(!BargainFailed);
-    //             SetTradeButton(false);
-    //         }
-    //         else
-    //         {
-    //             SetBargainButton(false);
-    //             SetTradeButton(true);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         SetBargainButton(false);
-    //         SetTradeButton(false);
-    //     }
-
-    // }
-
-    // public void TradeOnClick()
-    // {
-    //     BargainFailed = false;
-    //     TradeDone();
-    //     UpdateTradingArea();
-    // }
-
-    // private void SetTradeButton(bool state)
-    // {
-    //     tradeButtonImage.sprite = state ? tradeButtonActive : tradeButtonInactive;
-    //     tradeButton.GetComponent<Button>().interactable = state;
-    // }
+    private void SetLearnButton(bool state)
+    {
+        learnButtonImage.sprite = state ? learnButtonActive : learnButtonInactive;
+        learnButton.GetComponent<Button>().interactable = state;
+    }
 
     // private void ChangePlayerInventory(Item item, int count = 1)
     // {

@@ -29,6 +29,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent OpenInventory;
         public static readonly StaticEvent DialogStarted;
         public static readonly StaticEvent DraggedItem;
+        public static readonly StaticEvent SelectItem;
         public static readonly StaticEvent UpdateNPCInventory;
 
         static UIEvents()
@@ -40,6 +41,7 @@ namespace Abyss.EventSystem
             DialogStarted = StaticEvent.DialogStarted;
             DraggedItem = StaticEvent.DraggedItem;
             UpdateNPCInventory = StaticEvent.UpdateNPCInventory;
+            SelectItem = StaticEvent.SelectItem;
         }
     }
 
