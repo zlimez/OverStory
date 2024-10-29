@@ -38,5 +38,6 @@ namespace Abyss.EventSystem
         Respawn = 29,
         LearningPostEntered = 30,
         SelectItem = 31,
+        CraftingPostEntered = 32,
     }
 }
