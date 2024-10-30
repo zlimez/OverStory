@@ -3,6 +3,7 @@ using Abyss.EventSystem;
 using AnyPortrait;
 using Tuples;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
@@ -64,8 +65,13 @@ namespace Abyss.Player
 		private float remainingDashTime;
 		private float dashCountdown;
 
-		[Header("Damage")][SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
-		[Header("Weapon Mapping")][SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
+		// Attacking
+		[Header("Damage")]
+		[SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
+		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
+		
+		[Header("Weapon Mapping")]
+		[SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
 		[SerializeField] VisualEffect weaponSlash;
 		[SerializeField] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
 		[SerializeField][Tooltip("COnversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
@@ -355,6 +361,17 @@ namespace Abyss.Player
 		{
 			if (context.started)
 				OnAttemptInteract?.Invoke();
+		}
+		
+		public void OnSpell(InputAction.CallbackContext context)
+		{
+			Assert.IsNotNull(fireColumn);
+			if (context.started)
+			{
+				GameObject newFireCol = Instantiate(fireColumn, transform.position + (IsFacingLeft ? Vector3.left : Vector3.right), Quaternion.identity);
+				EmberSpell emberSpellScript = newFireCol.GetComponent<EmberSpell>();
+				emberSpellScript.Initialize(IsFacingLeft);
+			}
 		}
 
 		public bool TakeHit(bool hasKnockback, Vector3 from, float kbImpulse)
