@@ -8,6 +8,8 @@ public class EmberSpell : MonoBehaviour
 	
 	#region Fields
 	
+	public const string EMBER_SPELL_NAME = "Spell-Fire-Ember";
+	
 	private const string TAG_ENEMY = "Enemy";
 	private const string TAG_BURNABLE = "Burnable";
 	
@@ -42,6 +44,7 @@ public class EmberSpell : MonoBehaviour
 	}
 	
 	void OnTriggerEnter2D(Collider2D other) {
+		Debug.Log("EmberSpell entered: " + other.name);
 		if (other.gameObject.CompareTag(TAG_ENEMY)) 
 		{
 			EnemyManager enemyManager = other.gameObject.GetComponent<EnemyManager>();

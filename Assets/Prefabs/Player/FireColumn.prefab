@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3523431794124247533}
   - component: {fileID: 5267381793560597946}
   - component: {fileID: 4649633847667849245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4795,9 +4795,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1619572195
+  m_SortingLayer: 5
+  m_SortingOrder: 10
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4843,7 +4843,7 @@ GameObject:
   - component: {fileID: 3136047394582361398}
   - component: {fileID: 7610133317390072367}
   - component: {fileID: 1490880921414966441}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4923,7 +4923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ddc2ebb85624a2c89aa7d21cc0a408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeedValue: 0.02
+  moveSpeedValue: 0.03
   damageAmount: 30
   existForTime: 0.8
 --- !u!50 &7610133317390072367

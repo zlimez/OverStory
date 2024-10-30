@@ -27527,6 +27527,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 700622c2-3222-4bc4-b20c-8416bffb5a62
     m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5589660221033615386}
+        m_TargetAssemblyTypeName: Abyss.Player.PlayerController, Assembly-CSharp
+        m_MethodName: OnSpell
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2d770de1-6755-402b-891b-aa273474a7c0
+    m_ActionName: Player/Spell[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -27572,7 +27588,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portrait: {fileID: 6794293284907382098}
-  weaponSlash: {fileID: 8759566264939582399}
   crossFadeSeconds: 0.2
   walkSpeed: 7
   runSpeed: 10
@@ -27583,9 +27598,16 @@ MonoBehaviour:
   dashCooldown: 1
   dashTime: 0.3
   knockbackImpulse: 75
+  fireColumn: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,
+    type: 3}
   weaponMapping:
   - Head: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
     Tail: Axe_t1
+  weaponSlash: {fileID: 8759566264939582399}
+  attackEvent: Attack
+  xDirParam: xDir
+  sizeParam: size
+  slashSizeConversion: 4.571429
 --- !u!70 &2053021135995544505
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

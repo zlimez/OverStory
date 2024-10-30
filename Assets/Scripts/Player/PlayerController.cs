@@ -365,9 +365,28 @@ namespace Abyss.Player
 		
 		public void OnSpell(InputAction.CallbackContext context)
 		{
-			Assert.IsNotNull(fireColumn);
-			if (context.started)
+			if (context.started) 
 			{
+				//FIXME: Remove the try-catch block
+				try 
+				{
+					SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
+					bool isSpellEquipped = false;
+					for (int i = 0; i < spellItems.Length; i++)
+					{
+						Debug.Log(string.Format("%s (%s)", spellItems[i].name, spellItems[i].itemName));
+						if (spellItems[i].itemName.Equals(EmberSpell.EMBER_SPELL_NAME)) 
+						{
+							isSpellEquipped = true;
+							break;
+						}
+					}
+					if (!isSpellEquipped) return;
+				} catch (Exception)
+                {
+					Debug.Log("Error with spell equip check");
+				}
+				Assert.IsNotNull(fireColumn);
 				GameObject newFireCol = Instantiate(fireColumn, transform.position + (IsFacingLeft ? Vector3.left : Vector3.right), Quaternion.identity);
 				EmberSpell emberSpellScript = newFireCol.GetComponent<EmberSpell>();
 				emberSpellScript.Initialize(IsFacingLeft);
