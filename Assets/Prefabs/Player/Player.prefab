@@ -27593,7 +27593,9 @@ MonoBehaviour:
   runSpeed: 10
   jumpForce: 300
   initialJumpImpulse: 90
-  isGrounded: 0
+  jumpBuffer: 0.1
+  IsGrounded: 0
+  IsJumping: 0
   dashImpulse: 125
   dashCooldown: 1
   dashTime: 0.3
@@ -68149,7 +68151,7 @@ Transform:
   m_GameObject: {fileID: 7741920581376716536}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.0300446, y: 0.19673157, z: 0}
+  m_LocalPosition: {x: 3.038704, y: 0.19673157, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -68164,7 +68166,7 @@ VisualEffect:
   m_GameObject: {fileID: 7741920581376716536}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 778e8176eedb5424c9ec25ff41dfdba0, type: 3}
-  m_InitialEventName: OnPlay
+  m_InitialEventName: 
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1

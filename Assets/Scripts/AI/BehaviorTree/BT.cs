@@ -76,6 +76,7 @@ namespace BehaviorTree
             }
         }
 
+        #region APIs
         public void Teardown()
         {
             // TODO: Remove all listeners
@@ -161,7 +162,9 @@ namespace BehaviorTree
 
             return true;
         }
+        #endregion
 
+        #region Data Getters and Setters
         public List<object> GetData(string[] names)
         {
             List<object> data = new();
@@ -190,5 +193,6 @@ namespace BehaviorTree
         }
 
         public void ClearDatum(string name) { _headBoard[name] = null; }
+        #endregion
     }
 }

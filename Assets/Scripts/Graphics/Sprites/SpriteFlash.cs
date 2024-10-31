@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using AnyPortrait;
 using Tuples;
@@ -8,12 +9,11 @@ public class SpriteFlash : MonoBehaviour
     [SerializeField] apPortrait portrait;
     [SerializeField] Color flashColor;
     [SerializeField] float flashDuration;
+    [SerializeField] int reps;
     List<Pair<Material, Color>> _materials = new();
+    IEnumerator _flashRoutine;
 
-    void Start()
-    {
-        GetMaterialsFromChildren(portrait.transform);
-    }
+    void Start() => GetMaterialsFromChildren(portrait.transform);
 
     void GetMaterialsFromChildren(Transform parent)
     {
@@ -25,22 +25,31 @@ public class SpriteFlash : MonoBehaviour
             foreach (Transform child in current)
             {
                 queue.Enqueue(child);
-                if (child.TryGetComponent<MeshRenderer>(out var renderer))
+                if (child.TryGetComponent<Renderer>(out var renderer))
                     foreach (var material in renderer.materials)
                         _materials.Add(new(material, material.color));
             }
         }
     }
 
-    public void Flash()
+    public void StartFlash()
     {
-        foreach (var material in _materials)
-            material.Head.color = flashColor;
+        if (_flashRoutine != null)
+            StopCoroutine(_flashRoutine);
+        _flashRoutine = Flash();
+        StartCoroutine(_flashRoutine);
     }
 
-    public void StopFlash()
+    IEnumerator Flash()
     {
-        foreach (var material in _materials)
-            material.Head.color = material.Tail;
+        for (int i = 0; i < reps; i++)
+        {
+            foreach (var material in _materials)
+                material.Head.color = flashColor;
+            yield return new WaitForSeconds(flashDuration);
+            foreach (var material in _materials)
+                material.Head.color = Color.white;
+            yield return new WaitForSeconds(flashDuration);
+        }
     }
 }
