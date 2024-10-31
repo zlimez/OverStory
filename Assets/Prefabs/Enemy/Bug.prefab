@@ -14771,7 +14771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Arena: {fileID: 0}
-  aftJumpDashTime: 1
+  afterComboRestTime: 0
   dropCurve:
     serializedVersion: 2
     m_Curve:
@@ -14796,7 +14796,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  dropDuration: 1.5
+  dropDuration: 1
   minSpace: 4
   LeftEnd: {fileID: 0}
   RightEnd: {fileID: 0}
@@ -14834,7 +14834,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   dashSpeed: 15
-  dashDamage: 5
+  dashDamage: 10
   jumpCurve:
     serializedVersion: 2
     m_Curve:

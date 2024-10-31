@@ -27593,7 +27593,9 @@ MonoBehaviour:
   runSpeed: 10
   jumpForce: 300
   initialJumpImpulse: 90
+  extraDescentAcceleration: 10
   jumpBuffer: 0.1
+  preLandJumpBuffer: 0.1
   IsGrounded: 0
   IsJumping: 0
   dashImpulse: 125

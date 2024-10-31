@@ -8,23 +8,12 @@ public class PurityBar : MonoBehaviour
 
     void OnEnable()
     {
-        if (GameManager.Instance != null)
-            Load();
-        else EventManager.StartListening(SystemEvents.SystemsReady, Load);
         EventManager.StartListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
+        if (GameManager.Instance != null)
+            UpdatePurityBar(GameManager.Instance.PlayerPersistence.PlayerAttr.Purity);
     }
 
-    void OnDisable()
-    {
-        EventManager.StopListening(SystemEvents.SystemsReady, Load);
-        EventManager.StopListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
-    }
-
-    void Load(object input = null)
-    {
-        UpdatePurityBar(GameManager.Instance.PlayerPersistence.PlayerAttr.Purity);
-        EventManager.StopListening(PlayEvents.PlayerPurityChange, Load);
-    }
+    void OnDisable() => EventManager.StopListening(PlayEvents.PlayerPurityChange, UpdatePurityBar);
 
     void UpdatePurityBar(object input)
     {

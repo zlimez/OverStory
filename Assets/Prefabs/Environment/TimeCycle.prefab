@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123ab706cd77d4b4792b57556115a10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedMod: 0.5
+  SpeedMod: 0.2
   broadcastInterval: 1
   startTime: -1
   timeOfCycle: 0

@@ -13,11 +13,6 @@ namespace Abyss.EventSystem
         private static readonly Dictionary<GameEvent, int> eventListenerCountTable = new Dictionary<GameEvent, int>();
         private static readonly Queue<GameEvent> sceneTransitionQueuedEvents = new Queue<GameEvent>();
 
-        /// <summary>
-        /// Starts listening to the specified game event and adds a listener to it.
-        /// </summary>
-        /// <param name="gameEvent">The game event to listen to.</param>
-        /// <param name="listener">The listener to add.</param>
         public static void StartListening(GameEvent gameEvent, UnityAction<object> listener)
         {
             if (eventTable.TryGetValue(gameEvent, out UnityEvent<object> thisEvent))
@@ -33,14 +28,8 @@ namespace Abyss.EventSystem
                 eventListenerCountTable.Add(gameEvent, 1);
             }
         }
-
         public static void StartListening(StaticEvent gameEvent, UnityAction<object> listener) => StartListening(new GameEvent(gameEvent.ToString()), listener);
 
-        /// <summary>
-        /// Stops listening to the specified game event and removes a single specified listener from it.
-        /// </summary>
-        /// <param name="gameEvent">The game event to stop listening to.</param>
-        /// <param name="listener">The listener to remove.</param>
         public static void StopListening(GameEvent gameEvent, UnityAction<object> listener)
         {
             if (eventTable.TryGetValue(gameEvent, out UnityEvent<object> thisEvent))
@@ -55,31 +44,18 @@ namespace Abyss.EventSystem
                 }
             }
         }
-
         public static void StopListening(StaticEvent gameEvent, UnityAction<object> listener) => StopListening(new GameEvent(gameEvent.ToString()), listener);
 
-        /// <summary>
-        /// Removes all listeners from the specified game event.
-        /// </summary>
-        /// <param name="gameEvent">The game event to remove listeners from.</param>
         public static void StopListeningAll(GameEvent gameEvent)
         {
             if (eventTable.TryGetValue(gameEvent, out UnityEvent<object> thisEvent))
                 thisEvent.RemoveAllListeners();
         }
-
         public static void StopListeningAll(StaticEvent gameEvent) => StopListeningAll(new GameEvent(gameEvent.ToString()));
 
-        /// <summary>
-        /// Queues the specified game event.
-        /// </summary>
-        /// <param name="gameEvent">The game event to queue.</param>
         public static void QueueEvent(GameEvent gameEvent) => sceneTransitionQueuedEvents.Enqueue(gameEvent);
         public static void QueueEvent(StaticEvent gameEvent) => QueueEvent(new GameEvent(gameEvent.ToString()));
 
-        /// <summary>
-        /// Invokes all queued game events.
-        /// </summary>
         public static void InvokeQueueEvents()
         {
             foreach (GameEvent gameEvent in sceneTransitionQueuedEvents)
@@ -90,11 +66,6 @@ namespace Abyss.EventSystem
             sceneTransitionQueuedEvents.Clear();
         }
 
-        /// <summary>
-        /// Invokes the specified game event.
-        /// </summary>
-        /// <param name="gameEvent">The game event to invoke.</param>
-        /// <param name="inputParam">Optional input parameter for the event.</param>
         public static void InvokeEvent(GameEvent gameEvent, object inputParam = null)
         {
             // Debug.Log($"{gameEvent.EventName} invoked");

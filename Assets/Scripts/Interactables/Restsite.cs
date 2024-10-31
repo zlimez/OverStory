@@ -31,8 +31,8 @@ namespace Abyss.Interactables
 
         void Load(object input = null)
         {
-            if (GameManager.Instance.RestsitesPersistence.ContainsKey(restSiteName)) lastPurityRestoreTime = GameManager.Instance.RestsitesPersistence[restSiteName];
-            EventManager.StopListening(SystemEvents.SystemsReady, Load);
+            if (GameManager.Instance.RestsitesPersistence.ContainsKey(restSiteName))
+                lastPurityRestoreTime = GameManager.Instance.RestsitesPersistence[restSiteName];
         }
 
         void Save(object input = null) => GameManager.Instance.RestsitesPersistence[restSiteName] = lastPurityRestoreTime;

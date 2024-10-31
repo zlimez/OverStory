@@ -75,7 +75,6 @@ namespace Abyss.Player
             if (weapon.weaponItem != null) playerController.EquipWeapon(weapon.weaponItem);
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
             EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
-            EventManager.StopListening(SystemEvents.SystemsReady, Load);
         }
 
         void Save(object input = null)
