@@ -17,26 +17,22 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public bool InDialogue { get; private set; }
 
-    [SerializeField] float speedMod;
-    [SerializeField] float defaultCharInterval = 0.005f;
+    [SerializeField] float speedMod, defaultCharInterval = 0.005f;
     float charInterval;
 
     [Header("UI References")]
     [SerializeField] GameObject dialogBox;
-    [SerializeField] TextMeshProUGUI speakerName;
-    [SerializeField] TextMeshProUGUI dialog;
-    [SerializeField] Image leftSpeakerImg;
-    [SerializeField] Image rightSpeakerImg;
+    [SerializeField] TextMeshProUGUI speakerName, dialog;
+    [SerializeField] Image leftSpeakerImg, rightSpeakerImg;
 
     int currInd;
     Queue<Conversation> queuedConvos = new();
     Conversation currConvo;
-    bool isCurrLinePrinting;
-    bool isCentered;
+    bool isCurrLinePrinting, isCentered;
     Coroutine dialogLineCoroutine;
 
     public delegate void OnDialogFinished();
-    private event OnDialogFinished EndDialogue;
+    private event OnDialogFinished OnEndDialogue;
 
     protected override void Awake()
     {
@@ -71,7 +67,7 @@ public class DialogueManager : Singleton<DialogueManager>
         PrepConvoUI(convo);
         BeginDialog();
 
-        if (callback != null) EndDialogue += callback;
+        if (callback != null) OnEndDialogue += callback;
     }
 
     public void StartAutoConvo(Conversation convo, OnDialogFinished callback = null)
@@ -115,7 +111,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void HandleNext(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && InDialogue)
         {
             if (!isCurrLinePrinting)
                 ReadNext();
@@ -141,7 +137,7 @@ public class DialogueManager : Singleton<DialogueManager>
         if (IsEndOfDialogue)
         {
             queuedConvos.Dequeue();
-            OnEndDialogue();
+            EndDialogue();
             if (queuedConvos.Count > 0)
                 StartConvo(queuedConvos.Peek());
         }
@@ -230,7 +226,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         yield return new WaitWhile(() => isCurrLinePrinting);
         yield return new WaitForSeconds(waitDuration);
-        OnEndDialogue();
+        EndDialogue();
     }
 
     private IEnumerator Skip()
@@ -239,7 +235,7 @@ public class DialogueManager : Singleton<DialogueManager>
         yield return new WaitForSeconds(10 * Time.deltaTime);
     }
 
-    void OnEndDialogue()
+    void EndDialogue()
     {
         InDialogue = false;
         dialog.text = "";
@@ -251,8 +247,8 @@ public class DialogueManager : Singleton<DialogueManager>
         CloseDialogueUI();
         // }
 
-        EndDialogue?.Invoke();
-        EndDialogue = null;
+        OnEndDialogue?.Invoke();
+        OnEndDialogue = null;
     }
 
     void CloseDialogueUI()

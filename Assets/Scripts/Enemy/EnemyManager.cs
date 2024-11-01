@@ -13,9 +13,8 @@ namespace Abyss.Environment.Enemy
         public System.Action<float> OnStrikePlayer; // Subscribed by moveset in BT for the enemy
         [SerializeField] Pair<GameObject, int>[] drops;
         [SerializeField][Tooltip("Left and right endpoint where drops are spawned")] Pair<Transform, Transform> dropRange;
-        bool _isDefeated = false;
-        bool _haveFightWithPlayer = false;
-        bool _beAttacked = false;
+        bool _isDefeated = false, _haveFightWithPlayer = false, _beAttacked = false;
+        Choice _spare = new("Spare"), _kill = new("Kill");
 
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
@@ -28,16 +27,10 @@ namespace Abyss.Environment.Enemy
                 _haveFightWithPlayer = true;
                 _beAttacked = true;
             }
-            if (_isDefeated)
-            {
-                attributes.isAlive = false;
-                OnDeath?.Invoke();
-                // ActionPurity -10
-                EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
-                Drop();
-                Destroy(gameObject);
-                return;
-            }
+
+            // Temp code, when game pause implemented should not need
+            if (_isDefeated) return;
+
             Debug.Log($"{name} took {baseDamage} damage");
             health -= Mathf.Min(health, baseDamage);
             _isDefeated = health == 0;
@@ -45,10 +38,23 @@ namespace Abyss.Environment.Enemy
             {
                 OnDefeated?.Invoke();
                 OnStrikePlayer = null;
-                // Forgive
-                attributes.friendliness += 2.0f;
+                _spare.OnSelected += Spare;
+                _kill.OnSelected += Kill;
+                ChoiceManager.Instance.StartChoice(_spare, _kill);
             }
         }
+
+        void Kill()
+        {
+            attributes.isAlive = false;
+            OnDeath?.Invoke();
+            // ActionPurity -10
+            EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
+            Drop();
+            Destroy(gameObject);
+        }
+
+        void Spare() => attributes.friendliness += 2.0f;
 
         public void Strike()
         {

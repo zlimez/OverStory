@@ -4,13 +4,13 @@ using Abyss.EventSystem;
 [System.Serializable]
 public class DialogueLine
 {
-    [SerializeField] private bool isLeft;
-    [SerializeField] private Speaker speaker;
-    [SerializeField] private string name;
-    [SerializeField] private bool isCentered;
-    [SerializeField] private AudioClip audio;
-    [SerializeField, TextArea(3, 5)] private string dialogue;
-    [SerializeField] private GameEvent onLineStart = GameEvent.NoEvent;
+    [SerializeField] bool isLeft;
+    [SerializeField] Speaker speaker;
+    [SerializeField] string name;
+    [SerializeField] bool isCentered;
+    [SerializeField] AudioClip audio;
+    [SerializeField, TextArea(3, 5)] string dialogue;
+    [SerializeField] GameEvent onLineStart = GameEvent.NoEvent;
 
 
     public bool IsLeft => isLeft;

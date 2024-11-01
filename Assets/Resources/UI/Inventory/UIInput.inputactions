@@ -6,7 +6,7 @@
             "id": "797ab43c-b1ca-46f9-ad35-386b36ab77de",
             "actions": [
                 {
-                    "name": "OpenInventory",
+                    "name": "Open Inventory",
                     "type": "Button",
                     "id": "b681a225-6ebe-4ab4-9e88-369328a29c01",
                     "expectedControlType": "Button",
@@ -51,7 +51,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "DialogNext",
+                    "name": "Next/Confirm",
                     "type": "Button",
                     "id": "47fbf58c-29d8-4c56-8e08-99503f40a211",
                     "expectedControlType": "Button",
@@ -68,7 +68,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OpenInventory",
+                    "action": "Open Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -123,7 +123,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "DialogNext",
+                    "action": "Next/Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
