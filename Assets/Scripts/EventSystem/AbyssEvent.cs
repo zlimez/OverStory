@@ -24,10 +24,20 @@ namespace Abyss.EventSystem
         InteractableExited = 15,
         PlayerHealthChange = 16,
         PlayerPurityChange = 17,
-        DragedItem = 18,
-        ChangeNPCInventory = 19,
+        DraggedItem = 18,
+        UpdateNPCInventory = 19,
+        TimeBcastEvent = 20,
+        EnemyPopManagerReady = 21,
+        TradePostEntered = 22,
+        WeaponEquipped = 23,
+        WeaponUnequipped = 24,
+        Rested = 25,
+        SpellEquippedStateChange = 26,
+        PlayerActionPurityChange = 27,
+        PlayerFriendlinessPurityChange = 28,
+        Respawn = 29,
+        LearningPostEntered = 30,
+        SelectItem = 31,
+        CraftingPostEntered = 32,
     }
-
-
-    public static class DynamicEvent { }
 }

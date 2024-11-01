@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using Abyss.EventSystem;
-using Abyss.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HpBar : MonoBehaviour
 {
-    public GameObject layout;
-    public GameObject HpPoint;
+    public GameObject layout, HpPoint;
     public int hp4eachGem = 20;
 
-    void OnEnable() => EventManager.StartListening(PlayEventCollection.PlayerHealthChange, UpdateHpBar);
-    void OnDisable() => EventManager.StopListening(PlayEventCollection.PlayerHealthChange, UpdateHpBar);
+    void OnEnable()
+    {
+        EventManager.StartListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+        if (GameManager.Instance != null)
+            UpdateHpBar(GameManager.Instance.PlayerPersistence.PlayerAttr.Health);
+    }
+
+    void OnDisable() => EventManager.StopListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
 
     void UpdateHpBar(object input)
     {
@@ -30,24 +32,6 @@ public class HpBar : MonoBehaviour
 
             jemImage.fillAmount = GemCnt;
         }
-    }
-
-    void UpdateHpBar()
-    {
-        // ClearJem();
-
-        // float GemCnt = CountJem(health);
-
-        // for (; GemCnt >= 1; GemCnt--) Instantiate(HpPoint, layout.transform);
-
-
-        // if (GemCnt > 0)
-        // {
-        //     GameObject partialJem = Instantiate(HpPoint, layout.transform);
-        //     Image jemImage = partialJem.GetComponent<Image>();
-
-        //     jemImage.fillAmount = GemCnt;
-        // }
     }
 
     void ClearJem()

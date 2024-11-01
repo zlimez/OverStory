@@ -13,7 +13,7 @@ public class BloomBT : MonoBT
     [SerializeField] Aggro aggro;
     [Header("Chomp Settings")]
     [SerializeField] float chompTime;
-    [SerializeField] float chompRestTime, chompDamage;
+    [SerializeField] float preChompTime, chompRestTime, chompDamage;
     [SerializeField] AnimationCurve chompCurve;
     [SerializeField] Transform neck1Tfm, neck2Tfm, neck3Tfm, headTfm;
     [Header("Pollen AOE Settings")]
@@ -25,7 +25,13 @@ public class BloomBT : MonoBT
     public override void Setup()
     {
         StartCoroutine(SetupRoutine());
-        GetComponent<EnemyManager>().OnDeath += StopBT;
+        GetComponent<EnemyManager>().OnDefeated += StopBT;
+    }
+
+    protected override void OnDisable()
+    {
+        GetComponent<EnemyManager>().OnDefeated -= StopBT;
+        base.OnDisable();
     }
 
     IEnumerator SetupRoutine()
@@ -33,14 +39,27 @@ public class BloomBT : MonoBT
         yield return new WaitForSeconds(0.4f);
         Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent) });
         _bbs.Add(bb);
+
+        EnemyAttr attr = GetComponent<EnemyManager>().attributes;
+        attr = NormalizeEnemyAttr(attr);
+        aggro.gameObject.GetComponent<BoxCollider2D>().size *= attr.alertness;
+        float probNoAttack, probAttack;
+        if (attr.friendliness > 0.9f) probNoAttack = 1.0f;
+        else if (attr.friendliness > 0.5f) probNoAttack = attr.friendliness;
+        else probNoAttack = 0.0f;
+        probAttack = 1.0f - probNoAttack;
+        if (attr.friendliness < 0.5f) attr.speed *= 1.0f + (0.5f - attr.friendliness) * 2.0f;
+        else attr.speed *= 1.0f - (attr.friendliness - 0.5f);
+
         Pair<string, object>[] bloomParams = {
             new("aggro", aggro),
             new("bloomSprite", GetComponent<SpriteManager>()),
             new("bloomManager", GetComponent<EnemyManager>()),
             new("bloomTfm", transform),
 
-            new("chompTime", chompTime),
-            new("chompRestTime", chompRestTime),
+            new("chompTime", chompTime / attr.speed),
+            new("preChompTime", preChompTime/ attr.speed),
+            new("chompRestTime", chompRestTime / attr.speed),
             new("chompDmg", chompDamage),
             new("chompCurve", chompCurve),
             new("bloomAnim", GetComponent<BloomAnim>()),
@@ -49,9 +68,9 @@ public class BloomBT : MonoBT
             new("neck3Tfm", neck3Tfm),
             new("headTfm", headTfm),
 
-            new("aoeTime", aoeTime),
+            new("aoeTime", aoeTime / attr.speed),
             new("aoeEmitter", aoeParticleSystem),
-            new("aoeRestTime", aoeRestTime)
+            new("aoeRestTime", aoeRestTime / attr.speed)
         };
 
         _bT = new BT(new Sequence(
@@ -61,18 +80,20 @@ public class BloomBT : MonoBT
                     new List<Node> {
                         new Sequence(new List<Node> {
                             new XFaceTarget(new string[] { "bloomSprite" }),
-                            new Chomp(new string[] { "chompTime", "chompRestTime", "chompDmg", "chompCurve", "bloomAnim", "neck1Tfm", "neck2Tfm", "neck3Tfm", "headTfm", "bloomManager" })
+                            new Chomp(new string[] { "preChompTime", "chompTime", "chompRestTime", "chompDmg", "chompCurve", "bloomAnim", "neck1Tfm", "neck2Tfm", "neck3Tfm", "headTfm", "bloomManager" })
                         }),
                         new Sequence(new List<Node> {
                             new Aoe(new string[] { "aoeEmitter", "bloomAnim", "aoeTime" }),
                             new Wait(new string[] { "aoeRestTime" })
-                        })
+                        }),
+                        new Wait(new string[] { "aoeRestTime" })
                     },
                     new Func<List<object>, float>[] {
-                        (obj) => Mathf.Abs(((Transform)obj[0]).position.x - ((Transform)obj[1]).position.x) <= aoeTriggerRange ? 0.0f : 1.0f,
-                        (obj) => Mathf.Abs(((Transform)obj[0]).position.x - ((Transform)obj[1]).position.x) <= aoeTriggerRange ? 1.0f : 0.0f
+                        (obj) => Mathf.Abs(((Transform)obj[0]).position.x - ((Transform)obj[1]).position.x) <= aoeTriggerRange ? 0.0f : probAttack,
+                        (obj) => Mathf.Abs(((Transform)obj[0]).position.x - ((Transform)obj[1]).position.x) <= aoeTriggerRange ? probAttack : 0.0f,
+                        (obj) => probNoAttack
                     },
-                    new string[][] { new string[] { "target", "bloomTfm" }, new string[] { "target", "bloomTfm" } }
+                    new string[][] { new string[] { "target", "bloomTfm" }, new string[] { "target", "bloomTfm" }, new string[] { "target", "bloomTfm" }}
                 )
             })
         , bloomParams, new Blackboard[] { bb });

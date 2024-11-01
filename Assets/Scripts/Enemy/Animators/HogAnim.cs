@@ -27,10 +27,9 @@ namespace Abyss.Environment.Enemy.Anim
 
         protected override void OnEnable()
         {
-            _playDeathAnim = () => TransitionToState(State.Death.ToString());
+            _playDefeatAnim = () => TransitionToState(State.Death.ToString());
             base.OnEnable();
         }
-
 
         public void StateBySpeed(float speed)
         {

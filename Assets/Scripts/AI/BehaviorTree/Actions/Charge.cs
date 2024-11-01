@@ -7,7 +7,7 @@ using Abyss.Environment.Enemy;
 
 public class Charge : CfAction
 {
-    static readonly int _obstacleLayerMask = 1 << 7;
+    static readonly int _obstacleLayerMask = 1 << 7 | 1 << 11;
     float _stunTime;
     float _restTime;
     float _chargeDist;
@@ -110,5 +110,5 @@ public class Charge : CfAction
         startPos = _transform.position;
     }
 
-    void ChargeHit(float str) => Tree.GetDatum<Transform>("target").gameObject.GetComponent<PlayerManager>().TakeHit(str + _chargeDmg, true, _enemyManager.transform.position);
+    void ChargeHit(float str) => Tree.GetDatum<Transform>("target").GetComponent<PlayerManager>().TakeHit(str + _chargeDmg, true, _enemyManager.transform.position);
 }

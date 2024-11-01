@@ -5,6 +5,7 @@ using Abyss.EventSystem;
 using Abyss.Utils;
 using TMPro;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -16,26 +17,22 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public bool InDialogue { get; private set; }
 
-    [SerializeField] Speaker defaultSpeaker;
-    [SerializeField] float speedMod;
-    [SerializeField] float defaultCharInterval = 0.005f;
+    [SerializeField] float speedMod, defaultCharInterval = 0.005f;
     float charInterval;
 
     [Header("UI References")]
     [SerializeField] GameObject dialogBox;
-    [SerializeField] TextMeshProUGUI speakerName;
-    [SerializeField] TextMeshProUGUI dialog;
-    [SerializeField] Image leftSpeakerImg;
-    [SerializeField] Image rightSpeakerImg;
+    [SerializeField] TextMeshProUGUI speakerName, dialog;
+    [SerializeField] Image leftSpeakerImg, rightSpeakerImg;
 
-    private int currInd;
-    private Conversation currConvo;
-    private bool isCurrLinePrinting;
-    private bool isCentered;
-    private Coroutine dialogLineCoroutine;
+    int currInd;
+    Queue<Conversation> queuedConvos = new();
+    Conversation currConvo;
+    bool isCurrLinePrinting, isCentered;
+    Coroutine dialogLineCoroutine;
 
     public delegate void OnDialogFinished();
-    private event OnDialogFinished EndDialogue;
+    private event OnDialogFinished OnEndDialogue;
 
     protected override void Awake()
     {
@@ -49,39 +46,39 @@ public class DialogueManager : Singleton<DialogueManager>
         rightSpeakerImg.preserveAspect = true;
     }
 
-
-    public void StartConvo(Conversation convo, OnDialogFinished callback = null)
+    public void SoftStartConvo(Conversation convo)
     {
-        if (!CanStartConvo(convo)) return;
+        // if (UiStatus.IsDisabled) return;
+        queuedConvos.Enqueue(convo);
+        if (queuedConvos.Count == 1)
+            StartConvo(convo);
+    }
 
+    public void HardStartConvo(Conversation convo, OnDialogFinished callback = null)
+    {
+        // if (UiStatus.IsDisabled) return;
+        queuedConvos.Clear();
+        queuedConvos.Enqueue(convo);
+        StartConvo(convo, callback);
+    }
+
+    void StartConvo(Conversation convo, OnDialogFinished callback = null)
+    {
         PrepConvoUI(convo);
-        BeginDialog(convo);
+        BeginDialog();
 
-        // Add the callback to the EndDialogue event if it is not null
-        if (callback != null)
-            EndDialogue += callback;
+        if (callback != null) OnEndDialogue += callback;
     }
 
     public void StartAutoConvo(Conversation convo, OnDialogFinished callback = null)
     {
-        StartConvo(convo, callback);
+        HardStartConvo(convo, callback);
         StartCoroutine(AutoRead());
-    }
-
-    bool CanStartConvo(Conversation convo)
-    {
-        if (UiStatus.IsDisabled())
-        {
-            Debug.Log($"{convo.name} not started because scene in transition");
-            return false;
-        }
-
-        return convo != null;
     }
 
     void PrepConvoUI(Conversation convo)
     {
-        EventManager.InvokeEvent(UIEventCollection.DialogStarted);
+        EventManager.InvokeEvent(UIEvents.DialogStarted);
 
         dialogBox.SetActive(true);
         GameManager.Instance.UiStatus.OpenUI();
@@ -92,13 +89,21 @@ public class DialogueManager : Singleton<DialogueManager>
         dialog.text = "";
         if (convo.LeftSpeaker != null && convo.LeftSpeaker.Sprite != null)
             leftSpeakerImg.sprite = convo.LeftSpeaker.Sprite;
-        else leftSpeakerImg.sprite = defaultSpeaker.Sprite;
+        else
+        {
+            leftSpeakerImg.sprite = null;
+            leftSpeakerImg.color = ColorUtils.Transparent;
+        }
         if (convo.RightSpeaker != null && convo.RightSpeaker.Sprite != null)
             rightSpeakerImg.sprite = convo.RightSpeaker.Sprite;
-        else rightSpeakerImg.sprite = defaultSpeaker.Sprite;
+        else
+        {
+            rightSpeakerImg.sprite = null;
+            rightSpeakerImg.color = ColorUtils.Transparent;
+        }
     }
 
-    void BeginDialog(Conversation convo)
+    void BeginDialog()
     {
         InDialogue = true;
         ReadNext();
@@ -106,7 +111,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void HandleNext(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && InDialogue)
         {
             if (!isCurrLinePrinting)
                 ReadNext();
@@ -130,7 +135,12 @@ public class DialogueManager : Singleton<DialogueManager>
     public void ReadNext()
     {
         if (IsEndOfDialogue)
-            OnEndDialogue();
+        {
+            queuedConvos.Dequeue();
+            EndDialogue();
+            if (queuedConvos.Count > 0)
+                StartConvo(queuedConvos.Peek());
+        }
         else ProcessCurrLine();
     }
 
@@ -142,7 +152,7 @@ public class DialogueManager : Singleton<DialogueManager>
             StopCoroutine(dialogLineCoroutine);
 
         DialogueLine currLine = currConvo.AllLines[currInd];
-        SetTypeSpeed(currLine);
+        charInterval = defaultCharInterval / speedMod;
         isCentered = currLine.IsCentered;
 
         dialogLineCoroutine = StartCoroutine(DisplayLine(currLine.Dialogue));
@@ -152,8 +162,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
         currInd++;
     }
-
-    void SetTypeSpeed(DialogueLine currLine) => charInterval = defaultCharInterval / speedMod;
 
     void UpdateSpeakerUI(DialogueLine currentLine)
     {
@@ -168,19 +176,25 @@ public class DialogueManager : Singleton<DialogueManager>
     void UpdateLeftSpeakerUI(DialogueLine currLine)
     {
         Speaker currSpeaker = currLine.Speaker != null ? currLine.Speaker : currConvo.LeftSpeaker;
-        leftSpeakerImg.color = new Color32(255, 255, 255, 255);
-        leftSpeakerImg.sprite = currSpeaker.Sprite;
-        rightSpeakerImg.color = new Color32(110, 110, 110, 255);
-        speakerName.text = currSpeaker.SpeakerName;
+        if (leftSpeakerImg.sprite != null) leftSpeakerImg.color = new Color32(255, 255, 255, 255);
+        if (currSpeaker != null)
+        {
+            leftSpeakerImg.sprite = currSpeaker.Sprite;
+            speakerName.text = currSpeaker.SpeakerName;
+        }
+        if (rightSpeakerImg.sprite != null) rightSpeakerImg.color = new Color32(110, 110, 110, 255);
     }
 
     void UpdateRightSpeakerUI(DialogueLine currLine)
     {
         Speaker currSpeaker = currLine.Speaker != null ? currLine.Speaker : currConvo.RightSpeaker;
-        rightSpeakerImg.color = new Color32(255, 255, 255, 255);
-        rightSpeakerImg.sprite = currSpeaker.Sprite;
-        leftSpeakerImg.color = new Color32(110, 110, 110, 255);
-        speakerName.text = currSpeaker.SpeakerName;
+        if (rightSpeakerImg.sprite != null) rightSpeakerImg.color = new Color32(255, 255, 255, 255);
+        if (currSpeaker != null)
+        {
+            rightSpeakerImg.sprite = currSpeaker.Sprite;
+            speakerName.text = currSpeaker.SpeakerName;
+        }
+        if (leftSpeakerImg.sprite != null) leftSpeakerImg.color = new Color32(110, 110, 110, 255);
     }
 
     public void PlayLineAudio(DialogueLine currentLine)
@@ -212,7 +226,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         yield return new WaitWhile(() => isCurrLinePrinting);
         yield return new WaitForSeconds(waitDuration);
-        OnEndDialogue();
+        EndDialogue();
     }
 
     private IEnumerator Skip()
@@ -221,7 +235,7 @@ public class DialogueManager : Singleton<DialogueManager>
         yield return new WaitForSeconds(10 * Time.deltaTime);
     }
 
-    void OnEndDialogue()
+    void EndDialogue()
     {
         InDialogue = false;
         dialog.text = "";
@@ -233,8 +247,8 @@ public class DialogueManager : Singleton<DialogueManager>
         CloseDialogueUI();
         // }
 
-        EndDialogue?.Invoke();
-        EndDialogue = null;
+        OnEndDialogue?.Invoke();
+        OnEndDialogue = null;
     }
 
     void CloseDialogueUI()

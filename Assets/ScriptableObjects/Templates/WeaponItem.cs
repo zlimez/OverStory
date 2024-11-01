@@ -1,17 +1,15 @@
 using Abyss.EventSystem;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Weapon")]
+[CreateAssetMenu(menuName = "Item/Weapon")]
 public class WeaponItem : Item
 {
     [Header("Attributes")]
-    public float damage;
-    public float radius;
-    public readonly static string WeaponEquippedPrefix = "Weapon equipped";
+    public float Damage;
+    public float Radius;
 
-    protected override void Awake()
+    void Awake()
     {
-        itemUsedEvent = new GameEvent($"{WeaponEquippedPrefix}: ${itemName}");
         canUseFromInventory = false;
         isConsumable = false;
     }
@@ -19,6 +17,6 @@ public class WeaponItem : Item
     public override void Use()
     {
         base.Use();
-        EventManager.InvokeEvent(new GameEvent(WeaponEquippedPrefix), this);
+        EventManager.InvokeEvent(PlayEvents.WeaponEquipped, this);
     }
 }

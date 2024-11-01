@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 public class Collection
 {
-    private int _capacity;
-    public List<Countable<Item>> Items { get; private set; }
+    private readonly int _capacity;
+    public List<Countable<Item>> Items { get; private set; } // Used to preserve order
     public Dictionary<Item, Countable<Item>> ItemsTable { get; private set; }
     public Action OnItemChanged;
-    public Action<Item> onNewItemAdded;
+    public int ItemCount { get; private set; } = 0;
 
-    public Collection(List<Countable<Item>> items = null, int capacity = 10)
+    public Collection(List<Countable<Item>> items = null, int capacity = 100)
     {
-        this.Items = items ?? new List<Countable<Item>>();
-        this.ItemsTable = new Dictionary<Item, Countable<Item>>();
-        this._capacity = capacity;
+        Items = items ?? new List<Countable<Item>>();
+        ItemsTable = new Dictionary<Item, Countable<Item>>();
+        _capacity = capacity;
 
-        foreach (Countable<Item> itemStack in this.Items)
+        foreach (Countable<Item> itemStack in Items)
             ItemsTable.Add(itemStack.Data, itemStack);
     }
 
@@ -23,6 +23,7 @@ public class Collection
     {
         if (IsFull) return false;
 
+        ItemCount += quantity;
         if (ItemsTable.ContainsKey(item))
             ItemsTable[item].AddToStock(quantity);
         else
@@ -31,7 +32,6 @@ public class Collection
             Countable<Item> itemStack = new(item, quantity);
             ItemsTable.Add(item, itemStack);
             Items.Add(itemStack);
-            onNewItemAdded?.Invoke(item);
         }
 
         OnItemChanged?.Invoke();
@@ -42,10 +42,7 @@ public class Collection
     public int Size => Items.Count;
     public bool IsEmpty => Size == 0;
 
-    public bool Contains(Item item)
-    {
-        return ItemsTable.ContainsKey(item);
-    }
+    public bool Contains(Item item) => ItemsTable.ContainsKey(item);
 
     public int StockOf(Item item)
     {
@@ -54,10 +51,31 @@ public class Collection
         return 0;
     }
 
-    public void RemoveItem(Item item)
+    public void Clear()
+    {
+        Items.Clear();
+        ItemsTable.Clear();
+        OnItemChanged?.Invoke();
+    }
+
+    public void Remove(Item item)
     {
         Items.Remove(ItemsTable[item]);
         ItemsTable.Remove(item);
+    }
+
+    public void RanRemoveN(int n)
+    {
+        Random ran = new();
+        for (int i = 0; i < Items.Count - 1; i++)
+        {
+            int rmCnt = Math.Min(n, (int)(ran.NextDouble() * Items[i].Count));
+            n -= rmCnt;
+            RemoveStock(Items[i].Data, rmCnt);
+            if (n == 0) break;
+        }
+        if (n > 0) RemoveStock(Items[Items.Count - 1].Data, n);
+        OnItemChanged?.Invoke();
     }
 
     public bool UseItem(Item item, int quantity = 1)
@@ -69,7 +87,7 @@ public class Collection
 
             bool noneLeft = item.isConsumable && ItemsTable[item].RemoveStock(quantity);
             if (noneLeft)
-                RemoveItem(item);
+                Remove(item);
 
             OnItemChanged?.Invoke();
             return true;
@@ -77,13 +95,13 @@ public class Collection
         return false;
     }
 
-    public bool DiscardItem(Item item, int quantity = 1)
+    public bool RemoveStock(Item item, int quantity = 1)
     {
         if (ItemsTable.ContainsKey(item) && ItemsTable[item].Count >= quantity)
         {
             bool noneLeft = ItemsTable[item].RemoveStock(quantity);
             if (noneLeft)
-                RemoveItem(item);
+                Remove(item);
 
             OnItemChanged?.Invoke();
             return true;

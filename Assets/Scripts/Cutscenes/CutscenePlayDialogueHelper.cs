@@ -15,7 +15,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         if (GameManager.Instance == null)
         {
             Debug.Log("GameManager not initialized yet");
-            EventManager.StartListening(SystemEventCollection.SystemsReady, StartConvoIfPresent);
+            EventManager.StartListening(SystemEvents.SystemsReady, StartConvoIfPresent);
         }
         else
         {
@@ -30,7 +30,7 @@ public class CutscenePlayDialogueHelper : MonoBehaviour
         // Needed for cutscenes - to start a convo after transitioning to new scene
         if (GameManager.Instance.CutsceneConversation != null)
         {
-            DialogueManager.Instance.StartConvo(GameManager.Instance.CutsceneConversation);
+            DialogueManager.Instance.HardStartConvo(GameManager.Instance.CutsceneConversation);
             GameManager.Instance.CutsceneConversation = null;
         }
         // may not look right?

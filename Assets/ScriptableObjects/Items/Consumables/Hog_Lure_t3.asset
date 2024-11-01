@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf9bad4f8b6f46f089422996d797b40, type: 3}
+  m_Name: Hog_Lure_t3
+  m_EditorClassIdentifier: 
+  itemName: Master Hog Lure
+  description: Attracts moss hogs at distances
+  icon: {fileID: 21300000, guid: 0632eaee71c0348ef8f76aabe3ab3dec, type: 3}
+  itemImage: {fileID: 21300000, guid: 0632eaee71c0348ef8f76aabe3ab3dec, type: 3}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 1
+  isConsumable: 1
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemType: 1

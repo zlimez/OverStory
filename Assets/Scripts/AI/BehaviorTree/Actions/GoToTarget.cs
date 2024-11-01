@@ -37,14 +37,15 @@ namespace BehaviorTree.Actions
         private Transform _transform;
         string _targetName;
         AnimationCurve _mvmtCurve;
-        float _duration;
-        Type _type;
+        float _duration = -1f, _speed = -1f;
+        TargetType _type;
+        MoveBy _moveBy;
 
         float _timer = 0;
-        Vector3 _startPos;
-        Vector3 _destPos;
+        Vector3 _startPos, _destPos;
 
-        public enum Type { Transform, Vector3 }
+        public enum TargetType { Transform, Vector3 }
+        public enum MoveBy { Speed, Duration }
 
         public GotoTargetByCurve(string[] parameters) : base(parameters) { }
 
@@ -55,8 +56,11 @@ namespace BehaviorTree.Actions
             _transform = (Transform)dataRef[0];
             _targetName = (string)dataRef[1];
             _mvmtCurve = (AnimationCurve)dataRef[2];
-            _duration = (float)dataRef[3];
-            _type = (Type)dataRef[4];
+            _type = (TargetType)dataRef[3];
+            _moveBy = (MoveBy)dataRef[4];
+            if (_moveBy == MoveBy.Speed)
+                _speed = (float)dataRef[5];
+            else _duration = (float)dataRef[5];
         }
 
         public override void Update()
@@ -71,8 +75,10 @@ namespace BehaviorTree.Actions
         {
             base.OnInit();
             _startPos = _transform.position;
-            _destPos = _type == Type.Transform ? Tree.GetDatum<Transform>(_targetName).position : Tree.GetDatum<Vector3>(_targetName);
+            _destPos = _type == TargetType.Transform ? Tree.GetDatum<Transform>(_targetName).position : Tree.GetDatum<Vector3>(_targetName);
             _timer = 0;
+            if (_moveBy == MoveBy.Speed)
+                _duration = Vector2.Distance(_startPos, _destPos) / _speed;
         }
     }
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61abdfcb9d444c48903ce8530a7796e, type: 3}
+  m_Name: Sting1
+  m_EditorClassIdentifier: 
+  itemName: Rot
+  description: Applies a temporary, weak poison onto the enemy.
+  icon: {fileID: 21300000, guid: 81c31eef5408b4923a988a1d048302c9, type: 3}
+  itemImage: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemType: 5
+  iconInactive: {fileID: 21300000, guid: 5aa198d052862498187851b912b657cb, type: 3}

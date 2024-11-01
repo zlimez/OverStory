@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Abyss.SceneSystem;
 using UnityEngine;
 
@@ -10,6 +8,6 @@ public class NextScene : MonoBehaviour
     {
         // TODO: Change to PrepLoadWithMaster
         if (other.CompareTag("Player"))
-            SceneLoader.Instance.LoadWithMaster(nextScene);
+            SceneLoader.Instance.PrepLoadWithMaster(nextScene);
     }
 }

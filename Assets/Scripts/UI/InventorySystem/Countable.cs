@@ -5,10 +5,10 @@ public class Countable<U>
     public U Data { get; private set; }
     public int Count { get; private set; }
 
-    public Countable(U data, int Count)
+    public Countable(U data, int count)
     {
-        this.Data = data;
-        this.Count = Count;
+        Data = data;
+        Count = count;
     }
 
     public void AddToStock(int quantity)
@@ -18,8 +18,8 @@ public class Countable<U>
 
     public bool RemoveStock(int quantity)
     {
-        this.Count = Math.Max(this.Count - quantity, 0);
-        return this.Count == 0;
+        Count = Math.Max(this.Count - quantity, 0);
+        return Count == 0;
     }
 
     public override bool Equals(object obj)
@@ -29,10 +29,7 @@ public class Countable<U>
         return false;
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Data, Count);
-    }
+    public override int GetHashCode() => HashCode.Combine(Data, Count);
 
     public static bool operator ==(Countable<U> a, Countable<U> b)
     {

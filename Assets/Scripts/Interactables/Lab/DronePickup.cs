@@ -1,17 +1,24 @@
 using Abyss.EventSystem;
 using UnityEngine;
 
-public class DronePickup : Interactable
+namespace Abyss.Interactables
 {
-    [SerializeField] DroneBT droneBT;
-    [SerializeField] SpriteRenderer droneSprite;
-    [SerializeField] Conversation awake;
-    public override void Interact()
+    public class DronePickup : Interactable
     {
-        droneBT.enabled = true;
-        gameObject.SetActive(false);
-        droneSprite.color = Color.white;
-        EventManager.InvokeEvent(new GameEvent("DronePicked"));
-        DialogueManager.Instance.StartConvo(awake);
+        [SerializeField] DroneBT droneBT;
+        [SerializeField] SpriteRenderer droneSprite;
+        [SerializeField] Conversation awake;
+        [SerializeField] DynamicEvent dronePickedEvent;
+
+        public override void Interact()
+        {
+            droneBT.enabled = true;
+            gameObject.SetActive(false);
+            droneSprite.color = Color.white;
+            GameEvent gameEvent = new(dronePickedEvent.EventName);
+            EventManager.InvokeEvent(gameEvent);
+            EventLedger.Instance.Record(gameEvent);
+            DialogueManager.Instance.HardStartConvo(awake);
+        }
     }
 }

@@ -1,59 +1,86 @@
 namespace Abyss.EventSystem
 {
-    public static class SystemEventCollection
+    public static class SystemEvents
     {
         public static readonly StaticEvent SystemsReady;
         public static readonly StaticEvent SceneTransitStart;
         public static readonly StaticEvent SceneTransitDone;
         public static readonly StaticEvent SceneTransitPrep;
+        public static readonly StaticEvent TimeBcastEvent;
+        public static readonly StaticEvent EnemyPopManagerReady;
 
 
-        static SystemEventCollection()
+        static SystemEvents()
         {
             SystemsReady = StaticEvent.SystemsReady;
             SceneTransitStart = StaticEvent.SceneTransitStart;
             SceneTransitDone = StaticEvent.SceneTransitDone;
             SceneTransitPrep = StaticEvent.SceneTransitPrep;
+            TimeBcastEvent = StaticEvent.TimeBcastEvent;
+            EnemyPopManagerReady = StaticEvent.EnemyPopManagerReady;
         }
     }
 
-    public static class UIEventCollection
+    public static class UIEvents
     {
         public static readonly StaticEvent BlackIn;
         public static readonly StaticEvent BlackOut;
         public static readonly StaticEvent PrepToTeleport;
         public static readonly StaticEvent OpenInventory;
         public static readonly StaticEvent DialogStarted;
-        public static readonly StaticEvent DragedItem;
-        public static readonly StaticEvent ChangeNPCInventory;
+        public static readonly StaticEvent DraggedItem;
+        public static readonly StaticEvent SelectItem;
+        public static readonly StaticEvent UpdateNPCInventory;
 
-        static UIEventCollection()
+        static UIEvents()
         {
             BlackIn = StaticEvent.BlackIn;
             PrepToTeleport = StaticEvent.PrepToTeleport;
             OpenInventory = StaticEvent.OpenInventory;
             BlackOut = StaticEvent.BlackOut;
             DialogStarted = StaticEvent.DialogStarted;
-            DragedItem = StaticEvent.DragedItem;
-            ChangeNPCInventory = StaticEvent.ChangeNPCInventory;
+            DraggedItem = StaticEvent.DraggedItem;
+            UpdateNPCInventory = StaticEvent.UpdateNPCInventory;
+            SelectItem = StaticEvent.SelectItem;
         }
     }
 
-    public static class PlayEventCollection
+    public static class PlayEvents
     {
         public static readonly StaticEvent PlayerDeath;
         public static readonly StaticEvent InteractableEntered;
         public static readonly StaticEvent InteractableExited;
         public static readonly StaticEvent PlayerHealthChange;
         public static readonly StaticEvent PlayerPurityChange;
+        public static readonly StaticEvent PlayerActionPurityChange;
+        public static readonly StaticEvent PlayerFriendlinessPurityChange;
+        public static readonly StaticEvent TradePostEntered;
+        public static readonly StaticEvent LearningPostEntered;
+        public static readonly StaticEvent CraftingPostEntered;
+        public static readonly StaticEvent WeaponEquipped;
+        public static readonly StaticEvent WeaponUnequipped;
+        public static readonly StaticEvent Rested;
+        public static readonly StaticEvent SpellEquippedStateChange;
+        public static readonly StaticEvent Respawn;
 
-        static PlayEventCollection()
+
+        static PlayEvents()
         {
             PlayerDeath = StaticEvent.PlayerDeath;
             PlayerHealthChange = StaticEvent.PlayerHealthChange;
             PlayerPurityChange = StaticEvent.PlayerPurityChange;
+            PlayerActionPurityChange = StaticEvent.PlayerActionPurityChange;
+            PlayerFriendlinessPurityChange = StaticEvent.PlayerFriendlinessPurityChange;
             InteractableEntered = StaticEvent.InteractableEntered;
             InteractableExited = StaticEvent.InteractableExited;
+            TradePostEntered = StaticEvent.TradePostEntered;
+            LearningPostEntered = StaticEvent.LearningPostEntered;
+            CraftingPostEntered = StaticEvent.CraftingPostEntered;
+            WeaponEquipped = StaticEvent.WeaponEquipped;
+            WeaponUnequipped = StaticEvent.WeaponUnequipped;
+            Rested = StaticEvent.Rested;
+            SpellEquippedStateChange = StaticEvent.SpellEquippedStateChange;
+            Respawn = StaticEvent.Respawn;
         }
     }
 }

@@ -25,6 +25,25 @@ namespace Algorithms
             return r;
         }
 
+        public static int BinFindLEQ<T, U>(this List<T> list, U target, Func<U, T, int> comparator, int l = 0, int r = -1)
+        {
+            r = r == -1 ? list.Count - 1 : r;
+
+            while (l <= r)
+            {
+                int mid = (l + r) / 2;
+                int comparisonResult = comparator(target, list[mid]);
+
+                if (comparisonResult == 0)
+                    return mid;
+                else if (comparisonResult < 0)
+                    r = mid - 1;
+                else l = mid + 1;
+            }
+
+            return r;
+        }
+
         public static int BinFindClosest<T>(this List<T> list, T target) where T : IComparable<T>
         {
             int l = 0;

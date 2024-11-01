@@ -7,53 +7,59 @@ namespace Abyss.Player
 {
     public class Weapon : MonoBehaviour
     {
-        // TODO: Add removable obstacle to mask, currently only inc. enemy
-        static readonly int _layerMask = 1 << 6;
+        static readonly int _layerMask = (1 << 6) | (1 << 12); // 6 for enemy, 12 for breakable
         public WeaponItem weaponItem;
-        readonly HashSet<int> _hits = new();
+        readonly HashSet<int> _enemyHits = new(), _depoHits = new();
         ParticleSystem _particleSystem;
 
         void Awake() => _particleSystem = GetComponent<ParticleSystem>();
 
-        void OnEnable() => EventManager.StartListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
-        void OnDisable() => EventManager.StopListening(new GameEvent(WeaponItem.WeaponEquippedPrefix), Equip);
+        void OnEnable() => EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
+        void OnDisable() => EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
 
-        void Equip(object obj)
-        {
-            if (weaponItem != null) GameManager.Instance.Inventory.AddTo(weaponItem);
-            weaponItem = (WeaponItem)obj;
-        }
+        void Equip(object obj) => weaponItem = (WeaponItem)obj;
 
-        public void Strike(float str)
+        public void Strike(float str) // Can be called multiple times in one single "attack", hence the need to track which has already been hit
         {
             if (weaponItem == null) return;
             // TODO: Change position based on weapon movement
-            var hitEnemies = Physics2D.OverlapCircleAll(transform.position, weaponItem.radius, _layerMask);
+            var hits = Physics2D.OverlapCircleAll(transform.position, weaponItem.Radius, _layerMask);
             bool psPlayed = false;
-            foreach (var hitEnemy in hitEnemies)
+            foreach (var hit in hits)
             {
-                if (hitEnemy.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
+                if (hit.gameObject.TryGetComponent<EnemyPart>(out var enemyPart))
                 {
-                    if (_hits.Contains(enemyPart.EnemyIntanceId)) continue;
+                    if (_enemyHits.Contains(enemyPart.EnemyIntanceId)) continue;
                     if (!psPlayed)
                     {
                         _particleSystem.Play();
                         psPlayed = true;
                     }
-                    _hits.Add(enemyPart.EnemyIntanceId);
-                    enemyPart.TakeHit(weaponItem.damage + str);
+                    _enemyHits.Add(enemyPart.EnemyIntanceId);
+                    enemyPart.TakeHit(weaponItem.Damage + str);
+                }
+                else if (hit.gameObject.TryGetComponent<Breakable>(out var breakable))
+                    breakable.TakeHit(weaponItem.Damage + str);
+                else if (hit.gameObject.GetComponentInParent<MaterialDeposit>() is MaterialDeposit materialDeposit && !_depoHits.Contains(materialDeposit.DepoId))
+                {
+                    materialDeposit.TakeHit();
+                    _depoHits.Add(materialDeposit.DepoId);
                 }
             }
         }
 
-        public void Reset() => _hits.Clear();
+        public void Reset()
+        {
+            _enemyHits.Clear();
+            _depoHits.Clear();
+        }
 
 #if UNITY_EDITOR
         void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             if (weaponItem != null)
-                Gizmos.DrawWireSphere(transform.position, weaponItem.radius);
+                Gizmos.DrawWireSphere(transform.position, weaponItem.Radius);
         }
 #endif
     }

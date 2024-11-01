@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Abyss.Environment.Enemy;
 using UnityEngine;
 
 namespace BehaviorTree
@@ -7,26 +8,32 @@ namespace BehaviorTree
     {
         protected BT _bT;
         protected readonly List<Blackboard> _bbs = new(); // local blackboards for this instance
-
-#if UNITY_EDITOR
         protected virtual void OnEnable() => Setup();
         protected virtual void OnDisable() => StopBT();
-#endif
 
         public abstract void Setup();
 
         protected void StopBT()
         {
             _bT?.Teardown();
+            foreach (var _bb in _bbs) _bb.Teardown();
             _bT = null;
         }
 
         void Update() => _bT?.Tick();
 
-        protected virtual void OnDestroy()
+        public EnemyAttr NormalizeEnemyAttr(EnemyAttr attr)
         {
-            StopBT();
-            foreach (var _bb in _bbs) _bb.Teardown();
+            EnemyAttr normalizedAttr = new();
+            // speed 
+            if (attr.speed >= 5) normalizedAttr.speed = 1 + (attr.speed - 5) * 0.2f;
+            else normalizedAttr.speed = 1 + (attr.speed - 5) * 0.1f;
+            // alertness
+            if (attr.alertness >= 5) normalizedAttr.alertness = 1 + (attr.alertness - 5) * 0.2f;
+            else normalizedAttr.alertness = 1 + (attr.alertness - 5) * 0.1f;
+            // friendliness
+            normalizedAttr.friendliness = attr.friendliness / 10f;
+            return normalizedAttr;
         }
     }
 }

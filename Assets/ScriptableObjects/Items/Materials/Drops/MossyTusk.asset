@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf9bad4f8b6f46f089422996d797b40, type: 3}
+  m_Name: MossyTusk
+  m_EditorClassIdentifier: 
+  itemName: Mossy Tusk
+  description: "Crafting material.\n\n\u201CDeceptively deadly and covered in spores.
+    Handle with care.\u201D"
+  icon: {fileID: 21300000, guid: e4d923f3c327b4495b86ea37122e7980, type: 3}
+  itemImage: {fileID: 21300000, guid: e4d923f3c327b4495b86ea37122e7980, type: 3}
+  itemPrefab: {fileID: 8608600509101044846, guid: fd39a96d1065d49098209e8577770969,
+    type: 3}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 1
+  isAcceptableToHakem: 1
+  valueToFara: 5
+  valueToHakem: 1
+  itemType: 3
