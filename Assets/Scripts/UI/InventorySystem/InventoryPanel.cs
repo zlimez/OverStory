@@ -62,6 +62,7 @@ public class InventorySystem : MonoBehaviour
         if (!GameManager.Instance.Inventory.Enabled) return;
         if (context.performed)
         {
+            if (!GameManager.Instance.UI.Open(UI.Type.Inventory, KillInventory)) return;
             ToggleInventory();
             OpenBag();
         }
@@ -71,6 +72,13 @@ public class InventorySystem : MonoBehaviour
     {
         isInventoryOpen = !isInventoryOpen;
         inventoryPanel.SetActive(isInventoryOpen);
+        if (!isInventoryOpen) GameManager.Instance.UI.Close();
+    }
+
+    void KillInventory()
+    {
+        isInventoryOpen = false;
+        inventoryPanel.SetActive(false);
     }
 
     void UpdateInventoryImage(int order)

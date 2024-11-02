@@ -11,23 +11,16 @@ public class TradingSystem : MonoBehaviour
 {
     [SerializeField] Tribe tribe;
     [SerializeField] GameObject tradingPanel;
-    [SerializeField] TradingArea topArea = new(1);
-    [SerializeField] TradingArea bottomArea = new(5);
-    [SerializeField] GameObject playerSlots;
-    [SerializeField] GameObject npcSlots;
-    [SerializeField] GameObject topSlot;
-    [SerializeField] GameObject bottomSlots;
+    [SerializeField] TradingArea topArea = new(1), bottomArea = new(5);
+    [SerializeField] GameObject playerSlots, npcSlots, topSlot, bottomSlots;
     [SerializeField] GameObject scrollViewContent;
     [SerializeField] GameObject slotPrefab;
     [SerializeField] Image valueBarImage;
 
-    [SerializeField] Button bargainButton;
-    [SerializeField] Button tradeButton;
-    [SerializeField] Sprite bargainButtonInactive;
-    [SerializeField] Sprite bargainButtonActive;
+    [SerializeField] Button bargainButton, tradeButton;
+    [SerializeField] Sprite bargainButtonInactive, bargainButtonActive;
     [SerializeField] Image bargainButtonImage;
-    [SerializeField] Sprite tradeButtonInactive;
-    [SerializeField] Sprite tradeButtonActive;
+    [SerializeField] Sprite tradeButtonInactive, tradeButtonActive;
     [SerializeField] Image tradeButtonImage;
 
     [SerializeField] NPCBagUI npcBagUI;
@@ -49,6 +42,12 @@ public class TradingSystem : MonoBehaviour
 
     public void CloseTrading()
     {
+        Stop();
+        GameManager.Instance.UI.Close();
+    }
+
+    public void Stop()
+    {
         ClearArea();
         UpdateTradingArea();
         IsTradingOpen = false;
@@ -58,6 +57,7 @@ public class TradingSystem : MonoBehaviour
 
     public void OpenTrading(object input)
     {
+        if (!GameManager.Instance.UI.Open(UI.Type.Trade, Stop)) return;
         (Tribe tribe, PlayerAttr playerAttr, Collection itemCollection) = ((Tribe, PlayerAttr, Collection))input;
         if (Tribe != tribe) return;
 

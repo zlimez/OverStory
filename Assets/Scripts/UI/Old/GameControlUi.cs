@@ -1,37 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Abyss.EventSystem;
 using TMPro;
+using Abyss.Utils;
 
 
-public class GameControlUi : MonoBehaviour
+public class GameControlUi : Singleton<GameControlUi>
 {
     [SerializeField] GameObject gameControl, button;
     [SerializeField] TMP_Text text;
     [SerializeField, TextArea(3, 5)] string startingInstruction, skipInstruction;
-    public static GameControlUi Instance;
+
     // This indicates whether the button is active
     // The button is deactivated in Cutscenes by CutSceneGameControl
     public bool isButtonActive = true;
 
-    void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-
-    }
-
     public void Toggle()
     {
         if (gameControl.activeInHierarchy)
-        {
             Close();
-        }
-        else
-        {
-            Open();
-        }
+        else Open();
     }
 
     public void ShowButton()
@@ -52,17 +38,16 @@ public class GameControlUi : MonoBehaviour
 
     public void Open()
     {
-        if (GameManager.Instance.UiStatus.IsOpen)
+        if (GameManager.Instance.UI.IsOpen)
             return;
         text.text = startingInstruction;
 
-        GameManager.Instance.UiStatus.OpenUI();
         gameControl.SetActive(true);
     }
 
     public void Close()
     {
-        GameManager.Instance.UiStatus.CloseUI();
+        GameManager.Instance.UI.Close();
         gameControl.SetActive(false);
     }
 

@@ -66,12 +66,12 @@ namespace Abyss.Player
 		[Header("Damage")]
 		[SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
 		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
-		
-		[Header("Weapon Mapping")]
+
+		[Header("Weapon")]
 		[SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
 		[SerializeField] VisualEffect weaponSlash;
-		[SerializeField] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
-		[SerializeField][Tooltip("COnversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
+		[SerializeField][Tooltip("Used by slash VFX")] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
+		[SerializeField][Tooltip("Conversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
 		float _slashSize;
 
 		public bool IsAttacking { get; private set; } = false;
@@ -280,6 +280,7 @@ namespace Abyss.Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
+			if (GameManager.Instance.UI.IsOpen) return;
 			if (IsAttacking || isTakingDamage || isDead) return;
 			if (context.started)
 			{
@@ -296,16 +297,22 @@ namespace Abyss.Player
 
 		public void OnRun(InputAction.CallbackContext context)
 		{
+			if (GameManager.Instance.UI.IsOpen) return;
 			if (context.started)
 				_shouldRun = true;
 			else if (context.canceled)
 				_shouldRun = false;
 		}
 
-		public void OnMove(InputAction.CallbackContext context) => _moveDir = context.ReadValue<float>();
+		public void OnMove(InputAction.CallbackContext context)
+		{
+			if (GameManager.Instance.UI.IsOpen) return;
+			_moveDir = context.ReadValue<float>();
+		}
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
+			if (GameManager.Instance.UI.IsOpen) return;
 			if (IsAttacking || isTakingDamage || isDead) return;
 			if (context.started && dashAvail)
 			{
@@ -321,6 +328,7 @@ namespace Abyss.Player
 
 		public void OnAttack(InputAction.CallbackContext context)
 		{
+			if (GameManager.Instance.UI.IsOpen) return; // Temp solution can be configured in Unity input?
 			if (isDashing || isTakingDamage || isDead) return;
 			if (context.started)
 			{
@@ -336,31 +344,34 @@ namespace Abyss.Player
 
 		public void OnInteract(InputAction.CallbackContext context)
 		{
+			if (GameManager.Instance.UI.IsOpen) return;
 			if (context.started)
 				OnAttemptInteract?.Invoke();
 		}
-		
+
 		public void OnSpell(InputAction.CallbackContext context)
 		{
-			if (context.started) 
+			if (GameManager.Instance.UI.IsOpen) return;
+			if (context.started)
 			{
 				//FIXME: Remove the try-catch block
-				try 
+				try
 				{
 					SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
 					bool isSpellEquipped = false;
 					for (int i = 0; i < spellItems.Length; i++)
 					{
 						Debug.Log(string.Format("%s (%s)", spellItems[i].name, spellItems[i].itemName));
-						if (spellItems[i].itemName.Equals(EmberSpell.EMBER_SPELL_NAME)) 
+						if (spellItems[i].itemName.Equals(EmberSpell.EMBER_SPELL_NAME))
 						{
 							isSpellEquipped = true;
 							break;
 						}
 					}
 					if (!isSpellEquipped) return;
-				} catch (Exception)
-                {
+				}
+				catch (Exception)
+				{
 					Debug.Log("Error with spell equip check");
 				}
 				Assert.IsNotNull(fireColumn);

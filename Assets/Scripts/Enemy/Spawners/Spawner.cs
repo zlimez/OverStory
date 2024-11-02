@@ -17,6 +17,7 @@ namespace Abyss.Environment
                 _instance = null;
                 return false;
             }
+            if (_instance != null) Destroy(_instance);
             _instance = Instantiate(entityPrefab, spawnPoint.position, Quaternion.identity);
             _instance.transform.SetParent(parent);
             return true;

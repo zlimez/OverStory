@@ -9,10 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public class GameManager : Singleton<GameManager>
 {
-    // TODO: Check if required for these four fields
-    public Conversation CutsceneConversation;
-    public SecondaryConversation CutsceneSecondaryConversation;
-    public UiStatus UiStatus = new();
+    public UI UI;
     // public GameObject InteractableHint;
 
     public Inventory Inventory = new();

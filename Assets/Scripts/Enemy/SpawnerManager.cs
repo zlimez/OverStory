@@ -11,7 +11,7 @@ namespace Abyss.Environment
         [SerializeField] Transform instancesParent;
         readonly Dictionary<string, List<Spawner>> enemyTypes = new();
 
-        void Start()
+        void Awake()
         {
             foreach (var spawner in spawners)
             {
@@ -21,10 +21,14 @@ namespace Abyss.Environment
                     enemyTypes[enemy.specyAttr.specyName].Add(spawner);
                 }
             }
+        }
 
+        void OnEnable()
+        {
             if (EnemyPopManager.Instance == null || !EnemyPopManager.Instance.IsReady)
                 EventManager.StartListening(SystemEvents.EnemyPopManagerReady, Setup);
             else Setup();
+            EventManager.StartListening(PlayEvents.Rested, Setup);
         }
 
         void OnDisable() => EventManager.StopListening(SystemEvents.EnemyPopManagerReady, Setup);

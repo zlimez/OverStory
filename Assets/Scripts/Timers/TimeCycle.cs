@@ -41,7 +41,7 @@ namespace Abyss.TimeManagers
             StopCycle();
             // can be overriden by instance setting startTime in case want a scene to start at a specific time
             timeOfCycle = startTime == -1 ? GameManager.Instance.TimePersistence.TimeOfCycle : startTime;
-            totalTime = GameManager.Instance.TimePersistence.TtTime;
+            totalTime = GameManager.Instance.TimePersistence.TotalTime;
             if (totalTime == 0)
             {
                 float initBcast = Mathf.Floor(timeOfCycle / broadcastInterval) * broadcastInterval;
@@ -56,7 +56,7 @@ namespace Abyss.TimeManagers
         void Save(object input = null)
         {
             GameManager.Instance.TimePersistence.TimeOfCycle = timeOfCycle;
-            GameManager.Instance.TimePersistence.TtTime = totalTime;
+            GameManager.Instance.TimePersistence.TotalTime = totalTime;
         }
 
         IEnumerator Cycle()

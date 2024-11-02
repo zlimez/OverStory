@@ -19,6 +19,6 @@ namespace Abyss.DataPersistence
     public class TimePersistence
     {
         public float TimeOfCycle = 0;
-        public float TtTime = 0;
+        public float TotalTime = 0;
     }
 }

@@ -37,6 +37,12 @@ public class LearningSystem : MonoBehaviour
 
     public void CloseLearning()
     {
+        Stop();
+        GameManager.Instance.UI.Close();
+    }
+
+    void Stop()
+    {
         _chosenBlueprint = null;
         IsLearningOpen = false;
         learningPanel.SetActive(false);
@@ -44,6 +50,7 @@ public class LearningSystem : MonoBehaviour
 
     public void OpenLearning(object input)
     {
+        if (!GameManager.Instance.UI.Open(UI.Type.Learn, Stop)) return;
         (Tribe tribe, Collection itemCollection) = ((Tribe, Collection))input;
         if (Tribe != tribe) return;
 
@@ -143,7 +150,7 @@ public class LearningSystem : MonoBehaviour
                 {
                     int needCount = item.Tail;
                     int haveCount = GameManager.Instance.Inventory.MaterialCollection.StockOf(item.Head);
-                    if (haveCount < needCount) 
+                    if (haveCount < needCount)
                     {
                         canLearn = false;
                         bottomCover[i].gameObject.SetActive(true);
@@ -195,7 +202,7 @@ public class LearningSystem : MonoBehaviour
         List<RefPair<Item, int>> materials = _chosenBlueprint.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
         GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);
-        if(_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
+        if (_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
         UpdateLearningPanel();
     }
 

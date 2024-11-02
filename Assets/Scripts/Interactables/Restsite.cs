@@ -47,6 +47,7 @@ namespace Abyss.Interactables
                     playerManager.UpdatePurity();
                     lastPurityRestoreTime = TimeCycle.Instance.TotalTime;
                 }
+                playerManager.UpdateHealth(PlayerAttr.MaxHealth);
                 playerManager.LastRest.Head = SceneLoader.Instance.ActiveScene;
                 playerManager.LastRest.Tail = transform.position;
                 EventManager.InvokeEvent(PlayEvents.Rested, timeFastForward);

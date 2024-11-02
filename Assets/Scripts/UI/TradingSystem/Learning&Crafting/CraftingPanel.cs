@@ -34,6 +34,12 @@ public class CraftingSystem : MonoBehaviour
 
     public void CloseCrafting()
     {
+        Stop();
+        GameManager.Instance.UI.Close();
+    }
+
+    void Stop()
+    {
         _chosenBlueprint = null;
         IsCraftingOpen = false;
         craftingPanel.SetActive(false);
@@ -41,6 +47,7 @@ public class CraftingSystem : MonoBehaviour
 
     public void OpenCrafting(object input)
     {
+        if (!GameManager.Instance.UI.Open(UI.Type.Craft, Stop)) return;
         _chosenBlueprint = null;
         UpdateCraftingPanel();
         IsCraftingOpen = true;
@@ -136,7 +143,7 @@ public class CraftingSystem : MonoBehaviour
                 {
                     int needCount = item.Tail;
                     int haveCount = GameManager.Instance.Inventory.MaterialCollection.StockOf(item.Head);
-                    if (haveCount < needCount) 
+                    if (haveCount < needCount)
                     {
                         canCraft = false;
                         bottomCover[i].gameObject.SetActive(true);
@@ -190,7 +197,7 @@ public class CraftingSystem : MonoBehaviour
         List<RefPair<Item, int>> materials = _chosenBlueprint.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
         GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);
-        if(_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
+        if (_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
         UpdateCraftingPanel();
     }
 
