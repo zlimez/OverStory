@@ -1,7 +1,5 @@
 using Abyss.EventSystem;
-using Abyss.Player;
 using UnityEngine;
-using Tuples;
 using System.Collections.Generic;
 
 namespace Abyss.Interactables
@@ -10,7 +8,7 @@ namespace Abyss.Interactables
     public class LearningPost : Interactable
     {
         [SerializeField] Tribe tribe;
-        [SerializeField][Tooltip("Initial special items available")] List<Item> initialItems;
+        [SerializeField][Tooltip("Initial special items available")] List<BlueprintItem> initialItems;
 
         private readonly Collection itemCollection = new(null, 999);
 

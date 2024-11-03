@@ -27531,7 +27531,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5589660221033615386}
         m_TargetAssemblyTypeName: Abyss.Player.PlayerController, Assembly-CSharp
-        m_MethodName: OnSpell
+        m_MethodName: OnSpell1
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27543,6 +27543,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2d770de1-6755-402b-891b-aa273474a7c0
     m_ActionName: Player/Spell[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5589660221033615386}
+        m_TargetAssemblyTypeName: Abyss.Player.PlayerController, Assembly-CSharp
+        m_MethodName: OnSpell2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6ac0f369-18cb-4840-8240-7fa6400d209b
+    m_ActionName: Player/Spell2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5589660221033615386}
+        m_TargetAssemblyTypeName: Abyss.Player.PlayerController, Assembly-CSharp
+        m_MethodName: OnSpell3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f95f8803-f8f9-4623-9fd0-e3d523cdaff6
+    m_ActionName: Player/Spell3[/Keyboard/3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

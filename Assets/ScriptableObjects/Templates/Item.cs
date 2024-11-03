@@ -18,6 +18,12 @@ public class Item : ScriptableObject
 
     public ItemType itemType;
 
+    void OnValidate()
+    {
+        if (itemName == null || itemName == "")
+            itemName = name;
+    }
+
     public virtual void Use()
     {
         // Non consumables will be inspected instead via zoom box

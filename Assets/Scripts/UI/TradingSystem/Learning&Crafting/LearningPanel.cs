@@ -12,8 +12,8 @@ public class LearningSystem : MonoBehaviour
     [SerializeField] Tribe tribe;
     [SerializeField] GameObject learningPanel;
     [SerializeField] GameObject topSlot;
-    [SerializeField] List<GameObject> bottomSlots = new List<GameObject>(2);
-    [SerializeField] List<GameObject> bottomCover = new List<GameObject>(2);
+    [SerializeField] List<GameObject> bottomSlots = new(2);
+    [SerializeField] List<GameObject> bottomCover = new(2);
     [SerializeField] GameObject scrollViewContent;
     [SerializeField] GameObject slotPrefab;
 
@@ -50,9 +50,9 @@ public class LearningSystem : MonoBehaviour
 
     public void OpenLearning(object input)
     {
-        if (!GameManager.Instance.UI.Open(UiController.Type.Learn, Stop)) return;
         (Tribe tribe, Collection itemCollection) = ((Tribe, Collection))input;
         if (Tribe != tribe) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Learn, Stop)) return;
 
         npcBag = itemCollection;
         _tribe = tribe;
@@ -189,8 +189,7 @@ public class LearningSystem : MonoBehaviour
             if (itemStack.Count <= 0) continue;
             GameObject slot = Instantiate(slotPrefab, scrollViewContent.transform);
 
-            SlotForLearning slotController = slot.GetComponent<SlotForLearning>();
-            if (slotController != null) slotController.InitializeSlot(itemStack);
+            if (slot.TryGetComponent<SlotForLearning>(out var slotController)) slotController.InitializeSlot(itemStack);
             else Debug.LogError("SlotController 组件未找到!");
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using Abyss.EventSystem;
+using Abyss.Player.Spells;
 using AnyPortrait;
 using Tuples;
 using UnityEngine;
@@ -349,36 +350,25 @@ namespace Abyss.Player
 				OnAttemptInteract?.Invoke();
 		}
 
-		public void OnSpell(InputAction.CallbackContext context)
+		public void OnSpell1(InputAction.CallbackContext context)
 		{
 			if (IsFrozen) return;
 			if (context.started)
-			{
-				//FIXME: Remove the try-catch block
-				try
-				{
-					SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
-					bool isSpellEquipped = false;
-					for (int i = 0; i < spellItems.Length; i++)
-					{
-						Debug.Log(string.Format("%s (%s)", spellItems[i].name, spellItems[i].itemName));
-						if (spellItems[i].itemName.Equals(EmberSpell.EMBER_SPELL_NAME))
-						{
-							isSpellEquipped = true;
-							break;
-						}
-					}
-					if (!isSpellEquipped) return;
-				}
-				catch (Exception)
-				{
-					Debug.Log("Error with spell equip check");
-				}
-				Assert.IsNotNull(fireColumn);
-				GameObject newFireCol = Instantiate(fireColumn, transform.position + (IsFacingLeft ? Vector3.left : Vector3.right), Quaternion.identity);
-				EmberSpell emberSpellScript = newFireCol.GetComponent<EmberSpell>();
-				emberSpellScript.Initialize(IsFacingLeft);
-			}
+				CastSpell(0);
+		}
+
+		public void OnSpell2(InputAction.CallbackContext context)
+		{
+			if (IsFrozen) return;
+			if (context.started)
+				CastSpell(1);
+		}
+
+		public void OnSpell3(InputAction.CallbackContext context)
+		{
+			if (IsFrozen) return;
+			if (context.started)
+				CastSpell(2);
 		}
 
 		public bool TakeHit(bool hasKnockback, Vector3 from, float kbImpulse)
@@ -468,6 +458,15 @@ namespace Abyss.Player
 					$"Error playing animation {animToPlay}. The portrait is likely not initialized"
 				);
 			}
+		}
+
+		void CastSpell(int ind)
+		{
+			SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
+			if (spellItems[ind] == null) return;
+
+			var spellObj = Instantiate(spellItems[ind].itemPrefab, transform.position, Quaternion.identity);
+			spellObj.GetComponent<Spell>().Cast(IsFacingLeft);
 		}
 		#endregion
 	}

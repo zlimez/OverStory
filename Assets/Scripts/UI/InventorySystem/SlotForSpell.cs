@@ -68,7 +68,6 @@ public class SlotForSpell : MonoBehaviour
         {
             if (SpellItems[i] == item) index[i] = true;
             else index[i] = false;
-            
         }
     }
 
@@ -127,5 +126,5 @@ public class SlotForSpell : MonoBehaviour
         CloseContextMenu();
     }
 
-    
+
 }

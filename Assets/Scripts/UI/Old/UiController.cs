@@ -18,6 +18,7 @@ public class UiController
     public bool Open(Type type, Action interruptHandler = null)
     {
         if (IsDisabled || Compare(type) < 0) return false;
+        Debug.Log($"Opening {type} panel");
         _currInterruptHandler?.Invoke();
 
         if (ShouldPause(type))
@@ -33,6 +34,7 @@ public class UiController
     public void Close()
     {
         _currType = Type.None;
+        _currPriority = 0;
         _currInterruptHandler = null;
         IsOpen = false;
         GameManager.Instance.ResumeGame();

@@ -60,9 +60,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Spell",
+                    "name": "Spell1",
                     "type": "Button",
                     "id": "2d770de1-6755-402b-891b-aa273474a7c0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Spell2",
+                    "type": "Button",
+                    "id": "6ac0f369-18cb-4840-8240-7fa6400d209b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Spell3",
+                    "type": "Button",
+                    "id": "f95f8803-f8f9-4623-9fd0-e3d523cdaff6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -183,11 +201,33 @@
                 {
                     "name": "",
                     "id": "50da980c-f47d-42d0-b154-eb31abfce766",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/#(1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Spell",
+                    "action": "Spell1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f1775360-7033-48a1-8103-dfe34965324a",
+                    "path": "<Keyboard>/#(2)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spell2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c58b321d-64c4-4c69-ac08-8b88e0f4cfff",
+                    "path": "<Keyboard>/#(3)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spell3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
