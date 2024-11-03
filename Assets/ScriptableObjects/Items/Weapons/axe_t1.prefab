@@ -74,9 +74,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1741044987
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b5eb04f922b7a4ce9829e8dc70923f53, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e770d45f5f1384aeaa60b335549b357a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -150,7 +150,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.40625, y: 3.8125}
+    oldSize: {x: 4.0625, y: 3.5625}
     newSize: {x: 4.40625, y: 3.8125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -225,4 +225,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
   onPickupConvo: {fileID: 0}
-  promptBagConvo: {fileID: 0}

@@ -62,7 +62,7 @@ public class InventorySystem : MonoBehaviour
         if (!GameManager.Instance.Inventory.Enabled) return;
         if (context.performed)
         {
-            if (!GameManager.Instance.UI.Open(UI.Type.Inventory, KillInventory)) return;
+            if (!GameManager.Instance.UI.Open(UiController.Type.Inventory, KillInventory)) return;
             ToggleInventory();
             OpenBag();
         }

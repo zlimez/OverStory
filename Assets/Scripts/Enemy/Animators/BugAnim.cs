@@ -1,20 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Abyss.Environment.Enemy.Anim
 {
     public class BugAnim : PortraitAnim
     {
-        public enum State
-        {
-            Idle,
-            Charge,
-            Jump,
-            Drop,
-            Land,
-            Death
-        }
+        public enum State { Idle, Dash, Preleap, Drop, Death }
 
 
         protected override void Awake()

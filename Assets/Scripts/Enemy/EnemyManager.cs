@@ -51,11 +51,13 @@ namespace Abyss.Environment.Enemy
             {
                 OnDefeated?.Invoke();
                 OnStrikePlayer = null;
+                EventManager.StartListening(PlayEvents.Rested, Spare);
             }
         }
 
         // TODO: move to when next rest occurs rationale making a choice end of combat all the time is disruptive
-        void Spare() => attributes.friendliness += 2.0f;
+        void Spare(object input = null) => attributes.friendliness += 2.0f;
+        void OnDisable() => EventManager.StopListening(PlayEvents.Rested, Spare);
 
         public void Strike()
         {

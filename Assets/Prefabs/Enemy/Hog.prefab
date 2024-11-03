@@ -8055,6 +8055,7 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 50
+  hitsToKill: 2
   drops:
   - Head: {fileID: 5381965474368501734, guid: cbe0e1e7adde34c2db2050a8d1ce1b7e, type: 3}
     Tail: 6
@@ -31118,8 +31119,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4941224508396415056}
-  - component: {fileID: 2085598349567442797}
   - component: {fileID: 8095207673661910159}
+  - component: {fileID: 1771009727331605755}
   m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
@@ -31142,8 +31143,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1100233584159593457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2085598349567442797
-BoxCollider2D:
+--- !u!114 &8095207673661910159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8618258250784131253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48003df635f5f47ff9e117817293292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyManager: {fileID: 0}
+  canHurtPlayer: 1
+--- !u!60 &1771009727331605755
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -31154,7 +31169,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -31174,7 +31189,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.16176224, y: 0.17523813}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -31184,23 +31199,16 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 8.063438, y: 6.5806513}
-  m_EdgeRadius: 0
---- !u!114 &8095207673661910159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8618258250784131253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48003df635f5f47ff9e117817293292c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyManager: {fileID: 0}
-  canHurtPlayer: 1
+  m_Points:
+    m_Paths:
+    - - {x: 0.8054199, y: 3.785431}
+      - {x: -2.326995, y: 2.8259733}
+      - {x: -3.9740067, y: 0.8788185}
+      - {x: -3.440332, y: -3.1581764}
+      - {x: 1.5945679, y: -3.1581762}
+      - {x: 4.2864227, y: -0.70726776}
+      - {x: 3.4344473, y: 1.9198647}
+  m_UseDelaunayMesh: 0
 --- !u!1 &8619450556403641819
 GameObject:
   m_ObjectHideFlags: 0

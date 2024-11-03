@@ -48,7 +48,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void SoftStartConvo(Conversation convo)
     {
-        if (!GameManager.Instance.UI.Open(UI.Type.Dialogue, KillDialog)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog)) return;
         queuedConvos.Enqueue(convo);
         if (queuedConvos.Count == 1)
             StartConvo(convo);
@@ -56,7 +56,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void HardStartConvo(Conversation convo, OnDialogFinished callback = null)
     {
-        if (!GameManager.Instance.UI.Open(UI.Type.Dialogue, KillDialog)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog)) return;
         queuedConvos.Clear();
         queuedConvos.Enqueue(convo);
         StartConvo(convo, callback);

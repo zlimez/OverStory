@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Abyss.Environment.Enemy;
+using Abyss.Environment.Enemy.Anim;
 using BehaviorTree;
 using BehaviorTree.Actions;
 using Tuples;
@@ -17,7 +17,8 @@ public class BugBT : MonoBT
     [SerializeField][Tooltip("Space that must be available to the bug to drop into")] float minSpace;
 
     [Header("Dash Settings")]
-    public Transform LeftEnd, RightEnd;
+    public Transform LeftEnd;
+    public Transform RightEnd;
     [SerializeField] AnimationCurve dashCurve;
     [SerializeField] float dashSpeed, dashDamage;
 
@@ -74,20 +75,37 @@ public class BugBT : MonoBT
             new("waitBefJumpTime", waitBeforeJumpTime),
 
             new("bugSprite", GetComponent<SpriteManager>()),
+            new("bugAnim", GetComponent<BugAnim>()),
             new("bugManager", GetComponent<EnemyManager>()),
             new("aftComboRT", afterComboRestTime / attr.speed),
-            new("arena",Arena)
+            new("arena",Arena),
+
+            new("idle", "Idle"),
+            new("drop", "Drop"),
+            new("dash", "Dash"),
+            new("preleap", "Preleap"),
+            new("jump", "Drop"),
         };
 
         _bT = new BT(
             new Sequence(new List<Node> {
                 new CheckPlayerInArena(new string[] {"arena"}),
+
+                new StartAnim(new string[] { "bugAnim", "drop" }),
                 new DropFrmCanopy(new string[] { "leftEnd", "rightEnd", "bugTfm", "dropCurve", "dropDuration", "minSpace", "jumpDest", "dashDest", "bugSprite" }),
+
+                new StartAnim(new string[] { "bugAnim", "dash" }),
                 new RegisterAttack(new string[] { "dashDamage", "dashKb", "bugManager", "dashAttack" }),
                 new GotoTargetByCurve(new string[] { "bugTfm", "dashDest", "dashCurve", "dashDestType", "dashBy", "dashSpeed" }),
                 new UnregisterAttack(new string[] { "bugManager", "dashAttack" }),
+
+                new StartAnim(new string[] { "bugAnim", "preleap" }),
                 new Wait(new string[] { "waitBefJumpTime" }),
+
+                new StartAnim(new string[] { "bugAnim", "drop" }),
                 new GotoTargetByCurve(new string[] { "bugTfm", "jumpDest", "jumpCurve", "jumpDestType", "jumpBy", "jumpDuration" }),
+
+                new StartAnim(new string[] { "bugAnim", "idle" }),
                 new Wait(new string[] { "aftComboRT" }),
             })
         , bugParams, new Blackboard[] { });

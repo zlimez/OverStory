@@ -47,7 +47,7 @@ public class CraftingSystem : MonoBehaviour
 
     public void OpenCrafting(object input)
     {
-        if (!GameManager.Instance.UI.Open(UI.Type.Craft, Stop)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Craft, Stop)) return;
         _chosenBlueprint = null;
         UpdateCraftingPanel();
         IsCraftingOpen = true;

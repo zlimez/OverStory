@@ -4,7 +4,7 @@ using Tuples;
 using UnityEngine;
 
 [Serializable]
-public class UI
+public class UiController
 {
     public enum Type { Dialogue, Inventory, Choice, Trade, Craft, Learn, None }
     public bool IsOpen { get; private set; } = false;

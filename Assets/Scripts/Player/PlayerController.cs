@@ -280,7 +280,7 @@ namespace Abyss.Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return;
+			if (IsFrozen) return;
 			if (IsAttacking || isTakingDamage || isDead) return;
 			if (context.started)
 			{
@@ -297,7 +297,7 @@ namespace Abyss.Player
 
 		public void OnRun(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return;
+			if (IsFrozen) return;
 			if (context.started)
 				_shouldRun = true;
 			else if (context.canceled)
@@ -312,7 +312,7 @@ namespace Abyss.Player
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return;
+			if (IsFrozen) return;
 			if (IsAttacking || isTakingDamage || isDead) return;
 			if (context.started && dashAvail)
 			{
@@ -328,7 +328,7 @@ namespace Abyss.Player
 
 		public void OnAttack(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return; // Temp solution can be configured in Unity input?
+			if (IsFrozen) return;
 			if (isDashing || isTakingDamage || isDead) return;
 			if (context.started)
 			{
@@ -344,14 +344,14 @@ namespace Abyss.Player
 
 		public void OnInteract(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return;
+			if (IsFrozen) return;
 			if (context.started)
 				OnAttemptInteract?.Invoke();
 		}
 
 		public void OnSpell(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return;
+			if (IsFrozen) return;
 			if (context.started)
 			{
 				//FIXME: Remove the try-catch block
@@ -427,6 +427,8 @@ namespace Abyss.Player
 		#endregion
 
 		#region Helper Methods
+		bool IsFrozen => GameManager.Instance.UI.IsOpen;
+
 		void Jump()
 		{
 			_playerSfx.PlayJump();

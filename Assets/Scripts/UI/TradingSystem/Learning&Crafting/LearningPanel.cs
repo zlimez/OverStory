@@ -50,7 +50,7 @@ public class LearningSystem : MonoBehaviour
 
     public void OpenLearning(object input)
     {
-        if (!GameManager.Instance.UI.Open(UI.Type.Learn, Stop)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Learn, Stop)) return;
         (Tribe tribe, Collection itemCollection) = ((Tribe, Collection))input;
         if (Tribe != tribe) return;
 

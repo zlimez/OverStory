@@ -57,7 +57,7 @@ public class TradingSystem : MonoBehaviour
 
     public void OpenTrading(object input)
     {
-        if (!GameManager.Instance.UI.Open(UI.Type.Trade, Stop)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Trade, Stop)) return;
         (Tribe tribe, PlayerAttr playerAttr, Collection itemCollection) = ((Tribe, PlayerAttr, Collection))input;
         if (Tribe != tribe) return;
 

@@ -18,7 +18,7 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     public void StartChoice(params Choice[] choices)
     {
-        if (!GameManager.Instance.UI.Open(UI.Type.Choice, Clear)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Choice, Clear)) return;
         InChoice = true;
         _choices = choices;
         PopulateChoices();

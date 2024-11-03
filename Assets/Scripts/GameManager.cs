@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public class GameManager : Singleton<GameManager>
 {
-    public UI UI;
+    public UiController UI;
     // public GameObject InteractableHint;
 
     public Inventory Inventory = new();
