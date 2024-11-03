@@ -24,10 +24,6 @@ namespace Abyss.Environment.Enemy
         }
 
         public int EnemyIntanceId => enemyManager.GetInstanceID();
-
-        public void TakeHit(float baseDamage)
-        {
-            enemyManager.TakeHit(baseDamage);
-        }
+        public void TakeHit(float baseDamage) => enemyManager.TakeHit(baseDamage);
     }
 }

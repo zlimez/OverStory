@@ -4,7 +4,6 @@ using UnityEngine;
 public class SpellItem : Item
 {
     public Sprite iconInactive;
-    public GameObject SpellPrefab;
 
     void Awake()
     {

@@ -10,10 +10,10 @@ namespace Abyss.Environment.Enemy
         public SpecyAttr specyAttr;
         public EnemyAttr attributes;
         public float health;
-
-        [Header("Callbacks")]
         public Action OnDefeated, OnDeath;
         public Action<float> OnStrikePlayer; // Subscribed by moveset in BT for the enemy
+
+        [SerializeField] SpriteFlash damageFlash;
 
         [Header("Drops")]
         [SerializeField][Tooltip("Number of strikes aft health depleted that will kill this enemy")] int hitsToKill = 2;
@@ -46,6 +46,8 @@ namespace Abyss.Environment.Enemy
 
             Debug.Log($"{name} took {baseDamage} damage");
             health -= Mathf.Min(health, baseDamage);
+            if (damageFlash != null) damageFlash.StartFlash();
+
             _isDefeated = health == 0;
             if (_isDefeated)
             {

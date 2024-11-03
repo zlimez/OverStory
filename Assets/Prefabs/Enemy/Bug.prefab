@@ -6905,6 +6905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4913871756979122439}
   - component: {fileID: 4548253929853408928}
+  - component: {fileID: 8632747368675427545}
   m_Layer: 6
   m_Name: BugPortrait
   m_TagString: Enemy
@@ -14288,6 +14289,22 @@ MonoBehaviour:
   _rootMotionSpecifiedParentTransform: {fileID: 0}
   _IKMethod: 0
   _invisibleMeshUpdate: 0
+--- !u!114 &8632747368675427545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3027252563448915484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 4548253929853408928}
+  flashColor: {r: 0.990566, g: 0.486204, b: 0.34109113, a: 1}
+  flashDuration: 0.2
+  reps: 1
 --- !u!1 &3205503849042367020
 GameObject:
   m_ObjectHideFlags: 0
@@ -27868,6 +27885,7 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 40
+  damageFlash: {fileID: 8632747368675427545}
   hitsToKill: 2
   drops:
   - Head: {fileID: 187993010069644091, guid: 87f80615f37ca425997afa7fa2de128b, type: 3}

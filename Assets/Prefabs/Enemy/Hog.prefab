@@ -8033,7 +8033,9 @@ MonoBehaviour:
   chargeDamageCooldown: 1.5
   patrolSpeed: 2
   waitTime: 0.5
-  Waypoints: []
+  Waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &6778516396064728727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8055,6 +8057,7 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 50
+  damageFlash: {fileID: 5055070205293029387}
   hitsToKill: 2
   drops:
   - Head: {fileID: 5381965474368501734, guid: cbe0e1e7adde34c2db2050a8d1ce1b7e, type: 3}
@@ -14072,6 +14075,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8259390024923124121}
   - component: {fileID: 6620463742523037196}
+  - component: {fileID: 5055070205293029387}
   m_Layer: 0
   m_Name: HogPortrait
   m_TagString: Untagged
@@ -20881,6 +20885,22 @@ MonoBehaviour:
   _rootMotionSpecifiedParentTransform: {fileID: 0}
   _IKMethod: 1
   _invisibleMeshUpdate: 0
+--- !u!114 &5055070205293029387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3867424774674679597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 6620463742523037196}
+  flashColor: {r: 0.99215686, g: 0.4862745, b: 0.34117648, a: 1}
+  flashDuration: 0.2
+  reps: 1
 --- !u!1 &4076908917031089517
 GameObject:
   m_ObjectHideFlags: 0

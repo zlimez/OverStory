@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 3092874263227839822}
   m_Layer: 6
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -963,6 +963,8 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 50
+  damageFlash: {fileID: 3190204297787832075}
+  hitsToKill: 2
   drops:
   - Head: {fileID: 1520851749018624176, guid: 68f22f5baabc146228b55f27fae765f2, type: 3}
     Tail: 2
@@ -10971,7 +10973,7 @@ GameObject:
   - component: {fileID: 1542217134876286541}
   m_Layer: 6
   m_Name: Neck (3)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11182,7 +11184,7 @@ GameObject:
   - component: {fileID: 7569428808682621538}
   m_Layer: 6
   m_Name: Neck (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14352,7 +14354,7 @@ GameObject:
   - component: {fileID: 276784282632734897}
   m_Layer: 6
   m_Name: Neck (2)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14867,6 +14869,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6708774441942698786}
   - component: {fileID: 1410171559472739284}
+  - component: {fileID: 3190204297787832075}
   m_Layer: 6
   m_Name: BloomPortrait
   m_TagString: Untagged
@@ -17981,6 +17984,22 @@ MonoBehaviour:
   _rootMotionSpecifiedParentTransform: {fileID: 0}
   _IKMethod: 0
   _invisibleMeshUpdate: 0
+--- !u!114 &3190204297787832075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297954257954643220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 1410171559472739284}
+  flashColor: {r: 0.8584906, g: 0.35861117, b: 0.22272164, a: 1}
+  flashDuration: 0.2
+  reps: 1
 --- !u!1 &6347107591258334003
 GameObject:
   m_ObjectHideFlags: 0
@@ -21355,7 +21374,7 @@ GameObject:
   - component: {fileID: 1863561080925111965}
   m_Layer: 6
   m_Name: Base
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
