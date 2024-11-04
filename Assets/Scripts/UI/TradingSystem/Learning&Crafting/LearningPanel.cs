@@ -12,6 +12,7 @@ public class LearningSystem : MonoBehaviour
     [SerializeField] Tribe tribe;
     [SerializeField] GameObject learningPanel;
     [SerializeField] GameObject topSlot;
+    [SerializeField] GameObject topCover;
     [SerializeField] List<GameObject> bottomSlots = new(2);
     [SerializeField] List<GameObject> bottomCover = new(2);
     [SerializeField] GameObject scrollViewContent;
@@ -92,6 +93,7 @@ public class LearningSystem : MonoBehaviour
             materials = null;
             canLearn = false;
         }
+        topCover.gameObject.SetActive(false);
 
         // TopSlot
         Transform spriteObject = topSlot.transform.Find("ItemIcon");
@@ -106,6 +108,16 @@ public class LearningSystem : MonoBehaviour
 
                 nestedImage.sprite = topItem.icon;
                 nestedImage.gameObject.SetActive(true);
+
+                // check the prerequisites
+                List<Item> prerequisiteItems = _chosenBlueprint.prerequisiteItems;
+                PlayerAttr prerequisiteAttr = _chosenBlueprint.prerequisiteAttr;
+                foreach (var preItem in prerequisiteItems)
+                {
+                    if (!GameManager.Instance.Inventory.MaterialCollection.Contains(preItem)) canLearn = false;
+                }
+                if(!prerequisiteAttr.IsLessThanOrEqual(GameManager.Instance.PlayerPersistence.PlayerAttr)) canLearn = false;
+                topCover.gameObject.SetActive(!canLearn);
             }
             else nestedImage.gameObject.SetActive(false);
         }
@@ -120,6 +132,7 @@ public class LearningSystem : MonoBehaviour
             Countable<Item> newItemStack = new(topItem, 1);
             slotForLearning.itemStack = newItemStack;
         }
+
 
 
         // Bottom Slots
@@ -201,6 +214,7 @@ public class LearningSystem : MonoBehaviour
         List<RefPair<Item, int>> materials = _chosenBlueprint.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
         GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);
+        npcBag.Remove(_chosenBlueprint);
         if (_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
         UpdateLearningPanel();
     }

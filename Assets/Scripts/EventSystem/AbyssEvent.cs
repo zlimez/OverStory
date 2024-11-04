@@ -39,5 +39,6 @@ namespace Abyss.EventSystem
         LearningPostEntered = 30,
         SelectItem = 31,
         CraftingPostEntered = 32,
+        ConstructionPostEntered = 33
     }
 }

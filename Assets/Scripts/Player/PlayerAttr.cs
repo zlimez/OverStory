@@ -31,5 +31,14 @@ namespace Abyss.Player
             this.FriendlinessPurity = friendlinessPurity;
             this.Purity = actionPurity + friendlinessPurity;
         }
+
+        public bool IsLessThanOrEqual(PlayerAttr other)
+        {
+            return Strength <= other.Strength &&
+                Intelligence <= other.Intelligence &&
+                Agility <= other.Agility &&
+                // Health <= other.Health &&
+                Purity <= other.Purity;
+        }
     }
 }

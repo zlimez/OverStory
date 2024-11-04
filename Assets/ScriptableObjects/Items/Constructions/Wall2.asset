@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 896e0e4aeba404a45a7675bfd1557929, type: 3}
+  m_Name: Wall2
+  m_EditorClassIdentifier: 
+  itemName: Sturdy Wall
+  description: 'Previous effects + Hog is stunned for a longer time after charging
+    into it.
+
+    Durability: 3'
+  icon: {fileID: 21300000, guid: d1dca2d06c3cf4f4180cb6ea80c56ece, type: 3}
+  itemImage: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
+  itemType: 7
+  objectItem: {fileID: 0}
+  materials:
+  - Head: {fileID: 11400000, guid: 902c1dc95d4644ef2ac6013520729927, type: 2}
+    Tail: 2
+  - Head: {fileID: 11400000, guid: a3b2513ff36f74ad48e5b430c1d2ee62, type: 2}
+    Tail: 2

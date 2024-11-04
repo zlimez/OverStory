@@ -181,6 +181,7 @@ public class CraftingSystem : MonoBehaviour
         foreach (var itemStack in GameManager.Instance.Inventory.MaterialCollection.Items)
         {
             if (itemStack.Data.itemType != ItemType.Blueprints) continue;
+            // if (itemStack.Data is BlueprintItem derivedData && derivedData.objectItem.itemType == ItemType.Constructions) continue;
             if (itemStack.Count <= 0) continue;
             GameObject slot = Instantiate(slotPrefab, scrollViewContent.transform);
 
