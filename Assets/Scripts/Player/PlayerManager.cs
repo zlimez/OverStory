@@ -16,6 +16,7 @@ namespace Abyss.Player
         [Header("References")]
         [SerializeField] PlayerController playerController;
         [SerializeField] Weapon weapon;
+        [SerializeField] SpriteFlash spriteFlash;
         public Pair<AbyssScene, Vector3> LastRest;
         [Header("Settings")]
         public PlayerAttr PlayerAttr;
@@ -90,6 +91,7 @@ namespace Abyss.Player
             if (PlayerAttr.Health == 0) return;
             if (playerController.TakeHit(hasKnockback, from, kbImpulse)) return; // Is still taking last damage or isDead
             UpdateHealth(-baseDamage);
+            spriteFlash.StartFlash();
             if (PlayerAttr.Health == 0)
             {
                 Save();

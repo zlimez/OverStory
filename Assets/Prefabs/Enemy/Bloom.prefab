@@ -17997,7 +17997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portrait: {fileID: 1410171559472739284}
-  flashColor: {r: 0.8584906, g: 0.35861117, b: 0.22272164, a: 1}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   flashDuration: 0.2
   reps: 1
 --- !u!1 &6347107591258334003
@@ -26842,7 +26842,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.05
+      scalar: 0.15
       minScalar: 0
       maxCurve:
         serializedVersion: 2

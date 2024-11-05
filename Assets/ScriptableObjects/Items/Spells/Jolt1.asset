@@ -26,5 +26,8 @@ MonoBehaviour:
   isAcceptableToHakem: 0
   valueToFara: 0
   valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
   itemType: 5
   iconInactive: {fileID: 21300000, guid: 6eacdb81c18884c43a44bf176dc73184, type: 3}
+  rottenFleshNeeded: 1
+  rottenFlesh: {fileID: 11400000, guid: 9c18df5d117e84bd39db82653506ca09, type: 2}

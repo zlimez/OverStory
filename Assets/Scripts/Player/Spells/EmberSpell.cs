@@ -48,6 +48,7 @@ namespace Abyss.Player.Spells
 
 		public override void Cast(bool toLeft)
 		{
+			base.Cast(toLeft);
 			transform.position += toLeft ? Vector3.left : Vector3.right;
 			Initialize(toLeft);
 		}

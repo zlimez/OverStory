@@ -20898,7 +20898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portrait: {fileID: 6620463742523037196}
-  flashColor: {r: 0.99215686, g: 0.4862745, b: 0.34117648, a: 1}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   flashDuration: 0.2
   reps: 1
 --- !u!1 &4076908917031089517

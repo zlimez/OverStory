@@ -329,6 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2305124300627421206}
   - component: {fileID: 6794293284907382098}
+  - component: {fileID: 6026804292270956158}
   m_Layer: 3
   m_Name: PlayerPortrait
   m_TagString: Untagged
@@ -22809,6 +22810,22 @@ MonoBehaviour:
   _rootMotionSpecifiedParentTransform: {fileID: 0}
   _IKMethod: 1
   _invisibleMeshUpdate: 0
+--- !u!114 &6026804292270956158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633064643979154553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 6794293284907382098}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.11764706}
+  flashDuration: 0.2
+  reps: 1
 --- !u!1 &720436663035596644
 GameObject:
   m_ObjectHideFlags: 0
@@ -27695,6 +27712,7 @@ MonoBehaviour:
   getLastRestFrmMaster: 1
   playerController: {fileID: 5589660221033615386}
   weapon: {fileID: 2408469263094139058}
+  spriteFlash: {fileID: 6026804292270956158}
   LastRest:
     Head: 0
     Tail: {x: 0, y: 0, z: 0}

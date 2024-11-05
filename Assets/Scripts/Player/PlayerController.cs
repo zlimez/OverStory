@@ -463,7 +463,7 @@ namespace Abyss.Player
 		void CastSpell(int ind)
 		{
 			SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
-			if (spellItems[ind] == null) return;
+			if (spellItems[ind] == null || !spellItems[ind].CanCast) return;
 
 			var spellObj = Instantiate(spellItems[ind].itemPrefab, transform.position, Quaternion.identity);
 			spellObj.GetComponent<Spell>().Cast(IsFacingLeft);

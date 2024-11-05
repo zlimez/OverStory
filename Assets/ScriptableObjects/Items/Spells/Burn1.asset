@@ -28,4 +28,5 @@ MonoBehaviour:
   itemUsedEvent: {fileID: 0}
   itemType: 5
   iconInactive: {fileID: 21300000, guid: cb980cd9f49a741ea8945c8e981375f6, type: 3}
-  SpellPrefab: {fileID: 0}
+  rottenFleshNeeded: 1
+  rottenFlesh: {fileID: 11400000, guid: 9c18df5d117e84bd39db82653506ca09, type: 2}
