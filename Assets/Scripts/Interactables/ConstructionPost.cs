@@ -10,12 +10,26 @@ namespace Abyss.Interactables
     public class ConstructionPost : Interactable
     {
         [SerializeField] ConstructionItem construction;
+        [SerializeField] GameObject ConstructionPrefab;
+
+        private GameObject constructionPanel;
+        private bool isPanelOpen;
 
         void Start()
         {
-            
+            constructionPanel = Instantiate(ConstructionPrefab, transform);
+            ConstructionSystem sconstructionController = constructionPanel.GetComponent<ConstructionSystem>();
+            if (sconstructionController != null) sconstructionController.InitializePanel(construction, transform.position);
+            else Debug.LogError("ConstructionSystem 组件未找到!");
+            isPanelOpen = false;
+            constructionPanel.SetActive(isPanelOpen);
         }
 
-        public override void Interact() => EventManager.InvokeEvent(PlayEvents.ConstructionPostEntered, (construction));
+        public override void Interact()
+        {
+            isPanelOpen = !isPanelOpen;
+            constructionPanel.SetActive(isPanelOpen);
+            
+        } 
     }
 }

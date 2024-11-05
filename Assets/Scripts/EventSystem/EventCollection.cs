@@ -57,7 +57,6 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent TradePostEntered;
         public static readonly StaticEvent LearningPostEntered;
         public static readonly StaticEvent CraftingPostEntered;
-        public static readonly StaticEvent ConstructionPostEntered;
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
         public static readonly StaticEvent Rested;
@@ -77,7 +76,6 @@ namespace Abyss.EventSystem
             TradePostEntered = StaticEvent.TradePostEntered;
             LearningPostEntered = StaticEvent.LearningPostEntered;
             CraftingPostEntered = StaticEvent.CraftingPostEntered;
-            ConstructionPostEntered = StaticEvent.ConstructionPostEntered;
             WeaponEquipped = StaticEvent.WeaponEquipped;
             WeaponUnequipped = StaticEvent.WeaponUnequipped;
             Rested = StaticEvent.Rested;
