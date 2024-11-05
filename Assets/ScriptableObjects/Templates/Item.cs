@@ -51,5 +51,6 @@ public enum ItemType
     Farmables,
     Spells,
     Blueprints,
-    Constructions
+    Constructions,
+    Journal
 }

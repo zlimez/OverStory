@@ -430,7 +430,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 123.15748, w: 0}
+  m_margin: {x: 0, y: 0, z: 81.83059, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1550,9 +1550,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blueprintItem: {fileID: 0}
+  journalItem: {fileID: 0}
   itemIcon: {fileID: 2118913056060000425}
   name: {fileID: 7663816242017929220}
   description: {fileID: 4369590767667978435}
+  material: {fileID: 3742509831721507113}
   materialIcons:
   - {fileID: 8287047297074416259}
   - {fileID: 5845580506905988983}
