@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: Hog-journal
   m_EditorClassIdentifier: 
   itemName: Moss Hog
-  description: 'Attacks - Long charge, double back short charges and AOE attack from
+  description: Attacks - Long charge, double back short charges and AOE attack from
     the gasses released by the mosses.
-
-    Strategy - Fight in jungles with multilayered
-    platforms connected by vines to evade their charges. There is a window for players
-    to deal damage after they finish a long charge when they are stunned from collision.'
   icon: {fileID: 21300000, guid: 6ee5231f257114d8eabd1b35e8f60ddb, type: 3}
   itemImage: {fileID: 0}
   itemPrefab: {fileID: 0}
