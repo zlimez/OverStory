@@ -5,8 +5,8 @@ namespace Abyss.Interactables
 {
     public class BackpackPickup : Interactable
     {
-        [SerializeField] Conversation foundBagConvo;
-        [SerializeField] DynamicEvent dronePickedEvent, backpackPickedEvent;
+        [SerializeField] protected Conversation foundBagConvo;
+        [SerializeField] protected DynamicEvent dronePickedEvent, backpackPickedEvent;
 
         protected override void PlayerEnterAction(Collider2D collider)
         {
