@@ -4923,6 +4923,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ddc2ebb85624a2c89aa7d21cc0a408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellItem: {fileID: 11400000, guid: 08ef3056d818a434cbd3c525555c0ef9, type: 2}
+  purityPenalty: 0
   moveSpeedValue: 0.03
   damageAmount: 30
   existForTime: 0.8

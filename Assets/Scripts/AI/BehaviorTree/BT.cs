@@ -65,6 +65,7 @@ namespace BehaviorTree
                         void listener(object obj)
                         {
                             _headBoard[varName] = obj;
+                            Debug.Log($"Var {varName} changed to {obj}");
                             _eventWriteBuffer.Enqueue(changeEvent);
                         }
                         blackboard.AddListener(varName, listener);
@@ -165,13 +166,17 @@ namespace BehaviorTree
         #endregion
 
         #region Data Getters and Setters
-        public List<object> GetData(string[] names)
+        public List<object> GetData(string[] names, bool nullable = false)
         {
             List<object> data = new();
             foreach (var n in names)
             {
-                if (!_headBoard.ContainsKey(n)) throw new UnityException($"Var {n} not found in board");
-                data.Add(_headBoard[n]);
+                if (!_headBoard.ContainsKey(n))
+                {
+                    if (nullable) data.Add(null);
+                    else throw new UnityException($"Var {n} not found in board");
+                }
+                else data.Add(_headBoard[n]);
             }
             return data;
         }

@@ -8,7 +8,7 @@ namespace BehaviorTree
     // Connected to EventManager to listen for events that changes data and retrieve from respective systems / data containers
     public class Blackboard
     {
-        Dictionary<string, (UnityEvent<object>, UnityAction<object>)> dataEvents = new();
+        readonly Dictionary<string, (UnityEvent<object>, UnityAction<object>)> dataEvents = new();
 
         public Blackboard(Pair<string, string>[] varEvents)
         {
@@ -22,20 +22,10 @@ namespace BehaviorTree
             }
         }
 
-        public bool IsTracking(string varName)
-        {
-            return dataEvents.ContainsKey(varName);
-        }
+        public bool IsTracking(string varName) => dataEvents.ContainsKey(varName);
+        public void AddListener(string varName, UnityAction<object> func) => dataEvents[varName].Item1.AddListener(func);
+        public void RemoveListener(string varName, UnityAction<object> func) => dataEvents[varName].Item1.RemoveListener(func);
 
-        public void AddListener(string varName, UnityAction<object> func)
-        {
-            dataEvents[varName].Item1.AddListener(func);
-        }
-
-        public void RemoveListener(string varName, UnityAction<object> func)
-        {
-            dataEvents[varName].Item1.RemoveListener(func);
-        }
 
         public void Teardown()
         {

@@ -74,7 +74,7 @@ namespace BehaviorTree
                 if (_shouldReevaluate)
                 {
                     _shouldReevaluate = false;
-                    Restarted = _restartCondition(Tree.GetData(_observedVars));
+                    Restarted = _restartCondition(Tree.GetData(_observedVars, true));
                     if (Restarted)
                     {
                         _prevChild = Children[_currChildInd];

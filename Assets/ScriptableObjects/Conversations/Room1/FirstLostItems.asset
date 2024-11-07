@@ -29,7 +29,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: It's ok. Resources are plenty around, we just need to collect again.
+    dialogue: It's ok. Resources are plenty, we just need to collect again.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

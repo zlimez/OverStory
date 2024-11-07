@@ -74,7 +74,7 @@ namespace BehaviorTree
                 if (_shouldReevaluate)
                 {
                     _shouldReevaluate = false;
-                    Restarted = _restartCondition(Tree.GetData(_observedVars));
+                    Restarted = _restartCondition(Tree.GetData(_observedVars, true)); // nullable set to true as one or more env variable might not have changed the first time to be registed in headboard
                     if (Restarted)
                     {
                         _prevChild = Children[_currChildInd];
@@ -91,7 +91,7 @@ namespace BehaviorTree
             }
             else if (Restarted)
             {
-                // Failure means prevChild have alse been executed this turn and failed violating at most one tick starting at running state per turn
+                // Failure means prevChild have also been executed this turn and failed violating at most one tick starting at running state per turn
 #if UNITY_EDITOR
                 Assert.IsTrue(State == State.SUCCESS);
 #endif

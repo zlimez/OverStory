@@ -40,6 +40,7 @@ namespace Abyss.Environment.Enemy
                 attributes.isAlive = false;
                 OnDeath?.Invoke();
                 EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
+                EventManager.StopListening(PlayEvents.Rested, Spare);
                 Drop();
                 Destroy(gameObject);
             }
@@ -58,8 +59,11 @@ namespace Abyss.Environment.Enemy
         }
 
         // TODO: move to when next rest occurs rationale making a choice end of combat all the time is disruptive
-        void Spare(object input = null) => attributes.friendliness += 2.0f;
-        void OnDisable() => EventManager.StopListening(PlayEvents.Rested, Spare);
+        void Spare(object input = null)
+        {
+            attributes.friendliness += 2.0f;
+            EventManager.StopListening(PlayEvents.Rested, Spare);
+        }
 
         public void Strike()
         {

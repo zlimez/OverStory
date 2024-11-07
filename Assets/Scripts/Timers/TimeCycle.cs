@@ -50,7 +50,6 @@ namespace Abyss.TimeManagers
             }
             _cycle = Cycle();
             StartCoroutine(_cycle);
-            EventManager.StopListening(SystemEvents.SystemsReady, LoadStartCycle);
         }
 
         void Save(object input = null)

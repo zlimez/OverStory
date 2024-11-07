@@ -10,24 +10,20 @@ using UnityEngine;
 
 public class HogBT : MonoBT
 {
+    public Arena Arena;
     [Header("Charge Settings")]
     // Stun time if during charge the hog hits an obstacle
     [SerializeField] float stunTime;
-    [SerializeField] float shortRestTime;
-    [SerializeField] float longRestTime;
-    [SerializeField] float shortChargeupTime;
-    [SerializeField] float longChargeupTime;
-    [SerializeField] float shortChargeDist;
-    [SerializeField] float longChargeDist;
+    [SerializeField] float shortRestTime, longRestTime;
+    [SerializeField] float shortChargeupTime, longChargeupTime;
+    [SerializeField] float shortChargeDist, longChargeDist;
     [SerializeField] float stunRaycastDist;
     [SerializeField] AnimationCurve chargeCurve;
     [SerializeField] Aggro aggro;
     [SerializeField] float chargeSpeed;
-    [SerializeField] float chargeDamage;
-    [SerializeField] float chargeDamageCooldown;
+    [SerializeField] float chargeDamage, chargeDamageCooldown;
     [Header("Patrol Settings")]
-    [SerializeField] float patrolSpeed;
-    [SerializeField] float waitTime;
+    [SerializeField] float patrolSpeed, waitTime;
     public Transform[] Waypoints;
 
     protected override void OnDisable()
@@ -47,7 +43,7 @@ public class HogBT : MonoBT
     IEnumerator SetupRoutine()
     {
         yield return new WaitForSeconds(0.1f);
-        Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent) });
+        Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent), new(Arena.EEEvent, Arena.EEEvent) });
         _bbs.Add(bb);
 
         EnemyAttr attr = GetComponent<EnemyManager>().attributes;
@@ -87,6 +83,7 @@ public class HogBT : MonoBT
             new("waitTime", waitTime / attr.speed),
             new("waypoints", Waypoints),
 
+            new("arena", Arena),
             new("aggro", aggro),
             new("hog", transform),
             new("hogSprite", GetComponent<SpriteManager>()),
@@ -103,6 +100,7 @@ public class HogBT : MonoBT
         var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
+                new CheckPlayerInArena(new string[] { "arena" }),
                 new CheckPlayerInAggro(new string[] { "aggro" }),
                 new XFaceTarget(new string[] { "hogSprite" }),
                 new ProbSelector(
@@ -117,14 +115,14 @@ public class HogBT : MonoBT
                         new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnimator", "hogIdleAnim", "hogWalkAnim" })
                     },
                     new Func<List<object>, float>[] {
-                        (obj) => { return probLongCharge; }, // TODO: Implement a function that returns the probability of the first action
+                        (obj) => { return probLongCharge; },
                         (obj) => { return probShortCharge; },
                         (obj) => { return probNoAttack; },
                     },
                     new string[][] { new string[] { "target", "hog" }, new string[] { "target", "hog" }, new string[] { "target", "hog" }}
                 )
             }), new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnimator", "hogIdleAnim", "hogWalkAnim" })
-        }, new string[] { aggro.EEEvent }, (obj) => { return true; })
+        }, new string[] { aggro.EEEvent, Arena.EEEvent }, (obj) => { return true; })
         , hogParams, new Blackboard[] { bb });
     }
 

@@ -31,7 +31,7 @@ namespace Abyss.Player
 		bool IsDeathState => currState.ToString().StartsWith("Death");
 		string BaseState => currState.ToString().Split('_')[0];
 
-		private Rigidbody2D rb2D;
+		public Transform Foot;
 
 		// Animation support
 		[Header("Animation")]
@@ -49,13 +49,14 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float jumpForce = 100f;
-		[SerializeField] float initialJumpImpulse = 1500f, extraDescentAcceleration = 5f;
+		[SerializeField] float initialJumpImpulse, extraDescentAcceleration = 5f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
 		float _jumpBufferCountdown = 0f, _preLandJumpBufferCountdown = 0f;
 		const float MAX_JUMP_TIME = 0.3f;
 		float _jumpTimeLeft = MAX_JUMP_TIME;
 		public bool IsGrounded, IsJumping;
+		public float InitJumpImpulse => initialJumpImpulse;
 
 		[Header("Dash")]
 		[SerializeField] float dashImpulse = 2000f;
@@ -79,6 +80,8 @@ namespace Abyss.Player
 		bool isTakingDamage = false, isDead = false;
 		public Action OnAttackEnded, OnAttemptInteract;
 
+
+		Rigidbody2D rb2D;
 		State currState;
 		[NonSerialized] public string Weapon = "Nil";
 
