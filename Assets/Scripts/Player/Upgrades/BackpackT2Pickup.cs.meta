@@ -3,7 +3,12 @@ guid: 2a5d7dd842f6d47a59dceb4a1d013324
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - hintPrefab: {instanceID: 0}
+  - foundBagConvo: {instanceID: 0}
+  - dronePickedEvent: {instanceID: 0}
+  - backpackPickedEvent: {fileID: 11400000, guid: 2a2529d4e74cd46cd9678941a9d75064,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
