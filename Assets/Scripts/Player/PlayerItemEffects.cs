@@ -7,38 +7,54 @@ using UnityEngine.Assertions;
 
 public class PlayerItemEffects : MonoBehaviour
 {
-    [Header("Bandages")]
-    [SerializeField] DynamicEvent basicBandageUsed;
-    [SerializeField] float basicHealPortion;
-    [SerializeField] float duration;
+	[Header("Bandages")]
+	[SerializeField] float duration;
+	[SerializeField] DynamicEvent basicBandageUsed;
+	[SerializeField] float basicHealPortion;
 
-    PlayerManager _playerManager;
+	// Good bandages
+	[SerializeField] DynamicEvent goodBandageUsed;
+	[SerializeField] float goodHealPortion;
+	
+	// Master bandages
+	[SerializeField] DynamicEvent masterBandageUsed;
+	[SerializeField] float masterHealPortion;
 
-    void Awake() => _playerManager = GetComponent<PlayerManager>();
+	PlayerManager _playerManager;
 
-    void OnValidate() => Assert.IsTrue(basicHealPortion >= 0 && basicHealPortion <= 1, "Heal portion must be between 0 and 1");
+	void Awake() => _playerManager = GetComponent<PlayerManager>();
 
-    void OnEnable()
-    {
-        EventManager.StartListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
-    }
+	void OnValidate() => Assert.IsTrue(basicHealPortion >= 0 && basicHealPortion <= 1, "Heal portion must be between 0 and 1");
 
-    void OnDisable()
-    {
-        EventManager.StopListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
-    }
+	void OnEnable()
+	{
+		EventManager.StartListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
+		EventManager.StartListening(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
+		EventManager.StartListening(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
+	}
 
-    public void UseBasicBandage(object input = null) => StartCoroutine(Heal(basicHealPortion * PlayerAttr.MaxHealth));
+	void OnDisable()
+	{
+		EventManager.StopListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
+		EventManager.StartListening(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
+		EventManager.StartListening(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
+	}
 
-    IEnumerator Heal(float healAmt)
-    {
-        float et = 0;
-        while (et < duration)
-        {
-            float adjustedTFlow = Time.deltaTime * TimeCycle.Instance.SpeedMod;
-            et += adjustedTFlow;
-            _playerManager.UpdateHealth(healAmt * adjustedTFlow / duration);
-            yield return null;
-        }
-    }
+	public void UseBasicBandage(object input = null) => StartCoroutine(Heal(basicHealPortion * PlayerAttr.MaxHealth));
+	
+	public void UseGoodBandage(object input = null) => StartCoroutine(Heal(goodHealPortion * PlayerAttr.MaxHealth));
+	
+	public void UseMasterBandage(object input = null) => StartCoroutine(Heal(masterHealPortion * PlayerAttr.MaxHealth));
+
+	IEnumerator Heal(float healAmt)
+	{
+		float et = 0;
+		while (et < duration)
+		{
+			float adjustedTFlow = Time.deltaTime * TimeCycle.Instance.SpeedMod;
+			et += adjustedTFlow;
+			_playerManager.UpdateHealth(healAmt * adjustedTFlow / duration);
+			yield return null;
+		}
+	}
 }
