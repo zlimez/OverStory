@@ -18,18 +18,18 @@ public class DialogueManager : Singleton<DialogueManager>
     public bool InDialogue { get; private set; }
 
     [SerializeField] float speedMod, defaultCharInterval = 0.005f;
-    float charInterval;
+    protected float charInterval;
 
     [Header("UI References")]
     [SerializeField] GameObject dialogBox;
     [SerializeField] TextMeshProUGUI speakerName, dialog;
     [SerializeField] Image leftSpeakerImg, rightSpeakerImg;
 
-    int currInd = -1;
-    Queue<Conversation> queuedConvos = new();
-    Conversation currConvo;
-    bool isCurrLinePrinting, isCentered;
-    Coroutine dialogLineCoroutine;
+    protected int currInd = -1;
+    protected Queue<Conversation> queuedConvos = new();
+    protected Conversation currConvo;
+    protected bool isCurrLinePrinting, isCentered;
+    protected Coroutine dialogLineCoroutine;
 
     public delegate void OnDialogFinished();
     private event OnDialogFinished OnEndDialogue;
@@ -40,7 +40,7 @@ public class DialogueManager : Singleton<DialogueManager>
         PreserveSpriteAspect();
     }
 
-    void PreserveSpriteAspect()
+    protected void PreserveSpriteAspect()
     {
         leftSpeakerImg.preserveAspect = true;
         rightSpeakerImg.preserveAspect = true;
@@ -62,7 +62,7 @@ public class DialogueManager : Singleton<DialogueManager>
         StartConvo(convo, callback);
     }
 
-    void StartConvo(Conversation convo, OnDialogFinished callback = null)
+    protected void StartConvo(Conversation convo, OnDialogFinished callback = null)
     {
         PrepConvoUI(convo);
         BeginDialog();
@@ -76,7 +76,7 @@ public class DialogueManager : Singleton<DialogueManager>
         StartCoroutine(AutoRead());
     }
 
-    void PrepConvoUI(Conversation convo)
+    protected void PrepConvoUI(Conversation convo)
     {
         EventManager.InvokeEvent(UIEvents.DialogStarted);
         dialogBox.SetActive(true);
@@ -101,7 +101,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    void BeginDialog()
+    protected void BeginDialog()
     {
         InDialogue = true;
         ReadNext();
@@ -117,7 +117,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    void FlashCurrLine()
+    protected void FlashCurrLine()
     {
         if (dialogLineCoroutine != null)
             StopCoroutine(dialogLineCoroutine);
@@ -140,7 +140,7 @@ public class DialogueManager : Singleton<DialogueManager>
         else ProcessCurrLine();
     }
 
-    void ProcessCurrLine()
+    protected void ProcessCurrLine()
     {
         isCurrLinePrinting = true;
 
@@ -159,7 +159,7 @@ public class DialogueManager : Singleton<DialogueManager>
         currInd++;
     }
 
-    void UpdateSpeakerUI(DialogueLine currentLine)
+    protected void UpdateSpeakerUI(DialogueLine currentLine)
     {
         if (currentLine.IsLeft)
             UpdateLeftSpeakerUI(currentLine);
@@ -169,7 +169,7 @@ public class DialogueManager : Singleton<DialogueManager>
             speakerName.text = currentLine.Name;
     }
 
-    void UpdateLeftSpeakerUI(DialogueLine currLine)
+    protected void UpdateLeftSpeakerUI(DialogueLine currLine)
     {
         Speaker currSpeaker = currLine.Speaker != null ? currLine.Speaker : currConvo.LeftSpeaker;
         if (leftSpeakerImg.sprite != null) leftSpeakerImg.color = new Color32(255, 255, 255, 255);
@@ -181,7 +181,7 @@ public class DialogueManager : Singleton<DialogueManager>
         if (rightSpeakerImg.sprite != null) rightSpeakerImg.color = new Color32(110, 110, 110, 255);
     }
 
-    void UpdateRightSpeakerUI(DialogueLine currLine)
+    protected void UpdateRightSpeakerUI(DialogueLine currLine)
     {
         Speaker currSpeaker = currLine.Speaker != null ? currLine.Speaker : currConvo.RightSpeaker;
         if (rightSpeakerImg.sprite != null) rightSpeakerImg.color = new Color32(255, 255, 255, 255);
@@ -200,7 +200,7 @@ public class DialogueManager : Singleton<DialogueManager>
     }
 
 
-    private IEnumerator DisplayLine(string line)
+    protected IEnumerator DisplayLine(string line)
     {
         dialog.text = "";
         dialog.alignment = isCentered ? TextAlignmentOptions.Center : TextAlignmentOptions.TopLeft;
@@ -212,7 +212,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         isCurrLinePrinting = false;
     }
-    private IEnumerator AutoRead(float waitDuration = 0.5f)
+    protected IEnumerator AutoRead(float waitDuration = 0.5f)
     {
         while (currInd != currConvo.AllLines.Length)
         {
@@ -225,13 +225,13 @@ public class DialogueManager : Singleton<DialogueManager>
         EndDialog();
     }
 
-    private IEnumerator Skip()
+    protected IEnumerator Skip()
     {
         ReadNext();
         yield return new WaitForSecondsRealtime(10 * Time.deltaTime);
     }
 
-    void EndDialog()
+    protected void EndDialog()
     {
         InDialogue = false;
         dialog.text = "";
@@ -246,13 +246,13 @@ public class DialogueManager : Singleton<DialogueManager>
         else CloseDialogUI();
     }
 
-    void CloseDialogUI()
+    protected void CloseDialogUI()
     {
         GameManager.Instance.UI.Close();
         dialogBox.SetActive(false);
     }
 
-    void KillDialog()
+    protected void KillDialog()
     {
         InDialogue = false;
         dialog.text = "";
