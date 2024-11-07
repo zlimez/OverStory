@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1096eb3fc41314e6ea8ff47393bcf665, type: 3}
-  m_Name: Axe_t2
+  m_Name: Axe_t3
   m_EditorClassIdentifier: 
-  itemName: Axe (Tier 2)
+  itemName: Axe (Tier 3)
   description: 
-  icon: {fileID: 21300000, guid: c5e0b99672bc3441c8a16803912dcc4b, type: 3}
-  itemImage: {fileID: 21300000, guid: c5e0b99672bc3441c8a16803912dcc4b, type: 3}
-  itemPrefab: {fileID: 6717123739769251856, guid: 86fa0cd52b09d4689bf5eec1e3a11755,
+  icon: {fileID: 21300000, guid: 33e754b751dcf4569bbb12baf5220fdf, type: 3}
+  itemImage: {fileID: 21300000, guid: 33e754b751dcf4569bbb12baf5220fdf, type: 3}
+  itemPrefab: {fileID: 6717123739769251856, guid: da03fed1cb05d4173ad4dee2b5bb534a,
     type: 3}
   canUseFromInventory: 0
   isConsumable: 0
@@ -26,5 +26,5 @@ MonoBehaviour:
   valueToHakem: 10
   itemUsedEvent: {fileID: 0}
   itemType: 2
-  Damage: 25
-  Radius: 1.8
+  Damage: 40
+  Radius: 2

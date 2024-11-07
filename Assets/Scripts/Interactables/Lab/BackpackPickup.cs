@@ -6,7 +6,7 @@ namespace Abyss.Interactables
     public class BackpackPickup : Interactable
     {
         [SerializeField] Conversation foundBagConvo;
-        [SerializeField] DynamicEvent dronePickedEvent, bagPickedEvent;
+        [SerializeField] DynamicEvent dronePickedEvent, backpackPickedEvent;
 
         protected override void PlayerEnterAction(Collider2D collider)
         {
@@ -17,7 +17,7 @@ namespace Abyss.Interactables
         public override void Interact()
         {
             GameManager.Instance.Inventory.Enabled = true;
-            EventLedger.Instance.Record(new GameEvent(bagPickedEvent.EventName));
+            EventLedger.Instance.Record(new GameEvent(backpackPickedEvent.EventName));
             Destroy(gameObject);
         }
     }
