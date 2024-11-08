@@ -29,10 +29,6 @@ namespace BehaviorTree.Actions
             _targetName = _params[0];
         }
 
-        public override void Update()
-        {
-            Debug.Log("Checking target exists: " + _targetName + " " + Tree.GetDatum<object>(_targetName, true));
-            State = Tree.GetDatum<object>(_targetName, true) != null ? State.SUCCESS : State.FAILURE;
-        }
+        public override void Update() => State = Tree.GetDatum<object>(_targetName, true) != null ? State.SUCCESS : State.FAILURE;
     }
 }

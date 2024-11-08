@@ -103,6 +103,8 @@ namespace Abyss.Player
 
 		private void Update()
 		{
+			if (IsFrozen) _moveDir = 0;
+
 			if (!isDashing)
 			{
 				_currXSpeed = (isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
@@ -310,7 +312,7 @@ namespace Abyss.Player
 
 		public void OnMove(InputAction.CallbackContext context)
 		{
-			if (GameManager.Instance.UI.IsOpen) return;
+			if (IsFrozen) return;
 			_moveDir = context.ReadValue<float>();
 		}
 

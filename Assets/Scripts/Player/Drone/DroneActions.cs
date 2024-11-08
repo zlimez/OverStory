@@ -135,7 +135,8 @@ namespace BehaviorTree.Actions
     public class DroneAdjust : CfAction
     {
         Light2D _droneLight;
-        float _adjustTime, _intensity, zRot, _tZRot;
+        float _adjustTime, _intensity, _zRot, _startRot;
+        int _rotDir;
         Color _color;
         AnimationCurve _adjustCurve;
         Transform _transform;
@@ -153,7 +154,7 @@ namespace BehaviorTree.Actions
             _adjustTime = (float)dataRef[1];
             _intensity = (float)dataRef[2];
             _color = (Color)dataRef[3];
-            zRot = (float)dataRef[4];
+            _zRot = (float)dataRef[4];
             _adjustCurve = (AnimationCurve)dataRef[5];
             _transform = (Transform)dataRef[6];
             _spriteManager = (SpriteManager)dataRef[7];
@@ -165,14 +166,14 @@ namespace BehaviorTree.Actions
             {
                 _droneLight.intensity = _intensity;
                 _droneLight.color = _color;
-                _transform.rotation = Quaternion.Euler(0, 0, zRot);
+                _transform.rotation = Quaternion.Euler(0, 0, _startRot + _rotDir * _zRot);
                 State = State.SUCCESS;
             }
             else
             {
                 _droneLight.intensity = _adjustCurve.Evaluate(_timer / _adjustTime) * _intensity;
                 _droneLight.color = Color.Lerp(Color.clear, _color, _adjustCurve.Evaluate(_timer / _adjustTime));
-                _transform.rotation = Quaternion.Euler(0, 0, _tZRot * _adjustCurve.Evaluate(_timer / _adjustTime));
+                _transform.rotation = Quaternion.Euler(0, 0, _startRot + _rotDir * (_zRot * _adjustCurve.Evaluate(_timer / _adjustTime)));
                 _timer += Time.deltaTime;
             }
         }
@@ -181,7 +182,9 @@ namespace BehaviorTree.Actions
         {
             base.OnInit();
             _timer = 0f;
-            _tZRot = zRot * _spriteManager.forward.x > 0 ? -1 : -1;
+            _startRot = _transform.eulerAngles.z;
+            _rotDir = _spriteManager.forward.x > 0 ? -1 : 1;
+            Debug.Log("rotDir " + (_rotDir == 1 ? "CCW" : "CW"));
         }
     }
 }

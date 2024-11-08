@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdc3594313274e29b5e52252632b160, type: 3}
   m_Name: AssassinBug
   m_EditorClassIdentifier: 
-  specyName: Moss Hog
-  mutationRate: 0.1
-  maxPopulation: 20
-  generationRate: 1.5
+  specyName: Assassin Bug
+  mutationRate: 0.2
+  maxPopulation: 25
+  generationRate: 2
   attrRanges:
   - Item1: strength
     Item2: 1

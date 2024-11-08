@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Tuples;
 using UnityEngine;
-using UnityEngine.Events;
 
 // TODO: Remove reliance on Unity
 namespace BehaviorTree
@@ -17,11 +15,11 @@ namespace BehaviorTree
         public readonly LinkedList<Node> Scheduled = new();
         // NOTE: Directly subscription to blackboard events prohibited to prevent mid tick changes and multiple reevaluates per composite,
         // a buffer is used to store events and then processed at the start of the next tick
-        readonly Dictionary<string, UnityEvent> _trackedVars = new();
-        readonly Dictionary<string, (Blackboard, UnityAction<object>)> _trackedVarsActions = new();
+        readonly Dictionary<string, System.Action> _trackedVars = new();
+        readonly Dictionary<string, (Blackboard, System.Action<object>)> _trackedVarsActions = new();
 
-        Queue<UnityEvent> _eventFrontBuffer = new(), _eventBackBuffer = new();
-        Queue<UnityEvent> _eventWriteBuffer;
+        Queue<System.Action> _eventFrontBuffer = new(), _eventBackBuffer = new();
+        Queue<System.Action> _eventWriteBuffer;
 
         readonly Blackboard[] _blackboards; // By contract should possess or have reference to vars that are tracked by this BT whose changes can cause composite restarts
         readonly Dictionary<string, object> _headBoard = new(); // Can contain null values
@@ -107,17 +105,17 @@ namespace BehaviorTree
             }
         }
 
-        public void AddTracker(string observedVar, UnityAction func)
+        public void AddTracker(string observedVar, System.Action func)
         {
             if (!_trackedVars.ContainsKey(observedVar))
-                _trackedVars[observedVar] = new();
-            _trackedVars[observedVar].AddListener(func);
+                _trackedVars[observedVar] = null;
+            _trackedVars[observedVar] += func;
         }
 
-        public void RemoveTracker(string observedVar, UnityAction func)
+        public void RemoveTracker(string observedVar, System.Action func)
         {
             if (!_trackedVars.ContainsKey(observedVar)) throw new UnityException($"No tracker for {observedVar}, problem with setup");
-            _trackedVars[observedVar].RemoveListener(func);
+            _trackedVars[observedVar] -= func;
         }
 
         public State Tick()

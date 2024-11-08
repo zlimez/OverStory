@@ -17,9 +17,9 @@ namespace Abyss.Player
         [SerializeField] PlayerController playerController;
         [SerializeField] Weapon weapon;
         [SerializeField] SpriteFlash spriteFlash;
-        public Pair<AbyssScene, Vector3> LastRest;
+        public RefPair<AbyssScene, Vector3> LastRest = new();
+        public PlayerAttr PlayerAttr; // By reference when assign to gamemanager playerattr changes are on the same instance
         [Header("Settings")]
-        public PlayerAttr PlayerAttr; // FIXME: Remove playerattr copy here use gamemanager as source of truth
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
 
         public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;
@@ -67,12 +67,13 @@ namespace Abyss.Player
                 PlayerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             if (getLastRestFrmMaster)
                 LastRest = GameManager.Instance.PlayerPersistence.LastRest;
+            // For testing when want to assign weaponItem or lastRest from scene not from master
+            if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
 #else
+            weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
             PlayerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             LastRest = GameManager.Instance.PlayerPersistence.LastRest;
 #endif
-            // For testing when want to assign weaponItem or lastRest from scene not from master
-            if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
             if (weapon.weaponItem != null) playerController.EquipWeapon(weapon.weaponItem);
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
             EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
@@ -80,9 +81,13 @@ namespace Abyss.Player
 
         void Save(object input = null)
         {
-            GameManager.Instance.PlayerPersistence.PlayerAttr = PlayerAttr;
-            GameManager.Instance.PlayerPersistence.LastRest = LastRest;
-            GameManager.Instance.PlayerPersistence.WeaponItem = weapon.weaponItem;
+#if UNITY_EDITOR
+            if (!getPlayerAttrFrmMaster)
+                GameManager.Instance.PlayerPersistence.PlayerAttr = PlayerAttr;
+            if (!getLastRestFrmMaster)
+                GameManager.Instance.PlayerPersistence.LastRest = LastRest;
+#endif
+            GameManager.Instance.PlayerPersistence.WeaponItem = weapon.weaponItem; // Else during load will already have obtained reference to lastrest and playerattr
         }
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here

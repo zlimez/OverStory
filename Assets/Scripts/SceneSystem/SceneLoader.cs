@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Events;
 using Abyss.EventSystem;
 using Abyss.Utils;
+using System;
 
 namespace Abyss.SceneSystem
 {
@@ -15,7 +15,7 @@ namespace Abyss.SceneSystem
         public AbyssScene LastScene { get; private set; }
         public bool InTransit { get; private set; } = false;
         private AsyncOperation loadingAsyncOperation;
-        private UnityAction<object> currLoadWithMaster;
+        private Action<object> currLoadWithMaster;
         private readonly HashSet<AbyssScene> loadedScenes = new();
         public AbyssScene ActiveScene { get; private set; }
 

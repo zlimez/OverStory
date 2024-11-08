@@ -511,6 +511,7 @@ MonoBehaviour:
       Head: 0
       Tail: {x: 0, y: 0, z: 0}
     JustDied: 0
+    DroneLevel: 1
   TimePersistence:
     TimeOfCycle: 0
     TotalTime: 0
@@ -3990,6 +3991,8 @@ MonoBehaviour:
   - Head: {fileID: 11400000, guid: 497df2db7b8524584b2d479508ecc4f5, type: 2}
     Tail: 20
   - Head: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
+    Tail: 20
+  - Head: {fileID: 11400000, guid: b132f14a3f74948f1aa3a6b57432e26d, type: 2}
     Tail: 20
   breedInterval: 12
   FriendlinessAverage: 0

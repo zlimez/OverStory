@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Abyss.EventSystem;
 using Tuples;
-using UnityEngine.Events;
 
 namespace BehaviorTree
 {
@@ -11,7 +11,7 @@ namespace BehaviorTree
     /// </summary>
     public class Blackboard
     {
-        readonly Dictionary<string, (UnityEvent<object>, UnityAction<object>)> dataEvents = new();
+        readonly Dictionary<string, RefPair<Action<object>, Action<object>>> dataEvents = new();
 
         /// <summary>
         /// Head of pair is match the variable name stored in head board of intended BTs for changes to be propagated to the BT. tail is the events that will trigger the update of the variable
@@ -24,21 +24,21 @@ namespace BehaviorTree
                 var varName = varEvent.Head;
                 var eventNames = varEvent.Tail;
 
-                if (!dataEvents.ContainsKey(varName)) dataEvents[varName] = (new UnityEvent<object>(), (obj) => dataEvents[varEvent.Head].Item1.Invoke(obj)); // Add the params passed to the invoked event to headboard of connected BTs
+                if (!dataEvents.ContainsKey(varName)) dataEvents[varName] = new RefPair<Action<object>, Action<object>>(null, (obj) => dataEvents[varName].Head?.Invoke(obj)); // Add the params passed to the invoked event to headboard of connected BTs
                 foreach (var eventName in eventNames)
-                    EventManager.StartListening(new GameEvent(eventName), dataEvents[varName].Item2);
+                    EventManager.StartListening(new GameEvent(eventName), dataEvents[varName].Tail);
             }
         }
 
         public bool IsTracking(string varName) => dataEvents.ContainsKey(varName);
-        public void AddListener(string varName, UnityAction<object> func) => dataEvents[varName].Item1.AddListener(func);
-        public void RemoveListener(string varName, UnityAction<object> func) => dataEvents[varName].Item1.RemoveListener(func);
+        public void AddListener(string varName, Action<object> func) => dataEvents[varName].Head += func;
+        public void RemoveListener(string varName, Action<object> func) => dataEvents[varName].Head -= func;
 
 
         public void Teardown()
         {
             foreach (var dataEvent in dataEvents)
-                EventManager.StopListening(new GameEvent(dataEvent.Key), dataEvent.Value.Item2);
+                EventManager.StopListening(new GameEvent(dataEvent.Key), dataEvent.Value.Tail);
         }
     }
 }

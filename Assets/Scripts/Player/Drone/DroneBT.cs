@@ -51,7 +51,7 @@ public class DroneBT : MonoBT
             new("buildIntensity", buildIntensity),
             new("normalColor", headLight.color),
             new("buildColor", buildColor),
-            new("normalZRot", transform.eulerAngles.z),
+            new("zRotBack", -buildZRot),
             new("buildZRot", buildZRot),
             new("buildHoverAmp", buildHoverAmp),
             new("transitionCurve", transitionCurve),
@@ -69,7 +69,7 @@ public class DroneBT : MonoBT
 
             new Failer(new Selector(new List<Node> {
                 new DroneInDefault(new string[] { "headLight", "normalIntensity", "normalColor", "droneTransform" }),
-                new DroneAdjust(new string[] { "headLight", "transitionTime", "normalIntensity", "normalColor", "normalZRot", "transitionCurve", "droneTransform", "droneSprite" }),
+                new DroneAdjust(new string[] { "headLight", "transitionTime", "normalIntensity", "normalColor", "zRotBack", "transitionCurve", "droneTransform", "droneSprite" }),
             })),
 
             new DroneFollow(new string[] { "followTransform", "droneTransform", "smoothTime", "hoverTop", "hoverBtm", "hoverInterval", "distToStop", "distToStart", "droneSprite" })

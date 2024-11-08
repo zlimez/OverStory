@@ -3,7 +3,7 @@ using System;
 namespace Abyss.Player
 {
     [Serializable]
-    public struct PlayerAttr
+    public class PlayerAttr
     {
         public static readonly float MaxStrength = 50;
         public static readonly float MaxIntelligence = 50;
@@ -23,13 +23,13 @@ namespace Abyss.Player
 
         public PlayerAttr(float strength, float intelligence, float agility, float health, float actionPurity, float friendlinessPurity)
         {
-            this.Strength = strength;
-            this.Intelligence = intelligence;
-            this.Agility = agility;
-            this.Health = health;
-            this.ActionPurity = actionPurity;
-            this.FriendlinessPurity = friendlinessPurity;
-            this.Purity = actionPurity + friendlinessPurity;
+            Strength = strength;
+            Intelligence = intelligence;
+            Agility = agility;
+            Health = health;
+            ActionPurity = actionPurity;
+            FriendlinessPurity = friendlinessPurity;
+            Purity = actionPurity + friendlinessPurity;
         }
 
         public bool IsLessThanOrEqual(PlayerAttr other)

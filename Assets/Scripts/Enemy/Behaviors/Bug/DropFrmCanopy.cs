@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Abyss.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -21,16 +20,15 @@ namespace BehaviorTree.Actions
         public override void Setup(BT tree)
         {
             base.Setup(tree);
-            List<object> dataRef = Tree.GetData(_params);
-            _leftEnd = (Transform)dataRef[0];
-            _rightEnd = (Transform)dataRef[1];
-            _transform = (Transform)dataRef[2];
-            _dropCurve = (AnimationCurve)dataRef[3];
-            _duration = (float)dataRef[4];
-            _minSpace = (float)dataRef[5];
-            _jumpDestVarName = (string)dataRef[6];
-            _dashDestVarName = (string)dataRef[7];
-            _bugSprite = (SpriteManager)dataRef[8];
+            _leftEnd = Tree.GetDatum<Transform>(_params[0]);
+            _rightEnd = Tree.GetDatum<Transform>(_params[1]);
+            _transform = Tree.GetDatum<Transform>(_params[2]);
+            _dropCurve = Tree.GetDatum<AnimationCurve>(_params[3]);
+            _duration = Tree.GetDatum<float>(_params[4]);
+            _minSpace = Tree.GetDatum<float>(_params[5]);
+            _jumpDestVarName = _params[6];
+            _dashDestVarName = _params[7];
+            _bugSprite = Tree.GetDatum<SpriteManager>(_params[8]);
         }
 
         public override void Update()

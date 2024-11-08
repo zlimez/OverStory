@@ -11,6 +11,12 @@ public class FirstRestRecLost : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (EventLedger.Instance == null)
+            {
+                Debug.LogWarning("Event ledger missing instance");
+                return;
+            }
+
             if (!EventLedger.Instance.HasOccurred(new GameEvent(HadFirstDeathConvo.EventName)) && EventLedger.Instance.GetEventCount(PlayEvents.Respawn) == 1)
             {
                 EventLedger.Instance.Record(new GameEvent(HadFirstDeathConvo.EventName));

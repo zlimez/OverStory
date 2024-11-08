@@ -7,7 +7,7 @@ namespace Abyss.Interactables
     {
         [SerializeField] ConstructionItem construction; // TODO: make this a list for different tiers of same building
         [SerializeField] GameObject ConstructionPrefab;
-        [SerializeField] Transform buildPoint;
+        [SerializeField] Transform buildPoint, hoverPoint;
 
         private ConstructionSystem constructionSys;
 
@@ -17,21 +17,19 @@ namespace Abyss.Interactables
             constructionSys.InitializePanel(construction, transform.position);
         }
 
-        public override void Interact() => constructionSys.Build(buildPoint);
+        public override void Interact() => constructionSys.TryBuild(buildPoint, hoverPoint);
 
         // TODO: Add check whether player has unlocked the blueprint
         protected override void PlayerEnterAction(Collider2D collider)
         {
             base.PlayerEnterAction(collider);
-            if (!constructionSys.IsPanelOpen && !constructionSys.IsBuilding)
-                constructionSys.OpenPanel();
+            constructionSys.TryOpenPanel();
         }
 
         protected override void PlayerExitAction(Collider2D collider)
         {
             base.PlayerExitAction(collider);
-            if (constructionSys.IsPanelOpen)
-                constructionSys.ClosePanel();
+            constructionSys.ClosePanel();
         }
     }
 }

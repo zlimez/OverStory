@@ -26,9 +26,9 @@ public class ConstructionSystem : MonoBehaviour
 
     ConstructionItem _constructionItem;
     public bool IsPanelOpen { get; private set; } = false;
-
+    public bool IsBuilt { get; private set; } = false;
     public bool IsBuilding { get; private set; } = false;
-    bool _canBuild = false;
+    bool _sufficeToBuild = false;
 
     public void InitializePanel(ConstructionItem constructionItem, Vector3 position)
     {
@@ -42,26 +42,27 @@ public class ConstructionSystem : MonoBehaviour
         }
     }
 
-    public void OpenPanel()
+    public void TryOpenPanel()
     {
+        if (IsPanelOpen || IsBuilding || IsBuilt) return;
         UpdateConstructionPanel();
         IsPanelOpen = true;
-        GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateConstructionPanel;
         constructionPanel.SetActive(true);
+        EventManager.StartListening(PlayEvents.BuildEnd, SetBuildButton);
     }
 
     public void ClosePanel()
     {
         constructionPanel.SetActive(false);
         IsPanelOpen = false;
-        GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateConstructionPanel;
+        EventManager.StopListening(PlayEvents.BuildEnd, SetBuildButton);
     }
 
     private void UpdateConstructionPanel()
     {
         UpdateImage(GameManager.Instance.PlayerPersistence.DroneLevel - 1);
 
-        _canBuild = true;
+        _sufficeToBuild = true;
         topCover.SetActive(false);
         Item topItem;
         List<RefPair<Item, int>> materials;
@@ -74,7 +75,7 @@ public class ConstructionSystem : MonoBehaviour
         {
             topItem = null;
             materials = null;
-            _canBuild = false;
+            _sufficeToBuild = false;
         }
 
         // TopSlot
@@ -136,7 +137,7 @@ public class ConstructionSystem : MonoBehaviour
                     int haveCount = GameManager.Instance.Inventory.MaterialCollection.StockOf(item.Head);
                     if (haveCount < needCount)
                     {
-                        _canBuild = false;
+                        _sufficeToBuild = false;
                         bottomCover[i].SetActive(true);
                     }
                     else bottomCover[i].SetActive(false);
@@ -161,20 +162,22 @@ public class ConstructionSystem : MonoBehaviour
     }
 
 
-    public void Build(Transform buildPt)
+    public void TryBuild(Transform buildPt, Transform hoverPt)
     {
-        if (!_canBuild || IsBuilding) return;
+        if (!_sufficeToBuild || IsBuilding || GameManager.Instance.PlayerPersistence.IsBuilding || IsBuilt) return;
+        GameManager.Instance.PlayerPersistence.IsBuilding = true;
         IsBuilding = true;
         // ConstructionItem objectItem = _constructionItem.objectItem;
         List<RefPair<Item, int>> materials = _constructionItem.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
 
-        EventManager.InvokeEvent(PlayEvents.BuildStart, buildPt);
+        EventManager.InvokeEvent(PlayEvents.BuildStart, hoverPt); // Currently only consumed by drone
         StartCoroutine(BuildWorks(buildPt));
         UpdateConstructionPanel();
         ClosePanel();
     }
 
+    // TODO: Add progress bar
     IEnumerator BuildWorks(Transform buildPt)
     {
         float elapsedTime = 0, doneTime = _constructionItem.baseBuildTime * buildTimeMod[GameManager.Instance.PlayerPersistence.DroneLevel - 1];
@@ -184,14 +187,17 @@ public class ConstructionSystem : MonoBehaviour
             yield return null;
         }
         IsBuilding = false;
+        IsBuilt = true;
+        GameManager.Instance.PlayerPersistence.IsBuilding = false;
         Instantiate(_constructionItem.itemPrefab, buildPt.position, Quaternion.identity);
         EventManager.InvokeEvent(PlayEvents.BuildEnd);
     }
 
-    private void SetBuildButton()
+    private void SetBuildButton(object input = null)
     {
-        buildImage.sprite = _canBuild ? buildActive[GameManager.Instance.PlayerPersistence.DroneLevel - 1] : buildInactive[GameManager.Instance.PlayerPersistence.DroneLevel - 1];
-        buildButton.GetComponent<Button>().interactable = _canBuild;
+        bool canBuild = _sufficeToBuild && !IsBuilding && !GameManager.Instance.PlayerPersistence.IsBuilding;
+        buildImage.sprite = canBuild ? buildActive[GameManager.Instance.PlayerPersistence.DroneLevel - 1] : buildInactive[GameManager.Instance.PlayerPersistence.DroneLevel - 1];
+        buildButton.GetComponent<Button>().interactable = canBuild;
     }
 
     void UpdateImage(int order)
