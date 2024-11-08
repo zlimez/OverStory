@@ -1,35 +1,37 @@
-using Abyss.EventSystem;
-using Abyss.Player;
 using UnityEngine;
-using Tuples;
-using System.Collections.Generic;
 
 namespace Abyss.Interactables
 {
     // TODO: Add persistence or refresh items logic
     public class ConstructionPost : Interactable
     {
-        [SerializeField] ConstructionItem construction;
+        [SerializeField] ConstructionItem construction; // TODO: make this a list for different tiers of same building
         [SerializeField] GameObject ConstructionPrefab;
+        [SerializeField] Transform buildPoint;
 
-        private GameObject constructionPanel;
-        private bool isPanelOpen;
+        private ConstructionSystem constructionSys;
 
         void Start()
         {
-            constructionPanel = Instantiate(ConstructionPrefab, transform);
-            ConstructionSystem sconstructionController = constructionPanel.GetComponent<ConstructionSystem>();
-            if (sconstructionController != null) sconstructionController.InitializePanel(construction, transform.position);
-            else Debug.LogError("ConstructionSystem 组件未找到!");
-            isPanelOpen = false;
-            constructionPanel.SetActive(isPanelOpen);
+            constructionSys = Instantiate(ConstructionPrefab, transform).GetComponent<ConstructionSystem>();
+            constructionSys.InitializePanel(construction, transform.position);
         }
 
-        public override void Interact()
+        public override void Interact() => constructionSys.Build(buildPoint);
+
+        // TODO: Add check whether player has unlocked the blueprint
+        protected override void PlayerEnterAction(Collider2D collider)
         {
-            isPanelOpen = !isPanelOpen;
-            constructionPanel.SetActive(isPanelOpen);
-            
-        } 
+            base.PlayerEnterAction(collider);
+            if (!constructionSys.IsPanelOpen && !constructionSys.IsBuilding)
+                constructionSys.OpenPanel();
+        }
+
+        protected override void PlayerExitAction(Collider2D collider)
+        {
+            base.PlayerExitAction(collider);
+            if (constructionSys.IsPanelOpen)
+                constructionSys.ClosePanel();
+        }
     }
 }

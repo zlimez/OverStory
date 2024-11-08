@@ -58,16 +58,13 @@ public class BugBT : MonoBT
             new("leftEnd", LeftEnd),
             new("rightEnd", RightEnd),
 
-            new("dashDest", "dashDest"),
             new("dashDestType", GotoTargetByCurve.TargetType.Vector3),
             new("dashCurve", dashCurve),
             new("dashSpeed", dashSpeed * attr.speed),
             new("dashKb", true),
-            new("dashAttack", "dashAttack"),
             new("dashDamage", dashDamage),
             new("dashBy", GotoTargetByCurve.MoveBy.Speed),
 
-            new("jumpDest", "jumpDest"),
             new("jumpCurve", jumpCurve),
             new("jumpDuration", jumpDuration),
             new("jumpDestType", GotoTargetByCurve.TargetType.Vector3),
@@ -79,33 +76,27 @@ public class BugBT : MonoBT
             new("bugManager", GetComponent<EnemyManager>()),
             new("aftComboRT", afterComboRestTime / attr.speed),
             new("arena",Arena),
-
-            new("idle", "Idle"),
-            new("drop", "Drop"),
-            new("dash", "Dash"),
-            new("preleap", "Preleap"),
-            new("jump", "Drop"),
         };
 
         _bT = new BT(
             new Sequence(new List<Node> {
-                new CheckPlayerInArena(new string[] {"arena"}),
+                new CheckPlayerInArena(new string[] { "arena", "target" }),
 
-                new StartAnim(new string[] { "bugAnim", "drop" }),
+                new StartAnim(new string[] { "bugAnim", "Drop" }),
                 new DropFrmCanopy(new string[] { "leftEnd", "rightEnd", "bugTfm", "dropCurve", "dropDuration", "minSpace", "jumpDest", "dashDest", "bugSprite" }),
 
-                new StartAnim(new string[] { "bugAnim", "dash" }),
+                new StartAnim(new string[] { "bugAnim", "Dash" }),
                 new RegisterAttack(new string[] { "dashDamage", "dashKb", "bugManager", "dashAttack" }),
                 new GotoTargetByCurve(new string[] { "bugTfm", "dashDest", "dashCurve", "dashDestType", "dashBy", "dashSpeed" }),
                 new UnregisterAttack(new string[] { "bugManager", "dashAttack" }),
 
-                new StartAnim(new string[] { "bugAnim", "preleap" }),
+                new StartAnim(new string[] { "bugAnim", "Preleap" }),
                 new Wait(new string[] { "waitBefJumpTime" }),
 
-                new StartAnim(new string[] { "bugAnim", "drop" }),
+                new StartAnim(new string[] { "bugAnim", "Drop" }),
                 new GotoTargetByCurve(new string[] { "bugTfm", "jumpDest", "jumpCurve", "jumpDestType", "jumpBy", "jumpDuration" }),
 
-                new StartAnim(new string[] { "bugAnim", "idle" }),
+                new StartAnim(new string[] { "bugAnim", "Idle" }),
                 new Wait(new string[] { "aftComboRT" }),
             })
         , bugParams, new Blackboard[] { });

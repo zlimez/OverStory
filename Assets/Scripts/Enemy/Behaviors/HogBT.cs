@@ -23,7 +23,8 @@ public class HogBT : MonoBT
     [SerializeField] float chargeSpeed;
     [SerializeField] float chargeDamage, chargeDamageCooldown;
     [Header("Patrol Settings")]
-    [SerializeField] float patrolSpeed, waitTime;
+    [SerializeField] float patrolSpeed;
+    [SerializeField] float waitTime;
     public Transform[] Waypoints;
 
     protected override void OnDisable()
@@ -43,7 +44,7 @@ public class HogBT : MonoBT
     IEnumerator SetupRoutine()
     {
         yield return new WaitForSeconds(0.1f);
-        Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent), new(Arena.EEEvent, Arena.EEEvent) });
+        Blackboard bb = new(new Pair<string, string[]>[] { new(aggro.EEEvent, new string[] { aggro.EEEvent }), new(Arena.EEEvent, new string[] { Arena.EEEvent }) });
         _bbs.Add(bb);
 
         EnemyAttr attr = GetComponent<EnemyManager>().attributes;
@@ -100,9 +101,9 @@ public class HogBT : MonoBT
         var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
-                new CheckPlayerInArena(new string[] { "arena" }),
-                new CheckPlayerInAggro(new string[] { "aggro" }),
-                new XFaceTarget(new string[] { "hogSprite" }),
+                new CheckPlayerInArena(new string[] { "arena", "target" }),
+                new CheckPlayerInAggro(new string[] { "aggro", "target" }),
+                new XFaceTarget(new string[] { "hogSprite", "target" }),
                 new ProbSelector(
                     new List<Node> {
                         new Charge(longChargeArgs),

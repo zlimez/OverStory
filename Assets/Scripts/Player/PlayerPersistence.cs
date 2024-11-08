@@ -13,6 +13,7 @@ namespace Abyss.DataPersistence
         public SpellItem[] SpellItems = new SpellItem[3];
         public Pair<AbyssScene, UnityEngine.Vector3> LastRest;
         public bool JustDied = false;
+        public int DroneLevel = 1;
     }
 
     [Serializable]

@@ -90,14 +90,14 @@ public class DialogueManager : Singleton<DialogueManager>
         else
         {
             leftSpeakerImg.sprite = null;
-            leftSpeakerImg.color = ColorUtils.Transparent;
+            leftSpeakerImg.color = Color.clear;
         }
         if (convo.RightSpeaker != null && convo.RightSpeaker.Sprite != null)
             rightSpeakerImg.sprite = convo.RightSpeaker.Sprite;
         else
         {
             rightSpeakerImg.sprite = null;
-            rightSpeakerImg.color = ColorUtils.Transparent;
+            rightSpeakerImg.color = Color.clear;
         }
     }
 

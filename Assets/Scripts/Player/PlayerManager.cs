@@ -19,7 +19,7 @@ namespace Abyss.Player
         [SerializeField] SpriteFlash spriteFlash;
         public Pair<AbyssScene, Vector3> LastRest;
         [Header("Settings")]
-        public PlayerAttr PlayerAttr;
+        public PlayerAttr PlayerAttr; // FIXME: Remove playerattr copy here use gamemanager as source of truth
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
 
         public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;

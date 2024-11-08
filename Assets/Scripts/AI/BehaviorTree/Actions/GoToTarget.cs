@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace BehaviorTree.Actions
 {
-    public class GotoTfmBySpd : CfAction
+    public class GotoTargetByFixedSpd : CfAction
     {
         private Transform _transform;
         private float _speed;
         string _targetName;
 
-        public GotoTfmBySpd(string[] parameters) : base(parameters) { }
+        public GotoTargetByFixedSpd(string[] parameters) : base(parameters) { }
 
         public override void Setup(BT tree)
         {
@@ -52,15 +52,14 @@ namespace BehaviorTree.Actions
         public override void Setup(BT tree)
         {
             base.Setup(tree);
-            List<object> dataRef = Tree.GetData(_params);
-            _transform = (Transform)dataRef[0];
-            _targetName = (string)dataRef[1];
-            _mvmtCurve = (AnimationCurve)dataRef[2];
-            _type = (TargetType)dataRef[3];
-            _moveBy = (MoveBy)dataRef[4];
+            _transform = Tree.GetDatum<Transform>(_params[0]);
+            _targetName = _params[1];
+            _mvmtCurve = Tree.GetDatum<AnimationCurve>(_params[2]);
+            _type = Tree.GetDatum<TargetType>(_params[3]);
+            _moveBy = Tree.GetDatum<MoveBy>(_params[4]);
             if (_moveBy == MoveBy.Speed)
-                _speed = (float)dataRef[5];
-            else _duration = (float)dataRef[5];
+                _speed = Tree.GetDatum<float>(_params[5]);
+            else _duration = Tree.GetDatum<float>(_params[5]);
         }
 
         public override void Update()

@@ -14,7 +14,7 @@ namespace Abyss.Environment.Enemy
         {
             base.Setup(tree);
             _portraitAnim = Tree.GetDatum<PortraitAnim>(_params[0]);
-            _animState = Tree.GetDatum<string>(_params[1]);
+            _animState = _params[1];
         }
 
         public override void Update() => State = State.SUCCESS;

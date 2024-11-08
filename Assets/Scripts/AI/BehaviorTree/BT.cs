@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Tuples;
 using UnityEngine;
@@ -23,8 +24,14 @@ namespace BehaviorTree
         Queue<UnityEvent> _eventWriteBuffer;
 
         readonly Blackboard[] _blackboards; // By contract should possess or have reference to vars that are tracked by this BT whose changes can cause composite restarts
-        readonly Dictionary<string, object> _headBoard = new();
+        readonly Dictionary<string, object> _headBoard = new(); // Can contain null values
 
+        /// <summary>
+        /// charParams are variables that will be stored in the head board name and values, blackboards are the sources of the variables that will be tracked
+        /// </summary>
+        /// <param name="firstNode"></param>
+        /// <param name="charParams"></param>
+        /// <param name="blackboards"></param>
         public BT(Node firstNode, Pair<string, object>[] charParams, Blackboard[] blackboards = null)
         {
             _root = new Root(firstNode);
@@ -80,7 +87,6 @@ namespace BehaviorTree
         #region APIs
         public void Teardown()
         {
-            // TODO: Remove all listeners
             foreach (var varTEvent in _trackedVarsActions)
             {
                 var varName = varTEvent.Key;

@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using Abyss.EventSystem;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ConstructionUI : MonoBehaviour
 {
@@ -12,10 +9,7 @@ public class ConstructionUI : MonoBehaviour
 
     public int level = 1;
 
-    void Start()
-    {
-        UpdateConstructionUI();
-    }
+    void Start() => UpdateConstructionUI();
 
     void OnEnable()
     {
@@ -40,8 +34,6 @@ public class ConstructionUI : MonoBehaviour
 
     void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateConstructionUI;
 
-
-
     public void UpdateLevel(int le)
     {
         level = le;
@@ -52,9 +44,7 @@ public class ConstructionUI : MonoBehaviour
     {
 
         foreach (Transform child in scrollViewContent.transform)
-        {
             Destroy(child.gameObject);
-        }
 
         playerInventory = GameManager.Instance.Inventory.MaterialCollection;
         foreach (var itemStack in playerInventory.Items)
@@ -64,14 +54,8 @@ public class ConstructionUI : MonoBehaviour
             GameObject slot = Instantiate(SlotPrefab, scrollViewContent.transform);
 
             LargeSlotController slotController = slot.GetComponent<LargeSlotController>();
-            if (slotController != null)
-            {
-                slotController.InitializeSlot(itemStack.Data, level);
-            }
-            else
-            {
-                Debug.LogError("LargeSlotController 组件未找到!");
-            }
+            if (slotController != null) slotController.InitializeSlot(itemStack.Data, level);
+            else Debug.LogError("LargeSlotController 组件未找到!");
         }
     }
 }

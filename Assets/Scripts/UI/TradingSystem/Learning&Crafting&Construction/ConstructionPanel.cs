@@ -1,7 +1,6 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using Abyss.EventSystem;
-using Abyss.Player;
 using TMPro;
 using Tuples;
 using UnityEngine;
@@ -10,18 +9,14 @@ using UnityEngine.UI;
 public class ConstructionSystem : MonoBehaviour
 {
     [SerializeField] GameObject constructionPanel;
-    [SerializeField] GameObject topSlot;
-    [SerializeField] GameObject topCover;
-    [SerializeField] List<GameObject> bottomSlots = new List<GameObject>(2);
-    [SerializeField] List<GameObject> bottomCover = new List<GameObject>(2);
+    [SerializeField] GameObject topSlot, topCover;
+    [SerializeField] List<GameObject> bottomSlots = new(2), bottomCover = new(2);
 
     [SerializeField] Button buildButton;
-    [SerializeField] Sprite[] buildInactive;
-    [SerializeField] Sprite[] buildActive;
+    [SerializeField] Sprite[] buildInactive, buildActive;
     [SerializeField] Image buildImage;
 
-
-    int level;
+    [SerializeField] float[] buildTimeMod = new float[3] { 1.0f, 0.75f, 0.6f };
     [SerializeField] Sprite[] backgroundImages;
     [SerializeField] Image constructionBackground;
     [SerializeField] Sprite[] areaImages;
@@ -30,10 +25,13 @@ public class ConstructionSystem : MonoBehaviour
     [SerializeField] Image[] slots;
 
     ConstructionItem _constructionItem;
+    public bool IsPanelOpen { get; private set; } = false;
+
+    public bool IsBuilding { get; private set; } = false;
+    bool _canBuild = false;
 
     public void InitializePanel(ConstructionItem constructionItem, Vector3 position)
     {
-        level = GameManager.Instance.Inventory.Level;
         _constructionItem = constructionItem;
         if (_constructionItem != null)
         {
@@ -44,27 +42,27 @@ public class ConstructionSystem : MonoBehaviour
         }
     }
 
-    // void Start() => constructionPanel.SetActive(true);
-
-    void OnEnable()
+    public void OpenPanel()
     {
-        level = GameManager.Instance.Inventory.Level;
         UpdateConstructionPanel();
+        IsPanelOpen = true;
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateConstructionPanel;
+        constructionPanel.SetActive(true);
     }
-    void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateConstructionPanel;
 
-    public void CloseConstruction()
+    public void ClosePanel()
     {
         constructionPanel.SetActive(false);
+        IsPanelOpen = false;
+        GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateConstructionPanel;
     }
 
     private void UpdateConstructionPanel()
     {
-        UpdateImage(level - 1);
+        UpdateImage(GameManager.Instance.PlayerPersistence.DroneLevel - 1);
 
-        bool canBuild = true;
-        topCover.gameObject.SetActive(false);
+        _canBuild = true;
+        topCover.SetActive(false);
         Item topItem;
         List<RefPair<Item, int>> materials;
         if (_constructionItem != null)
@@ -76,7 +74,7 @@ public class ConstructionSystem : MonoBehaviour
         {
             topItem = null;
             materials = null;
-            canBuild = false;
+            _canBuild = false;
         }
 
         // TopSlot
@@ -138,15 +136,15 @@ public class ConstructionSystem : MonoBehaviour
                     int haveCount = GameManager.Instance.Inventory.MaterialCollection.StockOf(item.Head);
                     if (haveCount < needCount)
                     {
-                        canBuild = false;
-                        bottomCover[i].gameObject.SetActive(true);
+                        _canBuild = false;
+                        bottomCover[i].SetActive(true);
                     }
-                    else bottomCover[i].gameObject.SetActive(false);
+                    else bottomCover[i].SetActive(false);
                     nestedText.text = haveCount.ToString() + "/" + needCount.ToString();
                 }
                 else
                 {
-                    bottomCover[i].gameObject.SetActive(false);
+                    bottomCover[i].SetActive(false);
                     nestedText.text = "";
                 }
             }
@@ -156,31 +154,44 @@ public class ConstructionSystem : MonoBehaviour
                 Countable<Item> newItemStack = new(item.Head, 1);
                 bottomSlotForLearning.itemStack = newItemStack;
             }
-
         }
 
         // Buttom
-        SetBuildButton(canBuild);
+        SetBuildButton();
     }
 
 
-    public void BiuldOnClick()
+    public void Build(Transform buildPt)
     {
+        if (!_canBuild || IsBuilding) return;
+        IsBuilding = true;
         // ConstructionItem objectItem = _constructionItem.objectItem;
         List<RefPair<Item, int>> materials = _constructionItem.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
-        // Build
 
-
-        //
+        EventManager.InvokeEvent(PlayEvents.BuildStart, buildPt);
+        StartCoroutine(BuildWorks(buildPt));
         UpdateConstructionPanel();
-        CloseConstruction();
+        ClosePanel();
     }
 
-    private void SetBuildButton(bool state)
+    IEnumerator BuildWorks(Transform buildPt)
     {
-        buildImage.sprite = state ? buildActive[level - 1] : buildInactive[level - 1];
-        buildButton.GetComponent<Button>().interactable = state;
+        float elapsedTime = 0, doneTime = _constructionItem.baseBuildTime * buildTimeMod[GameManager.Instance.PlayerPersistence.DroneLevel - 1];
+        while (elapsedTime < doneTime)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        IsBuilding = false;
+        Instantiate(_constructionItem.itemPrefab, buildPt.position, Quaternion.identity);
+        EventManager.InvokeEvent(PlayEvents.BuildEnd);
+    }
+
+    private void SetBuildButton()
+    {
+        buildImage.sprite = _canBuild ? buildActive[GameManager.Instance.PlayerPersistence.DroneLevel - 1] : buildInactive[GameManager.Instance.PlayerPersistence.DroneLevel - 1];
+        buildButton.GetComponent<Button>().interactable = _canBuild;
     }
 
     void UpdateImage(int order)
@@ -194,6 +205,3 @@ public class ConstructionSystem : MonoBehaviour
         }
     }
 }
-
-
-

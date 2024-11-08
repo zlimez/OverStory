@@ -21,38 +21,8 @@ namespace Abyss.Interactables
         // [SerializeField] protected Conversation wrongItem;
         // [SerializeField] string useItemText = "Use Item", interactText = "Interact", leaveText = "Leave";
 
-        // protected Choice useItem, interact, leave;
         private GameObject hint;
-
         protected GameObject player;
-
-        // protected void InitialiseItemChoice()
-        // {
-        //     useItem = new Choice(useItemText, UseItemChoice);
-        //     interact = new Choice(interactText, InteractChoice);
-        //     leave = new Choice(leaveText, LeaveChoice);
-        // }
-
-        // public virtual void UseItemChoice(object o = null)
-        // {
-        //     EventManager.InvokeEvent(CommonEventCollection.OpenInventory);
-        //     InventoryUI.Instance.StartItemSelect(OnSelectItem);
-        // }
-
-        // public virtual bool OnSelectItem(Item item)
-        // {
-        //     // Wrong item selected
-        //     DialogueManager.Instance.StartConversation(wrongItem);
-        //     // Whether the item is removed
-        //     return false;
-        // }
-
-        // public virtual void InteractChoice(object o = null)
-        // {
-        //     Interact();
-        // }
-
-        // public virtual void LeaveChoice(object o = null) { }
 
         void SpawnHint()
         {
@@ -84,23 +54,29 @@ namespace Abyss.Interactables
         protected virtual void OnTriggerEnter2D(Collider2D collider)
         {
             if (collider.CompareTag("Player"))
-            {
-                EventManager.InvokeEvent(PlayEvents.InteractableEntered, infoText);
-                collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
-                player = collider.gameObject;
-                SpawnHint();
-            }
+                PlayerEnterAction(collider);
+        }
+
+        protected virtual void PlayerEnterAction(Collider2D collider)
+        {
+            EventManager.InvokeEvent(PlayEvents.InteractableEntered, infoText);
+            collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
+            player = collider.gameObject;
+            SpawnHint();
         }
 
         protected virtual void OnTriggerExit2D(Collider2D collider)
         {
             if (collider.CompareTag("Player"))
-            {
-                EventManager.InvokeEvent(PlayEvents.InteractableExited);
-                collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
-                player = null;
-                DestroyHint();
-            }
+                PlayerExitAction(collider);
+        }
+
+        protected virtual void PlayerExitAction(Collider2D collider)
+        {
+            EventManager.InvokeEvent(PlayEvents.InteractableExited);
+            collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
+            player = null;
+            DestroyHint();
         }
     }
 }

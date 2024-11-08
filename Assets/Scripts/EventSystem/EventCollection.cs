@@ -1,3 +1,5 @@
+using UnityEditor.PackageManager;
+
 namespace Abyss.EventSystem
 {
     public static class SystemEvents
@@ -62,6 +64,8 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent Rested;
         public static readonly StaticEvent SpellEquippedStateChange;
         public static readonly StaticEvent Respawn;
+        public static readonly StaticEvent BuildStart;
+        public static readonly StaticEvent BuildEnd;
 
 
         static PlayEvents()
@@ -81,6 +85,8 @@ namespace Abyss.EventSystem
             Rested = StaticEvent.Rested;
             SpellEquippedStateChange = StaticEvent.SpellEquippedStateChange;
             Respawn = StaticEvent.Respawn;
+            BuildStart = StaticEvent.BuildStart;
+            BuildEnd = StaticEvent.BuildEnd;
         }
     }
 }

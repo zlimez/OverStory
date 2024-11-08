@@ -37,8 +37,6 @@ public class BloomBT : MonoBT
     IEnumerator SetupRoutine()
     {
         yield return new WaitForSeconds(0.4f);
-        Blackboard bb = new(new Pair<string, string>[] { new(aggro.EEEvent, aggro.EEEvent) });
-        _bbs.Add(bb);
 
         EnemyAttr attr = GetComponent<EnemyManager>().attributes;
         attr = NormalizeEnemyAttr(attr);
@@ -75,11 +73,11 @@ public class BloomBT : MonoBT
 
         _bT = new BT(new Sequence(
             new List<Node> {
-                new CheckPlayerInAggro(new string[] { "aggro" }),
+                new CheckPlayerInAggro(new string[] { "aggro", "target" }),
                 new ProbSelector(
                     new List<Node> {
                         new Sequence(new List<Node> {
-                            new XFaceTarget(new string[] { "bloomSprite" }),
+                            new XFaceTarget(new string[] { "bloomSprite", "target" }),
                             new Chomp(new string[] { "preChompTime", "chompTime", "chompRestTime", "chompDmg", "chompCurve", "bloomAnim", "neck1Tfm", "neck2Tfm", "neck3Tfm", "headTfm", "bloomManager" })
                         }),
                         new Sequence(new List<Node> {
@@ -96,7 +94,7 @@ public class BloomBT : MonoBT
                     new string[][] { new string[] { "target", "bloomTfm" }, new string[] { "target", "bloomTfm" }, new string[] { "target", "bloomTfm" }}
                 )
             })
-        , bloomParams, new Blackboard[] { bb });
+        , bloomParams);
     }
 
 #if UNITY_EDITOR

@@ -8,10 +8,10 @@ namespace Abyss.Interactables
         [SerializeField] Conversation foundBagConvo;
         [SerializeField] DynamicEvent dronePickedEvent, bagPickedEvent;
 
-        protected override void OnTriggerEnter2D(Collider2D collider)
+        protected override void PlayerEnterAction(Collider2D collider)
         {
-            base.OnTriggerEnter2D(collider);
-            if (EventLedger.Instance.HasOccurred(new GameEvent(dronePickedEvent.EventName)) && player != null) DialogueManager.Instance.HardStartConvo(foundBagConvo);
+            base.PlayerEnterAction(collider);
+            if (EventLedger.Instance.HasOccurred(new GameEvent(dronePickedEvent.EventName))) DialogueManager.Instance.HardStartConvo(foundBagConvo);
         }
 
         public override void Interact()

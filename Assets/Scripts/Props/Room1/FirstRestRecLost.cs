@@ -11,14 +11,14 @@ public class FirstRestRecLost : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!EventLedger.Instance.HasOccurred(new GameEvent(HadFirstDeathConvo.EventName)) && EventLedger.Instance.GetEventCount(StaticEvent.Respawn) == 1)
+            if (!EventLedger.Instance.HasOccurred(new GameEvent(HadFirstDeathConvo.EventName)) && EventLedger.Instance.GetEventCount(PlayEvents.Respawn) == 1)
             {
                 EventLedger.Instance.Record(new GameEvent(HadFirstDeathConvo.EventName));
                 DialogueManager.Instance.HardStartConvo(firstDeath);
             }
             var playerManager = other.GetComponent<PlayerManager>();
 
-            if (EventLedger.Instance.HasOccurred(StaticEvent.Respawn))
+            if (EventLedger.Instance.HasOccurred(PlayEvents.Respawn))
             {
                 if (!playerManager.BelowPurityThreshold && !EventLedger.Instance.HasOccurred(new GameEvent(HadFirstRecover.EventName)))
                 {
