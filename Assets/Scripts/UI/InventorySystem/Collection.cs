@@ -74,7 +74,7 @@ public class Collection
             RemoveStock(Items[i].Data, rmCnt);
             if (n == 0) break;
         }
-        if (n > 0) RemoveStock(Items[Items.Count - 1].Data, n);
+        if (n > 0) RemoveStock(Items[^1].Data, n);
         OnItemChanged?.Invoke();
     }
 

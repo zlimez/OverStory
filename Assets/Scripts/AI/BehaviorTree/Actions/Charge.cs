@@ -8,18 +8,15 @@ using Abyss.Environment.Enemy;
 public class Charge : CfAction
 {
     static readonly int _obstacleLayerMask = 1 << 7 | 1 << 11;
-    float _stunTime;
-    float _restTime;
-    float _chargeDist;
-    float _chargeupTime;
-    float _chargeSpeed; // Avg speed of charge
-    float _stunRaycastDist;
-    float _chargeDmg;
+    float _stunTime, _restTime;
+    float _chargeDist, _chargeDmg, _chargeSpeed; // Avg speed of charge
+    float _chargeupTime, _stunRaycastDist;
     AnimationCurve _chargeCurve;
     Transform _transform;
     SpriteManager _spriteManager;
     HogAnim _chargeTypeAnim;
     EnemyManager _enemyManager;
+    System.Action<Vector3> _vfx;
 
     Vector3 startPos;
     float chargeTime;
@@ -47,6 +44,7 @@ public class Charge : CfAction
         _stunRaycastDist = (float)dataRef[9];
         _chargeDmg = (float)dataRef[10];
         _enemyManager = (EnemyManager)dataRef[11];
+        _vfx = (System.Action<Vector3>)dataRef[12];
         chargeTime = _chargeDist / _chargeSpeed;
     }
 
@@ -78,8 +76,13 @@ public class Charge : CfAction
             }
 
             // Consider collision into wall
-            if (Physics2D.Raycast(_transform.position, _spriteManager.forward, _stunRaycastDist, _obstacleLayerMask))
+            var castHit = Physics2D.Raycast(_transform.position, _spriteManager.forward, _stunRaycastDist, _obstacleLayerMask);
+            if (castHit.collider != null)
             {
+                if (castHit.collider.CompareTag("Wall (Construct)"))
+                    castHit.collider.GetComponent<Construct>().TakeDmg();
+
+                _vfx(castHit.point);
                 _chargeTypeAnim.TransitionToState(HogAnim.State.Stun.ToString());
                 _enemyManager.OnStrikePlayer -= ChargeHit;
                 isResting = true;

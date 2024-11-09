@@ -7995,6 +7995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5465e595a1e7a4c29b64561261c2eae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arena: {fileID: 0}
   stunTime: 1
   shortRestTime: 0.25
   longRestTime: 0.5
@@ -8031,6 +8032,17 @@ MonoBehaviour:
   chargeSpeed: 6
   chargeDamage: 10
   chargeDamageCooldown: 1.5
+  collideVfxParticle: {fileID: 2243856311797237397, guid: 9a87d52695eb34334a9c1bc604ae0f8d,
+    type: 3}
+  vfxBounds:
+    Head: {x: 1, y: 1}
+    Tail: {x: -1, y: -1}
+  particlesNumRange:
+    Head: 2
+    Tail: 4
+  particlesScaleRange:
+    Head: 0.5
+    Tail: 3.5
   patrolSpeed: 2
   waitTime: 0.5
   Waypoints:

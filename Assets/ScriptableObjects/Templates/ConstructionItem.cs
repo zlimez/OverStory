@@ -6,7 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item/Construction")]
 public class ConstructionItem : Item
 {
-    public Item objectItem;
     public List<RefPair<Item, int>> materials = new(2);
     [Tooltip("Time required when construction level is 1")] public float baseBuildTime;
 

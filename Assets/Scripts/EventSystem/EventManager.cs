@@ -54,7 +54,7 @@ namespace Abyss.EventSystem
 
         public static void InvokeEvent(GameEvent gameEvent, object inputParam = null)
         {
-            // Debug.Log($"{gameEvent.EventName} invoked");
+            Debug.Log($"{gameEvent.EventName} invoked");
             if (eventTable.ContainsKey(gameEvent))
                 eventTable[gameEvent]?.Invoke(inputParam);
         }

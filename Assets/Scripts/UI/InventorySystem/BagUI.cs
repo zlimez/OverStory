@@ -146,13 +146,8 @@ public class BagUI : MonoBehaviour
 
             SlotController slotController = slot.GetComponent<SlotController>();
             if (slotController != null)
-            {
                 slotController.InitializeSlot(itemStack, level);
-            }
-            else
-            {
-                Debug.LogError("SlotController 组件未找到!");
-            }
+            else Debug.LogError("SlotController 组件未找到!");
         }
     }
 }

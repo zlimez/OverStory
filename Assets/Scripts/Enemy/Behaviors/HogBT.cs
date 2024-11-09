@@ -22,6 +22,10 @@ public class HogBT : MonoBT
     [SerializeField] Aggro aggro;
     [SerializeField] float chargeSpeed;
     [SerializeField] float chargeDamage, chargeDamageCooldown;
+    [SerializeField] GameObject collideVfxParticle;
+    [SerializeField] Pair<Vector2, Vector2> vfxBounds;
+    [SerializeField] Pair<int, int> particlesNumRange;
+    [SerializeField] Pair<float, float> particlesScaleRange;
     [Header("Patrol Settings")]
     [SerializeField] float patrolSpeed;
     [SerializeField] float waitTime;
@@ -37,6 +41,18 @@ public class HogBT : MonoBT
     {
         StartCoroutine(SetupRoutine());
         GetComponent<EnemyManager>().OnDefeated += StopBT;
+    }
+
+    void OnCollision(Vector3 hitPoint)
+    {
+        for (int i = 0; i < UnityEngine.Random.Range(particlesNumRange.Head, particlesNumRange.Tail); i++)
+        {
+            Vector3 pos = new(hitPoint.x + UnityEngine.Random.Range(vfxBounds.Head.x, vfxBounds.Tail.x), hitPoint.y + UnityEngine.Random.Range(vfxBounds.Head.y, vfxBounds.Tail.y), 0);
+            GameObject particle = Instantiate(collideVfxParticle, pos, Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360)));
+            float uniScale = UnityEngine.Random.Range(particlesScaleRange.Head, particlesScaleRange.Tail);
+            particle.transform.localScale = new Vector3(uniScale, uniScale, uniScale);
+            particle.transform.SetParent(transform);
+        }
     }
 
     // Invoked by spawner
@@ -79,6 +95,7 @@ public class HogBT : MonoBT
             new("chargeCurve", chargeCurve),
             new("chargeSpeed", chargeSpeed * attr.speed),
             new("stunRaycastDist", stunRaycastDist),
+            new("stunVfx", (Action<Vector3>)OnCollision),
 
             new("patrolSpeed", patrolSpeed * attr.speed),
             new("waitTime", waitTime / attr.speed),
@@ -97,8 +114,8 @@ public class HogBT : MonoBT
             new("hogManager", GetComponent<EnemyManager>())
         };
 
-        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager" };
-        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager" };
+        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager", "stunVfx" };
+        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager", "stunVfx" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
                 new CheckPlayerInArena(new string[] { "arena", "target" }),

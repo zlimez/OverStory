@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 896e0e4aeba404a45a7675bfd1557929, type: 3}
+  m_Name: Pit2
+  m_EditorClassIdentifier: 
+  itemName: Weathered Wall
+  description: 'Constructs an additional wall, making it easier for the hog to be
+    stunned if it charges into it.
+
+    Durability: 1'
+  icon: {fileID: 21300000, guid: e0ca98683e1b5414b89b24484daefca4, type: 3}
+  itemImage: {fileID: 21300000, guid: e0ca98683e1b5414b89b24484daefca4, type: 3}
+  itemPrefab: {fileID: 63323973075519710, guid: 18785cce2609a48739ab0702e4de158c,
+    type: 3}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
+  itemType: 7
+  objectItem: {fileID: 0}
+  materials:
+  - Head: {fileID: 11400000, guid: 902c1dc95d4644ef2ac6013520729927, type: 2}
+    Tail: 1
+  - Head: {fileID: 11400000, guid: 4140506ff62f445da9bb080d09f928fe, type: 2}
+    Tail: 3
+  baseBuildTime: 6

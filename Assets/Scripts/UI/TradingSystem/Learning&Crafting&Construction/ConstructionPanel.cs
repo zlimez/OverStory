@@ -24,9 +24,12 @@ public class ConstructionSystem : MonoBehaviour
     [SerializeField] Sprite[] slotImages;
     [SerializeField] Image[] slots;
 
+    [SerializeField] GameObject progressBar;
+    [SerializeField] Image barFill;
+
     ConstructionItem _constructionItem;
     public bool IsPanelOpen { get; private set; } = false;
-    public bool IsBuilt { get; private set; } = false;
+    public bool IsBuilt = false;
     public bool IsBuilding { get; private set; } = false;
     bool _sufficeToBuild = false;
 
@@ -39,12 +42,13 @@ public class ConstructionSystem : MonoBehaviour
             Vector3 adjustedPosition = position + new Vector3(0, -3.5f, 0);
             RectTransform panelRectTransform = constructionPanel.GetComponent<RectTransform>();
             panelRectTransform.position = adjustedPosition;
+            progressBar.GetComponent<RectTransform>().position = adjustedPosition + new Vector3(0, 4f, 0);
         }
     }
 
     public void TryOpenPanel()
     {
-        if (IsPanelOpen || IsBuilding || IsBuilt) return;
+        if (IsPanelOpen || IsBuilding || IsBuilt || !GameManager.Instance.Inventory.MaterialCollection.Contains(_constructionItem)) return;
         UpdateConstructionPanel();
         IsPanelOpen = true;
         constructionPanel.SetActive(true);
@@ -164,10 +168,10 @@ public class ConstructionSystem : MonoBehaviour
 
     public void TryBuild(Transform buildPt, Transform hoverPt)
     {
-        if (!_sufficeToBuild || IsBuilding || GameManager.Instance.PlayerPersistence.IsBuilding || IsBuilt) return;
+        if (!_sufficeToBuild || IsBuilding || GameManager.Instance.PlayerPersistence.IsBuilding || IsBuilt || !GameManager.Instance.Inventory.MaterialCollection.Contains(_constructionItem)) return;
         GameManager.Instance.PlayerPersistence.IsBuilding = true;
         IsBuilding = true;
-        // ConstructionItem objectItem = _constructionItem.objectItem;
+
         List<RefPair<Item, int>> materials = _constructionItem.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
 
@@ -177,20 +181,27 @@ public class ConstructionSystem : MonoBehaviour
         ClosePanel();
     }
 
-    // TODO: Add progress bar
     IEnumerator BuildWorks(Transform buildPt)
     {
+        progressBar.SetActive(true);
+
         float elapsedTime = 0, doneTime = _constructionItem.baseBuildTime * buildTimeMod[GameManager.Instance.PlayerPersistence.DroneLevel - 1];
         while (elapsedTime < doneTime)
         {
             elapsedTime += Time.deltaTime;
+            barFill.fillAmount = elapsedTime / doneTime;
             yield return null;
         }
         IsBuilding = false;
         IsBuilt = true;
         GameManager.Instance.PlayerPersistence.IsBuilding = false;
-        Instantiate(_constructionItem.itemPrefab, buildPt.position, Quaternion.identity);
+
+        var building = Instantiate(_constructionItem.itemPrefab, buildPt.position, Quaternion.identity);
+        building.GetComponent<Construct>().ConstructionSys = this;
+        building.transform.SetParent(buildPt);
+
         EventManager.InvokeEvent(PlayEvents.BuildEnd);
+        progressBar.SetActive(false);
     }
 
     private void SetBuildButton(object input = null)

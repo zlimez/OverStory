@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Obstacle
   - Burnable
+  - Wall (Construct)
+  - Pit (Construct)
   layers:
   - Default
   - TransparentFX
@@ -60,6 +62,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1619572195
+    locked: 0
+  - name: VFX
+    uniqueID: 1727171333
     locked: 0
   - name: UI
     uniqueID: 337728237

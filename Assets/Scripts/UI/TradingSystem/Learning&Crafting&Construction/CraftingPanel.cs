@@ -35,6 +35,7 @@ public class CraftingSystem : MonoBehaviour
     public void CloseCrafting()
     {
         Stop();
+        EventManager.StopListening(UIEvents.SelectItem, Select);
         GameManager.Instance.UI.Close();
     }
 
@@ -71,7 +72,7 @@ public class CraftingSystem : MonoBehaviour
     private void UpdateCraftingArea()
     {
         bool canCraft = true;
-        topCover.gameObject.SetActive(false);
+        topCover.SetActive(false);
         Item topItem;
         List<RefPair<Item, int>> materials;
         if (_chosenBlueprint != null)
@@ -146,15 +147,15 @@ public class CraftingSystem : MonoBehaviour
                     if (haveCount < needCount)
                     {
                         canCraft = false;
-                        bottomCover[i].gameObject.SetActive(true);
-                        topCover.gameObject.SetActive(true);
+                        bottomCover[i].SetActive(true);
+                        topCover.SetActive(true);
                     }
-                    else bottomCover[i].gameObject.SetActive(false);
+                    else bottomCover[i].SetActive(false);
                     nestedText.text = haveCount.ToString() + "/" + needCount.ToString();
                 }
                 else
                 {
-                    bottomCover[i].gameObject.SetActive(false);
+                    bottomCover[i].SetActive(false);
                     nestedText.text = "";
                 }
             }

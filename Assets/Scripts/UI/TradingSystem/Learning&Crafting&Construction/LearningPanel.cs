@@ -11,16 +11,13 @@ public class LearningSystem : MonoBehaviour
 {
     [SerializeField] Tribe tribe;
     [SerializeField] GameObject learningPanel;
-    [SerializeField] GameObject topSlot;
-    [SerializeField] GameObject topCover;
-    [SerializeField] List<GameObject> bottomSlots = new(2);
-    [SerializeField] List<GameObject> bottomCover = new(2);
+    [SerializeField] GameObject topSlot, topCover;
+    [SerializeField] List<GameObject> bottomSlots = new(2), bottomCover = new(2);
     [SerializeField] GameObject scrollViewContent;
     [SerializeField] GameObject slotPrefab;
 
     [SerializeField] Button learnButton;
-    [SerializeField] Sprite learnButtonInactive;
-    [SerializeField] Sprite learnButtonActive;
+    [SerializeField] Sprite learnButtonInactive, learnButtonActive;
     [SerializeField] Image learnButtonImage;
 
     [SerializeField] Collection npcBag;
@@ -28,7 +25,6 @@ public class LearningSystem : MonoBehaviour
     public bool IsLearningOpen { get; private set; } = false;
     public Tribe Tribe => tribe;
 
-    Tribe _tribe;
     BlueprintItem _chosenBlueprint;
 
     void Start() => learningPanel.SetActive(false);
@@ -39,6 +35,7 @@ public class LearningSystem : MonoBehaviour
     public void CloseLearning()
     {
         Stop();
+        EventManager.StopListening(UIEvents.SelectItem, Select);
         GameManager.Instance.UI.Close();
     }
 
@@ -56,7 +53,6 @@ public class LearningSystem : MonoBehaviour
         if (!GameManager.Instance.UI.Open(UiController.Type.Learn, Stop)) return;
 
         npcBag = itemCollection;
-        _tribe = tribe;
         _chosenBlueprint = null;
         UpdateLearningPanel();
         IsLearningOpen = true;
@@ -93,7 +89,7 @@ public class LearningSystem : MonoBehaviour
             materials = null;
             canLearn = false;
         }
-        topCover.gameObject.SetActive(false);
+        topCover.SetActive(false);
 
         // TopSlot
         Transform spriteObject = topSlot.transform.Find("ItemIcon");
@@ -116,8 +112,8 @@ public class LearningSystem : MonoBehaviour
                 {
                     if (!GameManager.Instance.Inventory.MaterialCollection.Contains(preItem)) canLearn = false;
                 }
-                if(!prerequisiteAttr.IsLessThanOrEqual(GameManager.Instance.PlayerPersistence.PlayerAttr)) canLearn = false;
-                topCover.gameObject.SetActive(!canLearn);
+                if (!prerequisiteAttr.IsLessThanOrEqual(GameManager.Instance.PlayerPersistence.PlayerAttr)) canLearn = false;
+                topCover.SetActive(!canLearn);
             }
             else nestedImage.gameObject.SetActive(false);
         }
@@ -166,14 +162,14 @@ public class LearningSystem : MonoBehaviour
                     if (haveCount < needCount)
                     {
                         canLearn = false;
-                        bottomCover[i].gameObject.SetActive(true);
+                        bottomCover[i].SetActive(true);
                     }
-                    else bottomCover[i].gameObject.SetActive(false);
+                    else bottomCover[i].SetActive(false);
                     nestedText.text = haveCount.ToString() + "/" + needCount.ToString();
                 }
                 else
                 {
-                    bottomCover[i].gameObject.SetActive(false);
+                    bottomCover[i].SetActive(false);
                     nestedText.text = "";
                 }
             }
@@ -183,7 +179,6 @@ public class LearningSystem : MonoBehaviour
                 Countable<Item> newItemStack = new(item.Head, 1);
                 bottomSlotForLearning.itemStack = newItemStack;
             }
-
         }
 
         // Buttom

@@ -35,4 +35,4 @@ MonoBehaviour:
     Tail: 2
   - Head: {fileID: 11400000, guid: 076100eac677c466aa36bda74005b192, type: 2}
     Tail: 2
-  baseBuildTime: 5
+  baseBuildTime: 2
