@@ -21,6 +21,7 @@ public class BugBT : MonoBT
     public Transform RightEnd;
     [SerializeField] AnimationCurve dashCurve;
     [SerializeField] float dashSpeed, dashDamage;
+    [SerializeField] float scanPitRaycastDist;
 
     [Header("Jump Settings")]
     [SerializeField] AnimationCurve jumpCurve;
@@ -60,6 +61,7 @@ public class BugBT : MonoBT
 
             new("dashDestType", GotoTargetByCurve.TargetType.Vector3),
             new("dashCurve", dashCurve),
+            new("scanPitRaycastDist", scanPitRaycastDist),
             new("dashSpeed", dashSpeed * attr.speed),
             new("dashKb", true),
             new("dashDamage", dashDamage),
@@ -78,27 +80,42 @@ public class BugBT : MonoBT
             new("arena",Arena),
         };
 
+        // TODO: Refer to item doc reduce speed when struck by pit take continuous damage if is level 2 pit
         _bT = new BT(
             new Sequence(new List<Node> {
                 new CheckPlayerInArena(new string[] { "arena", "target" }),
 
-                new StartAnim(new string[] { "bugAnim", "Drop" }),
+                new StartAnim(new string[] { "bugAnim", BugAnim.State.Drop.ToString() }),
                 new DropFrmCanopy(new string[] { "leftEnd", "rightEnd", "bugTfm", "dropCurve", "dropDuration", "minSpace", "jumpDest", "dashDest", "bugSprite" }),
 
-                new StartAnim(new string[] { "bugAnim", "Dash" }),
+                new StartAnim(new string[] { "bugAnim", BugAnim.State.Dash.ToString() }),
                 new RegisterAttack(new string[] { "dashDamage", "dashKb", "bugManager", "dashAttack" }),
-                new GotoTargetByCurve(new string[] { "bugTfm", "dashDest", "dashCurve", "dashDestType", "dashBy", "dashSpeed" }),
+                new Dash(new string[] { "bugTfm", "dashDest", "dashCurve", "dashDestType", "dashBy", "dashSpeed", "pitDmgJumpDelay", "scanPitRaycastDist", "bugManager", "bugSprite" }),
                 new UnregisterAttack(new string[] { "bugManager", "dashAttack" }),
 
-                new StartAnim(new string[] { "bugAnim", "Preleap" }),
+                new Successer(new Sequence(new List<Node> {
+                    new CheckVarExists(new string[] { "pitDmgJumpDelay" }),
+                    new StartAnim(new string[] { "bugAnim", BugAnim.State.Wounded.ToString() }),
+                    new WaitWithVar(new string[] { "pitDmgJumpDelay" }),
+                    new ClearVar(new string[] { "pitDmgJumpDelay" }),
+                })),
+                new StartAnim(new string[] { "bugAnim", BugAnim.State.Preleap.ToString() }),
                 new Wait(new string[] { "waitBefJumpTime" }),
 
-                new StartAnim(new string[] { "bugAnim", "Drop" }),
+                new StartAnim(new string[] { "bugAnim", BugAnim.State.Drop.ToString() }),
                 new GotoTargetByCurve(new string[] { "bugTfm", "jumpDest", "jumpCurve", "jumpDestType", "jumpBy", "jumpDuration" }),
 
-                new StartAnim(new string[] { "bugAnim", "Idle" }),
+                new StartAnim(new string[] { "bugAnim", BugAnim.State.Idle.ToString() }),
                 new Wait(new string[] { "aftComboRT" }),
             })
         , bugParams, new Blackboard[] { });
     }
+
+#if UNITY_EDITOR
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, GetComponent<SpriteManager>().forward * scanPitRaycastDist);
+    }
+#endif
 }

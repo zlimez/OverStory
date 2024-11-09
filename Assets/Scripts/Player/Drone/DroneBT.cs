@@ -60,7 +60,7 @@ public class DroneBT : MonoBT
 
         _bT = new BT(new ObserveSelector(new List<Node> {
             new ObserveSequence(new List<Node> {
-                new CheckTargetExists(new string[] { "buildLoc" }),
+                new CheckVarExists(new string[] { "buildLoc" }),
                 new XFaceTarget(new string[] { "droneSprite", "buildLoc" }),
                 new GotoTargetByCurve(new string[] { "droneTransform", "buildLoc", "mvToBuildCurve", "mvToBuildType", "mvToBuildBy", "mvToBuildDuration" }),
                 new DroneAdjust(new string[] { "headLight", "transitionTime", "buildIntensity", "buildColor", "buildZRot", "transitionCurve", "droneTransform", "droneSprite" }),

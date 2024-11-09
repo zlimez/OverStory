@@ -28,4 +28,33 @@ namespace BehaviorTree.Actions
             _timer = 0;
         }
     }
+
+    public class WaitWithVar : CfAction
+    {
+        float _duration;
+        float _timer = 0;
+        string _durationVar;
+
+        public WaitWithVar(string[] parameters) : base(parameters) { }
+
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            _durationVar = _params[0];
+        }
+
+        public override void Update()
+        {
+            if (_timer >= _duration)
+                State = State.SUCCESS;
+            _timer += Time.deltaTime;
+        }
+
+        protected override void OnInit()
+        {
+            base.OnInit();
+            _duration = Tree.GetDatum<float>(_durationVar);
+            _timer = 0;
+        }
+    }
 }

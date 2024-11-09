@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 896e0e4aeba404a45a7675bfd1557929, type: 3}
   m_Name: Pit1
   m_EditorClassIdentifier: 
-  itemName: Weathered Wall
-  description: 'Constructs an additional wall, making it easier for the hog to be
-    stunned if it charges into it.
+  itemName: Shallow Pit
+  description: 'The pikes wounds and slows passing creatures.
 
     Durability: 1'
   icon: {fileID: 21300000, guid: 9ba4a93c20fca474595e0c925e7192d6, type: 3}
   itemImage: {fileID: 21300000, guid: 9ba4a93c20fca474595e0c925e7192d6, type: 3}
-  itemPrefab: {fileID: 63323973075519710, guid: 18785cce2609a48739ab0702e4de158c,
+  itemPrefab: {fileID: 3148536343314687863, guid: f921d9002c5dd4950b43749856aad3c2,
     type: 3}
   canUseFromInventory: 0
   isConsumable: 0
@@ -29,10 +28,10 @@ MonoBehaviour:
   valueToHakem: 0
   itemUsedEvent: {fileID: 0}
   itemType: 7
-  objectItem: {fileID: 0}
   materials:
   - Head: {fileID: 11400000, guid: 61ac7d8163c5e4297bc32d9bedfed7d4, type: 2}
     Tail: 1
   - Head: {fileID: 11400000, guid: 076100eac677c466aa36bda74005b192, type: 2}
     Tail: 3
-  baseBuildTime: 6
+  baseBuildTime: 3
+  Durability: 1

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Abyss.EventSystem
@@ -8,5 +6,10 @@ namespace Abyss.EventSystem
     public class DynamicEvent : ScriptableObject
     {
         public string EventName;
+
+        void OnValidate()
+        {
+            if (EventName == "") EventName = name;
+        }
     }
 }

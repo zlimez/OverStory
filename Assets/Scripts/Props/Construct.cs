@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class Construct : MonoBehaviour
 {
-    public ConstructionSystem ConstructionSys;
-    [SerializeField] int durability = 3;
+    ConstructionSystem _constructionSys;
+    int _durability;
     [SerializeField][Tooltip("Bounds used to spawn disappear animation")] Transform topRight, bottomLeft;
     [SerializeField] Pair<int, int> particlesNumRange;
     [SerializeField] Pair<float, float> particlesScaleRange, delayRange;
     [SerializeField] GameObject particlePrefab;
     int partsSpawned = 0;
 
+    public void Initialize(ConstructionSystem constructionSys, int durability)
+    {
+        _constructionSys = constructionSys;
+        _durability = durability;
+    }
+
     public void TakeDmg()
     {
-        durability--;
-        if (durability == 0)
+        _durability--;
+        if (_durability == 0)
             SpawnParticles();
     }
 
@@ -40,7 +46,7 @@ public class Construct : MonoBehaviour
     void OnPartDestroyed()
     {
         partsSpawned--;
-        ConstructionSys.IsBuilt = false;
+        _constructionSys.IsBuilt = false;
         if (partsSpawned == 0)
             Destroy(gameObject);
     }

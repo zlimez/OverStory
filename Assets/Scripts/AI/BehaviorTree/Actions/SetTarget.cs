@@ -41,4 +41,44 @@ namespace BehaviorTree.Actions
             State = State.SUCCESS;
         }
     }
+
+    public class ClearVar : CfAction
+    {
+        string _varName;
+
+        public ClearVar(string[] parameters) : base(parameters) { }
+
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            _varName = _params[0];
+        }
+
+        public override void Update()
+        {
+            Tree.ClearDatum(_varName);
+            State = State.SUCCESS;
+        }
+    }
+
+    public class SetVar : CfAction
+    {
+        string _varName;
+        object _value;
+
+        public SetVar(string[] parameters) : base(parameters) { }
+
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            _varName = _params[0];
+            _value = Tree.GetDatum<object>(_params[1]);
+        }
+
+        public override void Update()
+        {
+            Tree.SetDatum(_varName, _value);
+            State = State.SUCCESS;
+        }
+    }
 }

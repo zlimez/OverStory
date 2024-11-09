@@ -34,15 +34,15 @@ namespace BehaviorTree.Actions
 
     public class GotoTargetByCurve : CfAction
     {
-        private Transform _transform;
-        string _targetName;
-        AnimationCurve _mvmtCurve;
-        float _duration = -1f, _speed = -1f;
-        TargetType _type;
-        MoveBy _moveBy;
+        protected Transform _transform;
+        protected string _targetName;
+        protected AnimationCurve _mvmtCurve;
+        protected float _duration = -1f, _speed = -1f;
+        protected TargetType _type;
+        protected MoveBy _moveBy;
 
-        float _timer = 0;
-        Vector3 _startPos, _destPos;
+        protected float _timer = 0;
+        protected Vector3 _startPos, _destPos;
 
         public enum TargetType { Transform, Vector3 }
         public enum MoveBy { Speed, Duration }

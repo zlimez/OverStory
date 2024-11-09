@@ -21,8 +21,7 @@ public class FlippablePlatform : MonoBehaviour
             _player = other.gameObject;
             Vector2 cog2Cp = _player.GetComponent<PlayerController>().Foot.position - cog.position;
             float angularImpulse = _player.GetComponent<Rigidbody2D>().mass * Vector2.Dot(new Vector2(0, other.relativeVelocity.y), Vector2.Perpendicular(cog2Cp)) * playerVelocityDamper;
-            Debug.Log("Angular impulse: " + angularImpulse);
-            // angularImpulse = Mathf.Sign(angularImpulse) * Mathf.Max(enterMinImpulse, Mathf.Abs(angularImpulse));
+            // Debug.Log("Angular impulse: " + angularImpulse);
             _angularVel += angularImpulse / angularInertia;
             _inContact = true;
         }

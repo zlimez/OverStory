@@ -2,7 +2,7 @@ namespace Abyss.Environment.Enemy.Anim
 {
     public class BugAnim : PortraitAnim
     {
-        public enum State { Idle, Dash, Preleap, Drop, Death }
+        public enum State { Idle, Dash, Preleap, Drop, Death, Wounded }
 
 
         protected override void Awake()

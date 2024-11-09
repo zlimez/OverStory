@@ -8,6 +8,7 @@ public class ConstructionItem : Item
 {
     public List<RefPair<Item, int>> materials = new(2);
     [Tooltip("Time required when construction level is 1")] public float baseBuildTime;
+    public int Durability = 3;
 
     void Awake()
     {

@@ -19,16 +19,16 @@ namespace BehaviorTree.Actions
         public override void Update() => State = Vector3.Dot(_spriteManager.forward, Tree.GetDatum<Transform>("target").position - _transform.position) > 0 ? State.SUCCESS : State.FAILURE;
     }
 
-    public class CheckTargetExists : CfAction
+    public class CheckVarExists : CfAction
     {
-        string _targetName;
-        public CheckTargetExists(string[] parameters) : base(parameters) { }
+        string _varName;
+        public CheckVarExists(string[] parameters) : base(parameters) { }
         public override void Setup(BT tree)
         {
             base.Setup(tree);
-            _targetName = _params[0];
+            _varName = _params[0];
         }
 
-        public override void Update() => State = Tree.GetDatum<object>(_targetName, true) != null ? State.SUCCESS : State.FAILURE;
+        public override void Update() => State = Tree.GetDatum<object>(_varName, true) != null ? State.SUCCESS : State.FAILURE;
     }
 }

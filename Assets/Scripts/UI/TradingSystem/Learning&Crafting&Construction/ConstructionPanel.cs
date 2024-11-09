@@ -197,7 +197,7 @@ public class ConstructionSystem : MonoBehaviour
         GameManager.Instance.PlayerPersistence.IsBuilding = false;
 
         var building = Instantiate(_constructionItem.itemPrefab, buildPt.position, Quaternion.identity);
-        building.GetComponent<Construct>().ConstructionSys = this;
+        building.GetComponent<Construct>().Initialize(this, _constructionItem.Durability);
         building.transform.SetParent(buildPt);
 
         EventManager.InvokeEvent(PlayEvents.BuildEnd);
