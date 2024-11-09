@@ -87,7 +87,6 @@ namespace Abyss.Player
             if (!getLastRestFrmMaster)
                 GameManager.Instance.PlayerPersistence.LastRest = LastRest;
 #endif
-            GameManager.Instance.PlayerPersistence.WeaponItem = weapon.weaponItem; // Else during load will already have obtained reference to lastrest and playerattr
         }
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here

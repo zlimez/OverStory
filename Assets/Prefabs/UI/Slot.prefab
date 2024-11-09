@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 1367332204092659547}
   - component: {fileID: 1565657482453820488}
   - component: {fileID: 9132356208056150746}
-  - component: {fileID: 3544459644282196167}
+  - component: {fileID: 4986456481946209787}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -425,7 +425,7 @@ MonoBehaviour:
   contextMenu: {fileID: 3423150579623883749}
   ButtonPrefab: {fileID: 474369189317498671, guid: a9ba74cf818904688a797dc7405a4c29,
     type: 3}
---- !u!114 &3544459644282196167
+--- !u!114 &4986456481946209787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7523057187309388214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,7 +760,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 10.2, y: -12.3}
-  m_SizeDelta: {x: 42, y: 42}
+  m_SizeDelta: {x: 15, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8811450801654042066
 CanvasRenderer:

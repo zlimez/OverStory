@@ -14,10 +14,29 @@ namespace Abyss.Player
 
         void Awake() => _particleSystem = GetComponent<ParticleSystem>();
 
-        void OnEnable() => EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
-        void OnDisable() => EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
+        void OnEnable()
+		{
+			EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
+			EventManager.StartListening(PlayEvents.WeaponUnequipped, Unequip);
+		}
+		void OnDisable()
+		{
+			EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
+			EventManager.StopListening(PlayEvents.WeaponUnequipped, Unequip);
+		}
+        void Equip(object obj)
+        {
+            if (weaponItem != null) GameManager.Instance.Inventory.MaterialCollection.Add(weaponItem);
+            weaponItem = (WeaponItem)obj;
+            GameManager.Instance.PlayerPersistence.WeaponItem = weaponItem;
+        }
 
-        void Equip(object obj) => weaponItem = (WeaponItem)obj;
+        void Unequip(object obj)
+        {
+            if (weaponItem != null) GameManager.Instance.Inventory.MaterialCollection.Add(weaponItem);
+            weaponItem = null;
+            GameManager.Instance.PlayerPersistence.WeaponItem = weaponItem;
+        }
 
         public void Strike(float str) // Can be called multiple times in one single "attack", hence the need to track which has already been hit
         {
