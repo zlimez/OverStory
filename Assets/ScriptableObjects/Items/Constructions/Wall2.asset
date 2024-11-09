@@ -29,10 +29,9 @@ MonoBehaviour:
   valueToHakem: 0
   itemUsedEvent: {fileID: 0}
   itemType: 7
-  objectItem: {fileID: 0}
   materials:
   - Head: {fileID: 11400000, guid: 902c1dc95d4644ef2ac6013520729927, type: 2}
     Tail: 2
   - Head: {fileID: 11400000, guid: a3b2513ff36f74ad48e5b430c1d2ee62, type: 2}
     Tail: 2
-  baseBuildTime: 0
+  baseBuildTime: 4
