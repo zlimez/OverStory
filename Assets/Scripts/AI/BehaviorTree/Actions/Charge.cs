@@ -4,10 +4,11 @@ using BehaviorTree;
 using Abyss.Environment.Enemy.Anim;
 using Abyss.Player;
 using Abyss.Environment.Enemy;
+using Abyss;
 
 public class Charge : CfAction
 {
-    static readonly int _obstacleLayerMask = 1 << 7 | 1 << 11;
+    static readonly int _obstacleLayerMask = 1 << (int)AbyssSettings.Layers.Ground | 1 << (int)AbyssSettings.Layers.Obstacle;
     float _stunTime, _restTime;
     float _chargeDist, _chargeDmg, _chargeSpeed; // Avg speed of charge
     float _chargeupTime, _stunRaycastDist;

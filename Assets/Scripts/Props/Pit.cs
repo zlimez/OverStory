@@ -1,3 +1,4 @@
+using Abyss;
 using Abyss.Environment.Enemy;
 using Abyss.EventSystem;
 using Abyss.Player;
@@ -13,7 +14,7 @@ public class Pit : Construct
         TakeDmg();
         if (collider2D.CompareTag("Player"))
             collider2D.GetComponent<PlayerManager>().TakeHit(damage);
-        else if (collider2D.CompareTag("Enemy"))
+        else if (collider2D.gameObject.layer == (int)AbyssSettings.Layers.Enemy)
         {
             if (collider2D.CompareTag("Bug"))
                 EventManager.InvokeEvent(new GameEvent(damageBugEvent.EventName), jumpDelay);

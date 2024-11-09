@@ -4,7 +4,6 @@ using Abyss.Player.Spells;
 using AnyPortrait;
 using Tuples;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
@@ -63,6 +62,8 @@ namespace Abyss.Player
 		[SerializeField] float dashCooldown = 1.0f, dashTime = 0.3f;
 		bool dashAvail = true, groundedSinceDash = true, isDashing = false;
 		float _dashTimeLeft, _dashCountdown;
+
+		readonly int GROUND_LAYER = 7;
 
 		// Attacking
 		[Header("Damage")]
@@ -159,7 +160,7 @@ namespace Abyss.Player
 		private void OnCollisionEnter2D(Collision2D coll2D)
 		{
 			// Check if player is on the ground
-			if (coll2D.gameObject.CompareTag("Ground"))
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground)
 			{
 				IsGrounded = true;
 				groundedSinceDash = true;
@@ -174,7 +175,7 @@ namespace Abyss.Player
 		private void OnCollisionExit2D(Collision2D coll2D)
 		{
 			// Check if player is leaving the ground
-			if (coll2D.gameObject.CompareTag("Ground"))
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground)
 			{
 				if (isDashing)
 					groundedSinceDash = false;

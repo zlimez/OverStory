@@ -10,16 +10,13 @@ using UnityEngine.UI;
 public class CraftingSystem : MonoBehaviour
 {
     [SerializeField] GameObject craftingPanel;
-    [SerializeField] GameObject topSlot;
-    [SerializeField] GameObject topCover;
-    [SerializeField] List<GameObject> bottomSlots = new List<GameObject>(2);
-    [SerializeField] List<GameObject> bottomCover = new List<GameObject>(2);
+    [SerializeField] GameObject topSlot, topCover;
+    [SerializeField] List<GameObject> bottomSlots = new(2), bottomCover = new(2);
     [SerializeField] GameObject scrollViewContent;
     [SerializeField] GameObject slotPrefab;
 
     [SerializeField] Button craftButton;
-    [SerializeField] Sprite craftButtonInactive;
-    [SerializeField] Sprite craftButtonActive;
+    [SerializeField] Sprite craftButtonInactive, craftButtonActive;
     [SerializeField] Image craftButtonImage;
 
 

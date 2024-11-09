@@ -27851,9 +27851,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813147f65d27047f580145e468539cd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 3
   basicBandageUsed: {fileID: 11400000, guid: 8499fae4f2a5e4b7c8e93d5f728545c8, type: 2}
   basicHealPortion: 0.33
-  duration: 3
+  goodBandageUsed: {fileID: 11400000, guid: d83f5a45564584cd3b13be6bb3d0d983, type: 2}
+  goodHealPortion: 0.5
+  masterBandageUsed: {fileID: 11400000, guid: e4c5fff79abb548f09438cd4580b30a5, type: 2}
+  masterHealPortion: 1
 --- !u!1 &2813103739145877073
 GameObject:
   m_ObjectHideFlags: 0
@@ -33772,7 +33776,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 337728237
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0

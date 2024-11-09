@@ -7,7 +7,7 @@ namespace Abyss.Player
 {
     public class Weapon : MonoBehaviour
     {
-        static readonly int _layerMask = (1 << 6) | (1 << 12); // 6 for enemy, 12 for breakable
+        static readonly int _layerMask = (1 << (int)AbyssSettings.Layers.Enemy) | (1 << (int)AbyssSettings.Layers.Breakable); // 6 for enemy, 12 for breakable
         public WeaponItem weaponItem;
         readonly HashSet<int> _enemyHits = new(), _depoHits = new();
         ParticleSystem _particleSystem;
