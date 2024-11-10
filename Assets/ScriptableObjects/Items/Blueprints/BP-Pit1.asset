@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BP-Pit1
   m_EditorClassIdentifier: 
   itemName: Shallow Pit Blueprint
-  description: 
+  description: Learn to dig a shallow pit, a simple yet effective means to slow down
+    foes that drop from above.
   icon: {fileID: 21300000, guid: 1534f645ef8d147e09ef21d6ed6d7b43, type: 3}
   itemImage: {fileID: 21300000, guid: 1534f645ef8d147e09ef21d6ed6d7b43, type: 3}
   itemPrefab: {fileID: 0}

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Wall2
   m_EditorClassIdentifier: 
   itemName: Sturdy Wall
-  description: 'Previous effects + Hog is stunned for a longer time after charging
-    into it.
+  description: 'Hog is stunned for a longer time after charging into it.
 
-    Durability: 3'
+    Durability:
+    3'
   icon: {fileID: 21300000, guid: d1dca2d06c3cf4f4180cb6ea80c56ece, type: 3}
   itemImage: {fileID: 21300000, guid: d1dca2d06c3cf4f4180cb6ea80c56ece, type: 3}
   itemPrefab: {fileID: 7697923844920291564, guid: 4e560a6a5ed5a4205bd6478f72e51f47,

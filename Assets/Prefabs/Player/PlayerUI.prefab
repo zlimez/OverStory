@@ -3873,7 +3873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3a23a21ae354889957d7f8ca00b1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponItem: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
+  weaponItem: {fileID: 0}
 --- !u!198 &9123626705574800302
 ParticleSystem:
   m_ObjectHideFlags: 0

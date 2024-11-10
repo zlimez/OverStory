@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: Pit2
   m_EditorClassIdentifier: 
   itemName: Deep Pit
-  description: 'Previous effects +
-
-    Sharpened sticks in the pit caused passing
-    being to take continuous damage temporaily.
-
+  description: 'Sharpened sticks in the pit caused passing being to take continuous
+    damage temporaily.
 
     Durability: 3'
   icon: {fileID: 21300000, guid: e0ca98683e1b5414b89b24484daefca4, type: 3}

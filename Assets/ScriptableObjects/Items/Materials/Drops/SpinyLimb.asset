@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: SpinyLimb
   m_EditorClassIdentifier: 
   itemName: Spiny Limb
-  description: "Crafting material.\n\n\u201CCompression causes this specimen to snap
-    back explosively.\u201D"
+  description: 'Compression causes this specimen to snap back explosively.
+
+
+    -
+    Crafting material.
+
+    - From Assassin Bug.'
   icon: {fileID: 21300000, guid: e5ea6a702a56b417c97bf3c98ffd81ee, type: 3}
   itemImage: {fileID: 21300000, guid: e5ea6a702a56b417c97bf3c98ffd81ee, type: 3}
   itemPrefab: {fileID: 3666791956295866859, guid: 9457c31fa5ecd43ac8973650582b50a3,
@@ -25,4 +30,5 @@ MonoBehaviour:
   isAcceptableToHakem: 1
   valueToFara: 2
   valueToHakem: 2
+  itemUsedEvent: {fileID: 0}
   itemType: 3

@@ -27,7 +27,7 @@ public class LargeSlotController : MonoBehaviour
         {
             blueprintItem = derivedData;
             itemIcon.sprite = blueprintItem.icon;
-            name.text = blueprintItem.name;
+            name.text = blueprintItem.itemName;
             description.text = blueprintItem.description;
             material.gameObject.SetActive(true);
             for (int i = 0; i < materialIcons.Count; i++)

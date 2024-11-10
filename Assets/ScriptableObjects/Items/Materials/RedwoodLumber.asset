@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: RedwoodLumber
   m_EditorClassIdentifier: 
   itemName: Web Thread
-  description: Carbon readings date this back to several millennia ago.
+  description: 'Carbon readings date this back to several millennia ago
+
+
+    - Crafting
+    material.
+
+    - Can be gathered.'
   icon: {fileID: 21300000, guid: f3093a4df86e24be2a00d7d67e876da8, type: 3}
   itemImage: {fileID: 21300000, guid: f3093a4df86e24be2a00d7d67e876da8, type: 3}
   itemPrefab: {fileID: 0}
@@ -23,4 +29,5 @@ MonoBehaviour:
   isAcceptableToHakem: 1
   valueToFara: 3
   valueToHakem: 3
+  itemUsedEvent: {fileID: 0}
   itemType: 3

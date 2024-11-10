@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BP-Wall2
   m_EditorClassIdentifier: 
   itemName: Sturdy Wall Blueprint
-  description: 
+  description: "Master the sturdy wall\u2014extends the hog\u2019s stun duration
+    after a charge, with added durability."
   icon: {fileID: 21300000, guid: 5074794972ae84e64a9907e5bcdad8ac, type: 3}
   itemImage: {fileID: 21300000, guid: 5074794972ae84e64a9907e5bcdad8ac, type: 3}
   itemPrefab: {fileID: 0}
