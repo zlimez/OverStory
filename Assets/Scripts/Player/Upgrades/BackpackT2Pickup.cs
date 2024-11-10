@@ -6,11 +6,12 @@ using UnityEngine;
 
 public class BackpackT2Pickup : BackpackPickup
 {
-	public override void Interact() 
+	public override void Interact()
 	{
 		GameManager.Instance.Inventory.Enabled = true;
 		GameManager.Instance.Inventory.Level = 2;
 		EventLedger.Instance.Record(new GameEvent(backpackPickedEvent.EventName));
+		base.Interact();
 		Destroy(gameObject);
 	}
 }

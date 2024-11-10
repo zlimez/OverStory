@@ -1,3 +1,4 @@
+using System;
 using Abyss.EventSystem;
 using Abyss.Player;
 using Abyss.SceneSystem;
@@ -30,6 +31,7 @@ namespace Abyss.Interactables
         {
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
             EventManager.StopListening(SystemEvents.SystemsReady, Load);
+            EventManager.StopListening(PlayEvents.RestEnd, EndRest);
         }
 
         void Load(object input = null)
@@ -44,6 +46,7 @@ namespace Abyss.Interactables
         {
             if (player.TryGetComponent<PlayerManager>(out _playerManager))
             {
+                EventManager.InvokeEvent(PlayEvents.RestStart);
                 if (lastPurityRestoreTime == -1 || TimeCycle.Instance.TotalTime - lastPurityRestoreTime >= purityRestoreCooldown)
                 {
                     EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, purityRestoration);
@@ -54,23 +57,27 @@ namespace Abyss.Interactables
                 _playerManager.UpdateHealth(PlayerAttr.MaxHealth);
                 _playerManager.LastRest.Head = SceneLoader.Instance.ActiveScene;
                 _playerManager.LastRest.Tail = transform.position;
-                player.GetComponent<PlayerController>().UnequipWeapon(); // Aesthetics only
+                player.GetComponent<PlayerController>().Rest(); // Aesthetics only
                 bonfire.SetActive(true);
 
                 TimeCycle.Instance.Forward(timeFastForward / 2);
                 if (GameManager.Instance.Inventory.MaterialCollection.HasItemType(ItemType.Blueprints))
-                    EventManager.InvokeEvent(PlayEvents.CraftingPostEntered);
-
+                    EventManager.InvokeEvent(PlayEvents.CraftingPostEntered, (Action)EndCraft);
+                else EventManager.InvokeEvent(PlayEvents.InRest);
                 EventManager.StartListening(PlayEvents.RestEnd, EndRest);
+
+                base.Interact();
             }
         }
+
+        void EndCraft() => EventManager.InvokeEvent(PlayEvents.InRest);
 
         void EndRest(object input = null)
         {
             bonfire.SetActive(false);
             TimeCycle.Instance.Forward(timeFastForward / 2);
+            player.GetComponent<PlayerController>().Unrest(_playerManager.WeaponItem);
             _playerManager = null;
-            if (_playerManager.WeaponItem != null) player.GetComponent<PlayerController>().EquipWeapon(_playerManager.WeaponItem);
             EventManager.StopListening(PlayEvents.RestEnd, EndRest);
         }
     }

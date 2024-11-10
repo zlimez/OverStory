@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Abyss.EventSystem;
-using Abyss.Player;
 using TMPro;
 using Tuples;
 using UnityEngine;
@@ -19,10 +18,10 @@ public class CraftingSystem : MonoBehaviour
     [SerializeField] Sprite craftButtonInactive, craftButtonActive;
     [SerializeField] Image craftButtonImage;
 
-
     public bool IsCraftingOpen { get; private set; } = false;
 
     BlueprintItem _chosenBlueprint;
+    Action _onClose;
 
     void Start() => craftingPanel.SetActive(false);
 
@@ -41,11 +40,13 @@ public class CraftingSystem : MonoBehaviour
         _chosenBlueprint = null;
         IsCraftingOpen = false;
         craftingPanel.SetActive(false);
+        _onClose?.Invoke();
     }
 
     public void OpenCrafting(object input)
     {
         if (!GameManager.Instance.UI.Open(UiController.Type.Craft, Stop)) return;
+        if (input != null && input is Action onClose) _onClose = onClose;
         _chosenBlueprint = null;
         UpdateCraftingPanel();
         IsCraftingOpen = true;
@@ -189,7 +190,6 @@ public class CraftingSystem : MonoBehaviour
         }
     }
 
-
     public void CraftOnClick()
     {
         Item objectItem = _chosenBlueprint.objectItem;
@@ -205,7 +205,6 @@ public class CraftingSystem : MonoBehaviour
         craftButtonImage.sprite = state ? craftButtonActive : craftButtonInactive;
         craftButton.GetComponent<Button>().interactable = state;
     }
-
 }
 
 

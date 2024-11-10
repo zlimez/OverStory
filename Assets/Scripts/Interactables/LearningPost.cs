@@ -18,6 +18,10 @@ namespace Abyss.Interactables
                 itemCollection.Add(item);
         }
 
-        public override void Interact() => EventManager.InvokeEvent(PlayEvents.LearningPostEntered, (tribe, itemCollection));
+        public override void Interact()
+        {
+            EventManager.InvokeEvent(PlayEvents.LearningPostEntered, (tribe, itemCollection));
+            base.Interact();
+        }
     }
 }

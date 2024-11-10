@@ -78,7 +78,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
     protected void PrepConvoUI(Conversation convo)
     {
-        EventManager.InvokeEvent(UIEvents.DialogStarted);
         dialogBox.SetActive(true);
 
         currInd = 0;

@@ -13,5 +13,6 @@ public class LabConsole : CondInteractable
     {
         _spriteRenderer.sprite = OnSprite;
         DialogueManager.Instance.HardStartConvo(labConsoleConvo);
+        base.Interact();
     }
 }

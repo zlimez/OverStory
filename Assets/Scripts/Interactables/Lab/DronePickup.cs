@@ -21,6 +21,7 @@ namespace Abyss.Interactables
             EventManager.InvokeEvent(gameEvent);
             EventLedger.Instance.Record(gameEvent);
             DialogueManager.Instance.HardStartConvo(awake);
+            base.Interact();
         }
     }
 }

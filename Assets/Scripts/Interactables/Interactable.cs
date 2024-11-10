@@ -49,7 +49,11 @@ namespace Abyss.Interactables
             DestroyHint();
         }
 
-        public abstract void Interact();
+        public virtual void Interact()
+        {
+            player.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
+            EventManager.InvokeEvent(PlayEvents.InteractableExited);
+        }
 
         protected virtual void OnTriggerEnter2D(Collider2D collider)
         {

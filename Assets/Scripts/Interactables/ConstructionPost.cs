@@ -17,7 +17,11 @@ namespace Abyss.Interactables
             constructionSys.InitializePanel(construction, transform.position);
         }
 
-        public override void Interact() => constructionSys.TryBuild(buildPoint, hoverPoint);
+        public override void Interact()
+        {
+            constructionSys.TryBuild(buildPoint, hoverPoint);
+            base.Interact();
+        }
 
         // TODO: Add check whether player has unlocked the blueprint
         protected override void PlayerEnterAction(Collider2D collider)

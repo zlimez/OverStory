@@ -20,6 +20,10 @@ namespace Abyss.Interactables
                 itemCollection.Add(itemStack.Head, itemStack.Tail);
         }
 
-        public override void Interact() => EventManager.InvokeEvent(PlayEvents.TradePostEntered, (tribe, player.GetComponent<PlayerManager>().PlayerAttr, itemCollection));
+        public override void Interact()
+        {
+            EventManager.InvokeEvent(PlayEvents.TradePostEntered, (tribe, player.GetComponent<PlayerManager>().PlayerAttr, itemCollection));
+            base.Interact();
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Abyss.Interactables
         {
             GameManager.Instance.Inventory.Enabled = true;
             EventLedger.Instance.Record(new GameEvent(backpackPickedEvent.EventName));
+            base.Interact();
             Destroy(gameObject);
         }
     }

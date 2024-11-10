@@ -1,5 +1,3 @@
-using UnityEditor.PackageManager;
-
 namespace Abyss.EventSystem
 {
     public static class SystemEvents
@@ -27,9 +25,6 @@ namespace Abyss.EventSystem
     {
         public static readonly StaticEvent BlackIn;
         public static readonly StaticEvent BlackOut;
-        public static readonly StaticEvent PrepToTeleport;
-        public static readonly StaticEvent OpenInventory;
-        public static readonly StaticEvent DialogStarted;
         public static readonly StaticEvent DraggedItem;
         public static readonly StaticEvent SelectItem;
         public static readonly StaticEvent UpdateNPCInventory;
@@ -37,10 +32,7 @@ namespace Abyss.EventSystem
         static UIEvents()
         {
             BlackIn = StaticEvent.BlackIn;
-            PrepToTeleport = StaticEvent.PrepToTeleport;
-            OpenInventory = StaticEvent.OpenInventory;
             BlackOut = StaticEvent.BlackOut;
-            DialogStarted = StaticEvent.DialogStarted;
             DraggedItem = StaticEvent.DraggedItem;
             UpdateNPCInventory = StaticEvent.UpdateNPCInventory;
             SelectItem = StaticEvent.SelectItem;
@@ -62,6 +54,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
         public static readonly StaticEvent RestStart;
+        public static readonly StaticEvent InRest;
         public static readonly StaticEvent RestEnd;
         public static readonly StaticEvent SpellEquippedStateChange;
         public static readonly StaticEvent Respawn;
@@ -84,6 +77,7 @@ namespace Abyss.EventSystem
             WeaponEquipped = StaticEvent.WeaponEquipped;
             WeaponUnequipped = StaticEvent.WeaponUnequipped;
             RestStart = StaticEvent.RestStart;
+            InRest = StaticEvent.InRest;
             RestEnd = StaticEvent.RestEnd;
             SpellEquippedStateChange = StaticEvent.SpellEquippedStateChange;
             Respawn = StaticEvent.Respawn;

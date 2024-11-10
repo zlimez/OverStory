@@ -79,7 +79,7 @@ namespace Abyss.Player
 		float _slashSize;
 
 		public bool IsAttacking { get; private set; } = false;
-		bool isTakingDamage = false, isDead = false;
+		bool _isTakingDamage = false, _isDead = false, _isResting = false;
 		public Action OnAttackEnded, OnAttemptInteract;
 
 
@@ -109,8 +109,8 @@ namespace Abyss.Player
 
 			if (!isDashing)
 			{
-				_currXSpeed = (isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-				if (!isTakingDamage) rb2D.velocity = new(_currXSpeed, rb2D.velocity.y);
+				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
+				if (!_isTakingDamage) rb2D.velocity = new(_currXSpeed, rb2D.velocity.y);
 			}
 
 			if (_jumpBufferCountdown > 0)
@@ -118,8 +118,8 @@ namespace Abyss.Player
 			if (_preLandJumpBufferCountdown > 0)
 				_preLandJumpBufferCountdown = Mathf.Max(0, _preLandJumpBufferCountdown - Time.deltaTime);
 
-			if (!IsAttacking && !isTakingDamage && !isDead) HandleState();
-			if (!isTakingDamage)
+			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
+			if (!_isTakingDamage)
 			{
 				if (rb2D.velocity.x > 0 && IsFacingLeft)
 					FlipSprite();
@@ -199,6 +199,18 @@ namespace Abyss.Player
 		#endregion
 
 		#region Other Methods
+		public void Rest()
+		{
+			_isResting = true;
+			UnequipWeapon();
+		}
+
+		public void Unrest(WeaponItem weaponItem)
+		{
+			_isResting = false;
+			if (weaponItem != null) EquipWeapon(weaponItem);
+		}
+
 		public void EquipWeapon(object input)
 		{
 			int ind = Array.FindIndex(weaponMapping, pair => pair.Head == (WeaponItem)input);
@@ -291,7 +303,7 @@ namespace Abyss.Player
 		public void OnJump(InputAction.CallbackContext context)
 		{
 			if (IsFrozen) return;
-			if (IsAttacking || isTakingDamage || isDead) return;
+			if (IsAttacking || _isTakingDamage || _isDead) return;
 			if (context.started)
 			{
 				if (IsGrounded || _jumpBufferCountdown > 0) Jump();
@@ -323,7 +335,7 @@ namespace Abyss.Player
 		public void OnDash(InputAction.CallbackContext context)
 		{
 			if (IsFrozen) return;
-			if (IsAttacking || isTakingDamage || isDead) return;
+			if (IsAttacking || _isTakingDamage || _isDead) return;
 			if (context.started && dashAvail)
 			{
 				_playerSfx.PlayDash();
@@ -339,7 +351,7 @@ namespace Abyss.Player
 		public void OnAttack(InputAction.CallbackContext context)
 		{
 			if (IsFrozen) return;
-			if (isDashing || isTakingDamage || isDead) return;
+			if (isDashing || _isTakingDamage || _isDead) return;
 			if (context.started)
 			{
 				if (IsAttacking) return;
@@ -382,7 +394,7 @@ namespace Abyss.Player
 
 		public bool TakeHit(bool hasKnockback, Vector3 from, float kbImpulse)
 		{
-			if (isTakingDamage || isDead) return true;
+			if (_isTakingDamage || _isDead) return true;
 			IsAttacking = false;
 			_playerSfx.PlayHurt();
 			if (isDashing)
@@ -394,7 +406,7 @@ namespace Abyss.Player
 			}
 			IsJumping = false;
 			_jumpTimeLeft = 0f;
-			isTakingDamage = true;
+			_isTakingDamage = true;
 			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * (knockbackImpulse + kbImpulse), ForceMode2D.Impulse);
 			TransitionToState(Enum.Parse<State>($"Damage_{Weapon}"));
 			return false;
@@ -407,14 +419,14 @@ namespace Abyss.Player
 			_dashTimeLeft = 0f;
 			IsJumping = false;
 			_jumpTimeLeft = 0f;
-			isTakingDamage = false;
-			isDead = true;
+			_isTakingDamage = false;
+			_isDead = true;
 			TransitionToState(Enum.Parse<State>($"Death_{Weapon}"));
 		}
 		#endregion
 
 		#region Animation Event Handlers
-		void DamageEnd() => isTakingDamage = false;
+		void DamageEnd() => _isTakingDamage = false;
 
 		void AttackEnd()
 		{
@@ -426,7 +438,7 @@ namespace Abyss.Player
 		#endregion
 
 		#region Helper Methods
-		bool IsFrozen => GameManager.Instance.UI.IsOpen;
+		bool IsFrozen => GameManager.Instance.UI.IsOpen || _isResting;
 
 		void Jump()
 		{
