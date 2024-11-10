@@ -1,6 +1,7 @@
 using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Player;
+using System;
 
 namespace Abyss.Interactables
 {
@@ -12,6 +13,9 @@ namespace Abyss.Interactables
         [SerializeField] float hintScale = 1;
         [SerializeField] GameObject hintPrefab;
         [SerializeField] string infoText;
+        [SerializeField] GameObject namePrefab;
+        [SerializeField] string nameText;
+        private Info23Controllor InfoControllor;
 
         // [Header("Use Item")]
         // [SerializeField] private bool isItemUsable = false;
@@ -23,6 +27,15 @@ namespace Abyss.Interactables
 
         private GameObject hint;
         protected GameObject player;
+
+        void Start()
+        {
+            if (namePrefab != null)
+            {
+                InfoControllor = Instantiate(namePrefab, transform).GetComponent<Info23Controllor>();
+                InfoControllor.InitializePanel(nameText, transform);
+            }
+        }
 
         void SpawnHint()
         {
@@ -63,6 +76,7 @@ namespace Abyss.Interactables
 
         protected virtual void PlayerEnterAction(Collider2D collider)
         {
+            if (InfoControllor != null) InfoControllor.OpenPanel();
             EventManager.InvokeEvent(PlayEvents.InteractableEntered, infoText);
             collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
             player = collider.gameObject;
@@ -77,6 +91,7 @@ namespace Abyss.Interactables
 
         protected virtual void PlayerExitAction(Collider2D collider)
         {
+            if (InfoControllor != null) InfoControllor.ClosePanel();
             EventManager.InvokeEvent(PlayEvents.InteractableExited);
             collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
             player = null;
