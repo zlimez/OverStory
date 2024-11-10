@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Abyss.EventSystem;
 using Abyss.Player.Spells;
 using AnyPortrait;
@@ -215,7 +216,9 @@ namespace Abyss.Player
 		{
 			_slashSize = 0;
 			Weapon = "Nil";
+			TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
 		}
+
 
 		// Animation stuff
 		void HandleState()
