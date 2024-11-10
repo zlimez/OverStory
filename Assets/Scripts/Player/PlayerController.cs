@@ -212,7 +212,7 @@ namespace Abyss.Player
 			}
 		}
 
-		void UnequipWeapon(object input = null)
+		public void UnequipWeapon(object input = null)
 		{
 			_slashSize = 0;
 			Weapon = "Nil";

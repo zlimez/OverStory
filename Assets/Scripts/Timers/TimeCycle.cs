@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Abyss.EventSystem;
 using Abyss.Utils;
@@ -26,14 +25,12 @@ namespace Abyss.TimeManagers
                 EventManager.StartListening(SystemEvents.SystemsReady, LoadStartCycle);
             else LoadStartCycle();
             EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StartListening(PlayEvents.Rested, Forward);
         }
 
         void OnDisable()
         {
             EventManager.StopListening(SystemEvents.SystemsReady, LoadStartCycle);
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StopListening(PlayEvents.Rested, Forward);
         }
 
         void LoadStartCycle(object input = null)
@@ -79,9 +76,8 @@ namespace Abyss.TimeManagers
             }
         }
 
-        void Forward(object input)
+        public void Forward(float fwdTime)
         {
-            float fwdTime = (float)input;
             timeOfCycle = (timeOfCycle + fwdTime) % CYCLE_LENGTH;
             totalTime += fwdTime;
             _nextBcast = timeOfCycle % broadcastInterval == 0 ? timeOfCycle : timeOfCycle - timeOfCycle % broadcastInterval;

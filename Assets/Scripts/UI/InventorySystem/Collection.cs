@@ -108,4 +108,12 @@ public class Collection
         }
         return false;
     }
+
+    public bool HasItemType(ItemType itemType)
+    {
+        foreach (Countable<Item> itemStack in Items)
+            if (itemStack.Data.itemType == itemType)
+                return true;
+        return false;
+    }
 }

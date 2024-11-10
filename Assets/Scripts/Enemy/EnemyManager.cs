@@ -40,7 +40,6 @@ namespace Abyss.Environment.Enemy
                 attributes.isAlive = false;
                 OnDeath?.Invoke();
                 EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
-                EventManager.StopListening(PlayEvents.Rested, Spare);
                 Drop();
                 Destroy(gameObject);
             }
@@ -54,15 +53,14 @@ namespace Abyss.Environment.Enemy
             {
                 OnDefeated?.Invoke();
                 OnStrikePlayer = null;
-                EventManager.StartListening(PlayEvents.Rested, Spare);
             }
         }
 
-        // TODO: move to when next rest occurs rationale making a choice end of combat all the time is disruptive
-        void Spare(object input = null)
+        // NOTE: Spared -> Enemy manager disabled then destroyed by spawner when either rested or scene transitions
+        void OnDisable()
         {
-            attributes.friendliness += 2.0f;
-            EventManager.StopListening(PlayEvents.Rested, Spare);
+            if (_isDefeated && attributes.isAlive)
+                attributes.friendliness += 2.0f;
         }
 
         public void Strike()

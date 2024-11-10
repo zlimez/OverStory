@@ -15,16 +15,18 @@ namespace Abyss.Player
         void Awake() => _particleSystem = GetComponent<ParticleSystem>();
 
         void OnEnable()
-		{
-			EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
-			EventManager.StartListening(PlayEvents.WeaponUnequipped, Unequip);
-		}
-		void OnDisable()
-		{
-			EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
-			EventManager.StopListening(PlayEvents.WeaponUnequipped, Unequip);
-		}
-        void Equip(object obj)
+        {
+            EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
+            EventManager.StartListening(PlayEvents.WeaponUnequipped, Unequip);
+        }
+
+        void OnDisable()
+        {
+            EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
+            EventManager.StopListening(PlayEvents.WeaponUnequipped, Unequip);
+        }
+
+        void Equip(object obj) // Deduction from inventory is already done by Use() of the weaponitem
         {
             if (weaponItem != null) GameManager.Instance.Inventory.MaterialCollection.Add(weaponItem);
             weaponItem = (WeaponItem)obj;

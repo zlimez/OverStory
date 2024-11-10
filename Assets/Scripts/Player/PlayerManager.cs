@@ -23,6 +23,7 @@ namespace Abyss.Player
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
 
         public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;
+        public WeaponItem WeaponItem => weapon.weaponItem;
 
         void Start()
         {

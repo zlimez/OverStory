@@ -61,7 +61,8 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent CraftingPostEntered;
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
-        public static readonly StaticEvent Rested;
+        public static readonly StaticEvent RestStart;
+        public static readonly StaticEvent RestEnd;
         public static readonly StaticEvent SpellEquippedStateChange;
         public static readonly StaticEvent Respawn;
         public static readonly StaticEvent BuildStart;
@@ -82,7 +83,8 @@ namespace Abyss.EventSystem
             CraftingPostEntered = StaticEvent.CraftingPostEntered;
             WeaponEquipped = StaticEvent.WeaponEquipped;
             WeaponUnequipped = StaticEvent.WeaponUnequipped;
-            Rested = StaticEvent.Rested;
+            RestStart = StaticEvent.RestStart;
+            RestEnd = StaticEvent.RestEnd;
             SpellEquippedStateChange = StaticEvent.SpellEquippedStateChange;
             Respawn = StaticEvent.Respawn;
             BuildStart = StaticEvent.BuildStart;
