@@ -29,7 +29,7 @@ MonoBehaviour:
   objectItem: {fileID: 11400000, guid: c016d4e9ff6044555b9d83c3eb4db862, type: 2}
   materials:
   - Head: {fileID: 11400000, guid: 77fe77844723c48b3b760fbbdd1f6f7f, type: 2}
-    Tail: 1
+    Tail: 2
   - Head: {fileID: 11400000, guid: 076100eac677c466aa36bda74005b192, type: 2}
     Tail: 3
   prerequisiteItems:

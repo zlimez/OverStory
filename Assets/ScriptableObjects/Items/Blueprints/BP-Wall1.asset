@@ -28,10 +28,10 @@ MonoBehaviour:
   itemType: 6
   objectItem: {fileID: 11400000, guid: f67b4d42aa7044fbfa617291a4146e3b, type: 2}
   materials:
-  - Head: {fileID: 11400000, guid: 61ac7d8163c5e4297bc32d9bedfed7d4, type: 2}
+  - Head: {fileID: 11400000, guid: 77fe77844723c48b3b760fbbdd1f6f7f, type: 2}
     Tail: 1
-  - Head: {fileID: 11400000, guid: 076100eac677c466aa36bda74005b192, type: 2}
-    Tail: 4
+  - Head: {fileID: 11400000, guid: a3b2513ff36f74ad48e5b430c1d2ee62, type: 2}
+    Tail: 2
   prerequisiteItems: []
   prerequisiteAttr:
     Strength: 0
