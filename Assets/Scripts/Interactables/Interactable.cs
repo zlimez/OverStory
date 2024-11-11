@@ -8,24 +8,10 @@ namespace Abyss.Interactables
     public abstract class Interactable : MonoBehaviour
     {
         [Header("Hint")]
-        [SerializeField] bool hasHint = false; // TODO: Collapse the rest of hint related configs if set to false
-        [SerializeField] Vector3 offSetPosition;
-        [SerializeField] float hintScale = 1;
-        [SerializeField] GameObject hintPrefab;
         [SerializeField] string infoText;
         [SerializeField] GameObject namePrefab;
         [SerializeField] string nameText;
         private Info23Controllor InfoControllor;
-
-        // [Header("Use Item")]
-        // [SerializeField] private bool isItemUsable = false;
-        // StartDialog is played before selection, if left empty, no dialog will be triggered before choice.
-        // [SerializeField] private Conversation startDialog;
-        // WrongItem is the default dialog when a wrong item is chosen.
-        // [SerializeField] protected Conversation wrongItem;
-        // [SerializeField] string useItemText = "Use Item", interactText = "Interact", leaveText = "Leave";
-
-        private GameObject hint;
         protected GameObject player;
 
         void Start()
@@ -35,31 +21,6 @@ namespace Abyss.Interactables
                 InfoControllor = Instantiate(namePrefab, transform).GetComponent<Info23Controllor>();
                 InfoControllor.InitializePanel(nameText, transform);
             }
-        }
-
-        void SpawnHint()
-        {
-            if (!hasHint)
-                return;
-
-            hint = Instantiate(hintPrefab);
-            hint.transform.SetParent(transform);
-            hint.transform.SetParent(null);
-            BoxCollider2D collider = GetComponent<BoxCollider2D>();
-            hint.transform.position = collider.transform.position + offSetPosition;
-            hint.transform.localScale = hintScale * Vector3.one;
-        }
-
-        protected void DestroyHint()
-        {
-            if (hint != null)
-                Destroy(hint);
-        }
-
-        protected void DisableHint()
-        {
-            hasHint = false;
-            DestroyHint();
         }
 
         public virtual void Interact()
@@ -78,9 +39,8 @@ namespace Abyss.Interactables
         {
             if (InfoControllor != null) InfoControllor.OpenPanel();
             EventManager.InvokeEvent(PlayEvents.InteractableEntered, infoText);
-            collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
             player = collider.gameObject;
-            SpawnHint();
+            collider.GetComponent<PlayerController>().OnAttemptInteract += Interact;
         }
 
         protected virtual void OnTriggerExit2D(Collider2D collider)
@@ -94,8 +54,6 @@ namespace Abyss.Interactables
             if (InfoControllor != null) InfoControllor.ClosePanel();
             EventManager.InvokeEvent(PlayEvents.InteractableExited);
             collider.GetComponent<PlayerController>().OnAttemptInteract -= Interact;
-            player = null;
-            DestroyHint();
         }
     }
 }

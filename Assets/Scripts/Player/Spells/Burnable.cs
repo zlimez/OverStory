@@ -13,7 +13,6 @@ public class Burnable : MonoBehaviour
     Color _startColor;
 
     bool _isBurning = false;
-
     public void Ignite()
     {
         if (_isBurning) return;
