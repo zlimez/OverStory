@@ -28,13 +28,14 @@ public class Burnable : MonoBehaviour
         float et = 0f;
         float initSpriteHeight = burnableRenderer.bounds.size.y;
         Vector3 startScale = transform.localScale;
+        int yInv = transform.lossyScale.y > 0 ? 1 : -1; // lossy scale works poorly with rotation
         float startY = transform.position.y, startX = transform.position.x;
         while (et < timeToBurnout)
         {
             et += Time.deltaTime;
             Vector3 newScale = Vector3.Lerp(Vector3.one, burntScale, et / timeToBurnout);
             transform.localScale = new Vector3(newScale.x * startScale.x, newScale.y * startScale.y, startScale.z);
-            transform.position = new Vector3(startX, startY + initSpriteHeight * (newScale.y - 1) / 2, 0);
+            transform.position = new Vector3(startX, startY + initSpriteHeight * yInv * (newScale.y - 1) / 2, 0); // 1 -1 check if is flipped
             burnableRenderer.color = Color.Lerp(_startColor, burntColor, et / timeToBurnout);
             yield return null;
         }

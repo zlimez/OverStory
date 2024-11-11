@@ -967,9 +967,11 @@ MonoBehaviour:
   hitsToKill: 2
   drops:
   - Head: {fileID: 1520851749018624176, guid: 68f22f5baabc146228b55f27fae765f2, type: 3}
-    Tail: 2
+    Tail: 1
   - Head: {fileID: 6575146312904711976, guid: 1e1521065be5b43c795e807630e6a8a4, type: 3}
-    Tail: 4
+    Tail: 1
+  - Head: {fileID: 8708761343506596083, guid: b8eefc4d12f0e441d8e5541afb60d617, type: 3}
+    Tail: 1
   dropRange:
     Head: {fileID: 7661847344468975196}
     Tail: {fileID: 4405318274228898151}

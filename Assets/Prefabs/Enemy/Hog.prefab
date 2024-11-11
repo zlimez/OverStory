@@ -8101,11 +8101,13 @@ MonoBehaviour:
   hitsToKill: 2
   drops:
   - Head: {fileID: 5381965474368501734, guid: cbe0e1e7adde34c2db2050a8d1ce1b7e, type: 3}
-    Tail: 6
+    Tail: 1
   - Head: {fileID: 3799403264589249832, guid: 622192f70a1a4487aa4b4565acfcc447, type: 3}
-    Tail: 3
+    Tail: 1
   - Head: {fileID: 8608600509101044846, guid: fd39a96d1065d49098209e8577770969, type: 3}
-    Tail: 2
+    Tail: 1
+  - Head: {fileID: 5026100613311838115, guid: bc0150809a712460494d5419e087217a, type: 3}
+    Tail: 1
   dropRange:
     Head: {fileID: 4396868656151317909}
     Tail: {fileID: 22818438936062661}

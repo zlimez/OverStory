@@ -10,8 +10,11 @@ public class EnvHazard : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            var knockbackImpulse = (collision.contacts[0].normal.y > 0 ? fromTopKnockbackImpulse : fromBottomKnockbackImpulse) * Mathf.Abs(collision.contacts[0].normal.y) + horizontalKnockbackImpulse * Mathf.Abs(collision.contacts[0].normal.x);
-            collision.gameObject.GetComponent<PlayerManager>().TakeHit(damage, true, collision.contacts[0].point, knockbackImpulse);
+            // var knockbackImpulse = (collision.contacts[0].normal.y > 0 ? fromTopKnockbackImpulse : fromBottomKnockbackImpulse) * Mathf.Abs(collision.contacts[0].normal.y) + horizontalKnockbackImpulse * Mathf.Abs(collision.contacts[0].normal.x);
+            // collision.gameObject.GetComponent<PlayerManager>().TakeHit(damage, true, collision.contacts[0].point, knockbackImpulse);
+            collision.gameObject.GetComponent<PlayerManager>().TakeHit(damage);
+            var playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            playerRb.AddForce(new Vector2(horizontalKnockbackImpulse * -1 * Mathf.Sign(playerRb.velocity.x), fromBottomKnockbackImpulse), ForceMode2D.Impulse);
         }
     }
 }

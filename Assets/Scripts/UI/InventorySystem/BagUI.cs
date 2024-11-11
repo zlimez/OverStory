@@ -57,7 +57,10 @@ public class BagUI : MonoBehaviour
         EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
-    void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
+    void OnDisable()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
+    }
 
     public void ToggleShowConsumables()
     {
