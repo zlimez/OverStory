@@ -5,7 +5,9 @@ namespace Abyss.SceneSystem
         None,
         Master,
         Lab,
-        Room1
+        Room1,
+        Room2,
+        Room3
     }
 }
 

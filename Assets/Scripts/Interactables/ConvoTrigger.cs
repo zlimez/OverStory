@@ -8,7 +8,7 @@ public class ConvoTrigger : MonoBehaviour
     [SerializeField] Conversation conversation;
     [SerializeField][Tooltip("Conditions to trigger this convo")] EventCondChecker condChecker; // TODO: Expand to include ors and parantheses
     [SerializeField] bool noRepeat = false;
-    [SerializeField] Pair<DynamicEvent, bool>[] eventsToTriggerAndRecord;
+    [SerializeField][Tooltip("Tail boolean refers to whether to record the event")] Pair<DynamicEvent, bool>[] eventsToTriggerAndRecord;
     bool _triggered = false;
     protected GameObject player;
 
