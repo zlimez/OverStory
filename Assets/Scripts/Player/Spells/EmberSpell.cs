@@ -19,11 +19,10 @@ namespace Abyss.Player.Spells
 		[SerializeField] private float damageAmount = 30f;
 		[SerializeField] private float existForTime = 1f;
 
-		HashSet<int> _enemyHits = new();
+		readonly HashSet<int> _enemyHits = new();
 
 		#endregion
 
-		// Start is called before the first frame update
 		void Start() => Destroy(gameObject, existForTime);
 
 		public void Initialize(bool shouldFaceLeft) => moveVector = moveSpeedValue * (shouldFaceLeft ? Vector2.left : Vector2.right);
@@ -42,8 +41,8 @@ namespace Abyss.Player.Spells
 				enemyPart.TakeHit(damageAmount);
 				_enemyHits.Add(enemyPart.EnemyIntanceId);
 			}
-			else if (other.gameObject.CompareTag(TAG_BURNABLE))
-				Destroy(other.gameObject); // TODO: Add burn effect
+			else if (other.gameObject.CompareTag(TAG_BURNABLE) && other.TryGetComponent(out Burnable burnable))
+				burnable.Ignite();
 		}
 
 		public override void Cast(bool toLeft)

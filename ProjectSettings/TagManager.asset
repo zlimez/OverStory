@@ -57,11 +57,14 @@ TagManager:
   - name: Characters
     uniqueID: 1528761381
     locked: 0
-  - name: Pickable Item
-    uniqueID: 2553922309
+  - name: Obstacles
+    uniqueID: 4175801027
     locked: 0
   - name: Player
     uniqueID: 1619572195
+    locked: 0
+  - name: Pickable Item
+    uniqueID: 2553922309
     locked: 0
   - name: VFX
     uniqueID: 1727171333

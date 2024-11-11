@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
     public PlayerPersistence PlayerPersistence = new();
     public TimePersistence TimePersistence = new();
     public Dictionary<string, float> RestsitesPersistence = new();
+    public Dictionary<string, object> EnvStatePersistence = new();
 #if UNITY_EDITOR
     public bool DebugEnableInventory = false;
 #endif
