@@ -5,7 +5,7 @@ namespace Abyss.Interactables
     public abstract class CondInteractable : Interactable
     {
         [SerializeField] EventCondChecker condChecker;
-        bool _isMet = false;
+        protected bool _isMet = false;
 
         protected override void OnTriggerEnter2D(Collider2D collider)
         {

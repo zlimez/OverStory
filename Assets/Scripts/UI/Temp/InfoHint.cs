@@ -21,8 +21,10 @@ public class InfoHint : MonoBehaviour
 
     void ShowInfoPanel(object obj)
     {
+        string text = (string)obj;
+        if (string.IsNullOrEmpty(text)) return;
         infoPanel.SetActive(true);
-        infoText.text = (string)obj;
+        infoText.text = text;
     }
 
     void HideInfoPanel(object obj)

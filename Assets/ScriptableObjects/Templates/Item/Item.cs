@@ -52,5 +52,6 @@ public enum ItemType
     Spells,
     Blueprints,
     Constructions,
-    Journal
+    Journal,
+    QuestItems
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf9bad4f8b6f46f089422996d797b40, type: 3}
+  m_Name: MillWheel
+  m_EditorClassIdentifier: 
+  itemName: Watermill Wheel
+  description: A sturdy watermill wheel obtained from the Hakems.
+  icon: {fileID: 21300000, guid: c0cbea02d1db24e6ea61ddb0442028a6, type: 3}
+  itemImage: {fileID: 21300000, guid: c0cbea02d1db24e6ea61ddb0442028a6, type: 3}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
+  itemType: 9

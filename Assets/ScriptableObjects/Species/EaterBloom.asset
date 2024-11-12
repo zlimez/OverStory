@@ -16,6 +16,7 @@ MonoBehaviour:
   mutationRate: 0.1
   maxPopulation: 25
   generationRate: 1.5
+  baseStrExpGiven: 2
   attrRanges:
   - Item1: strength
     Item2: 1
