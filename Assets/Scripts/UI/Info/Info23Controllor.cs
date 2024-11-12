@@ -15,11 +15,26 @@ public class Info23Controllor : MonoBehaviour
     public void InitializePanel(string name, Transform transform)
     {
         text.text = name;
-        Bounds bounds = transform.GetComponent<Renderer>().bounds;
-        Vector3 adjustedPosition = new Vector3(bounds.center.x, bounds.max.y + 0.9f, bounds.center.z);
+        
 
-        RectTransform panelRectTransform = infoPanel.GetComponent<RectTransform>();
-        panelRectTransform.position = adjustedPosition;
+        text.text = name;
+        Renderer renderer = transform.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Bounds bounds = renderer.bounds;
+            Vector3 adjustedPosition = new Vector3(bounds.center.x, bounds.max.y + 0.9f, bounds.center.z);
+
+            RectTransform panelRectTransform = infoPanel.GetComponent<RectTransform>();
+            panelRectTransform.position = adjustedPosition;
+        }
+        else
+        {
+            Vector3 targetPosition = transform.position;
+            Vector3 adjustedPosition = new Vector3(targetPosition.x, targetPosition.y + 0.9f, targetPosition.z);
+            RectTransform panelRectTransform = infoPanel.GetComponent<RectTransform>();
+            panelRectTransform.position = adjustedPosition;
+            panelRectTransform.anchoredPosition = new Vector2(0, panelRectTransform.anchoredPosition.y);
+        }
     }
 
     public void OpenPanel()

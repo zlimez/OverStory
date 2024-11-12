@@ -97,8 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: E to Rest
-  namePrefab: {fileID: 0}
-  nameText: 
+  namePrefab: {fileID: 3623095902180481956, guid: 9350159846b5d49e6a03c8164c3f11dc,
+    type: 3}
+  nameText: Restsite
   restSiteName: Fara Village
   purityRestoration: 10
   purityRestoreCooldown: 24
