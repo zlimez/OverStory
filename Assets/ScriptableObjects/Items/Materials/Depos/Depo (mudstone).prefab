@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9112977292076736240}
   - component: {fileID: 7728496867647914500}
+  - component: {fileID: 404726259810885739}
   m_Layer: 12
   m_Name: Depo (mudstone)
   m_TagString: Untagged
@@ -52,6 +53,23 @@ MonoBehaviour:
   beforeAfter:
     Head: {fileID: 7713778456729388012}
     Tail: {fileID: 4919856519487222926}
+  spriteFlash: {fileID: 0}
+--- !u!114 &404726259810885739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093263811487808379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRoot: {fileID: 0}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.5882353}
+  flashDuration: 0.3
+  reps: 1
 --- !u!1 &4919856519487222926
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +141,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1741044987
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 893431677099b4d5898992e36053b40e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -208,7 +226,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1741044987
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ac5e1d7d6bbf646a6be266780992734c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -6,14 +6,18 @@ using UnityEngine;
 
 public class SpriteFlash : MonoBehaviour
 {
-    [SerializeField] apPortrait portrait;
+    [SerializeField] Transform spriteRoot;
     [SerializeField] Color flashColor;
     [SerializeField] float flashDuration;
     [SerializeField] int reps;
-    List<Pair<Material, Color>> _materials = new();
+    readonly List<Pair<Material, Color>> _materials = new();
     IEnumerator _flashRoutine;
 
-    void Start() => GetMaterialsFromChildren(portrait.transform);
+    void Start()
+    {
+        if (spriteRoot == null) spriteRoot = transform;
+        GetMaterialsFromChildren(spriteRoot);
+    }
 
     void GetMaterialsFromChildren(Transform parent)
     {

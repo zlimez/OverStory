@@ -8,6 +8,7 @@ public class MaterialDeposit : MonoBehaviour
 	[SerializeField] int stock;
 	[SerializeField] GameObject materialDropPrefab;
 	[SerializeField] Pair<GameObject, GameObject> beforeAfter;
+	[SerializeField] SpriteFlash spriteFlash;
 	public int DepoId { get; private set; }
 
 	public static int DepoIdCnter = 0;
@@ -16,6 +17,9 @@ public class MaterialDeposit : MonoBehaviour
 
 	public void TakeHit(int count = 1)
 	{
+		if (stock == 0) return;
+
+		spriteFlash.StartFlash();
 		int pop = Math.Min(stock, count);
 		// Spawn items
 		Vector3 newItemPos;
@@ -32,6 +36,5 @@ public class MaterialDeposit : MonoBehaviour
 			beforeAfter.Head.SetActive(false);
 			beforeAfter.Tail.SetActive(true);
 		}
-
 	}
 }

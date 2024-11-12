@@ -15068,7 +15068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portrait: {fileID: 8813166186683433606}
+  spriteRoot: {fileID: 1927660622716189466}
   flashColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   flashDuration: 0.2
   reps: 1

@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1741044987
-  m_SortingLayer: 4
+  m_SortingLayerID: 1553467001
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 519165d52c47a4913afedade8853c21d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -155,8 +155,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1741044987
-  m_SortingLayer: 4
+  m_SortingLayerID: 1553467001
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d3e0713bde50e4a1c9250c4d49acc545, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -244,6 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 518523342409799313}
   - component: {fileID: 1919256282094215833}
+  - component: {fileID: 3901123106900885202}
   m_Layer: 12
   m_Name: Depo (web)
   m_TagString: Untagged
@@ -286,3 +287,20 @@ MonoBehaviour:
   beforeAfter:
     Head: {fileID: 7592009821365308945}
     Tail: {fileID: 5885689902837669850}
+  spriteFlash: {fileID: 3901123106900885202}
+--- !u!114 &3901123106900885202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358443758242041576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRoot: {fileID: 0}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.5882353}
+  flashDuration: 0.3
+  reps: 1
