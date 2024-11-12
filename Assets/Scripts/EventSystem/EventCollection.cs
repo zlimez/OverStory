@@ -62,6 +62,8 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent BuildEnd;
         public static readonly StaticEvent LureUsed;
         public static readonly StaticEvent LurePlaced;
+        public static readonly StaticEvent PlayerSpeak;
+        public static readonly StaticEvent PlayerSpeakFlip;
 
 
         static PlayEvents()
@@ -87,6 +89,8 @@ namespace Abyss.EventSystem
             BuildEnd = StaticEvent.BuildEnd;
             LureUsed = StaticEvent.LureUsed;
             LurePlaced = StaticEvent.LurePlaced;
+            PlayerSpeak = StaticEvent.PlayerSpeak;
+            PlayerSpeakFlip = StaticEvent.PlayerSpeakFlip;
         }
     }
 }

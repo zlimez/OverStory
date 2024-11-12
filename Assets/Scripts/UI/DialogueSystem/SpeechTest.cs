@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Abyss.EventSystem;
+using Tuples;
 using UnityEngine;
 
 public class SpeechTest : MonoBehaviour
 {
 	// Start is called before the first frame update
-	void Start()
+	void Start() 
 	{
 		Invoke("Say", 2f);
 	}
 
 	void Say() 
 	{
-		SpeechManager.Instance.EnqueueDialogue("Hello, world", 3f);
+		RefPair<string, float> args = new("Hello World", 3f);
+		EventManager.InvokeEvent(PlayEvents.PlayerSpeak, args);
 	}
 }

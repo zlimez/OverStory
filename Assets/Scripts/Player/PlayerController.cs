@@ -456,6 +456,7 @@ namespace Abyss.Player
 			gameObject.transform.localScale = currScale;
 
 			IsFacingLeft = !IsFacingLeft;
+			EventManager.InvokeEvent(PlayEvents.PlayerSpeakFlip);
 		}
 
 		void TransitionToState(State newState)

@@ -53,5 +53,7 @@ namespace Abyss.EventSystem
 
         BuildStart = 33,
         BuildEnd = 34,
+        PlayerSpeak = 39,
+        PlayerSpeakFlip = 40,
     }
 }
