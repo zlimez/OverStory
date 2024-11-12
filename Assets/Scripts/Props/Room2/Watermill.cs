@@ -15,7 +15,14 @@ public class Watermill : Interactable
     bool _isFixed = false;
     float _time;
 
-    void Start()
+    void OnEnable()
+    {
+        if (EventLedger.Instance == null)
+            EventManager.StartListening(SystemEvents.LedgerReady, Load);
+        else Load();
+    }
+
+    void Load(object input = null)
     {
         if (EventLedger.Instance.HasOccurred(new GameEvent(millFixedEvent.EventName)))
         {
@@ -25,7 +32,10 @@ public class Watermill : Interactable
             _isFixed = true;
             _time = timeToReachMaxSpin;
         }
+        EventManager.StopListening(SystemEvents.LedgerReady, Load);
     }
+
+    void OnDisable() => EventManager.StopListening(SystemEvents.LedgerReady, Load);
 
     protected override void OnTriggerEnter2D(Collider2D collider)
     {

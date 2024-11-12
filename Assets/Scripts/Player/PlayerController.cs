@@ -438,7 +438,7 @@ namespace Abyss.Player
 		#endregion
 
 		#region Helper Methods
-		bool IsFrozen => GameManager.Instance.UI.IsOpen || _isResting;
+		bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
 
 		void Jump()
 		{

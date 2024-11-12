@@ -23,6 +23,7 @@ namespace Abyss.EventSystem
             EventRecencyTable = new Dictionary<GameEvent, int>();
             recentEvents = new RQueue<GameEvent>();
             Counter = 0;
+            EventManager.InvokeEvent(SystemEvents.LedgerReady);
         }
 
         public void ClearRecentEvents() => recentEvents.RemoveAll();

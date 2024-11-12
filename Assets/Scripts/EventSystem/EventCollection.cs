@@ -3,6 +3,7 @@ namespace Abyss.EventSystem
     public static class SystemEvents
     {
         public static readonly StaticEvent SystemsReady;
+        public static readonly StaticEvent LedgerReady;
         public static readonly StaticEvent SceneTransitStart;
         public static readonly StaticEvent SceneTransitDone;
         public static readonly StaticEvent SceneTransitPrep;
@@ -13,6 +14,7 @@ namespace Abyss.EventSystem
         static SystemEvents()
         {
             SystemsReady = StaticEvent.SystemsReady;
+            LedgerReady = StaticEvent.LedgerReady;
             SceneTransitStart = StaticEvent.SceneTransitStart;
             SceneTransitDone = StaticEvent.SceneTransitDone;
             SceneTransitPrep = StaticEvent.SceneTransitPrep;
