@@ -60,6 +60,8 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent Respawn;
         public static readonly StaticEvent BuildStart;
         public static readonly StaticEvent BuildEnd;
+        public static readonly StaticEvent LureUsed;
+        public static readonly StaticEvent LurePlaced;
 
 
         static PlayEvents()
@@ -83,6 +85,8 @@ namespace Abyss.EventSystem
             Respawn = StaticEvent.Respawn;
             BuildStart = StaticEvent.BuildStart;
             BuildEnd = StaticEvent.BuildEnd;
+            LureUsed = StaticEvent.LureUsed;
+            LurePlaced = StaticEvent.LurePlaced;
         }
     }
 }

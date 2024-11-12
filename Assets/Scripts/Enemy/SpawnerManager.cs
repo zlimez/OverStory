@@ -15,10 +15,10 @@ namespace Abyss.Environment
         {
             foreach (var spawner in spawners)
             {
-                if (spawner.entityPrefab.TryGetComponent(out EnemyManager enemy))
+                if (spawner is EnemySpawner enemy)
                 {
-                    if (!enemyTypes.ContainsKey(enemy.specyAttr.specyName)) enemyTypes.Add(enemy.specyAttr.specyName, new());
-                    enemyTypes[enemy.specyAttr.specyName].Add(spawner);
+                    if (!enemyTypes.ContainsKey(enemy.Specy.specyName)) enemyTypes.Add(enemy.Specy.specyName, new());
+                    enemyTypes[enemy.Specy.specyName].Add(spawner);
                 }
             }
         }

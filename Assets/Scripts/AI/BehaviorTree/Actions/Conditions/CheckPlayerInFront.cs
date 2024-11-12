@@ -29,6 +29,10 @@ namespace BehaviorTree.Actions
             _varName = _params[0];
         }
 
-        public override void Update() => State = Tree.GetDatum<object>(_varName, true) != null ? State.SUCCESS : State.FAILURE;
+        public override void Update()
+        {
+            Debug.Log("Checking if " + _varName + " exists");
+            State = Tree.GetDatum<object>(_varName, true) != null ? State.SUCCESS : State.FAILURE;
+        }
     }
 }

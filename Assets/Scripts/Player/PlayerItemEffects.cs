@@ -15,7 +15,7 @@ public class PlayerItemEffects : MonoBehaviour
 	// Good bandages
 	[SerializeField] DynamicEvent goodBandageUsed;
 	[SerializeField] float goodHealPortion;
-	
+
 	// Master bandages
 	[SerializeField] DynamicEvent masterBandageUsed;
 	[SerializeField] float masterHealPortion;
@@ -31,6 +31,7 @@ public class PlayerItemEffects : MonoBehaviour
 		EventManager.StartListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
 		EventManager.StartListening(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
 		EventManager.StartListening(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
+		EventManager.StartListening(PlayEvents.LureUsed, PlaceLure);
 	}
 
 	void OnDisable()
@@ -38,12 +39,11 @@ public class PlayerItemEffects : MonoBehaviour
 		EventManager.StopListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
 		EventManager.StartListening(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
 		EventManager.StartListening(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
+		EventManager.StopListening(PlayEvents.LureUsed, PlaceLure);
 	}
 
 	public void UseBasicBandage(object input = null) => StartCoroutine(Heal(basicHealPortion * PlayerAttr.MaxHealth));
-	
 	public void UseGoodBandage(object input = null) => StartCoroutine(Heal(goodHealPortion * PlayerAttr.MaxHealth));
-	
 	public void UseMasterBandage(object input = null) => StartCoroutine(Heal(masterHealPortion * PlayerAttr.MaxHealth));
 
 	IEnumerator Heal(float healAmt)
@@ -57,4 +57,12 @@ public class PlayerItemEffects : MonoBehaviour
 			yield return null;
 		}
 	}
+
+	void PlaceLure(object input = null)
+	{
+		(float radius, string specyName) = ((float, string))input;
+		EventManager.InvokeEvent(new GameEvent(LurePlacedEvtNameFor(specyName)), (radius, transform.position));
+	}
+
+	public static string LurePlacedEvtNameFor(string specyName) => new(PlayEvents.LurePlaced.ToString() + " " + specyName);
 }

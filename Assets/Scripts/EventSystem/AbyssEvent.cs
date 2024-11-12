@@ -39,6 +39,9 @@ namespace Abyss.EventSystem
         WeaponUnequipped = 24,
         SpellEquippedStateChange = 26,
 
+        LureUsed = 37,
+        LurePlaced = 38,
+
         RestStart = 25,
         InRest = 36,
         RestEnd = 35,

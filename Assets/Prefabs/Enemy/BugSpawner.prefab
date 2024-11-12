@@ -237,6 +237,7 @@ MonoBehaviour:
   entityPrefab: {fileID: 5993287734376678934, guid: ee0360d141f6b464fa3df1e1afb5fa33,
     type: 3}
   spawnPoint: {fileID: 4792985559426752555}
+  specy: {fileID: 11400000, guid: b132f14a3f74948f1aa3a6b57432e26d, type: 2}
   arena: {fileID: 5399166916836667124}
   leftEnd: {fileID: 176377567563942258}
   rightEnd: {fileID: 1117189844095581382}
