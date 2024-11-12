@@ -5,6 +5,7 @@ using Abyss.Environment.Enemy.Anim;
 using Abyss.Player;
 using Abyss.Environment.Enemy;
 using Abyss;
+using Abyss.EventSystem;
 
 public class Charge : CfAction
 {
@@ -18,6 +19,7 @@ public class Charge : CfAction
     HogAnim _chargeTypeAnim;
     EnemyManager _enemyManager;
     System.Action<Vector3> _vfx;
+    GameEvent _stunEvent;
 
     Vector3 startPos;
     float chargeTime;
@@ -46,6 +48,7 @@ public class Charge : CfAction
         _chargeDmg = (float)dataRef[10];
         _enemyManager = (EnemyManager)dataRef[11];
         _vfx = (System.Action<Vector3>)dataRef[12];
+        _stunEvent = (GameEvent)dataRef[13];
         chargeTime = _chargeDist / _chargeSpeed;
     }
 
@@ -89,6 +92,7 @@ public class Charge : CfAction
                 isResting = true;
                 isStunned = true;
                 pauseTime = _restTime + _stunTime;
+                EventManager.InvokeEvent(_stunEvent);
                 return;
             }
 

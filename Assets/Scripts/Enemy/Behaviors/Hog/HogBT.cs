@@ -7,10 +7,12 @@ using Abyss.Environment.Enemy;
 using Abyss.Environment.Enemy.Anim;
 using Tuples;
 using UnityEngine;
+using Abyss.EventSystem;
 
 public class HogBT : MonoBT
 {
     public Arena Arena;
+    [SerializeField] DynamicEvent hogStunEvent;
 
     [Header("Charge Settings")]
     // Stun time if during charge the hog hits an obstacle
@@ -104,6 +106,7 @@ public class HogBT : MonoBT
             new("chargeSpeed", chargeSpeed * attr.speed),
             new("stunRaycastDist", stunRaycastDist),
             new("stunVfx", (Action<Vector3>)OnCollision),
+            new("stunEvent", new GameEvent(hogStunEvent.EventName)),
 
             new("patrolSpeed", patrolSpeed * attr.speed),
             new("waitTime", waitTime / attr.speed),
@@ -127,8 +130,8 @@ public class HogBT : MonoBT
             new("patrolRight", PatrolRight),
         };
 
-        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager", "stunVfx" };
-        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager", "stunVfx" };
+        var shortChargeArgs = new string[] { "stunTime", "shortRestTime", "shortChargeupTime", "shortChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager", "stunVfx", "stunEvent" };
+        var longChargeArgs = new string[] { "stunTime", "longRestTime", "longChargeupTime", "longChargeDist", "chargeSpeed", "chargeCurve", "hog", "hogSprite", "hogAnimator", "stunRaycastDist", "chargeDamage", "hogManager", "stunVfx", "stunEvent" };
         _bT = new BT(new ObserveSelector(new List<Node> {
             new Sequence(new List<Node> {
                 new CheckPlayerInArena(new string[] { "arena", "target" }),

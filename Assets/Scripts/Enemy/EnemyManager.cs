@@ -61,12 +61,7 @@ namespace Abyss.Environment.Enemy
             if (damageFlash != null) damageFlash.StartFlash();
 
             _isDefeated = health == 0;
-            if (_isDefeated)
-            {
-                OnDefeated?.Invoke();
-                OnStrikePlayer = null;
-                GameManager.Instance.PlayerPersistence.PlayerAttr.FeedExp(Player.PlayerAttr.ExpAttrType.Strength, attributes.strength + Specy.baseStrExpGiven);
-            }
+            if (_isDefeated) Defeat();
         }
 
         // NOTE: Spared -> Enemy manager disabled then destroyed by spawner when either rested or scene transitions
@@ -74,6 +69,14 @@ namespace Abyss.Environment.Enemy
         {
             if (_isDefeated && attributes.isAlive)
                 attributes.friendliness += 2.0f;
+        }
+
+        // NOTE: Should be made private only for hog platform seq hack
+        public void Defeat()
+        {
+            OnDefeated?.Invoke();
+            OnStrikePlayer = null;
+            GameManager.Instance.PlayerPersistence.PlayerAttr.FeedExp(Player.PlayerAttr.ExpAttrType.Strength, attributes.strength + Specy.baseStrExpGiven);
         }
 
         public void Strike()

@@ -13,7 +13,7 @@ namespace BehaviorTree
 
         public abstract void Setup();
 
-        protected void StopBT()
+        public void StopBT()
         {
             _bT?.Teardown();
             foreach (var _bb in _bbs) _bb.Teardown();
