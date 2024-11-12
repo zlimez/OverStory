@@ -27,7 +27,7 @@ namespace Abyss.Environment.Enemy
         protected override void OnInit()
         {
             base.OnInit();
-            Action<float> attack = (float str) => Tree.GetDatum<Transform>("target").GetComponent<Player.PlayerManager>().TakeHit(str + _damage, _hasKnockback, _enemyManager.transform.position);
+            Action<float> attack = (float str) => Tree.GetDatum<Transform>("target").GetComponent<Player.PlayerManager>().TakeHit(str + _damage, _enemyManager.Specy.specyName, _hasKnockback, _enemyManager.transform.position);
             _enemyManager.OnStrikePlayer += attack;
             Tree.SetDatum(_attackName, attack);
         }

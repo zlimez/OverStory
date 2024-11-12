@@ -8088,7 +8088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2783f183ec7a540dbb1188a343ddc16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specyAttr: {fileID: 11400000, guid: 497df2db7b8524584b2d479508ecc4f5, type: 2}
+  Specy: {fileID: 11400000, guid: 497df2db7b8524584b2d479508ecc4f5, type: 2}
   attributes:
     isAlive: 1
     priority: 0
@@ -8104,10 +8104,13 @@ MonoBehaviour:
     Tail: 1
   - Head: {fileID: 3799403264589249832, guid: 622192f70a1a4487aa4b4565acfcc447, type: 3}
     Tail: 1
-  - Head: {fileID: 8608600509101044846, guid: fd39a96d1065d49098209e8577770969, type: 3}
-    Tail: 1
-  - Head: {fileID: 5026100613311838115, guid: bc0150809a712460494d5419e087217a, type: 3}
-    Tail: 1
+  probabalisticDrops:
+  - Item1: {fileID: 5026100613311838115, guid: bc0150809a712460494d5419e087217a, type: 3}
+    Item2: 1
+    Item3: 0.25
+  - Item1: {fileID: 8608600509101044846, guid: fd39a96d1065d49098209e8577770969, type: 3}
+    Item2: 1
+    Item3: 0.5
   dropRange:
     Head: {fileID: 4396868656151317909}
     Tail: {fileID: 22818438936062661}

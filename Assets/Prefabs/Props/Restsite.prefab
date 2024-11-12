@@ -36,6 +36,7 @@ Transform:
   - {fileID: 7573206113315965138}
   - {fileID: 2678353822783274260}
   - {fileID: 529693168263235150}
+  - {fileID: 3754239153204022834}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &7473495167230644151
@@ -95,10 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1d6ce9a62f44889b41edd3d3358201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasHint: 0
-  offSetPosition: {x: 0, y: 0, z: 0}
-  hintScale: 1
-  hintPrefab: {fileID: 0}
   infoText: E to Rest
   namePrefab: {fileID: 0}
   nameText: 
@@ -108,6 +105,9 @@ MonoBehaviour:
   bonfire: {fileID: 7704303595380016919}
   timeFastForward: 12
   lastPurityRestoreTime: -1
+  lureBlueprints:
+  - {fileID: 11400000, guid: 3d36c13f41d4c492cadb4a729b8ee6e0, type: 2}
+  lureSpawnPoint: {fileID: 3754239153204022834}
 --- !u!114 &8496804522582030049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +378,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6891469387937893104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3754239153204022834}
+  m_Layer: 0
+  m_Name: EtulGivePt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3754239153204022834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6891469387937893104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.6998546, y: -1.0304079, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3498560458565771626}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &956169168289803259
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -31,3 +31,13 @@ MonoBehaviour:
     Tail: 2
   - Head: {fileID: 11400000, guid: 77fe77844723c48b3b760fbbdd1f6f7f, type: 2}
     Tail: 2
+  prerequisiteItems: []
+  prerequisiteAttr:
+    Strength: 0
+    Intelligence: 0
+    Agility: 0
+    Health: 0
+    Purity: 0
+    ActionPurity: 0
+    FriendlinessPurity: 0
+  isCraftable: 0

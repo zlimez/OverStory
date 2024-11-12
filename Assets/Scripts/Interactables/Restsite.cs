@@ -3,6 +3,7 @@ using Abyss.EventSystem;
 using Abyss.Player;
 using Abyss.SceneSystem;
 using Abyss.TimeManagers;
+using Tuples;
 using UnityEngine;
 
 namespace Abyss.Interactables
@@ -16,6 +17,8 @@ namespace Abyss.Interactables
         [SerializeField] float timeFastForward;
         [SerializeField] float lastPurityRestoreTime = -1; // cooldown for purity to be restored
                                                            // TODO: Include crafting, some functions to transferred to eventual rest site menu
+        [SerializeField] BlueprintItem[] lureBlueprints;
+        [SerializeField] Transform lureSpawnPoint;
 
         PlayerManager _playerManager;
 
@@ -34,10 +37,18 @@ namespace Abyss.Interactables
             EventManager.StopListening(PlayEvents.RestEnd, EndRest);
         }
 
+        // Lure spawning can be done here as player death always trigger scene reload
         void Load(object input = null)
         {
             if (GameManager.Instance.RestsitesPersistence.ContainsKey(restSiteName))
                 lastPurityRestoreTime = GameManager.Instance.RestsitesPersistence[restSiteName];
+            if (GameManager.Instance.PlayerPersistence.KilledBy == "") return;
+            foreach (var lureBP in lureBlueprints)
+                if ((lureBP.objectItem as Lure).specy.specyName == GameManager.Instance.PlayerPersistence.KilledBy && !GameManager.Instance.Inventory.MaterialCollection.Contains(lureBP))
+                {
+                    Instantiate(lureBP.itemPrefab, lureSpawnPoint.position, Quaternion.identity);
+                    break;
+                }
         }
 
         void Save(object input = null) => GameManager.Instance.RestsitesPersistence[restSiteName] = lastPurityRestoreTime;

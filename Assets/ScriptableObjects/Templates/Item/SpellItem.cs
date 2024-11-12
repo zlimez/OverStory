@@ -9,10 +9,15 @@ public class SpellItem : Item
 
     public bool CanCast => GameManager.Instance.Inventory.MaterialCollection.StockOf(rottenFlesh) >= rottenFleshNeeded;
 
-    void Awake()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         canUseFromInventory = false;
         isConsumable = false;
+        isAcceptableToFara = false;
+        isAcceptableToHakem = false;
+        valueToFara = 0;
+        valueToHakem = 0;
         itemType = ItemType.Spells;
     }
 }

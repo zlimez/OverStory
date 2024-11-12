@@ -179,7 +179,8 @@ public class CraftingSystem : MonoBehaviour
 
         foreach (var itemStack in GameManager.Instance.Inventory.MaterialCollection.Items)
         {
-            if (itemStack.Data.itemType != ItemType.Blueprints) continue;
+            // FIXME: This is a temporary fix to prevent the player from crafting constructions or spells see BlueprintItem.cs
+            if (itemStack.Data.itemType != ItemType.Blueprints || !((BlueprintItem)itemStack.Data).isCraftable) continue;
             // if (itemStack.Data is BlueprintItem derivedData && derivedData.objectItem.itemType == ItemType.Constructions) continue;
             if (itemStack.Count <= 0) continue;
             GameObject slot = Instantiate(slotPrefab, scrollViewContent.transform);

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4404543413817657078}
   - component: {fileID: 991373678110609477}
-  - component: {fileID: 3336641659580089888}
   - component: {fileID: 6096259638911654736}
+  - component: {fileID: 2047397230694124771}
   m_Layer: 7
   m_Name: Wall1
   m_TagString: Wall (Construct)
@@ -88,8 +88,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &3336641659580089888
-BoxCollider2D:
+--- !u!114 &6096259638911654736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63323973075519710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d531e6f5cb247426396a03abfc1091c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topRight: {fileID: 6552200084819652242}
+  bottomLeft: {fileID: 7102993662642373860}
+  particlesNumRange:
+    Head: 5
+    Tail: 8
+  particlesScaleRange:
+    Head: 0.5
+    Tail: 4
+  delayRange:
+    Head: 0
+    Tail: 1
+  particlePrefab: {fileID: 2243856311797237397, guid: 9a87d52695eb34334a9c1bc604ae0f8d,
+    type: 3}
+--- !u!60 &2047397230694124771
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130,36 +155,51 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.41, y: 1.4}
-  m_EdgeRadius: 0
---- !u!114 &6096259638911654736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63323973075519710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d531e6f5cb247426396a03abfc1091c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConstructionSys: {fileID: 0}
-  durability: 2
-  topRight: {fileID: 6552200084819652242}
-  bottomLeft: {fileID: 7102993662642373860}
-  particlesNumRange:
-    Head: 5
-    Tail: 8
-  particlesScaleRange:
-    Head: 0.5
-    Tail: 4
-  delayRange:
-    Head: 0
-    Tail: 1
-  particlePrefab: {fileID: 2243856311797237397, guid: 9a87d52695eb34334a9c1bc604ae0f8d,
-    type: 3}
+  m_Points:
+    m_Paths:
+    - - {x: 0.955, y: -0.34}
+      - {x: 0.91499996, y: -0.32999998}
+      - {x: 1.2049999, y: -0.06}
+      - {x: 1.2049999, y: 0.07}
+      - {x: 1.175, y: 0.099999994}
+      - {x: 0.995, y: 0.16}
+      - {x: 0.905, y: 0.16}
+      - {x: 0.59499997, y: -0.099999994}
+      - {x: 0.42499998, y: -0.22}
+      - {x: 0.405, y: -0.19}
+      - {x: 0.295, y: -0.14}
+      - {x: 0.305, y: -0.049999997}
+      - {x: 0.175, y: 0.02}
+      - {x: -0.044999998, y: -0.03}
+      - {x: -0.125, y: -0.03}
+      - {x: -0.175, y: -0.099999994}
+      - {x: -0.185, y: -0.16}
+      - {x: -0.105, y: -0.19}
+      - {x: -0.255, y: -0.26}
+      - {x: -0.525, y: 0.65999997}
+      - {x: -0.545, y: 0.7}
+      - {x: -0.705, y: 0.7}
+      - {x: -0.745, y: 0.69}
+      - {x: -0.825, y: 0.65999997}
+      - {x: -0.995, y: 0.61}
+      - {x: -1.035, y: 0.53}
+      - {x: -0.92499995, y: 0.28}
+      - {x: -0.765, y: -0.17999999}
+      - {x: -0.905, y: -0.099999994}
+      - {x: -1.035, y: -0.12}
+      - {x: -1.0849999, y: -0.17}
+      - {x: -1.165, y: -0.26}
+      - {x: -1.165, y: -0.31}
+      - {x: -0.835, y: -0.58}
+      - {x: -1.115, y: -0.58}
+      - {x: -1.185, y: -0.64}
+      - {x: -1.2049999, y: -0.68}
+      - {x: -1.2049999, y: -0.7}
+      - {x: 1.165, y: -0.7}
+      - {x: 1.155, y: -0.65999997}
+      - {x: 1.125, y: -0.62}
+      - {x: 1.015, y: -0.53}
+  m_UseDelaunayMesh: 0
 --- !u!1 &3812501581467786690
 GameObject:
   m_ObjectHideFlags: 0

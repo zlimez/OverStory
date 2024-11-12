@@ -32,7 +32,11 @@ public class ConstructionUI : MonoBehaviour
         EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateConstructionUI);
     }
 
-    void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateConstructionUI;
+    void OnDisable()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateConstructionUI;
+    }
 
     public void UpdateLevel(int le)
     {

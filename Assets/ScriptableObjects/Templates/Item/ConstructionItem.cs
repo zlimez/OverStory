@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Abyss.Player;
 using Tuples;
 using UnityEngine;
 
@@ -10,10 +9,15 @@ public class ConstructionItem : Item
     [Tooltip("Time required when construction level is 1")] public float baseBuildTime;
     public int Durability = 3;
 
-    void Awake()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         canUseFromInventory = false;
         isConsumable = false;
+        isAcceptableToFara = false;
+        isAcceptableToHakem = false;
+        valueToFara = 0;
+        valueToHakem = 0;
         itemType = ItemType.Constructions;
     }
 }

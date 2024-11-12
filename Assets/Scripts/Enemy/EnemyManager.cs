@@ -7,7 +7,7 @@ namespace Abyss.Environment.Enemy
 {
     public class EnemyManager : MonoBehaviour
     {
-        public SpecyAttr specyAttr;
+        public SpecyAttr Specy;
         public EnemyAttr attributes;
         public float health;
         public Action OnDefeated, OnDeath;
@@ -17,11 +17,19 @@ namespace Abyss.Environment.Enemy
 
         [Header("Drops")]
         [SerializeField][Tooltip("Number of strikes aft health depleted that will kill this enemy")] int hitsToKill = 2;
-        [SerializeField] Pair<GameObject, int>[] drops;
+        [SerializeField] Pair<GameObject, uint>[] drops;
+        [SerializeField] Triplet<GameObject, uint, float>[] probabalisticDrops;
         [SerializeField][Tooltip("Left and right endpoint where drops are spawned")] Pair<Transform, Transform> dropRange;
 
         bool _isDefeated = false, _haveFightWithPlayer = false, _beAttacked = false;
         int _postDefeatStrikes = 0;
+
+        public void OnValidate()
+        {
+            foreach (var probDrop in probabalisticDrops)
+                if (probDrop.Item3 < 0 || probDrop.Item3 > 1)
+                    throw new ArgumentOutOfRangeException("Probability must be between 0 and 1");
+        }
 
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
@@ -74,11 +82,20 @@ namespace Abyss.Environment.Enemy
         void Drop()
         {
             foreach (var drop in drops)
-                for (int i = 0; i < drop.Tail; i++)
+                for (uint i = 0; i < drop.Tail; i++)
                 {
                     var dropPos = new Vector3(UnityEngine.Random.Range(dropRange.Head.position.x, dropRange.Tail.position.x), dropRange.Head.position.y, 0);
                     Instantiate(drop.Head, dropPos, Quaternion.identity);
                 }
+
+            System.Random ran = new();
+            foreach (var probDrop in probabalisticDrops)
+                for (uint i = 0; i < probDrop.Item2; i++)
+                    if ((float)ran.NextDouble() <= probDrop.Item3)
+                    {
+                        var dropPos = new Vector3(UnityEngine.Random.Range(dropRange.Head.position.x, dropRange.Tail.position.x), dropRange.Head.position.y, 0);
+                        Instantiate(probDrop.Item1, dropPos, Quaternion.identity);
+                    }
         }
 
         // NOTE: If enemy always moving (enter/exit trigger), this is not required

@@ -7,12 +7,15 @@ public class Lure : Item
     public SpecyAttr specy;
     public float radius;
 
-    void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         isConsumable = true;
         canUseFromInventory = true;
         isAcceptableToFara = false;
         isAcceptableToHakem = false;
+        valueToFara = 0;
+        valueToHakem = 0;
         itemType = ItemType.Consumables;
     }
 

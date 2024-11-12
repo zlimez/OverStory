@@ -21883,7 +21883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2783f183ec7a540dbb1188a343ddc16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specyAttr: {fileID: 11400000, guid: b132f14a3f74948f1aa3a6b57432e26d, type: 2}
+  Specy: {fileID: 11400000, guid: b132f14a3f74948f1aa3a6b57432e26d, type: 2}
   attributes:
     isAlive: 1
     priority: 0
@@ -21895,16 +21895,20 @@ MonoBehaviour:
   damageFlash: {fileID: 5075878886549294667}
   hitsToKill: 2
   drops:
-  - Head: {fileID: 187993010069644091, guid: 87f80615f37ca425997afa7fa2de128b, type: 3}
+  - Head: {fileID: 2147576239185726581, guid: 39069390f54b845b48d92c16e3a8fc92, type: 3}
     Tail: 1
   - Head: {fileID: 8333903897979866840, guid: 367caae737c1c44d8bf6f011b9feb12f, type: 3}
     Tail: 1
-  - Head: {fileID: 2147576239185726581, guid: 39069390f54b845b48d92c16e3a8fc92, type: 3}
-    Tail: 1
-  - Head: {fileID: 3666791956295866859, guid: 9457c31fa5ecd43ac8973650582b50a3, type: 3}
-    Tail: 1
-  - Head: {fileID: 5508449814371400991, guid: 252c43de487d042f9975af07a384e948, type: 3}
-    Tail: 1
+  probabalisticDrops:
+  - Item1: {fileID: 5508449814371400991, guid: 252c43de487d042f9975af07a384e948, type: 3}
+    Item2: 1
+    Item3: 0.25
+  - Item1: {fileID: 187993010069644091, guid: 87f80615f37ca425997afa7fa2de128b, type: 3}
+    Item2: 1
+    Item3: 0.5
+  - Item1: {fileID: 3666791956295866859, guid: 9457c31fa5ecd43ac8973650582b50a3, type: 3}
+    Item2: 1
+    Item3: 0.5
   dropRange:
     Head: {fileID: 5294852697596318191}
     Tail: {fileID: 4709568720818880033}

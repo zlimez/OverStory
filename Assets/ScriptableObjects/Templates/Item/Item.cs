@@ -18,7 +18,7 @@ public class Item : ScriptableObject
 
     public ItemType itemType;
 
-    void OnValidate()
+    protected virtual void OnValidate()
     {
         if (itemName == null || itemName == "")
             itemName = name;

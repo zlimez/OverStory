@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Abyss.Player;
-using Tuples;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Item/Journal")]
@@ -8,10 +5,15 @@ public class JournalItem : Item
 {
     public JournalType journalType;
 
-    void Awake()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         canUseFromInventory = false;
         isConsumable = false;
+        isAcceptableToFara = false;
+        isAcceptableToHakem = false;
+        valueToFara = 0;
+        valueToHakem = 0;
         itemType = ItemType.Journal;
     }
 

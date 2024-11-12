@@ -12,6 +12,7 @@ namespace Abyss.DataPersistence
         public WeaponItem WeaponItem;
         public SpellItem[] SpellItems = new SpellItem[3];
         public RefPair<AbyssScene, UnityEngine.Vector3> LastRest = new();
+        public string KilledBy = "";
         public bool JustDied = false;
         public bool IsBuilding = false;
         public int DroneLevel = 1;

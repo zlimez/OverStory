@@ -954,7 +954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2783f183ec7a540dbb1188a343ddc16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specyAttr: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
+  Specy: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
   attributes:
     isAlive: 1
     priority: 0
@@ -970,8 +970,10 @@ MonoBehaviour:
     Tail: 1
   - Head: {fileID: 6575146312904711976, guid: 1e1521065be5b43c795e807630e6a8a4, type: 3}
     Tail: 1
-  - Head: {fileID: 8708761343506596083, guid: b8eefc4d12f0e441d8e5541afb60d617, type: 3}
-    Tail: 1
+  probabalisticDrops:
+  - Item1: {fileID: 8708761343506596083, guid: b8eefc4d12f0e441d8e5541afb60d617, type: 3}
+    Item2: 1
+    Item3: 0.25
   dropRange:
     Head: {fileID: 7661847344468975196}
     Tail: {fileID: 4405318274228898151}
