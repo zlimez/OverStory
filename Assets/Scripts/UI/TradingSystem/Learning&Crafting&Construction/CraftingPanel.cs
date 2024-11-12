@@ -194,6 +194,8 @@ public class CraftingSystem : MonoBehaviour
     public void CraftOnClick()
     {
         Item objectItem = _chosenBlueprint.objectItem;
+        EventManager.InvokeEvent(PlayEvents.Message, "Crafting successful!");
+
         List<RefPair<Item, int>> materials = _chosenBlueprint.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
         GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);

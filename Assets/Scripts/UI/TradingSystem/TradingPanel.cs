@@ -298,6 +298,7 @@ public class TradingSystem : MonoBehaviour
 
     private void TradeDone()
     {
+        EventManager.InvokeEvent(PlayEvents.Message, "Happy trading!! :)");
         topArea.ReverseClear();
         bottomArea.ReverseClear();
     }

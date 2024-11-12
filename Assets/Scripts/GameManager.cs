@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
+        Inventory.MaterialCollection.isPlayer = true;
         EventManager.InvokeEvent(SystemEvents.SystemsReady);
 #if UNITY_EDITOR
         Inventory.Enabled = DebugEnableInventory;

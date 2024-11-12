@@ -206,6 +206,9 @@ public class LearningSystem : MonoBehaviour
     public void LearnOnClick()
     {
         Item objectItem = _chosenBlueprint.objectItem;
+        string msg = "You learned " + objectItem.itemType.ToString() + ": \"" + objectItem.itemName + "\".";
+        EventManager.InvokeEvent(PlayEvents.Message, msg);
+
         List<RefPair<Item, int>> materials = _chosenBlueprint.materials;
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
         GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);

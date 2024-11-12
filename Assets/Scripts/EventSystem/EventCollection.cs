@@ -67,6 +67,9 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent LurePlaced;
         public static readonly StaticEvent PlayerSpeak;
         public static readonly StaticEvent PlayerSpeakFlip;
+        public static readonly StaticEvent PlayerItemChange;
+        public static readonly StaticEvent Message;
+
 
 
         static PlayEvents()
@@ -95,6 +98,8 @@ namespace Abyss.EventSystem
             LurePlaced = StaticEvent.LurePlaced;
             PlayerSpeak = StaticEvent.PlayerSpeak;
             PlayerSpeakFlip = StaticEvent.PlayerSpeakFlip;
+            PlayerItemChange = StaticEvent.PlayerItemChange;
+            Message = StaticEvent.Message;
         }
     }
 }
