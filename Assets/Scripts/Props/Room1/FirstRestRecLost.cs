@@ -6,6 +6,7 @@ public class FirstRestRecLost : MonoBehaviour
 {
     [SerializeField] Conversation firstDeath, firstRecover, firstLost;
     [SerializeField] DynamicEvent HadFirstRecover, HadFirstLost, HadFirstDeathConvo;
+    [SerializeField] JournalItem journalItem;
 
     void OnTriggerExit2D(Collider2D other)
     {
@@ -36,6 +37,12 @@ public class FirstRestRecLost : MonoBehaviour
                 {
                     EventLedger.Instance.Record(new GameEvent(HadFirstLost.EventName));
                     DialogueManager.Instance.SoftStartConvo(firstLost);
+                }
+                if(!GameManager.Instance.Inventory.MaterialCollection.Contains(journalItem)) 
+                {
+                    GameManager.Instance.Inventory.MaterialCollection.Add(journalItem);
+                    GameManager.Instance.PlayerPersistence.PlayerAttr.Intelligence += 1;
+                    EventManager.InvokeEvent(PlayEvents.PlayerIntelligenceChange, 1);
                 }
             }
         }

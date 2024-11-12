@@ -126,6 +126,7 @@ MonoBehaviour:
   HadFirstRecover: {fileID: 11400000, guid: ce7110600db0f442fb8e08200e265aca, type: 2}
   HadFirstLost: {fileID: 11400000, guid: 05386c0b3112e46018a9fb2b14e5884a, type: 2}
   HadFirstDeathConvo: {fileID: 11400000, guid: 334c3570bcf3d45a9ab6d227822ad6c3, type: 2}
+  journalItem: {fileID: 11400000, guid: 4b4c5bf987fc34f0aae724c6bb6eaf15, type: 2}
 --- !u!1 &1833475001420937058
 GameObject:
   m_ObjectHideFlags: 0

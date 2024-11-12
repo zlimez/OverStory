@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: BP-Burn1
   m_EditorClassIdentifier: 
   itemName: Ember Blueprint
-  description: Ember - First of the fiery spells. Raises a pillar of flame in front
+  description: 'Ember - First of the fiery spells. Raises a pillar of flame in front
     of you that burns enemies, dealing damage and causing them to take more damage
     temporarily.
+
+    Requires 2 strength 5 intelligence to learn and acquire.'
   icon: {fileID: 21300000, guid: b27ec64990f9645e7a5d7ff833d18d5a, type: 3}
   itemImage: {fileID: 0}
   itemPrefab: {fileID: 0}
@@ -35,8 +37,8 @@ MonoBehaviour:
     Tail: 1
   prerequisiteItems: []
   prerequisiteAttr:
-    Strength: 0
-    Intelligence: 0
+    Strength: 2
+    Intelligence: 5
     Agility: 0
     Health: 0
     Purity: 0

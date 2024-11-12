@@ -17,8 +17,12 @@ public class JournalUI : MonoBehaviour
     public Sprite[] TribeButtonInactive;
     public Sprite[] TribeButtonActive;
     public Image TribeButtonImage;
+    public Sprite[] DepositButtonInactive;
+    public Sprite[] DepositButtonActive;
+    public Image DepositButtonImage;
     private bool showBestiary = false;
     private bool showTribe = false;
+    private bool showDeposit = false;
 
     void Start()
     {
@@ -73,6 +77,7 @@ public class JournalUI : MonoBehaviour
                 if (itemStack.Count <= 0) continue;
                 if (showBestiary && journalItem.journalType != JournalItem.JournalType.Bestiary) continue;
                 if (showTribe && journalItem.journalType != JournalItem.JournalType.Tribe) continue;
+                if (showDeposit && journalItem.journalType != JournalItem.JournalType.Deposit) continue;
                 GameObject slot = Instantiate(SlotPrefab, scrollViewContent.transform);
 
                 LargeSlotController slotController = slot.GetComponent<LargeSlotController>();
@@ -91,13 +96,31 @@ public class JournalUI : MonoBehaviour
     public void ToggleShowBestiary()
     {
         showBestiary = !showBestiary;
-        if (showBestiary) showTribe = false;
+        if (showBestiary)
+        {
+            showTribe = false;
+            showDeposit = false;
+        }
         UpdateJournalUI();
     }
     public void ToggleShowTribe()
     {
         showTribe = !showTribe;
-        if (showTribe) showBestiary = false;
+        if (showTribe)
+        {
+            showBestiary = false;
+            showDeposit = false;
+        }
+        UpdateJournalUI();
+    }
+        public void ToggleShowDeposit()
+    {
+        showDeposit = !showDeposit;
+        if (showDeposit)
+        {
+            showBestiary = false;
+            showTribe = false;
+        }
         UpdateJournalUI();
     }
 
@@ -107,5 +130,7 @@ public class JournalUI : MonoBehaviour
         else BestiaryButtonImage.sprite = BestiaryButtonInactive[level - 1];
         if (showTribe) TribeButtonImage.sprite = TribeButtonActive[level - 1];
         else TribeButtonImage.sprite = TribeButtonInactive[level - 1];
+        if (showDeposit) DepositButtonImage.sprite = DepositButtonActive[level - 1];
+        else DepositButtonImage.sprite = DepositButtonInactive[level - 1];
     }
 }

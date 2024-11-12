@@ -56,5 +56,6 @@ namespace Abyss.EventSystem
         PlayerSpeak = 39,
         PlayerSpeakFlip = 40,
         LedgerReady = 41,
+        PlayerIntelligenceChange = 42,
     }
 }

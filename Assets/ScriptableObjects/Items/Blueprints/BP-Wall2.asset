@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sturdy Wall Blueprint
   description: "Master the sturdy wall\u2014extends the hog\u2019s stun duration
-    after a charge, with added durability."
+    after a charge, with added durability.\nRequires 5 strength 10 intelligence to
+    learn and acquire."
   icon: {fileID: 21300000, guid: 5074794972ae84e64a9907e5bcdad8ac, type: 3}
   itemImage: {fileID: 21300000, guid: 5074794972ae84e64a9907e5bcdad8ac, type: 3}
   itemPrefab: {fileID: 0}
@@ -35,8 +36,8 @@ MonoBehaviour:
   prerequisiteItems:
   - {fileID: 11400000, guid: f67b4d42aa7044fbfa617291a4146e3b, type: 2}
   prerequisiteAttr:
-    Strength: 0
-    Intelligence: 0
+    Strength: 5
+    Intelligence: 10
     Agility: 0
     Health: 0
     Purity: 0
