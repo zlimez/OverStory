@@ -50,7 +50,7 @@ public class LargeSlotController : MonoBehaviour
         {
             journalItem = derivedData2;
             itemIcon.sprite = journalItem.icon;
-            name.text = journalItem.name;
+            name.text = journalItem.itemName;
             description.text = journalItem.description;
             material.gameObject.SetActive(false);
             for (int i = 0; i < materialIcons.Count; i++)

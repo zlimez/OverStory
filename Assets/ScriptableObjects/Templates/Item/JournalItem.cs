@@ -20,6 +20,7 @@ public class JournalItem : Item
     public enum JournalType
     {
         Bestiary,
-        Tribe
+        Tribe,
+        Deposit
     }
 }
