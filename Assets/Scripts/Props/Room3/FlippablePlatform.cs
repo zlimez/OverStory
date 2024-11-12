@@ -17,15 +17,14 @@ public class FlippablePlatform : MonoBehaviour
 
     [Header("Hog Interaction")]
     [SerializeField] float raycastRadius = 2f;
-    [SerializeField] DynamicEvent hogStunEvent;
-    [SerializeField] Transform hogUnderLoc;
+    [SerializeField] DynamicEvent hogStunEvent, flipEvent, teleportToPwRoomEvent;
+    [SerializeField] Transform hogUnderLoc, playerUnderLoc;
 
     bool _inContact = false;
     GameObject _player;
     float _angularVel = 0;
 
-    bool _hogInContact = false, _isTipping = false;
-    float _hogStayTimer = 0;
+    bool _hogInContact = false;
     GameObject _hog;
 
     void OnCollisionEnter2D(Collision2D other)
@@ -66,18 +65,27 @@ public class FlippablePlatform : MonoBehaviour
             Rigidbody2D rb = _player.GetComponent<Rigidbody2D>();
             angularAccel += rb.mass * Mathf.Abs(Physics2D.gravity.y) * Vector2.Dot(Vector2.down, Vector2.Perpendicular(cog2Cp)) / angularInertia;
             // NOTE: Hog can only brought to contact with the platform by player
-            if (!_hogInContact)
+            bool hogOn = false;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(cog.position, raycastRadius, _enemyLayerMask);
+            foreach (Collider2D collider in colliders)
             {
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(cog.position, raycastRadius, _enemyLayerMask);
-                foreach (Collider2D collider in colliders)
+                if (collider.transform.parent.TryGetComponent<HogBT>(out var hogBT))
                 {
-                    if (collider.TryGetComponent<HogBT>(out var hogBT))
-                    {
-                        _hogInContact = true;
-                        EventManager.StartListening(new GameEvent(hogStunEvent.EventName), Flip);
-                        break;
-                    }
+                    hogOn = true;
+                    _hog = collider.transform.parent.gameObject;
+                    break;
                 }
+            }
+
+            if (hogOn && !_hogInContact)
+            {
+                _hogInContact = true;
+                EventManager.StartListening(new GameEvent(hogStunEvent.EventName), Flip);
+            }
+            else if (!hogOn && _hogInContact)
+            {
+                _hogInContact = false;
+                EventManager.StopListening(new GameEvent(hogStunEvent.EventName), Flip);
             }
         }
 
@@ -99,7 +107,26 @@ public class FlippablePlatform : MonoBehaviour
 
     void Flip(object inpput = null)
     {
-        _hog.GetComponent<HogBT>().StopBT();
-        _hog.GetComponent<EnemyManager>().Defeat();
+        _hog.GetComponent<HogBT>().StopBT(); ;
+        EventManager.StopListening(new GameEvent(hogStunEvent.EventName), Flip);
+        EventManager.StartListening(UIEvents.BlackIn, TeleportPlayerHog);
+        EventManager.InvokeEvent(new GameEvent(flipEvent.EventName));
     }
+
+    void TeleportPlayerHog(object input = null)
+    {
+        _hog.GetComponent<EnemyManager>().Defeat();
+        _player.transform.position = playerUnderLoc.position;
+        _hog.transform.position = hogUnderLoc.position;
+        EventManager.StopListening(UIEvents.BlackIn, TeleportPlayerHog);
+        EventManager.InvokeEvent(new GameEvent(teleportToPwRoomEvent.EventName));
+    }
+
+#if UNITY_EDITOR
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, raycastRadius);
+    }
+#endif
 }

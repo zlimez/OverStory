@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 991373678110609477}
   - component: {fileID: 6096259638911654736}
   - component: {fileID: 2047397230694124771}
-  m_Layer: 7
+  m_Layer: 15
   m_Name: Wall1
   m_TagString: Wall (Construct)
   m_Icon: {fileID: 0}
@@ -209,7 +209,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6552200084819652242}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: TR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7102993662642373860}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BL
   m_TagString: Untagged
   m_Icon: {fileID: 0}

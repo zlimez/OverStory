@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3315283241281702647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4080667844078685583}
+  m_Layer: 0
+  m_Name: HogUnderLoc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4080667844078685583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3315283241281702647}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.4800164, y: -6.666666, z: 0}
+  m_LocalScale: {x: 0.2564102, y: 0.2564102, z: 0.2564102}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6619992251189804334}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4678021830500478203
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +60,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.5, y: -1.72, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_LocalScale: {x: 1.95, y: 1.95, z: 1.95}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 1489376869247686134}
+  - {fileID: 4080667844078685583}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5266687753665761910
@@ -168,10 +201,48 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  angularInertia: 100
+  angularInertia: 150
   angularRetardation: 1
   maxSpringAngularAccel: 15
   stillAngularVelocityThreshold: 0.025
   stillZAngleThreshold: 0.025
   playerImpulseDamper: 0.2
   playerVelocityDamper: 0.15
+  raycastRadius: 5
+  hogStunEvent: {fileID: 11400000, guid: 9aeb6eccd2043491cb3bf8da051105fb, type: 2}
+  flipEvent: {fileID: 11400000, guid: 4a07c02310e4e4ab183b3d40caae81c0, type: 2}
+  teleportToPwRoomEvent: {fileID: 11400000, guid: 3f1ace007b99d4bb690905e62c93c20b,
+    type: 2}
+  hogUnderLoc: {fileID: 4080667844078685583}
+  playerUnderLoc: {fileID: 1489376869247686134}
+--- !u!1 &6051782015208932238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1489376869247686134}
+  m_Layer: 0
+  m_Name: PlayerUnderLoc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1489376869247686134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051782015208932238}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.9763887, y: -6, z: 0}
+  m_LocalScale: {x: 0.2564102, y: 0.2564102, z: 0.2564102}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6619992251189804334}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

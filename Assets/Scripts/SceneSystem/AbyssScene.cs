@@ -3,11 +3,12 @@ namespace Abyss.SceneSystem
     public enum AbyssScene
     {
         None,
+        MainMenu,
         Master,
         Lab,
         Room1,
         Room2,
-        Room3
+        Room3,
     }
 }
 
@@ -26,7 +27,8 @@ namespace Abyss
             PickableItem = 10,
             Obstacle = 11,
             Breakable = 12,
-            NPC = 13
+            NPC = 13,
+            Buildup = 15
         }
     }
 }

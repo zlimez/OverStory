@@ -9,7 +9,7 @@ using Abyss.EventSystem;
 
 public class Charge : CfAction
 {
-    static readonly int _obstacleLayerMask = 1 << (int)AbyssSettings.Layers.Ground | 1 << (int)AbyssSettings.Layers.Obstacle;
+    static readonly int _obstacleLayerMask = 1 << (int)AbyssSettings.Layers.Ground | 1 << (int)AbyssSettings.Layers.Obstacle | 1 << (int)AbyssSettings.Layers.Buildup;
     float _stunTime, _restTime;
     float _chargeDist, _chargeDmg, _chargeSpeed; // Avg speed of charge
     float _chargeupTime, _stunRaycastDist;

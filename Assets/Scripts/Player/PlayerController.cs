@@ -161,7 +161,7 @@ namespace Abyss.Player
 		private void OnCollisionEnter2D(Collision2D coll2D)
 		{
 			// Check if player is on the ground
-			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground)
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				IsGrounded = true;
 				groundedSinceDash = true;
@@ -176,7 +176,7 @@ namespace Abyss.Player
 		private void OnCollisionExit2D(Collision2D coll2D)
 		{
 			// Check if player is leaving the ground
-			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground)
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				if (isDashing)
 					groundedSinceDash = false;

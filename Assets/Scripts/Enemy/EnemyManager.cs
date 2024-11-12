@@ -74,6 +74,7 @@ namespace Abyss.Environment.Enemy
         // NOTE: Should be made private only for hog platform seq hack
         public void Defeat()
         {
+            _isDefeated = true; // Used for external callers to defeat in special cases such as platform stun
             OnDefeated?.Invoke();
             OnStrikePlayer = null;
             GameManager.Instance.PlayerPersistence.PlayerAttr.FeedExp(Player.PlayerAttr.ExpAttrType.Strength, attributes.strength + Specy.baseStrExpGiven);

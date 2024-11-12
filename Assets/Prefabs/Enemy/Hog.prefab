@@ -7997,6 +7997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Arena: {fileID: 0}
+  hogStunEvent: {fileID: 11400000, guid: 9aeb6eccd2043491cb3bf8da051105fb, type: 2}
   stunTime: 1
   shortRestTime: 0.25
   longRestTime: 0.5

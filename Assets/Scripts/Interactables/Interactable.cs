@@ -1,7 +1,6 @@
 using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Player;
-using System;
 
 namespace Abyss.Interactables
 {

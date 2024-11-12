@@ -51,6 +51,7 @@ public class Watermill : Interactable
         broken.SetActive(false);
         repaired.SetActive(true);
         EventLedger.Instance.Record(new GameEvent(millFixedEvent.EventName));
+        GameManager.Instance.EnvStatePersistence[PowerPanel.CONFIG_KEY] = PowerPanel.DEFAULT_CONFIG;
         _isFixed = true;
         _time = 0;
     }

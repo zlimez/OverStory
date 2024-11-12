@@ -26,5 +26,5 @@ MonoBehaviour:
   valueToHakem: 5
   itemUsedEvent: {fileID: 0}
   itemType: 2
-  Damage: 15
+  Damage: 8
   Radius: 1.75
