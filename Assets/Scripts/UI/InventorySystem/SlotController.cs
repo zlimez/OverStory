@@ -39,7 +39,9 @@ public class SlotController : MonoBehaviour
     public void ShowTooltip()
     {
         tooltipPanel.SetActive(true);
-        tooltipText.text = itemStack.Data.description;
+        // need to change
+        tooltipText.text = itemStack.Data.itemName + ": " + itemStack.Data.description;
+        //
     }
 
     public void CloseTooltip()

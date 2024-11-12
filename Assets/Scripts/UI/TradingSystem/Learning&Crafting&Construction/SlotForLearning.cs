@@ -38,7 +38,9 @@ public class SlotForLearning : MonoBehaviour
         if (tooltipPanel != null && tooltipText != null && itemStack != null)
         {
             tooltipPanel.SetActive(true);
-            tooltipText.text = itemStack.Data.description;
+            // need to change
+            tooltipText.text = itemStack.Data.itemName + ": " + itemStack.Data.description;
+            //
         }
     }
 

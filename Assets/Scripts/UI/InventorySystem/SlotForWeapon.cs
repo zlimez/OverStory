@@ -52,7 +52,9 @@ public class SlotForWeapon : MonoBehaviour
     public void ShowTooltip()
     {
         tooltipPanel.SetActive(true);
-        tooltipText.text = item.description;
+        // need to change
+        tooltipText.text = item.itemName + ": " + item.description;
+        //
     }
 
     public void CloseTooltip()
