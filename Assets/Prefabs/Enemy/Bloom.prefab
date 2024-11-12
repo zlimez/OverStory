@@ -1006,7 +1006,7 @@ MonoBehaviour:
   chompTime: 1
   preChompTime: 0.3
   chompRestTime: 0.5
-  chompDamage: 10
+  chompDamage: 20
   chompCurve:
     serializedVersion: 2
     m_Curve:
@@ -31078,5 +31078,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e2b944da59b48d68dc7bdadc7b20e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 10
   enemyManager: {fileID: 3197870240889000692}

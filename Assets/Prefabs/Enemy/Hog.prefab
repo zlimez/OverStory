@@ -8030,7 +8030,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   aggro: {fileID: 3488620965931683618}
   chargeSpeed: 6
-  chargeDamage: 10
+  chargeDamage: 25
   chargeDamageCooldown: 1.5
   collideVfxParticle: {fileID: 2243856311797237397, guid: 9a87d52695eb34334a9c1bc604ae0f8d,
     type: 3}

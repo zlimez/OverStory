@@ -43,13 +43,17 @@ namespace Abyss.Environment.Enemy
                 _beAttacked = true;
             }
 
-            if (_isDefeated && ++_postDefeatStrikes == hitsToKill)
+            if (_isDefeated)
             {
-                attributes.isAlive = false;
-                OnDeath?.Invoke();
-                EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
-                Drop();
-                Destroy(gameObject);
+                if (++_postDefeatStrikes == hitsToKill)
+                {
+                    attributes.isAlive = false;
+                    OnDeath?.Invoke();
+                    EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
+                    Drop();
+                    Destroy(gameObject);
+                }
+                return;
             }
 
             Debug.Log($"{name} took {baseDamage} damage");
@@ -61,6 +65,7 @@ namespace Abyss.Environment.Enemy
             {
                 OnDefeated?.Invoke();
                 OnStrikePlayer = null;
+                GameManager.Instance.PlayerPersistence.PlayerAttr.FeedExp(Player.PlayerAttr.ExpAttrType.Strength, attributes.strength + Specy.baseStrExpGiven);
             }
         }
 
