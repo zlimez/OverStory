@@ -5,18 +5,11 @@ using Abyss.Utils;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] AudioSource uiAudioSource, sfxAudioSource;
+    [SerializeField] AudioSource uiAudioSource, sfxAudioSource, bgmAudioSource;
     [SerializeField] AudioClip interactableHint;
 
-    void OnEnable()
-    {
-        EventManager.StartListening(PlayEvents.InteractableEntered, PlayInteractableHint);
-    }
-
-    void OnDisable()
-    {
-        EventManager.StopListening(PlayEvents.InteractableEntered, PlayInteractableHint);
-    }
+    void OnEnable() => EventManager.StartListening(PlayEvents.InteractableEntered, PlayInteractableHint);
+    void OnDisable() => EventManager.StopListening(PlayEvents.InteractableEntered, PlayInteractableHint);
 
     public void PlayInteractableHint(object o = null)
     {
@@ -33,6 +26,12 @@ public class AudioManager : Singleton<AudioManager>
     {
         sfxAudioSource.clip = audioClip;
         sfxAudioSource.Play();
+    }
+
+    public void PlayBGM(AudioClip audioClip)
+    {
+        bgmAudioSource.clip = audioClip;
+        bgmAudioSource.Play();
     }
 
     public void StopUIClip()

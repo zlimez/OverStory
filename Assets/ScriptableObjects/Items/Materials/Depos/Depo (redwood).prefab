@@ -343,7 +343,7 @@ MonoBehaviour:
   beforeAfter:
     Head: {fileID: 824564139577245768}
     Tail: {fileID: 7292715407209076576}
-  spriteFlash: {fileID: 0}
+  spriteFlash: {fileID: -6005429567216420513}
 --- !u!114 &-6005429567216420513
 MonoBehaviour:
   m_ObjectHideFlags: 0
