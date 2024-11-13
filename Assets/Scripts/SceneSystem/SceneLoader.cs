@@ -12,7 +12,7 @@ namespace Abyss.SceneSystem
     public class SceneLoader : StaticInstance<SceneLoader>
     {
         // [SerializeField] Camera sceneTransitCamera;
-        public AbyssScene LastScene { get; private set; }
+        public AbyssScene LastScene { get; private set; } = AbyssScene.None;
         public bool InTransit { get; private set; } = false;
         private AsyncOperation loadingAsyncOperation;
         private Action<object> currLoadWithMaster;

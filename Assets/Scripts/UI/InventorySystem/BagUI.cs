@@ -135,7 +135,7 @@ public class BagUI : MonoBehaviour
         playerInventory = GameManager.Instance.Inventory.MaterialCollection;
         foreach (var itemStack in playerInventory.Items)
         {
-            if (itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables && itemStack.Data.itemType != ItemType.Weapons && itemStack.Data.itemType != ItemType.Materials && itemStack.Data.itemType != ItemType.Farmables) continue;
+            if (itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables && itemStack.Data.itemType != ItemType.Weapons && itemStack.Data.itemType != ItemType.Materials && itemStack.Data.itemType != ItemType.Farmables && itemStack.Data.itemType != ItemType.QuestItems) continue;
             if (showConsumables && itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables) continue;
             if (showWeapons && itemStack.Data.itemType != ItemType.Weapons) continue;
             if (showMaterials && itemStack.Data.itemType != ItemType.Materials) continue;

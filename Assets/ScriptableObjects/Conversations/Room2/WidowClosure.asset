@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fd9bf9ca7674ccf9fbb58cbe9468e4, type: 3}
+  m_Name: WidowClosure
+  m_EditorClassIdentifier: 
+  leftSpeaker: {fileID: 0}
+  rightSpeaker: {fileID: 11400000, guid: 88c3a4cd43b364e1b885c31d967164da, type: 2}
+  allLines:
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: Ah, his mask! You have salvaged his soul. Here, a small organic token
+      of my appreciation, harvested in his last hunt.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 

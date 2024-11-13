@@ -3,6 +3,7 @@ using Abyss.EventSystem;
 using Abyss.SceneSystem;
 using Tuples;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Abyss.Player
 {
@@ -21,6 +22,7 @@ namespace Abyss.Player
         public PlayerAttr PlayerAttr; // By reference when assign to gamemanager playerattr changes are on the same instance
         [Header("Settings")]
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
+        [SerializeField] Pair<AbyssScene, Transform>[] sceneCrossSpawnPoints;
 
         public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;
         public WeaponItem WeaponItem => weapon.weaponItem;
@@ -32,6 +34,16 @@ namespace Abyss.Player
                 GameManager.Instance.PlayerPersistence.JustDied = false;
                 EventLedger.Instance.Record(PlayEvents.Respawn);
                 transform.position = LastRest.Tail;
+            }
+
+            if (SceneLoader.Instance && SceneLoader.Instance.LastScene != AbyssScene.None)
+            {
+                foreach (var spawnPoint in sceneCrossSpawnPoints)
+                    if (spawnPoint.Head == SceneLoader.Instance.LastScene)
+                    {
+                        transform.position = spawnPoint.Tail.position;
+                        break;
+                    }
             }
         }
 
