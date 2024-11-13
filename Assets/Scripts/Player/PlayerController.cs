@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Abyss.EventSystem;
 using Abyss.Player.Spells;
+using Abyss.SceneSystem;
 using AnyPortrait;
 using Tuples;
 using UnityEngine;
@@ -101,6 +102,13 @@ namespace Abyss.Player
 			portrait.Initialize();
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
 			_dashCountdown = dashCooldown;
+			StartCoroutine(PlayBGM());
+		}
+
+		IEnumerator PlayBGM()
+		{
+			yield return new WaitForSeconds(0.1f);
+			_playerSfx.PlayBgm(SceneLoader.Instance.ActiveScene);
 		}
 
 		private void Update()
