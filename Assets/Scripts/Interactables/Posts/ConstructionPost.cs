@@ -8,6 +8,7 @@ namespace Abyss.Interactables
         [SerializeField] ConstructionItem construction; // TODO: make this a list for different tiers of same building
         [SerializeField] GameObject ConstructionPrefab;
         [SerializeField] Transform buildPoint, hoverPoint;
+        [SerializeField] GameObject before; // FIXME: Temp hack
 
         private ConstructionSystem constructionSys;
 
@@ -19,7 +20,7 @@ namespace Abyss.Interactables
 
         public override void Interact()
         {
-            constructionSys.TryBuild(buildPoint, hoverPoint);
+            constructionSys.TryBuild(buildPoint, hoverPoint, before);
             base.Interact();
         }
 

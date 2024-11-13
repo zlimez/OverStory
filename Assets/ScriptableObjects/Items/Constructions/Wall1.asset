@@ -17,9 +17,9 @@ MonoBehaviour:
     stunned if it charges into it.
 
     Durability: 1'
-  icon: {fileID: 21300000, guid: 6a7111dc2290a4a1ba97bae9c82432ef, type: 3}
-  itemImage: {fileID: 21300000, guid: 6a7111dc2290a4a1ba97bae9c82432ef, type: 3}
-  itemPrefab: {fileID: 63323973075519710, guid: 18785cce2609a48739ab0702e4de158c,
+  icon: {fileID: 21300000, guid: d1dca2d06c3cf4f4180cb6ea80c56ece, type: 3}
+  itemImage: {fileID: 21300000, guid: d1dca2d06c3cf4f4180cb6ea80c56ece, type: 3}
+  itemPrefab: {fileID: 7697923844920291564, guid: 4e560a6a5ed5a4205bd6478f72e51f47,
     type: 3}
   canUseFromInventory: 0
   isConsumable: 0
@@ -35,4 +35,4 @@ MonoBehaviour:
   - Head: {fileID: 11400000, guid: 076100eac677c466aa36bda74005b192, type: 2}
     Tail: 2
   baseBuildTime: 2
-  Durability: 2
+  Durability: 1

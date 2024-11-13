@@ -166,7 +166,7 @@ public class ConstructionSystem : MonoBehaviour
     }
 
 
-    public void TryBuild(Transform buildPt, Transform hoverPt)
+    public void TryBuild(Transform buildPt, Transform hoverPt, GameObject before)
     {
         if (!_sufficeToBuild || IsBuilding || GameManager.Instance.PlayerPersistence.IsBuilding || IsBuilt || !GameManager.Instance.Inventory.MaterialCollection.Contains(_constructionItem)) return;
         GameManager.Instance.PlayerPersistence.IsBuilding = true;
@@ -176,12 +176,12 @@ public class ConstructionSystem : MonoBehaviour
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
 
         EventManager.InvokeEvent(PlayEvents.BuildStart, hoverPt); // Currently only consumed by drone
-        StartCoroutine(BuildWorks(buildPt));
+        StartCoroutine(BuildWorks(buildPt, before));
         UpdateConstructionPanel();
         ClosePanel();
     }
 
-    IEnumerator BuildWorks(Transform buildPt)
+    IEnumerator BuildWorks(Transform buildPt, GameObject before)
     {
         progressBar.SetActive(true);
 
@@ -201,6 +201,7 @@ public class ConstructionSystem : MonoBehaviour
         building.transform.SetParent(buildPt);
 
         EventManager.InvokeEvent(PlayEvents.BuildEnd);
+        before.SetActive(false);
         progressBar.SetActive(false);
     }
 
