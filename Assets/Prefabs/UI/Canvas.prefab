@@ -1975,11 +1975,11 @@ MonoBehaviour:
   MaintainTime: 1
   broadcastBox: {fileID: 3445419794923602186}
   broadcasttext: {fileID: 987492149926796763}
-  PlayerIntelligenceChange: Your intelligence has changed by {value}.
-  WeaponEquipped: 'Weapon equipped: {weaponName}. Prepare for combat.'
-  WeaponUnequipped: Weapon unequipped. You are now unarmed.
-  GetItem: 'You obtained {itemType} item: "{itemName}" x{quantity}.'
-  LoseItem: 'Your inventory decreased by {itemType} item: "{itemName}" x{quantity}.'
+  PlayerIntelligenceChange: Your intelligence has increased by {value} points.
+  WeaponEquipped: You equip the {weaponName}.
+  WeaponUnequipped: You unequip your weapon. You are now unarmed.
+  GetItem: 'You obtained x{quantity} {itemType}: "{itemName}".'
+  LoseItem: 'You remove from your inventory x{quantity} {itemType}: "{itemName}".'
 --- !u!1 &2602151160806352577
 GameObject:
   m_ObjectHideFlags: 0

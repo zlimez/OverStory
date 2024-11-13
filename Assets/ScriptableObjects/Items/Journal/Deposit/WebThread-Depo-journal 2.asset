@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2559d38f8fcd344e2bee8c29ea88aed4, type: 3}
   m_Name: WebThread-Depo-journal 2
   m_EditorClassIdentifier: 
-  itemName: Web Thread's Deposit
+  itemName: Web Thread Deposit
   description: '
-
 
     Often located in underground caves.
 

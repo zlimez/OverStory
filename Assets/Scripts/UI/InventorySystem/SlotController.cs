@@ -40,7 +40,7 @@ public class SlotController : MonoBehaviour
     {
         tooltipPanel.SetActive(true);
         // need to change
-        tooltipText.text = itemStack.Data.itemName + ": " + itemStack.Data.description;
+        tooltipText.text = itemStack.Data.itemName + ":\n\n" + itemStack.Data.description;
         //
     }
 

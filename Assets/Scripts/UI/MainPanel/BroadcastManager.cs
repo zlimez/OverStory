@@ -17,11 +17,11 @@ public class BroadcastManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI broadcasttext;
 
     [Header("Broadcast Content")]
-    [SerializeField] public string PlayerIntelligenceChange = "Your intelligence has changed by {value}.";
-    [SerializeField] public string WeaponEquipped = "Weapon equipped: {weaponName}. Prepare for combat.";
-    [SerializeField] public string WeaponUnequipped = "Weapon unequipped. You are now unarmed.";
-    [SerializeField] public string GetItem = "You obtained {itemType} item: \"{itemName}\" x{quantity}.";
-    [SerializeField] public string LoseItem = "Your inventory decreased by {itemType} item: \"{itemName}\" x{quantity}.";
+    [SerializeField] public string PlayerIntelligenceChange = "Your intelligence has increased by {value} points.";
+    [SerializeField] public string WeaponEquipped = "You equip the {weaponName}.";
+    [SerializeField] public string WeaponUnequipped = "You unequip your weapon. You are now unarmed.";
+    [SerializeField] public string GetItem = "You obtained x{quantity} {itemType}: \"{itemName}\".";
+    [SerializeField] public string LoseItem = "You remove from your inventory x{quantity} {itemType}: \"{itemName}\".";
     
     private Queue<string> msgQueue = new Queue<string>();
     private bool isMsgPlaying = false;

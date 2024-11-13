@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2559d38f8fcd344e2bee8c29ea88aed4, type: 3}
   m_Name: Carbonfibre-Depo-journal 1
   m_EditorClassIdentifier: 
-  itemName: Carbonfibre's Deposit
+  itemName: Carbon Fibre Deposit
   description: '
-
 
     Typically found near underground water sources.
 
     Yields:
-    Carbonfibre.'
+    Carbon Fibre.'
   icon: {fileID: 21300000, guid: aa4f90c449d354ad2afb37155c465c70, type: 3}
   itemImage: {fileID: 0}
   itemPrefab: {fileID: 0}

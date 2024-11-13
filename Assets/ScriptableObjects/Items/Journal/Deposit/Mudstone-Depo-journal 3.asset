@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2559d38f8fcd344e2bee8c29ea88aed4, type: 3}
   m_Name: Mudstone-Depo-journal 3
   m_EditorClassIdentifier: 
-  itemName: Mudstone's Deposit
+  itemName: Mudstone Deposit
   description: '
 
     Commonly located in rocky underground areas.

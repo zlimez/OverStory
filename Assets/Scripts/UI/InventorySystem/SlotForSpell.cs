@@ -41,7 +41,7 @@ public class SlotForSpell : MonoBehaviour
     {
         tooltipPanel.SetActive(true);
         // need to change
-        tooltipText.text = item.itemName + ": " + item.description;
+        tooltipText.text = item.itemName + ":\n\n" + item.description;
         //
     }
 
