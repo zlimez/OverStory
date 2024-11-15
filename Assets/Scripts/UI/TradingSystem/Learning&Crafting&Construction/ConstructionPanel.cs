@@ -39,7 +39,7 @@ public class ConstructionSystem : MonoBehaviour
         if (_constructionItem != null)
         {
             UpdateConstructionPanel();
-            Vector3 adjustedPosition = position + new Vector3(0, -3.5f, 0);
+            Vector3 adjustedPosition = position + new Vector3(0, -7.0f, 0);
             RectTransform panelRectTransform = constructionPanel.GetComponent<RectTransform>();
             panelRectTransform.position = adjustedPosition;
             progressBar.GetComponent<RectTransform>().position = adjustedPosition + new Vector3(0, 4f, 0);

@@ -8,7 +8,7 @@ using System.Collections;
 namespace Abyss.Interactables
 {
     // TODO: Add persistence or refresh items logic
-    public class SpeechForOthers : Interactable
+    public class SpeechForOthers : CondInteractable
     {
         [SerializeField] List<Pair<string, float>> speech;
         [SerializeField] float intervalTime = 1;
@@ -18,17 +18,19 @@ namespace Abyss.Interactables
         void OnEnable()
         {
             foreach (var s in speech) intervalTime += s.Tail;
-            if (isLoop) InvokeRepeating("Speak", 0f, intervalTime);
+            base.CheckIsMet();
+            if (_isMet && isLoop) InvokeRepeating("Speak", 0f, intervalTime);
         }
 
         void OnDisable()
         {
-            if (isLoop) CancelInvoke("Speak");
+            if (_isMet && isLoop) CancelInvoke("Speak");
         }
 
         protected override void OnTriggerEnter2D(Collider2D collider)
         {
-            if (!isLoop && collider.CompareTag("Player")) Speak();
+            base.CheckIsMet();
+            if (_isMet && !isLoop && collider.CompareTag("Player")) Speak();
         }
 
         private void Speak()
