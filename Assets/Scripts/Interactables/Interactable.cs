@@ -4,7 +4,7 @@ using Abyss.Player;
 
 namespace Abyss.Interactables
 {
-    public abstract class Interactable : MonoBehaviour
+    public class Interactable : MonoBehaviour
     {
         [Header("Hint")]
         [SerializeField] string infoText;

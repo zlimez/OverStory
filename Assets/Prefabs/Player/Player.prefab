@@ -28047,11 +28047,6 @@ MonoBehaviour:
   jumpSfx: {fileID: 8300000, guid: d2db7dc0a40fd435ebf294ce230c0c49, type: 3}
   dashSfx: {fileID: 8300000, guid: 581b59af31c274fb2935083b7883a801, type: 3}
   hurtSfx: {fileID: 8300000, guid: 3d9b9847e021b4368ab71e64845b16c0, type: 3}
-  bgmSource: {fileID: 7019411487666892698}
-  labBgm: {fileID: 8300000, guid: 90b49dc62c9f54575bc468373b9b7e39, type: 3}
-  room1Bgm: {fileID: 8300000, guid: 8a17e93b2450b4f0382be4fece922043, type: 3}
-  room2Bgm: {fileID: 8300000, guid: ec2859fd9510c4f81ac47ffd2d95a1c7, type: 3}
-  room3Bgm: {fileID: 8300000, guid: e88bb1507e4f34d3ab5fa4b9c41b2a8d, type: 3}
 --- !u!114 &1675421828440835502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37907,7 +37902,7 @@ MonoBehaviour:
   m_text: New Textggggggg
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -37932,7 +37927,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4294967295
   m_fontSize: 0.6
-  m_fontSizeBase: 0.6
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

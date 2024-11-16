@@ -31,7 +31,7 @@ namespace Abyss.SceneSystem
             if (ActiveScene != AbyssScene.Master) loadedScenes.Add(AbyssScene.Master);
         }
 
-        public bool PrepLoadWithMaster(AbyssScene newScene, bool removeMasterAftTransit = false, AbyssScene[] discardedScenes = null)
+        public bool PrepLoadWithMaster(AbyssScene newScene, bool rmMasterAftTransit = false, AbyssScene[] discardedScenes = null)
         {
             if (currLoadWithMaster != null)
             {
@@ -43,7 +43,7 @@ namespace Abyss.SceneSystem
             {
                 if (ActiveScene != AbyssScene.Master) LastScene = ActiveScene;
                 UnloadScenes(discardedScenes);
-                StartCoroutine(LoadSceneAsync(newScene, removeMasterAftTransit));
+                StartCoroutine(LoadSceneAsync(newScene, rmMasterAftTransit));
             };
 
             EventManager.StartListening(UIEvents.BlackIn, currLoadWithMaster);
@@ -65,7 +65,7 @@ namespace Abyss.SceneSystem
             }
         }
 
-        private IEnumerator LoadSceneAsync(AbyssScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool byPrep = true)
+        private IEnumerator LoadSceneAsync(AbyssScene scene, bool rmMasterAftTransit, bool isAdditive = true, bool byPrep = true)
         {
             InTransit = true;
             EventManager.InvokeEvent(SystemEvents.SceneTransitStart, scene);
@@ -94,7 +94,7 @@ namespace Abyss.SceneSystem
             ActiveScene = scene;
             EventManager.InvokeEvent(SystemEvents.SceneTransitDone);
             EventManager.InvokeQueueEvents();
-            if (removeMasterAftTransit) UnloadScene(AbyssScene.Master);
+            if (rmMasterAftTransit) UnloadScene(AbyssScene.Master);
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene.ToString()));
         }

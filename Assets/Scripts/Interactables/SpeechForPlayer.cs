@@ -6,15 +6,15 @@ using Tuples;
 namespace Abyss.Interactables
 {
     // TODO: Add persistence or refresh items logic
-    public class SpeechForPlayer : Interactable
+    public class SpeechForPlayer : MonoBehaviour
     {
+        [SerializeField] EventCondChecker eventCond;
         [SerializeField] List<RefPair<string, float>> speech;
 
-        protected override void OnTriggerEnter2D(Collider2D collider)
+        void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.CompareTag("Player"))
-                foreach( var s in speech) EventManager.InvokeEvent(PlayEvents.PlayerSpeak, s);
+            if (collider.CompareTag("Player") && eventCond.IsMet())
+                foreach (var s in speech) EventManager.InvokeEvent(PlayEvents.PlayerSpeak, s);
         }
-
     }
 }

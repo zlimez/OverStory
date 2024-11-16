@@ -14,7 +14,7 @@ namespace Abyss.EventSystem
         public int Counter { get; private set; }
 
         private RQueue<GameEvent> recentEvents;
-        [SerializeField] int RecentEventsSize = 5;
+        [SerializeField] int RecentEventsSize = 1000000;
 
         protected override void Awake()
         {

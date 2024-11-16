@@ -1,6 +1,7 @@
 using System;
 using Abyss.EventSystem;
 using Abyss.Interactables;
+using Tuples;
 using UnityEngine;
 
 public class PowerPanel : Interactable
@@ -8,9 +9,8 @@ public class PowerPanel : Interactable
     public static readonly Config DEFAULT_CONFIG = Config.One;
     public static readonly string CONFIG_KEY = "PowerPanelConfig";
 
-    [SerializeField] DynamicEvent millFixedEvent;
     [SerializeField] GameObject inactive, illum;
-    [SerializeField] GameObject[] configs;
+    [SerializeField] Pair<GameObject, DynamicEvent>[] configs;
 
     int _activeConfig = -1;
     bool _hasPower = false;
@@ -43,7 +43,8 @@ public class PowerPanel : Interactable
         Config config = (Config)GameManager.Instance.EnvStatePersistence["PowerPanelConfig"];
         illum.SetActive(true);
         _activeConfig = (int)config;
-        configs[_activeConfig].SetActive(true);
+        configs[_activeConfig].Head.SetActive(true);
+        EventLedger.Instance.Record(new GameEvent(configs[_activeConfig].Tail.EventName));
         inactive.SetActive(false);
         _hasPower = true;
         EventManager.StopListening(SystemEvents.SystemsReady, Load);
@@ -53,10 +54,13 @@ public class PowerPanel : Interactable
     {
         if (_activeConfig == config) return;
 
-        configs[_activeConfig].SetActive(false);
-        configs[config].SetActive(true);
+        configs[_activeConfig].Head.SetActive(false);
+        EventLedger.Instance.Remove(new GameEvent(configs[_activeConfig].Tail.EventName));
+
+        configs[config].Head.SetActive(true);
         _activeConfig = config;
         GameManager.Instance.EnvStatePersistence["PowerPanelConfig"] = (Config)_activeConfig;
+        EventLedger.Instance.Record(new GameEvent(configs[_activeConfig].Tail.EventName));
     }
 
     void OnDisable() => EventManager.StopListening(SystemEvents.SystemsReady, Load);

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Abyss.EventSystem;
 using TMPro;
-using Tuples;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +11,7 @@ public class Info23Controllor : MonoBehaviour
     public void InitializePanel(string name, Transform transform)
     {
         text.text = name;
-        
+
 
         text.text = name;
         Renderer renderer = transform.GetComponent<Renderer>();
