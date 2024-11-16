@@ -11,6 +11,9 @@ public class ConvoTrigger : MonoBehaviour
     [SerializeField][Tooltip("Tail boolean refers to whether to record the event")] Pair<DynamicEvent, bool>[] eventsToTriggerAndRecord;
     [SerializeField] Pair<Item, int>[] itemsToGive, itemsToRemove;
 
+    [SerializeField] float cooldownTime = 5f;
+    float _lastTriggerTime = -Mathf.Infinity;
+
     bool _triggered = false;
     protected GameObject player;
 
@@ -20,6 +23,7 @@ public class ConvoTrigger : MonoBehaviour
         {
             player = other.gameObject;
             Execute();
+            _lastTriggerTime = Time.time;
         }
     }
 
@@ -43,6 +47,7 @@ public class ConvoTrigger : MonoBehaviour
     protected bool CheckConditionsMet()
     {
         if (noRepeat && _triggered) return false;
+        if (Time.time - _lastTriggerTime < cooldownTime) return false;
         return condChecker.IsMet();
     }
 }
