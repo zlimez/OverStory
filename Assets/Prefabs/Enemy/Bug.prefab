@@ -21995,6 +21995,8 @@ MonoBehaviour:
     Tail: 1
   - Head: {fileID: 8333903897979866840, guid: 367caae737c1c44d8bf6f011b9feb12f, type: 3}
     Tail: 1
+  - Head: {fileID: 3666791956295866859, guid: abca3834882f340098f9e72e69460331, type: 3}
+    Tail: 2
   probabalisticDrops:
   - Item1: {fileID: 5508449814371400991, guid: 252c43de487d042f9975af07a384e948, type: 3}
     Item2: 1

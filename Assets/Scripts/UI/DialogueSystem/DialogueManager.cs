@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Abyss.EventSystem;
 using Abyss.Utils;
 using TMPro;
 using UnityEngine.InputSystem;
@@ -153,7 +152,7 @@ public class DialogueManager : Singleton<DialogueManager>
         dialogLineCoroutine = StartCoroutine(DisplayLine(currLine.Dialogue));
 
         UpdateSpeakerUI(currLine);
-        PlayLineAudio(currLine);
+        // PlayLineAudio(currLine);
 
         currInd++;
     }
@@ -192,11 +191,11 @@ public class DialogueManager : Singleton<DialogueManager>
         if (leftSpeakerImg.sprite != null) leftSpeakerImg.color = new Color32(110, 110, 110, 255);
     }
 
-    public void PlayLineAudio(DialogueLine currentLine)
-    {
-        if (currentLine.Audio != null)
-            AudioManager.Instance.PlaySFX(currentLine.Audio);
-    }
+    // public void PlayLineAudio(DialogueLine currentLine)
+    // {
+    //     if (currentLine.Audio != null)
+    //         AudioManager.Instance.PlaySFX(currentLine.Audio);
+    // }
 
 
     protected IEnumerator DisplayLine(string line)

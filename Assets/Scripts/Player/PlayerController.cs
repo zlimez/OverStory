@@ -102,13 +102,6 @@ namespace Abyss.Player
 			portrait.Initialize();
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
 			_dashCountdown = dashCooldown;
-			StartCoroutine(PlayBGM());
-		}
-
-		IEnumerator PlayBGM()
-		{
-			yield return new WaitForSeconds(0.1f);
-			_playerSfx.PlayBgm(SceneLoader.Instance.ActiveScene);
 		}
 
 		private void Update()

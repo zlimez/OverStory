@@ -68,7 +68,7 @@ namespace Abyss.SceneSystem
         private IEnumerator LoadSceneAsync(AbyssScene scene, bool removeMasterAftTransit, bool isAdditive = true, bool byPrep = true)
         {
             InTransit = true;
-            EventManager.InvokeEvent(SystemEvents.SceneTransitStart);
+            EventManager.InvokeEvent(SystemEvents.SceneTransitStart, scene);
             ActiveScene = scene;
 
             if (byPrep)

@@ -8106,6 +8106,8 @@ MonoBehaviour:
     Tail: 1
   - Head: {fileID: 3799403264589249832, guid: 622192f70a1a4487aa4b4565acfcc447, type: 3}
     Tail: 1
+  - Head: {fileID: 3666791956295866859, guid: abca3834882f340098f9e72e69460331, type: 3}
+    Tail: 2
   probabalisticDrops:
   - Item1: {fileID: 5026100613311838115, guid: bc0150809a712460494d5419e087217a, type: 3}
     Item2: 1
