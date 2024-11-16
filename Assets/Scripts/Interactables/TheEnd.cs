@@ -1,10 +1,6 @@
-using Abyss.EventSystem;
 using UnityEngine;
-using System.Collections.Generic;
-using Tuples;
 using TMPro;
 using System.Collections;
-using Microsoft.Unity.VisualStudio.Editor;
 
 namespace Abyss.Interactables
 {
@@ -27,7 +23,7 @@ namespace Abyss.Interactables
                 bg.SetActive(true);
                 StartCoroutine(FadeInText());
             }
-                
+
         }
 
         private IEnumerator FadeInText()
@@ -54,5 +50,5 @@ namespace Abyss.Interactables
             text.color = color;
         }
     }
-    
+
 }
