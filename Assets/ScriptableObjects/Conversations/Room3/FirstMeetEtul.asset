@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fd9bf9ca7674ccf9fbb58cbe9468e4, type: 3}
   m_Name: FirstMeetEtul
   m_EditorClassIdentifier: 
-  leftSpeaker: {fileID: 0}
+  leftSpeaker: {fileID: 11400000, guid: c9724d051ed9f41c0b734118984563c1, type: 2}
   rightSpeaker: {fileID: 11400000, guid: 135183aa3292346bf95ea8ce9cad8247, type: 2}
   allLines:
-  - isLeft: 0
+  - isLeft: 1
     speaker: {fileID: 0}
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: "You found me\u2026"
+    dialogue: Hhh (draws a sharp breathe)
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
@@ -29,7 +29,8 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: "\u2026 I suppose you need this. You can use it\u2026 when you rest."
+    dialogue: Head back. Heed my words, for they are the wisdom of those that came
+      before you.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
