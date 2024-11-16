@@ -9,15 +9,15 @@ public class Elevator : Interactable
 
     float _speed = 0;
 
-    protected override void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (GameManager.Instance.EnvStatePersistence.ContainsKey(PowerPanel.CONFIG_KEY))
-        {
-            PowerPanel.Config config = (PowerPanel.Config)GameManager.Instance.EnvStatePersistence[PowerPanel.CONFIG_KEY];
-            if (config == requiredConfig)
-                base.OnTriggerEnter2D(collider);
-        }
-    }
+    // protected override void OnTriggerEnter2D(Collider2D collider)
+    // {
+    //     if (GameManager.Instance.EnvStatePersistence.ContainsKey(PowerPanel.CONFIG_KEY))
+    //     {
+    //         PowerPanel.Config config = (PowerPanel.Config)GameManager.Instance.EnvStatePersistence[PowerPanel.CONFIG_KEY];
+    //         if (config == requiredConfig)
+    //             base.OnTriggerEnter2D(collider);
+    //     }
+    // }
 
     public override void Interact()
     {

@@ -13,7 +13,7 @@ namespace Abyss.Interactables
     {
         [SerializeField] public TextMeshProUGUI text;
         [SerializeField] public GameObject bg;
-        [SerializeField] public float fadeDuration = 2f;
+        [SerializeField] public float fadeDuration = 5f;
         private void Start()
         {
             SetAlpha(0f);
