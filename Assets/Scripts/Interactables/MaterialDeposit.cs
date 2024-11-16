@@ -13,7 +13,11 @@ public class MaterialDeposit : MonoBehaviour
 
 	public static int DepoIdCnter = 0;
 
-	void Awake() => DepoId = DepoIdCnter++;
+	void Awake()
+	{
+		if (spriteFlash == null) spriteFlash = GetComponent<SpriteFlash>();
+		DepoId = DepoIdCnter++;
+	}
 
 	public void TakeHit(int count = 1)
 	{

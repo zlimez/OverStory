@@ -16,6 +16,8 @@ namespace Abyss.Interactables
         [SerializeField] float timeFastForward;
         [SerializeField] float lastPurityRestoreTime = -1; // cooldown for purity to be restored
                                                            // TODO: Include crafting, some functions to transferred to eventual rest site menu
+        [SerializeField] BlueprintItem bandageBP;
+        [SerializeField] DynamicEvent firstDeathEvent;
         [SerializeField] BlueprintItem[] lureBlueprints;
         [SerializeField] Transform lureSpawnPoint;
 
@@ -48,6 +50,17 @@ namespace Abyss.Interactables
                     Instantiate(lureBP.itemPrefab, lureSpawnPoint.position, Quaternion.identity);
                     break;
                 }
+            if (!GameManager.Instance.Inventory.MaterialCollection.Contains(bandageBP))
+                if (EventLedger.Instance != null)
+                    FirstGiveBandage();
+                else EventManager.StartListening(SystemEvents.LedgerReady, FirstGiveBandage);
+        }
+
+        void FirstGiveBandage(object input = null)
+        {
+            if (!EventLedger.Instance.HasOccurred(new GameEvent(firstDeathEvent.EventName)))
+                Instantiate(bandageBP.itemPrefab, lureSpawnPoint.position + Vector3.right, Quaternion.identity);
+            EventManager.StopListening(SystemEvents.LedgerReady, FirstGiveBandage);
         }
 
         void Save(object input = null) => GameManager.Instance.RestsitesPersistence[restSiteName] = lastPurityRestoreTime;

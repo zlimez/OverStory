@@ -106,6 +106,8 @@ MonoBehaviour:
   bonfire: {fileID: 7704303595380016919}
   timeFastForward: 12
   lastPurityRestoreTime: -1
+  bandageBP: {fileID: 11400000, guid: 540d4b942d13c48eb9312785730002a7, type: 2}
+  firstDeathEvent: {fileID: 11400000, guid: 334c3570bcf3d45a9ab6d227822ad6c3, type: 2}
   lureBlueprints:
   - {fileID: 11400000, guid: 3d36c13f41d4c492cadb4a729b8ee6e0, type: 2}
   lureSpawnPoint: {fileID: 3754239153204022834}
