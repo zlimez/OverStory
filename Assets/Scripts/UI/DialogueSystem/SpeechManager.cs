@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Abyss.Utils;
 using Abyss.EventSystem;
 using Tuples;
 
@@ -71,7 +70,7 @@ public class SpeechManager : MonoBehaviour
         foreach (char letter in dialogue.ToCharArray())
         {
             playerSpeechTMP.text += letter;
-            if(isForPlayer) AdjustPosition();
+            if (isForPlayer) AdjustPosition();
             yield return new WaitForSecondsRealtime(defaultCharInterval / speedMod);
         }
 
@@ -103,7 +102,7 @@ public class SpeechManager : MonoBehaviour
         float targetXPosition = 3.0f;
         if (IsFacingLeft) targetXPosition = rectTransform.rect.width * 1.5f + 3;
         panelTransform.anchoredPosition = new Vector2(targetXPosition, panelTransform.anchoredPosition.y);
-        
+
     }
     public void FlipHorizontally(object inputs)
     {
@@ -114,6 +113,6 @@ public class SpeechManager : MonoBehaviour
         IsFacingLeft = !IsFacingLeft;
 
         AdjustPosition();
-        
+
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Abyss.Interactables
 {
-    public class DronePickup : Interactable
+    public class DronePickup : MonoBehaviour
     {
         [SerializeField] DroneBT droneBT;
         [SerializeField] SpriteRenderer droneSprite;
@@ -11,7 +11,7 @@ namespace Abyss.Interactables
         [SerializeField] Conversation awake;
         [SerializeField] DynamicEvent dronePickedEvent;
 
-        public override void Interact()
+        void OnTriggerEnter2D(Collider2D other)
         {
             droneBT.enabled = true;
             gameObject.SetActive(false);
@@ -21,7 +21,6 @@ namespace Abyss.Interactables
             EventManager.InvokeEvent(gameEvent);
             EventLedger.Instance.Record(gameEvent);
             DialogueManager.Instance.HardStartConvo(awake);
-            base.Interact();
         }
     }
 }

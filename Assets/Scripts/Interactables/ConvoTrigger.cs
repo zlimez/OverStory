@@ -10,7 +10,6 @@ public class ConvoTrigger : MonoBehaviour
     [SerializeField] bool noRepeat = false;
     [SerializeField][Tooltip("Tail boolean refers to whether to record the event")] Pair<DynamicEvent, bool>[] eventsToTriggerAndRecord;
     [SerializeField] Pair<Item, int>[] itemsToGive, itemsToRemove;
-    [SerializeField] GameObject[] objsToDisable;
 
     bool _triggered = false;
     protected GameObject player;
@@ -39,8 +38,6 @@ public class ConvoTrigger : MonoBehaviour
 
         foreach (var items in itemsToRemove)
             GameManager.Instance.Inventory.MaterialCollection.RemoveStock(items.Head, items.Tail);
-
-        foreach (var obj in objsToDisable) obj.SetActive(false);
     }
 
     protected bool CheckConditionsMet()
