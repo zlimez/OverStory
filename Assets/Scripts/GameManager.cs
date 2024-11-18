@@ -9,16 +9,14 @@ using System.Collections.Generic;
 /// </summary>
 public class GameManager : Singleton<GameManager>
 {
-    // TODO: Check if required for these four fields
-    public Conversation CutsceneConversation;
-    public SecondaryConversation CutsceneSecondaryConversation;
-    public UiStatus UiStatus = new();
+    public UiController UI;
     // public GameObject InteractableHint;
 
     public Inventory Inventory = new();
     public PlayerPersistence PlayerPersistence = new();
     public TimePersistence TimePersistence = new();
     public Dictionary<string, float> RestsitesPersistence = new();
+    public Dictionary<string, object> EnvStatePersistence = new();
 #if UNITY_EDITOR
     public bool DebugEnableInventory = false;
 #endif
@@ -26,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
+        Inventory.MaterialCollection.isPlayer = true;
         EventManager.InvokeEvent(SystemEvents.SystemsReady);
 #if UNITY_EDITOR
         Inventory.Enabled = DebugEnableInventory;

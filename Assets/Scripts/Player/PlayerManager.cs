@@ -3,6 +3,7 @@ using Abyss.EventSystem;
 using Abyss.SceneSystem;
 using Tuples;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Abyss.Player
 {
@@ -16,12 +17,15 @@ namespace Abyss.Player
         [Header("References")]
         [SerializeField] PlayerController playerController;
         [SerializeField] Weapon weapon;
-        public Pair<AbyssScene, Vector3> LastRest;
+        [SerializeField] SpriteFlash spriteFlash;
+        public RefPair<AbyssScene, Vector3> LastRest = new();
+        public PlayerAttr PlayerAttr; // By reference when assign to gamemanager playerattr changes are on the same instance
         [Header("Settings")]
-        public PlayerAttr PlayerAttr;
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
+        [SerializeField] Pair<AbyssScene, Transform>[] sceneCrossSpawnPoints;
 
         public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;
+        public WeaponItem WeaponItem => weapon.weaponItem;
 
         void Start()
         {
@@ -30,6 +34,16 @@ namespace Abyss.Player
                 GameManager.Instance.PlayerPersistence.JustDied = false;
                 EventLedger.Instance.Record(PlayEvents.Respawn);
                 transform.position = LastRest.Tail;
+            }
+
+            if (SceneLoader.Instance && SceneLoader.Instance.LastScene != AbyssScene.None)
+            {
+                foreach (var spawnPoint in sceneCrossSpawnPoints)
+                    if (spawnPoint.Head == SceneLoader.Instance.LastScene)
+                    {
+                        transform.position = spawnPoint.Tail.position;
+                        break;
+                    }
             }
         }
 
@@ -66,12 +80,13 @@ namespace Abyss.Player
                 PlayerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             if (getLastRestFrmMaster)
                 LastRest = GameManager.Instance.PlayerPersistence.LastRest;
+            // For testing when want to assign weaponItem or lastRest from scene not from master
+            if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
 #else
+            weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
             PlayerAttr = GameManager.Instance.PlayerPersistence.PlayerAttr;
             LastRest = GameManager.Instance.PlayerPersistence.LastRest;
 #endif
-            // For testing when want to assign weaponItem or lastRest from scene not from master
-            if (weapon.weaponItem == null) weapon.weaponItem = GameManager.Instance.PlayerPersistence.WeaponItem;
             if (weapon.weaponItem != null) playerController.EquipWeapon(weapon.weaponItem);
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
             EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
@@ -79,21 +94,26 @@ namespace Abyss.Player
 
         void Save(object input = null)
         {
-            GameManager.Instance.PlayerPersistence.PlayerAttr = PlayerAttr;
-            GameManager.Instance.PlayerPersistence.LastRest = LastRest;
-            GameManager.Instance.PlayerPersistence.WeaponItem = weapon.weaponItem;
+#if UNITY_EDITOR
+            if (!getPlayerAttrFrmMaster)
+                GameManager.Instance.PlayerPersistence.PlayerAttr = PlayerAttr;
+            if (!getLastRestFrmMaster)
+                GameManager.Instance.PlayerPersistence.LastRest = LastRest;
+#endif
         }
 
         // TODO: Base damage from player, mods by enemy attributes/specy attr done here
-        public void TakeHit(float baseDamage, bool hasKnockback = false, Vector3 from = default, float kbImpulse = 0)
+        public void TakeHit(float baseDamage, string striker = "", bool hasKnockback = false, Vector3 from = default, float kbImpulse = 0)
         {
             if (PlayerAttr.Health == 0) return;
             if (playerController.TakeHit(hasKnockback, from, kbImpulse)) return; // Is still taking last damage or isDead
             UpdateHealth(-baseDamage);
+            spriteFlash.StartFlash();
             if (PlayerAttr.Health == 0)
             {
                 Save();
                 GameManager.Instance.PlayerPersistence.JustDied = true;
+                GameManager.Instance.PlayerPersistence.KilledBy = striker;
                 EventManager.StartListening(PlayEvents.PlayerDeath, ReturnToRestScene);
                 playerController.Die();
             }

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Abyss.EventSystem;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,7 +57,10 @@ public class BagUI : MonoBehaviour
         EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
-    void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
+    void OnDisable()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;
+    }
 
     public void ToggleShowConsumables()
     {
@@ -134,7 +135,7 @@ public class BagUI : MonoBehaviour
         playerInventory = GameManager.Instance.Inventory.MaterialCollection;
         foreach (var itemStack in playerInventory.Items)
         {
-            if (itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables && itemStack.Data.itemType != ItemType.Weapons && itemStack.Data.itemType != ItemType.Materials && itemStack.Data.itemType != ItemType.Farmables) continue;
+            if (itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables && itemStack.Data.itemType != ItemType.Weapons && itemStack.Data.itemType != ItemType.Materials && itemStack.Data.itemType != ItemType.Farmables && itemStack.Data.itemType != ItemType.QuestItems) continue;
             if (showConsumables && itemStack.Data.itemType != ItemType.Organs && itemStack.Data.itemType != ItemType.Consumables) continue;
             if (showWeapons && itemStack.Data.itemType != ItemType.Weapons) continue;
             if (showMaterials && itemStack.Data.itemType != ItemType.Materials) continue;
@@ -146,13 +147,8 @@ public class BagUI : MonoBehaviour
 
             SlotController slotController = slot.GetComponent<SlotController>();
             if (slotController != null)
-            {
                 slotController.InitializeSlot(itemStack, level);
-            }
-            else
-            {
-                Debug.LogError("SlotController 组件未找到!");
-            }
+            else Debug.LogError("SlotController 组件未找到!");
         }
     }
 }

@@ -1,25 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using Tuples;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AddItems : MonoBehaviour
 {
     [Tooltip("Press B to submit")]
-    public List<Item> items;
+    public Pair<Item, int>[] itemAndCounts;
 
-    public int quantity = 1;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
-        {
-            PutItem();
-        }
-    }
-
-    public void PutItem()
-    {
-        foreach (Item item in items) GameManager.Instance.Inventory.Add(item, quantity);
+            foreach (var ip in itemAndCounts) GameManager.Instance.Inventory.Add(ip.Head, ip.Tail);
     }
 }

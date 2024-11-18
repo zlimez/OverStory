@@ -1,63 +1,55 @@
-using System.Collections;
 using System.Collections.Generic;
 using Abyss.Environment.Enemy;
 using UnityEngine;
 
-public class EmberSpell : MonoBehaviour
+namespace Abyss.Player.Spells
 {
-	
-	#region Fields
-	
-	public const string EMBER_SPELL_NAME = "Spell-Fire-Ember";
-	
-	private const string TAG_ENEMY = "Enemy";
-	private const string TAG_BURNABLE = "Burnable";
-	
-	// Movement
-	private Vector2 currLocation;
-	[SerializeField] private float moveSpeedValue = 0.02f;
-	private Vector2 moveVector;
-	
-	// Behaviour
-	[SerializeField] private float damageAmount = 30f;
-	[SerializeField] private float existForTime = 1f;
-	
-	#endregion
-	
-	// Start is called before the first frame update
-	void Start()
+	public class EmberSpell : Spell
 	{
-		Destroy(gameObject, existForTime);
-	}
 
-	public void Initialize(bool shouldFaceLeft) 
-	{
-		moveVector = moveSpeedValue * (shouldFaceLeft ? Vector2.left : Vector2.right);
-	}
+		#region Fields
+		const string TAG_BURNABLE = "Burnable";
 
-	// Update is called once per frame
-	void Update()
-	{
-		currLocation = transform.position;
-		currLocation += moveVector;
-		transform.position = currLocation;
-	}
-	
-	void OnTriggerEnter2D(Collider2D other) {
-		Debug.Log("EmberSpell entered: " + other.name);
-		if (other.gameObject.CompareTag(TAG_ENEMY)) 
+		// Movement
+		private Vector2 currLocation;
+		[SerializeField] private float moveSpeedValue = 0.02f;
+		private Vector2 moveVector;
+
+		// Behaviour
+		[SerializeField] private float damageAmount = 30f;
+		[SerializeField] private float existForTime = 1f;
+
+		readonly HashSet<int> _enemyHits = new();
+
+		#endregion
+
+		void Start() => Destroy(gameObject, existForTime);
+
+		public void Initialize(bool shouldFaceLeft) => moveVector = moveSpeedValue * (shouldFaceLeft ? Vector2.left : Vector2.right);
+
+		void Update()
 		{
-			EnemyManager enemyManager = other.gameObject.GetComponent<EnemyManager>();
-			if (enemyManager == null) 
-			{
-				return;
-			}
-			enemyManager.TakeHit(damageAmount);
-			Debug.Log(other.name + ": health = " + enemyManager.health.ToString());
+			currLocation = transform.position;
+			currLocation += moveVector;
+			transform.position = currLocation;
 		}
-		else if (other.gameObject.CompareTag(TAG_BURNABLE)) 
+
+		void OnTriggerEnter2D(Collider2D other)
 		{
-			Destroy(other.gameObject);
+			if (other.CompareTag("Enemy") && other.TryGetComponent<EnemyPart>(out var enemyPart) && !_enemyHits.Contains(enemyPart.EnemyIntanceId))
+			{
+				enemyPart.TakeHit(damageAmount);
+				_enemyHits.Add(enemyPart.EnemyIntanceId);
+			}
+			else if (other.gameObject.CompareTag(TAG_BURNABLE) && other.TryGetComponent(out Burnable burnable))
+				burnable.Ignite();
+		}
+
+		public override void Cast(bool toLeft)
+		{
+			base.Cast(toLeft);
+			transform.position += toLeft ? Vector3.left : Vector3.right;
+			Initialize(toLeft);
 		}
 	}
 }

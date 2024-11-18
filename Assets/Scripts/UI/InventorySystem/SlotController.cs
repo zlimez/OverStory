@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
@@ -40,7 +39,9 @@ public class SlotController : MonoBehaviour
     public void ShowTooltip()
     {
         tooltipPanel.SetActive(true);
-        tooltipText.text = itemStack.Data.description;
+        // need to change
+        tooltipText.text = itemStack.Data.itemName + ":\n\n" + itemStack.Data.description;
+        //
     }
 
     public void CloseTooltip()

@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: CalcifiedBone
   m_EditorClassIdentifier: 
   itemName: Calcified Bone
-  description: Has more in common with metal than bone.
+  description: 'Has more in common with metal than bone.
+
+
+    - Crafting material.
+
+    -
+    Can be gathered.'
   icon: {fileID: 21300000, guid: 1e779ac0c8280452a816cf56a9b63c10, type: 3}
   itemImage: {fileID: 21300000, guid: 1e779ac0c8280452a816cf56a9b63c10, type: 3}
   itemPrefab: {fileID: 0}
@@ -23,4 +29,5 @@ MonoBehaviour:
   isAcceptableToHakem: 1
   valueToFara: 2
   valueToHakem: 2
+  itemUsedEvent: {fileID: 0}
   itemType: 3

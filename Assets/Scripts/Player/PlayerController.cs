@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using Abyss.EventSystem;
+using Abyss.Player.Spells;
+using Abyss.SceneSystem;
 using AnyPortrait;
 using Tuples;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
@@ -30,7 +32,7 @@ namespace Abyss.Player
 		bool IsDeathState => currState.ToString().StartsWith("Death");
 		string BaseState => currState.ToString().Split('_')[0];
 
-		private Rigidbody2D rb2D;
+		public Transform Foot;
 
 		// Animation support
 		[Header("Animation")]
@@ -48,13 +50,14 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float jumpForce = 100f;
-		[SerializeField] float initialJumpImpulse = 1500f, extraDescentAcceleration = 5f;
+		[SerializeField] float initialJumpImpulse, extraDescentAcceleration = 5f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
 		float _jumpBufferCountdown = 0f, _preLandJumpBufferCountdown = 0f;
 		const float MAX_JUMP_TIME = 0.3f;
 		float _jumpTimeLeft = MAX_JUMP_TIME;
 		public bool IsGrounded, IsJumping;
+		public float InitJumpImpulse => initialJumpImpulse;
 
 		[Header("Dash")]
 		[SerializeField] float dashImpulse = 2000f;
@@ -62,22 +65,26 @@ namespace Abyss.Player
 		bool dashAvail = true, groundedSinceDash = true, isDashing = false;
 		float _dashTimeLeft, _dashCountdown;
 
+		readonly int GROUND_LAYER = 7;
+
 		// Attacking
 		[Header("Damage")]
 		[SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
 		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
-		
-		[Header("Weapon Mapping")]
+
+		[Header("Weapon")]
 		[SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
 		[SerializeField] VisualEffect weaponSlash;
-		[SerializeField] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
-		[SerializeField][Tooltip("COnversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
+		[SerializeField][Tooltip("Used by slash VFX")] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
+		[SerializeField][Tooltip("Conversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
 		float _slashSize;
 
 		public bool IsAttacking { get; private set; } = false;
-		bool isTakingDamage = false, isDead = false;
+		bool _isTakingDamage = false, _isDead = false, _isResting = false;
 		public Action OnAttackEnded, OnAttemptInteract;
 
+
+		Rigidbody2D rb2D;
 		State currState;
 		[NonSerialized] public string Weapon = "Nil";
 
@@ -99,10 +106,12 @@ namespace Abyss.Player
 
 		private void Update()
 		{
+			if (IsFrozen) _moveDir = 0;
+
 			if (!isDashing)
 			{
-				_currXSpeed = (isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-				if (!isTakingDamage) rb2D.velocity = new(_currXSpeed, rb2D.velocity.y);
+				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
+				if (!_isTakingDamage) rb2D.velocity = new(_currXSpeed, rb2D.velocity.y);
 			}
 
 			if (_jumpBufferCountdown > 0)
@@ -110,8 +119,8 @@ namespace Abyss.Player
 			if (_preLandJumpBufferCountdown > 0)
 				_preLandJumpBufferCountdown = Mathf.Max(0, _preLandJumpBufferCountdown - Time.deltaTime);
 
-			if (!IsAttacking && !isTakingDamage && !isDead) HandleState();
-			if (!isTakingDamage)
+			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
+			if (!_isTakingDamage)
 			{
 				if (rb2D.velocity.x > 0 && IsFacingLeft)
 					FlipSprite();
@@ -153,7 +162,7 @@ namespace Abyss.Player
 		private void OnCollisionEnter2D(Collision2D coll2D)
 		{
 			// Check if player is on the ground
-			if (coll2D.gameObject.CompareTag("Ground"))
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				IsGrounded = true;
 				groundedSinceDash = true;
@@ -168,7 +177,7 @@ namespace Abyss.Player
 		private void OnCollisionExit2D(Collision2D coll2D)
 		{
 			// Check if player is leaving the ground
-			if (coll2D.gameObject.CompareTag("Ground"))
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				if (isDashing)
 					groundedSinceDash = false;
@@ -191,6 +200,18 @@ namespace Abyss.Player
 		#endregion
 
 		#region Other Methods
+		public void Rest()
+		{
+			_isResting = true;
+			UnequipWeapon();
+		}
+
+		public void Unrest(WeaponItem weaponItem)
+		{
+			_isResting = false;
+			if (weaponItem != null) EquipWeapon(weaponItem);
+		}
+
 		public void EquipWeapon(object input)
 		{
 			int ind = Array.FindIndex(weaponMapping, pair => pair.Head == (WeaponItem)input);
@@ -204,11 +225,13 @@ namespace Abyss.Player
 			}
 		}
 
-		void UnequipWeapon(object input = null)
+		public void UnequipWeapon(object input = null)
 		{
 			_slashSize = 0;
 			Weapon = "Nil";
+			TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
 		}
+
 
 		// Animation stuff
 		void HandleState()
@@ -280,7 +303,8 @@ namespace Abyss.Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
-			if (IsAttacking || isTakingDamage || isDead) return;
+			if (IsFrozen) return;
+			if (IsAttacking || _isTakingDamage || _isDead) return;
 			if (context.started)
 			{
 				if (IsGrounded || _jumpBufferCountdown > 0) Jump();
@@ -296,17 +320,23 @@ namespace Abyss.Player
 
 		public void OnRun(InputAction.CallbackContext context)
 		{
+			if (IsFrozen) return;
 			if (context.started)
 				_shouldRun = true;
 			else if (context.canceled)
 				_shouldRun = false;
 		}
 
-		public void OnMove(InputAction.CallbackContext context) => _moveDir = context.ReadValue<float>();
+		public void OnMove(InputAction.CallbackContext context)
+		{
+			if (IsFrozen) return;
+			_moveDir = context.ReadValue<float>();
+		}
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
-			if (IsAttacking || isTakingDamage || isDead) return;
+			if (IsFrozen) return;
+			if (IsAttacking || _isTakingDamage || _isDead) return;
 			if (context.started && dashAvail)
 			{
 				_playerSfx.PlayDash();
@@ -321,7 +351,8 @@ namespace Abyss.Player
 
 		public void OnAttack(InputAction.CallbackContext context)
 		{
-			if (isDashing || isTakingDamage || isDead) return;
+			if (IsFrozen) return;
+			if (isDashing || _isTakingDamage || _isDead) return;
 			if (context.started)
 			{
 				if (IsAttacking) return;
@@ -336,43 +367,35 @@ namespace Abyss.Player
 
 		public void OnInteract(InputAction.CallbackContext context)
 		{
+			if (IsFrozen) return;
 			if (context.started)
 				OnAttemptInteract?.Invoke();
 		}
-		
-		public void OnSpell(InputAction.CallbackContext context)
+
+		public void OnSpell1(InputAction.CallbackContext context)
 		{
-			if (context.started) 
-			{
-				//FIXME: Remove the try-catch block
-				try 
-				{
-					SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
-					bool isSpellEquipped = false;
-					for (int i = 0; i < spellItems.Length; i++)
-					{
-						Debug.Log(string.Format("%s (%s)", spellItems[i].name, spellItems[i].itemName));
-						if (spellItems[i].itemName.Equals(EmberSpell.EMBER_SPELL_NAME)) 
-						{
-							isSpellEquipped = true;
-							break;
-						}
-					}
-					if (!isSpellEquipped) return;
-				} catch (Exception)
-                {
-					Debug.Log("Error with spell equip check");
-				}
-				Assert.IsNotNull(fireColumn);
-				GameObject newFireCol = Instantiate(fireColumn, transform.position + (IsFacingLeft ? Vector3.left : Vector3.right), Quaternion.identity);
-				EmberSpell emberSpellScript = newFireCol.GetComponent<EmberSpell>();
-				emberSpellScript.Initialize(IsFacingLeft);
-			}
+			if (IsFrozen) return;
+			if (context.started)
+				CastSpell(0);
+		}
+
+		public void OnSpell2(InputAction.CallbackContext context)
+		{
+			if (IsFrozen) return;
+			if (context.started)
+				CastSpell(1);
+		}
+
+		public void OnSpell3(InputAction.CallbackContext context)
+		{
+			if (IsFrozen) return;
+			if (context.started)
+				CastSpell(2);
 		}
 
 		public bool TakeHit(bool hasKnockback, Vector3 from, float kbImpulse)
 		{
-			if (isTakingDamage || isDead) return true;
+			if (_isTakingDamage || _isDead) return true;
 			IsAttacking = false;
 			_playerSfx.PlayHurt();
 			if (isDashing)
@@ -384,7 +407,7 @@ namespace Abyss.Player
 			}
 			IsJumping = false;
 			_jumpTimeLeft = 0f;
-			isTakingDamage = true;
+			_isTakingDamage = true;
 			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * (knockbackImpulse + kbImpulse), ForceMode2D.Impulse);
 			TransitionToState(Enum.Parse<State>($"Damage_{Weapon}"));
 			return false;
@@ -397,14 +420,14 @@ namespace Abyss.Player
 			_dashTimeLeft = 0f;
 			IsJumping = false;
 			_jumpTimeLeft = 0f;
-			isTakingDamage = false;
-			isDead = true;
+			_isTakingDamage = false;
+			_isDead = true;
 			TransitionToState(Enum.Parse<State>($"Death_{Weapon}"));
 		}
 		#endregion
 
 		#region Animation Event Handlers
-		void DamageEnd() => isTakingDamage = false;
+		void DamageEnd() => _isTakingDamage = false;
 
 		void AttackEnd()
 		{
@@ -416,6 +439,8 @@ namespace Abyss.Player
 		#endregion
 
 		#region Helper Methods
+		bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
+
 		void Jump()
 		{
 			_playerSfx.PlayJump();
@@ -432,6 +457,7 @@ namespace Abyss.Player
 			gameObject.transform.localScale = currScale;
 
 			IsFacingLeft = !IsFacingLeft;
+			EventManager.InvokeEvent(PlayEvents.PlayerSpeakFlip);
 		}
 
 		void TransitionToState(State newState)
@@ -455,6 +481,15 @@ namespace Abyss.Player
 					$"Error playing animation {animToPlay}. The portrait is likely not initialized"
 				);
 			}
+		}
+
+		void CastSpell(int ind)
+		{
+			SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
+			if (spellItems[ind] == null || !spellItems[ind].CanCast) return;
+
+			var spellObj = Instantiate(spellItems[ind].itemPrefab, transform.position, Quaternion.identity);
+			spellObj.GetComponent<Spell>().Cast(IsFacingLeft);
 		}
 		#endregion
 	}

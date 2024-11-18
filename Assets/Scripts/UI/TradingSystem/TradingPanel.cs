@@ -11,23 +11,16 @@ public class TradingSystem : MonoBehaviour
 {
     [SerializeField] Tribe tribe;
     [SerializeField] GameObject tradingPanel;
-    [SerializeField] TradingArea topArea = new(1);
-    [SerializeField] TradingArea bottomArea = new(5);
-    [SerializeField] GameObject playerSlots;
-    [SerializeField] GameObject npcSlots;
-    [SerializeField] GameObject topSlot;
-    [SerializeField] GameObject bottomSlots;
+    [SerializeField] TradingArea topArea = new(1), bottomArea = new(5);
+    [SerializeField] GameObject playerSlots, npcSlots, topSlot, bottomSlots;
     [SerializeField] GameObject scrollViewContent;
     [SerializeField] GameObject slotPrefab;
     [SerializeField] Image valueBarImage;
 
-    [SerializeField] Button bargainButton;
-    [SerializeField] Button tradeButton;
-    [SerializeField] Sprite bargainButtonInactive;
-    [SerializeField] Sprite bargainButtonActive;
+    [SerializeField] Button bargainButton, tradeButton;
+    [SerializeField] Sprite bargainButtonInactive, bargainButtonActive;
     [SerializeField] Image bargainButtonImage;
-    [SerializeField] Sprite tradeButtonInactive;
-    [SerializeField] Sprite tradeButtonActive;
+    [SerializeField] Sprite tradeButtonInactive, tradeButtonActive;
     [SerializeField] Image tradeButtonImage;
 
     [SerializeField] NPCBagUI npcBagUI;
@@ -49,6 +42,12 @@ public class TradingSystem : MonoBehaviour
 
     public void CloseTrading()
     {
+        Stop();
+        GameManager.Instance.UI.Close();
+    }
+
+    public void Stop()
+    {
         ClearArea();
         UpdateTradingArea();
         IsTradingOpen = false;
@@ -60,6 +59,7 @@ public class TradingSystem : MonoBehaviour
     {
         (Tribe tribe, PlayerAttr playerAttr, Collection itemCollection) = ((Tribe, PlayerAttr, Collection))input;
         if (Tribe != tribe) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Trade, Stop)) return;
 
         npcBagUI.Init(itemCollection);
         _playerAttr = playerAttr;
@@ -111,6 +111,10 @@ public class TradingSystem : MonoBehaviour
                 if (destination == AreaType.Player) ChangePlayerInventory(item, 1);
                 else if (destination == AreaType.NPC) ChangeNPCInventory(item, 1);
             }
+            else
+            {
+                EventManager.InvokeEvent(PlayEvents.Message, "You must first offer items to barter, then choose 'Trade'.");
+            }
         }
         else if (destination == AreaType.Bottom)
         {
@@ -123,6 +127,14 @@ public class TradingSystem : MonoBehaviour
                     else if (original == AreaType.NPC) ChangeNPCInventory(item, -1);
                     bottomArea.AddItem(item);
                 }
+                else
+                {
+                    EventManager.InvokeEvent(PlayEvents.Message, "You may only offer your own items to barter. Drag them in from your inventory.");
+                }
+            }
+            else
+            {
+                EventManager.InvokeEvent(PlayEvents.Message, "The " + _tribe.ToString() + " do not find this item to be of value.");
             }
         }
         else if (original == AreaType.Bottom)
@@ -132,6 +144,10 @@ public class TradingSystem : MonoBehaviour
                 bottomArea.RemoveItem(item);
                 if (destination == AreaType.Player) ChangePlayerInventory(item, 1);
                 else if (destination == AreaType.NPC) ChangeNPCInventory(item, 1);
+            }
+            else
+            {
+                EventManager.InvokeEvent(PlayEvents.Message, "You may only offer your own items to barter. Drag them in from your inventory.");
             }
         }
         UpdateTradingArea();
@@ -254,14 +270,30 @@ public class TradingSystem : MonoBehaviour
         float purity = _playerAttr.Purity / 100f;
         if (topArea.tag == AreaType.NPC)
         {
-            if (proportion + purity - 0.6f < 1) BargainFailed = true;
-            else SetTradeButton(true);
+            if (proportion + purity - 0.6f < 1)
+            {
+                BargainFailed = true;
+                EventManager.InvokeEvent(PlayEvents.Message, "Your attempt at bargaining has failed.");
+            }
+            else 
+            {
+                SetTradeButton(true);
+                EventManager.InvokeEvent(PlayEvents.Message, "You have sucessfully negotiated for cheaper prices.");
+            }
             SetBargainButton(false);
         }
         else if (topArea.tag == AreaType.Player)
         {
-            if (proportion - purity + 0.6f > 1) BargainFailed = true;
-            else SetTradeButton(true);
+            if (proportion - purity + 0.6f > 1) 
+            {
+                BargainFailed = true;
+                EventManager.InvokeEvent(PlayEvents.Message, "Your attempt at bargaining has failed.");
+            }
+            else
+            {
+                SetTradeButton(true);
+                EventManager.InvokeEvent(PlayEvents.Message, "You have sucessfully negotiated for cheaper prices.");
+            }
             SetBargainButton(false);
         }
 
@@ -298,6 +330,7 @@ public class TradingSystem : MonoBehaviour
 
     private void TradeDone()
     {
+        EventManager.InvokeEvent(PlayEvents.Message, "Happy trading!! :)");
         topArea.ReverseClear();
         bottomArea.ReverseClear();
     }
@@ -340,9 +373,15 @@ public class TradingSystem : MonoBehaviour
     private bool IsValidDarg(AreaType original, AreaType destination)
     {
         if ((original == AreaType.Player || original == AreaType.NPC) && (destination == AreaType.Player || destination == AreaType.NPC))
+        {
+            EventManager.InvokeEvent(PlayEvents.Message, "You must first offer items to barter, then complete the trade.");
             return false;
+        }
         if ((original == AreaType.Top || original == AreaType.Bottom) && (destination == AreaType.Top || destination == AreaType.Bottom))
+        {
+            EventManager.InvokeEvent(PlayEvents.Message, "Items cannot be dragged directly into the trade area. Please place them back into your inventory first.");
             return false;
+        }
         return true;
     }
 

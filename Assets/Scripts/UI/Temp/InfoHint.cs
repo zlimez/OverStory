@@ -1,11 +1,14 @@
 using Abyss.EventSystem;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class InfoHint : MonoBehaviour
 {
-    public GameObject infoPanel;
+    public RectTransform infoPanel;
     public TextMeshProUGUI infoText;
+    public float slideDuration;
+    [SerializeField] Vector2 hiddenPos, visiblePos;
 
     void OnEnable()
     {
@@ -21,13 +24,15 @@ public class InfoHint : MonoBehaviour
 
     void ShowInfoPanel(object obj)
     {
-        infoPanel.SetActive(true);
-        infoText.text = (string)obj;
+        string text = (string)obj;
+        if (string.IsNullOrEmpty(text)) return;
+        infoPanel.DOAnchorPos(visiblePos, slideDuration);
+        infoText.text = text;
     }
 
     void HideInfoPanel(object obj)
     {
-        infoPanel.SetActive(false);
+        infoPanel.DOAnchorPos(hiddenPos, slideDuration);
         infoText.text = "";
     }
 }

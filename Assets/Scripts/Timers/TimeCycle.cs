@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Abyss.EventSystem;
 using Abyss.Utils;
@@ -26,14 +25,12 @@ namespace Abyss.TimeManagers
                 EventManager.StartListening(SystemEvents.SystemsReady, LoadStartCycle);
             else LoadStartCycle();
             EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StartListening(PlayEvents.Rested, Forward);
         }
 
         void OnDisable()
         {
             EventManager.StopListening(SystemEvents.SystemsReady, LoadStartCycle);
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StopListening(PlayEvents.Rested, Forward);
         }
 
         void LoadStartCycle(object input = null)
@@ -41,7 +38,7 @@ namespace Abyss.TimeManagers
             StopCycle();
             // can be overriden by instance setting startTime in case want a scene to start at a specific time
             timeOfCycle = startTime == -1 ? GameManager.Instance.TimePersistence.TimeOfCycle : startTime;
-            totalTime = GameManager.Instance.TimePersistence.TtTime;
+            totalTime = GameManager.Instance.TimePersistence.TotalTime;
             if (totalTime == 0)
             {
                 float initBcast = Mathf.Floor(timeOfCycle / broadcastInterval) * broadcastInterval;
@@ -50,13 +47,12 @@ namespace Abyss.TimeManagers
             }
             _cycle = Cycle();
             StartCoroutine(_cycle);
-            EventManager.StopListening(SystemEvents.SystemsReady, LoadStartCycle);
         }
 
         void Save(object input = null)
         {
             GameManager.Instance.TimePersistence.TimeOfCycle = timeOfCycle;
-            GameManager.Instance.TimePersistence.TtTime = totalTime;
+            GameManager.Instance.TimePersistence.TotalTime = totalTime;
         }
 
         IEnumerator Cycle()
@@ -80,9 +76,8 @@ namespace Abyss.TimeManagers
             }
         }
 
-        void Forward(object input)
+        public void Forward(float fwdTime)
         {
-            float fwdTime = (float)input;
             timeOfCycle = (timeOfCycle + fwdTime) % CYCLE_LENGTH;
             totalTime += fwdTime;
             _nextBcast = timeOfCycle % broadcastInterval == 0 ? timeOfCycle : timeOfCycle - timeOfCycle % broadcastInterval;

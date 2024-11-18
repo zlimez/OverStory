@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSfx : MonoBehaviour
@@ -7,6 +5,7 @@ public class PlayerSfx : MonoBehaviour
     [SerializeField] AudioClip jumpSfx;
     [SerializeField] AudioClip dashSfx;
     [SerializeField] AudioClip hurtSfx;
+
     AudioSource _audioSource;
 
     void Awake() { _audioSource = GetComponent<AudioSource>(); }

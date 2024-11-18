@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1096eb3fc41314e6ea8ff47393bcf665, type: 3}
+  m_Name: Axe_t3
+  m_EditorClassIdentifier: 
+  itemName: Axe (Tier 3)
+  description: 
+  icon: {fileID: 21300000, guid: 33e754b751dcf4569bbb12baf5220fdf, type: 3}
+  itemImage: {fileID: 21300000, guid: 33e754b751dcf4569bbb12baf5220fdf, type: 3}
+  itemPrefab: {fileID: 6717123739769251856, guid: da03fed1cb05d4173ad4dee2b5bb534a,
+    type: 3}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 1
+  isAcceptableToHakem: 1
+  valueToFara: 10
+  valueToHakem: 10
+  itemUsedEvent: {fileID: 0}
+  itemType: 2
+  Damage: 40
+  Radius: 2

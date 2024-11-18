@@ -15,9 +15,13 @@ namespace BehaviorTree
         public override List<Node> GetChildren() { return null; }
     }
 
-    // Actions with init params
-    public abstract class CfAction : Action {
+    public abstract class CfAction : Action
+    {
         protected string[] _params;
+        /// <summary>
+        /// paramters: List of variables to retrieve from associated BT's head board. Order of parameters is important should match the inherited classes unpack order in Setup
+        /// </summary>
+        /// <param name="parameters"></param>
         public CfAction(string[] parameters) { _params = parameters; }
     }
 }

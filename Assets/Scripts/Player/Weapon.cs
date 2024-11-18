@@ -7,17 +7,38 @@ namespace Abyss.Player
 {
     public class Weapon : MonoBehaviour
     {
-        static readonly int _layerMask = (1 << 6) | (1 << 12); // 6 for enemy, 12 for breakable
+        static readonly int _layerMask = (1 << (int)AbyssSettings.Layers.Enemy) | (1 << (int)AbyssSettings.Layers.Breakable); // 6 for enemy, 12 for breakable
         public WeaponItem weaponItem;
         readonly HashSet<int> _enemyHits = new(), _depoHits = new();
         ParticleSystem _particleSystem;
 
         void Awake() => _particleSystem = GetComponent<ParticleSystem>();
 
-        void OnEnable() => EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
-        void OnDisable() => EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
+        void OnEnable()
+        {
+            EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
+            EventManager.StartListening(PlayEvents.WeaponUnequipped, Unequip);
+        }
 
-        void Equip(object obj) => weaponItem = (WeaponItem)obj;
+        void OnDisable()
+        {
+            EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
+            EventManager.StopListening(PlayEvents.WeaponUnequipped, Unequip);
+        }
+
+        void Equip(object obj) // Deduction from inventory is already done by Use() of the weaponitem
+        {
+            if (weaponItem != null) GameManager.Instance.Inventory.MaterialCollection.Add(weaponItem);
+            weaponItem = (WeaponItem)obj;
+            GameManager.Instance.PlayerPersistence.WeaponItem = weaponItem;
+        }
+
+        void Unequip(object obj)
+        {
+            if (weaponItem != null) GameManager.Instance.Inventory.MaterialCollection.Add(weaponItem);
+            weaponItem = null;
+            GameManager.Instance.PlayerPersistence.WeaponItem = weaponItem;
+        }
 
         public void Strike(float str) // Can be called multiple times in one single "attack", hence the need to track which has already been hit
         {

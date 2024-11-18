@@ -20,8 +20,9 @@ MonoBehaviour:
   itemPrefab: {fileID: 0}
   canUseFromInventory: 0
   isConsumable: 0
-  isAcceptableToFara: 0
+  isAcceptableToFara: 1
   isAcceptableToHakem: 0
-  valueToFara: 0
+  valueToFara: 12
   valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
   itemType: 0

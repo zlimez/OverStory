@@ -4,12 +4,6 @@ using UnityEngine.Serialization;
 
 namespace Abyss.EventSystem
 {
-    // [CreateAssetMenu(menuName = "Dynamic Event")]
-    // public class DynamicEvent : ScriptableObject
-    // {
-    //     public string EventName;
-    // }
-
     [Serializable]
     public struct GameEvent
     {
@@ -31,34 +25,19 @@ namespace Abyss.EventSystem
         {
             if (relatedStaticEvent == StaticEvent.NoEvent)
             {
-                this.RelatedStaticEvent = StaticEvent.NoEvent;
-                this._eventName = eventName;
+                RelatedStaticEvent = StaticEvent.NoEvent;
+                _eventName = eventName;
                 return;
             }
 
-            this.RelatedStaticEvent = relatedStaticEvent;
-            this._eventName = relatedStaticEvent.ToString();
+            RelatedStaticEvent = relatedStaticEvent;
+            _eventName = relatedStaticEvent.ToString();
         }
 
-        public override readonly bool Equals(object obj)
-        {
-            return obj is GameEvent otherEvent && EventName.Equals(otherEvent.EventName);
-        }
-
-        public override readonly int GetHashCode()
-        {
-            return EventName.GetHashCode();
-        }
-
-        public static bool operator ==(GameEvent left, GameEvent right)
-        {
-            return left.EventName == right.EventName;
-        }
-
-        public static bool operator !=(GameEvent left, GameEvent right)
-        {
-            return !(left == right);
-        }
+        public override readonly bool Equals(object obj) => obj is GameEvent otherEvent && EventName.Equals(otherEvent.EventName);
+        public override readonly int GetHashCode() => EventName.GetHashCode();
+        public static bool operator ==(GameEvent left, GameEvent right) => left.EventName == right.EventName;
+        public static bool operator !=(GameEvent left, GameEvent right) => !(left == right);
 
         public override readonly string ToString()
         {

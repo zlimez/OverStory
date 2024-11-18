@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2254e9223544ccd9fcc97d5833eb71, type: 3}
+  m_Name: BP-Pit1
+  m_EditorClassIdentifier: 
+  itemName: Shallow Pit Blueprint
+  description: Learn to dig a shallow pit, a simple yet effective means to slow down
+    foes that drop from above.
+  icon: {fileID: 21300000, guid: 1534f645ef8d147e09ef21d6ed6d7b43, type: 3}
+  itemImage: {fileID: 21300000, guid: 1534f645ef8d147e09ef21d6ed6d7b43, type: 3}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
+  itemType: 6
+  objectItem: {fileID: 11400000, guid: f1c148253e639483393eac87064c7581, type: 2}
+  materials:
+  - Head: {fileID: 11400000, guid: 902c1dc95d4644ef2ac6013520729927, type: 2}
+    Tail: 1
+  - Head: {fileID: 11400000, guid: 57c1d3c0f76bd41378e4c53abe67eb21, type: 2}
+    Tail: 2
+  prerequisiteItems: []
+  prerequisiteAttr:
+    Strength: 0
+    Intelligence: 0
+    Agility: 0
+    Health: 0
+    Purity: 0
+    ActionPurity: 0
+    FriendlinessPurity: 0
+  isCraftable: 0

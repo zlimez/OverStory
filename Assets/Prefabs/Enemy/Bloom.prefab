@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 3092874263227839822}
   m_Layer: 6
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -927,6 +927,7 @@ Transform:
   - {fileID: 6683808181406036235}
   - {fileID: 7661847344468975196}
   - {fileID: 4405318274228898151}
+  - {fileID: 3649692573427696568}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3157385855424546698
@@ -954,7 +955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2783f183ec7a540dbb1188a343ddc16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specyAttr: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
+  Specy: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}
   attributes:
     isAlive: 1
     priority: 0
@@ -963,11 +964,19 @@ MonoBehaviour:
     alertness: 0
     friendliness: 0
   health: 50
+  damageFlash: {fileID: 3190204297787832075}
+  hitsToKill: 2
   drops:
   - Head: {fileID: 1520851749018624176, guid: 68f22f5baabc146228b55f27fae765f2, type: 3}
-    Tail: 2
+    Tail: 1
   - Head: {fileID: 6575146312904711976, guid: 1e1521065be5b43c795e807630e6a8a4, type: 3}
-    Tail: 4
+    Tail: 1
+  - Head: {fileID: 3666791956295866859, guid: abca3834882f340098f9e72e69460331, type: 3}
+    Tail: 2
+  probabalisticDrops:
+  - Item1: {fileID: 8708761343506596083, guid: b8eefc4d12f0e441d8e5541afb60d617, type: 3}
+    Item2: 1
+    Item3: 0.25
   dropRange:
     Head: {fileID: 7661847344468975196}
     Tail: {fileID: 4405318274228898151}
@@ -1000,7 +1009,7 @@ MonoBehaviour:
   chompTime: 1
   preChompTime: 0.3
   chompRestTime: 0.5
-  chompDamage: 10
+  chompDamage: 20
   chompCurve:
     serializedVersion: 2
     m_Curve:
@@ -5207,6 +5216,101 @@ MonoBehaviour:
     _modifiers_ColorOnly: []
     _modifiers_AnimatedColorOnly: []
   _rootMotionBoneID: -1
+--- !u!1 &3231381284850116884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3649692573427696568}
+  - component: {fileID: 8025087627482909915}
+  - component: {fileID: 3433527479218935427}
+  m_Layer: 12
+  m_Name: JournlTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3649692573427696568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3231381284850116884}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 15, y: 15, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4322774981055549084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &8025087627482909915
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3231381284850116884}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &3433527479218935427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3231381284850116884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9999c553f90504108975ae5afcffb444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoText: 
+  namePrefab: {fileID: 0}
+  nameText: 
+  journal: {fileID: 11400000, guid: 2191b23a4a0194dd2b30f2a2e8a32a2f, type: 2}
+  IntellLevelUp: 1
 --- !u!1 &3324535482743942662
 GameObject:
   m_ObjectHideFlags: 0
@@ -10971,7 +11075,7 @@ GameObject:
   - component: {fileID: 1542217134876286541}
   m_Layer: 6
   m_Name: Neck (3)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11182,7 +11286,7 @@ GameObject:
   - component: {fileID: 7569428808682621538}
   m_Layer: 6
   m_Name: Neck (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14352,7 +14456,7 @@ GameObject:
   - component: {fileID: 276784282632734897}
   m_Layer: 6
   m_Name: Neck (2)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14867,6 +14971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6708774441942698786}
   - component: {fileID: 1410171559472739284}
+  - component: {fileID: 3190204297787832075}
   m_Layer: 6
   m_Name: BloomPortrait
   m_TagString: Untagged
@@ -17981,6 +18086,22 @@ MonoBehaviour:
   _rootMotionSpecifiedParentTransform: {fileID: 0}
   _IKMethod: 0
   _invisibleMeshUpdate: 0
+--- !u!114 &3190204297787832075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297954257954643220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4be56717bd4cb99d3dfac5a402055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRoot: {fileID: 6708774441942698786}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.19607843}
+  flashDuration: 0.2
+  reps: 1
 --- !u!1 &6347107591258334003
 GameObject:
   m_ObjectHideFlags: 0
@@ -21355,7 +21476,7 @@ GameObject:
   - component: {fileID: 1863561080925111965}
   m_Layer: 6
   m_Name: Base
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26823,7 +26944,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.05
+      scalar: 0.15
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -31055,5 +31176,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e2b944da59b48d68dc7bdadc7b20e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 10
   enemyManager: {fileID: 3197870240889000692}

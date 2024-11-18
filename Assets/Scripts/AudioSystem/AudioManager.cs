@@ -2,61 +2,82 @@ using System.Collections;
 using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Utils;
+using Tuples;
+using Abyss.SceneSystem;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] AudioSource uiAudioSource, sfxAudioSource;
-    [SerializeField] AudioClip interactableHint;
+    [SerializeField] AudioSource uiSource, bgmSource;
+    [SerializeField] float transitionDuration = 1f, bgmVolume = 0.5f;
+    [SerializeField] Pair<AbyssScene, AudioClip>[] sceneStartBgmClips;
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEvents.InteractableEntered, PlayInteractableHint);
+        bgmSource.volume = bgmVolume;
+        foreach (var p in sceneStartBgmClips)
+            if (p.Head == Parser.GetSceneFromText(SceneManager.GetActiveScene().name))
+            {
+                bgmSource.clip = p.Tail;
+                bgmSource.Play();
+                break;
+            }
+
+        EventManager.StartListening(SystemEvents.SceneTransitStart, ChangeBgm);
     }
 
-    void OnDisable()
-    {
-        EventManager.StopListening(PlayEvents.InteractableEntered, PlayInteractableHint);
-    }
-
-    public void PlayInteractableHint(object o = null)
-    {
-        PlayUIClip(interactableHint);
-    }
+    void OnDisable() => EventManager.StopListening(SystemEvents.SceneTransitStart, ChangeBgm);
 
     public void PlayUIClip(AudioClip audioClip)
     {
-        uiAudioSource.clip = audioClip;
-        uiAudioSource.Play();
+        uiSource.clip = audioClip;
+        uiSource.Play();
     }
 
-    public void PlaySFX(AudioClip audioClip)
+    public void ChangeBgm(object input = null)
     {
-        sfxAudioSource.clip = audioClip;
-        sfxAudioSource.Play();
+        AbyssScene scene = (AbyssScene)input;
+        bool found = false;
+        foreach (var p in sceneStartBgmClips)
+            if (p.Head == scene)
+            {
+                found = true;
+                if (bgmSource.clip == p.Tail) return;
+                StartCoroutine(CrossFade(bgmSource, p.Tail, transitionDuration));
+                break;
+            }
+
+        if (!found) StartCoroutine(Transition(bgmSource, transitionDuration, 0));
     }
 
     public void StopUIClip()
     {
-        uiAudioSource.Stop();
-        uiAudioSource.clip = null;
+        uiSource.Stop();
+        uiSource.clip = null;
     }
 
-    public void StopSFX()
+    public static IEnumerator Transition(AudioSource audioSource, float duration, float targetVolume)
     {
-        sfxAudioSource.Stop();
-        sfxAudioSource.clip = null;
-    }
-
-    public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
-    {
-        float currentTime = 0;
-        float start = audioSource.volume;
-        while (currentTime < duration)
+        float etime = 0;
+        float stVol = audioSource.volume;
+        while (etime < duration)
         {
-            currentTime += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            etime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(stVol, targetVolume, etime / duration);
             yield return null;
         }
-        yield break;
+        audioSource.volume = targetVolume;
+    }
+
+    public static IEnumerator CrossFade(AudioSource audioSource, AudioClip newClip, float fadeDuration)
+    {
+        float stVol = audioSource.volume;
+        yield return Transition(audioSource, fadeDuration, 0);
+
+        audioSource.Stop();
+        audioSource.clip = newClip;
+        audioSource.Play();
+
+        yield return Transition(audioSource, fadeDuration, stVol);
     }
 }

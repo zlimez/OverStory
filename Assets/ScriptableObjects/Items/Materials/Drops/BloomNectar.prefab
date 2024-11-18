@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7859045040249247819}
   - component: {fileID: 8447009166213414114}
-  - component: {fileID: 8366112048432226333}
   - component: {fileID: 2781268348662259086}
   - component: {fileID: 4406869330170682497}
   m_Layer: 10
@@ -76,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: -1741044987
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c66b235b2d82c41fa9a5f9a99bdebf97, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0a9c94305099b4746bcb05e0e1165474, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,33 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &8366112048432226333
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520851749018624176}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &2781268348662259086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +136,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.203125, y: 2.25}
+    oldSize: {x: 3.578125, y: 2.625}
     newSize: {x: 4.40625, y: 3.8125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

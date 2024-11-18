@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a824d80f626c94d0f88fceec58a6b3bb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - hintPrefab: {instanceID: 0}
+  - foundBagConvo: {instanceID: 0}
+  - dronePickedEvent: {instanceID: 0}
+  - backpackPickedEvent: {fileID: 11400000, guid: 30468e1b1c975466699127fe8a24be82,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

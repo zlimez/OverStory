@@ -79,3 +79,4 @@ MonoBehaviour:
   entityPrefab: {fileID: 802386053101811234, guid: 851a49b17f0734b72bde0abab7bb0b43,
     type: 3}
   spawnPoint: {fileID: 2822035131122203174}
+  specy: {fileID: 11400000, guid: 072b840dd798c4140b32df67651cb196, type: 2}

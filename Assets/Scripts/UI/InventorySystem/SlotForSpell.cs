@@ -40,7 +40,9 @@ public class SlotForSpell : MonoBehaviour
     public void ShowTooltip()
     {
         tooltipPanel.SetActive(true);
-        tooltipText.text = item.description;
+        // need to change
+        tooltipText.text = item.itemName + ":\n\n" + item.description;
+        //
     }
 
     public void CloseTooltip()
@@ -68,7 +70,6 @@ public class SlotForSpell : MonoBehaviour
         {
             if (SpellItems[i] == item) index[i] = true;
             else index[i] = false;
-            
         }
     }
 
@@ -127,5 +128,5 @@ public class SlotForSpell : MonoBehaviour
         CloseContextMenu();
     }
 
-    
+
 }

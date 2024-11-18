@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Abyss.EventSystem;
 using Abyss.Utils;
 using TMPro;
 using UnityEngine.InputSystem;
@@ -18,18 +17,18 @@ public class DialogueManager : Singleton<DialogueManager>
     public bool InDialogue { get; private set; }
 
     [SerializeField] float speedMod, defaultCharInterval = 0.005f;
-    float charInterval;
+    protected float charInterval;
 
     [Header("UI References")]
     [SerializeField] GameObject dialogBox;
     [SerializeField] TextMeshProUGUI speakerName, dialog;
     [SerializeField] Image leftSpeakerImg, rightSpeakerImg;
 
-    int currInd;
-    Queue<Conversation> queuedConvos = new();
-    Conversation currConvo;
-    bool isCurrLinePrinting, isCentered;
-    Coroutine dialogLineCoroutine;
+    protected int currInd = -1;
+    protected Queue<Conversation> queuedConvos = new();
+    protected Conversation currConvo;
+    protected bool isCurrLinePrinting, isCentered;
+    protected Coroutine dialogLineCoroutine;
 
     public delegate void OnDialogFinished();
     private event OnDialogFinished OnEndDialogue;
@@ -40,7 +39,7 @@ public class DialogueManager : Singleton<DialogueManager>
         PreserveSpriteAspect();
     }
 
-    void PreserveSpriteAspect()
+    protected void PreserveSpriteAspect()
     {
         leftSpeakerImg.preserveAspect = true;
         rightSpeakerImg.preserveAspect = true;
@@ -48,7 +47,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void SoftStartConvo(Conversation convo)
     {
-        // if (UiStatus.IsDisabled) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog)) return;
         queuedConvos.Enqueue(convo);
         if (queuedConvos.Count == 1)
             StartConvo(convo);
@@ -56,13 +55,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void HardStartConvo(Conversation convo, OnDialogFinished callback = null)
     {
-        // if (UiStatus.IsDisabled) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog)) return;
         queuedConvos.Clear();
         queuedConvos.Enqueue(convo);
         StartConvo(convo, callback);
     }
 
-    void StartConvo(Conversation convo, OnDialogFinished callback = null)
+    protected void StartConvo(Conversation convo, OnDialogFinished callback = null)
     {
         PrepConvoUI(convo);
         BeginDialog();
@@ -76,12 +75,9 @@ public class DialogueManager : Singleton<DialogueManager>
         StartCoroutine(AutoRead());
     }
 
-    void PrepConvoUI(Conversation convo)
+    protected void PrepConvoUI(Conversation convo)
     {
-        EventManager.InvokeEvent(UIEvents.DialogStarted);
-
         dialogBox.SetActive(true);
-        GameManager.Instance.UiStatus.OpenUI();
 
         currInd = 0;
         currConvo = convo;
@@ -92,18 +88,18 @@ public class DialogueManager : Singleton<DialogueManager>
         else
         {
             leftSpeakerImg.sprite = null;
-            leftSpeakerImg.color = ColorUtils.Transparent;
+            leftSpeakerImg.color = Color.clear;
         }
         if (convo.RightSpeaker != null && convo.RightSpeaker.Sprite != null)
             rightSpeakerImg.sprite = convo.RightSpeaker.Sprite;
         else
         {
             rightSpeakerImg.sprite = null;
-            rightSpeakerImg.color = ColorUtils.Transparent;
+            rightSpeakerImg.color = Color.clear;
         }
     }
 
-    void BeginDialog()
+    protected void BeginDialog()
     {
         InDialogue = true;
         ReadNext();
@@ -119,7 +115,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    void FlashCurrLine()
+    protected void FlashCurrLine()
     {
         if (dialogLineCoroutine != null)
             StopCoroutine(dialogLineCoroutine);
@@ -137,14 +133,12 @@ public class DialogueManager : Singleton<DialogueManager>
         if (IsEndOfDialogue)
         {
             queuedConvos.Dequeue();
-            EndDialogue();
-            if (queuedConvos.Count > 0)
-                StartConvo(queuedConvos.Peek());
+            EndDialog();
         }
         else ProcessCurrLine();
     }
 
-    void ProcessCurrLine()
+    protected void ProcessCurrLine()
     {
         isCurrLinePrinting = true;
 
@@ -158,12 +152,12 @@ public class DialogueManager : Singleton<DialogueManager>
         dialogLineCoroutine = StartCoroutine(DisplayLine(currLine.Dialogue));
 
         UpdateSpeakerUI(currLine);
-        PlayLineAudio(currLine);
+        // PlayLineAudio(currLine);
 
         currInd++;
     }
 
-    void UpdateSpeakerUI(DialogueLine currentLine)
+    protected void UpdateSpeakerUI(DialogueLine currentLine)
     {
         if (currentLine.IsLeft)
             UpdateLeftSpeakerUI(currentLine);
@@ -173,7 +167,7 @@ public class DialogueManager : Singleton<DialogueManager>
             speakerName.text = currentLine.Name;
     }
 
-    void UpdateLeftSpeakerUI(DialogueLine currLine)
+    protected void UpdateLeftSpeakerUI(DialogueLine currLine)
     {
         Speaker currSpeaker = currLine.Speaker != null ? currLine.Speaker : currConvo.LeftSpeaker;
         if (leftSpeakerImg.sprite != null) leftSpeakerImg.color = new Color32(255, 255, 255, 255);
@@ -185,7 +179,7 @@ public class DialogueManager : Singleton<DialogueManager>
         if (rightSpeakerImg.sprite != null) rightSpeakerImg.color = new Color32(110, 110, 110, 255);
     }
 
-    void UpdateRightSpeakerUI(DialogueLine currLine)
+    protected void UpdateRightSpeakerUI(DialogueLine currLine)
     {
         Speaker currSpeaker = currLine.Speaker != null ? currLine.Speaker : currConvo.RightSpeaker;
         if (rightSpeakerImg.sprite != null) rightSpeakerImg.color = new Color32(255, 255, 255, 255);
@@ -197,66 +191,74 @@ public class DialogueManager : Singleton<DialogueManager>
         if (leftSpeakerImg.sprite != null) leftSpeakerImg.color = new Color32(110, 110, 110, 255);
     }
 
-    public void PlayLineAudio(DialogueLine currentLine)
-    {
-        if (currentLine.Audio != null)
-            AudioManager.Instance.PlaySFX(currentLine.Audio);
-    }
+    // public void PlayLineAudio(DialogueLine currentLine)
+    // {
+    //     if (currentLine.Audio != null)
+    //         AudioManager.Instance.PlaySFX(currentLine.Audio);
+    // }
 
 
-    private IEnumerator DisplayLine(string line)
+    protected IEnumerator DisplayLine(string line)
     {
         dialog.text = "";
         dialog.alignment = isCentered ? TextAlignmentOptions.Center : TextAlignmentOptions.TopLeft;
 
         foreach (char letter in line.ToCharArray())
         {
-            yield return new WaitForSeconds(charInterval);
+            yield return new WaitForSecondsRealtime(charInterval);
             dialog.text += letter;
         }
         isCurrLinePrinting = false;
     }
-    private IEnumerator AutoRead(float waitDuration = 0.5f)
+    protected IEnumerator AutoRead(float waitDuration = 0.5f)
     {
         while (currInd != currConvo.AllLines.Length)
         {
             yield return new WaitWhile(() => isCurrLinePrinting);
-            yield return new WaitForSeconds(waitDuration);
+            yield return new WaitForSecondsRealtime(waitDuration);
             ReadNext();
         }
         yield return new WaitWhile(() => isCurrLinePrinting);
-        yield return new WaitForSeconds(waitDuration);
-        EndDialogue();
+        yield return new WaitForSecondsRealtime(waitDuration);
+        EndDialog();
     }
 
-    private IEnumerator Skip()
+    protected IEnumerator Skip()
     {
         ReadNext();
-        yield return new WaitForSeconds(10 * Time.deltaTime);
+        yield return new WaitForSecondsRealtime(10 * Time.deltaTime);
     }
 
-    void EndDialogue()
+    protected void EndDialog()
     {
         InDialogue = false;
         dialog.text = "";
+        currInd = -1;
         if (dialogLineCoroutine != null)
             StopCoroutine(dialogLineCoroutine);
 
-        // if (!currConvo.EndWithChoice)
-        // {
-        CloseDialogueUI();
-        // }
-
         OnEndDialogue?.Invoke();
         OnEndDialogue = null;
+        if (queuedConvos.Count > 0)
+            StartConvo(queuedConvos.Peek());
+        else CloseDialogUI();
     }
 
-    void CloseDialogueUI()
+    protected void CloseDialogUI()
     {
-        // Don't change UiStatus to !isOpen if the Dialogue is followed by Inventory opening or Choice
-        // if (!ChoiceManager.Instance.InChoice && !InventoryUI.Instance.isItemSelectMode)
-        GameManager.Instance.UiStatus.CloseUI();
+        GameManager.Instance.UI.Close();
         dialogBox.SetActive(false);
-        Input.ResetInputAxes();
+    }
+
+    protected void KillDialog()
+    {
+        InDialogue = false;
+        dialog.text = "";
+        currInd = -1;
+        if (dialogLineCoroutine != null)
+            StopCoroutine(dialogLineCoroutine);
+
+        dialogBox.SetActive(false);
+        queuedConvos.Clear();
     }
 }

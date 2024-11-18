@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2254e9223544ccd9fcc97d5833eb71, type: 3}
+  m_Name: BP-Burn1
+  m_EditorClassIdentifier: 
+  itemName: Ember Blueprint
+  description: 'Ember - First of the fiery spells. Raises a pillar of flame in front
+    of you that burns enemies, dealing damage and causing them to take more damage
+    temporarily.
+
+    Requires 2 strength 5 intelligence to learn and acquire.'
+  icon: {fileID: 21300000, guid: b27ec64990f9645e7a5d7ff833d18d5a, type: 3}
+  itemImage: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
+  itemType: 6
+  objectItem: {fileID: 11400000, guid: 08ef3056d818a434cbd3c525555c0ef9, type: 2}
+  materials:
+  - Head: {fileID: 11400000, guid: 55cea1a43bee64fde9e947cf8198a754, type: 2}
+    Tail: 1
+  - Head: {fileID: 11400000, guid: 895a9cc0ffad74598871f67b65a8f161, type: 2}
+    Tail: 1
+  prerequisiteItems: []
+  prerequisiteAttr:
+    Strength: 2
+    Intelligence: 5
+    Agility: 0
+    Health: 0
+    Purity: 0
+    ActionPurity: 0
+    FriendlinessPurity: 0
+  isCraftable: 0

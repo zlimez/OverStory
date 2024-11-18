@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using BehaviorTree;
 using UnityEngine;
 
@@ -17,12 +16,10 @@ namespace Abyss.Environment.Enemy
         public override void Setup(BT tree)
         {
             base.Setup(tree);
-            List<object> dataRef = Tree.GetData(_params);
-            _damage = (float)dataRef[0];
-            _hasKnockback = (bool)dataRef[1];
-            _enemyManager = (EnemyManager)dataRef[2];
-            _attackName = (string)dataRef[3];
-
+            _damage = Tree.GetDatum<float>(_params[0]);
+            _hasKnockback = Tree.GetDatum<bool>(_params[1]);
+            _enemyManager = Tree.GetDatum<EnemyManager>(_params[2]);
+            _attackName = _params[3];
         }
 
         public override void Update() => State = State.SUCCESS;
@@ -30,7 +27,7 @@ namespace Abyss.Environment.Enemy
         protected override void OnInit()
         {
             base.OnInit();
-            Action<float> attack = (float str) => Tree.GetDatum<Transform>("target").GetComponent<Player.PlayerManager>().TakeHit(str + _damage, _hasKnockback, _enemyManager.transform.position);
+            Action<float> attack = (float str) => Tree.GetDatum<Transform>("target").GetComponent<Player.PlayerManager>().TakeHit(str + _damage, _enemyManager.Specy.specyName, _hasKnockback, _enemyManager.transform.position);
             _enemyManager.OnStrikePlayer += attack;
             Tree.SetDatum(_attackName, attack);
         }
@@ -46,9 +43,8 @@ namespace Abyss.Environment.Enemy
         public override void Setup(BT tree)
         {
             base.Setup(tree);
-            List<object> dataRef = Tree.GetData(_params);
-            _enemyManager = (EnemyManager)dataRef[0];
-            _attackName = (string)dataRef[1];
+            _enemyManager = Tree.GetDatum<EnemyManager>(_params[0]);
+            _attackName = _params[1];
         }
 
         public override void Update() => State = State.SUCCESS;

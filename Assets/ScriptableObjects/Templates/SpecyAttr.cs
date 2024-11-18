@@ -8,6 +8,7 @@ public class SpecyAttr : ScriptableObject
     public float mutationRate;
     public int maxPopulation;
     public float generationRate;
+    [Tooltip("Base strength exp given to player when defeated")] public float baseStrExpGiven;
 
     [Tooltip("Attr name, min and max")]
     public Triplet<string, float, float>[] attrRanges;

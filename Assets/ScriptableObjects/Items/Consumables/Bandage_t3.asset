@@ -21,6 +21,7 @@ MonoBehaviour:
   isConsumable: 1
   isAcceptableToFara: 0
   isAcceptableToHakem: 0
-  valueToFara: 0
-  valueToHakem: 0
+  valueToFara: 30
+  valueToHakem: 30
+  itemUsedEvent: {fileID: 0}
   itemType: 1

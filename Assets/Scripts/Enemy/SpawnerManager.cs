@@ -11,23 +11,31 @@ namespace Abyss.Environment
         [SerializeField] Transform instancesParent;
         readonly Dictionary<string, List<Spawner>> enemyTypes = new();
 
-        void Start()
+        void Awake()
         {
             foreach (var spawner in spawners)
             {
-                if (spawner.entityPrefab.TryGetComponent(out EnemyManager enemy))
+                if (spawner is EnemySpawner enemy)
                 {
-                    if (!enemyTypes.ContainsKey(enemy.specyAttr.specyName)) enemyTypes.Add(enemy.specyAttr.specyName, new());
-                    enemyTypes[enemy.specyAttr.specyName].Add(spawner);
+                    if (!enemyTypes.ContainsKey(enemy.Specy.specyName)) enemyTypes.Add(enemy.Specy.specyName, new());
+                    enemyTypes[enemy.Specy.specyName].Add(spawner);
                 }
             }
+        }
 
+        void OnEnable()
+        {
             if (EnemyPopManager.Instance == null || !EnemyPopManager.Instance.IsReady)
                 EventManager.StartListening(SystemEvents.EnemyPopManagerReady, Setup);
             else Setup();
+            EventManager.StartListening(PlayEvents.RestEnd, Setup);
         }
 
-        void OnDisable() => EventManager.StopListening(SystemEvents.EnemyPopManagerReady, Setup);
+        void OnDisable()
+        {
+            EventManager.StopListening(PlayEvents.RestEnd, Setup);
+            EventManager.StopListening(SystemEvents.EnemyPopManagerReady, Setup);
+        }
 
         void Setup(object input = null)
         {

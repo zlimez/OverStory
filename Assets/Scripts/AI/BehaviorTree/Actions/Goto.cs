@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BehaviorTree.Actions
 {
-    public class Goto : CfAction
+    public class GotoDstTfm : CfAction
     {
         Transform _transform;
         Transform _dest;
@@ -12,7 +12,7 @@ namespace BehaviorTree.Actions
         float _timer = 0;
         Vector3 _startPos;
 
-        public Goto(string[] parameters) : base(parameters) { }
+        public GotoDstTfm(string[] parameters) : base(parameters) { }
 
         public override void Setup(BT tree)
         {

@@ -17,12 +17,16 @@ MonoBehaviour:
     damage and causing them to take more damage temporarily.
   icon: {fileID: 21300000, guid: 88242345c11ab44fbbe531ad6b1e7b63, type: 3}
   itemImage: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,
+    type: 3}
   canUseFromInventory: 0
   isConsumable: 0
   isAcceptableToFara: 0
   isAcceptableToHakem: 0
   valueToFara: 0
   valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
   itemType: 5
   iconInactive: {fileID: 21300000, guid: cb980cd9f49a741ea8945c8e981375f6, type: 3}
+  rottenFleshNeeded: 1
+  rottenFlesh: {fileID: 11400000, guid: 9c18df5d117e84bd39db82653506ca09, type: 2}

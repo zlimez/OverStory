@@ -1,6 +1,5 @@
 using Abyss.Player;
 using Abyss.SceneSystem;
-using Tuples;
 using UnityEngine;
 
 public class WorldEntry : ConvoTrigger
@@ -10,6 +9,8 @@ public class WorldEntry : ConvoTrigger
     protected override void Execute()
     {
         base.Execute();
-        player.GetComponent<PlayerManager>().LastRest = new Pair<AbyssScene, Vector3>(AbyssScene.Room1, initRespawnPoint.position);
+        var playerManager = player.GetComponent<PlayerManager>();
+        playerManager.LastRest.Head = AbyssScene.Room1;
+        playerManager.LastRest.Tail = initRespawnPoint.position;
     }
 }

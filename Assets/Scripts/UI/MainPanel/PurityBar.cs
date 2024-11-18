@@ -21,7 +21,4 @@ public class PurityBar : MonoBehaviour
         float PurityPercentage = purity / 100f;
         PurityBarImage.fillAmount = PurityPercentage;
     }
-
 }
-
-

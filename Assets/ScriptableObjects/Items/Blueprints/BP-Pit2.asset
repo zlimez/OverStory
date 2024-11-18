@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2254e9223544ccd9fcc97d5833eb71, type: 3}
+  m_Name: BP-Pit2
+  m_EditorClassIdentifier: 
+  itemName: Deep Pit Blueprint
+  description: "Learn to craft a deep pit\u2014slows bug attacks, and sharpened spikes
+    deal temporary damage."
+  icon: {fileID: 21300000, guid: 19db0340090d442c8bac0c5c70330b2e, type: 3}
+  itemImage: {fileID: 21300000, guid: 19db0340090d442c8bac0c5c70330b2e, type: 3}
+  itemPrefab: {fileID: 0}
+  canUseFromInventory: 0
+  isConsumable: 0
+  isAcceptableToFara: 0
+  isAcceptableToHakem: 0
+  valueToFara: 0
+  valueToHakem: 0
+  itemUsedEvent: {fileID: 0}
+  itemType: 6
+  objectItem: {fileID: 11400000, guid: 9d9f8d3edb14d429faad330e39814a49, type: 2}
+  materials:
+  - Head: {fileID: 11400000, guid: 902c1dc95d4644ef2ac6013520729927, type: 2}
+    Tail: 2
+  - Head: {fileID: 11400000, guid: 57c1d3c0f76bd41378e4c53abe67eb21, type: 2}
+    Tail: 3
+  prerequisiteItems:
+  - {fileID: 11400000, guid: f1c148253e639483393eac87064c7581, type: 2}
+  prerequisiteAttr:
+    Strength: 0
+    Intelligence: 0
+    Agility: 0
+    Health: 0
+    Purity: 0
+    ActionPurity: 0
+    FriendlinessPurity: 0
+  isCraftable: 0

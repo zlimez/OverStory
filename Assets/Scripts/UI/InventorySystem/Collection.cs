@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Abyss.EventSystem;
+using Tuples;
 
 public class Collection
 {
@@ -8,6 +10,7 @@ public class Collection
     public Dictionary<Item, Countable<Item>> ItemsTable { get; private set; }
     public Action OnItemChanged;
     public int ItemCount { get; private set; } = 0;
+    public bool isPlayer = false;
 
     public Collection(List<Countable<Item>> items = null, int capacity = 100)
     {
@@ -35,6 +38,11 @@ public class Collection
         }
 
         OnItemChanged?.Invoke();
+        if (isPlayer)
+        {
+            RefPair<Item, int> ItemWithCnt = new(item, quantity);
+            EventManager.InvokeEvent(PlayEvents.PlayerItemChange, ItemWithCnt);
+        }
         return true;
     }
 
@@ -74,7 +82,7 @@ public class Collection
             RemoveStock(Items[i].Data, rmCnt);
             if (n == 0) break;
         }
-        if (n > 0) RemoveStock(Items[Items.Count - 1].Data, n);
+        if (n > 0) RemoveStock(Items[^1].Data, n);
         OnItemChanged?.Invoke();
     }
 
@@ -104,8 +112,21 @@ public class Collection
                 Remove(item);
 
             OnItemChanged?.Invoke();
+            if (isPlayer)
+            {
+                RefPair<Item, int> ItemWithCnt = new(item, -quantity);
+                EventManager.InvokeEvent(PlayEvents.PlayerItemChange, ItemWithCnt);
+            }
             return true;
         }
+        return false;
+    }
+
+    public bool HasItemType(ItemType itemType)
+    {
+        foreach (Countable<Item> itemStack in Items)
+            if (itemStack.Data.itemType == itemType)
+                return true;
         return false;
     }
 }

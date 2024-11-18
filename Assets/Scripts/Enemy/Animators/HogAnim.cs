@@ -6,16 +6,8 @@ namespace Abyss.Environment.Enemy.Anim
     public class HogAnim : PortraitAnim
     {
         // Polish to add stun animation
-        public enum State
-        {
-            Idle,
-            Walk,
-            Charge,
-            ChargeUp,
-            Death,
-            Stun,
-            Wake,
-        }
+        public enum State { Idle, Walk, Charge, ChargeUp, Death, Stun, Wake }
+
         [SerializeField] float walkSpeed = 2.5f;
         [SerializeField] float runSpeed = 8f;
 

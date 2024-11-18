@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 public class Inventory
 {
-    public int Level = 1;
+    public int Level = 1; // Related to bag upgrade
     public bool Enabled = false;
     public Action<Item> OnItemInspected;
     // TODO: Different class of items in different collection, e.g. Organs in one, materials in another

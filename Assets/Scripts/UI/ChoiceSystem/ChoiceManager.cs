@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Abyss.Utils;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -19,21 +18,16 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     public void StartChoice(params Choice[] choices)
     {
-        if (UiStatus.IsDisabled) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Choice, Clear)) return;
         InChoice = true;
         _choices = choices;
         PopulateChoices();
     }
 
-    public void SetChoice(int index)
-    {
-        _selectedInd = index;
-        // EventSystem.current.SetSelectedGameObject(choiceButtons[index]);
-    }
+    public void SetChoice(int index) => _selectedInd = index;
 
     void PopulateChoices()
     {
-        GameManager.Instance.UiStatus.OpenUI();
         InChoice = true;
         choicePanel.SetActive(true);
         _selectedInd = 0;
@@ -45,11 +39,6 @@ public class ChoiceManager : Singleton<ChoiceManager>
             {
                 choiceButton.SetActive(true);
                 choiceButton.GetComponentInChildren<TextMeshProUGUI>().text = _choices[i].ChoiceText;
-                // if (i == 0)
-                // {
-                //     EventSystem.current.SetSelectedGameObject(null);
-                //     EventSystem.current.SetSelectedGameObject(choiceButton);
-                // }
             }
             else choiceButton.SetActive(false);
         }
@@ -66,10 +55,12 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     public void Close()
     {
-        // Don't change UiStatus to !isOpen if the choice is followed by Dialogue or Item Selection
-        // if (!DialogueManager.Instance.InDialogue)
-        GameManager.Instance.UiStatus.CloseUI();
+        Clear();
+        GameManager.Instance.UI.Close();
+    }
 
+    void Clear()
+    {
         _selectedInd = -1;
         choicePanel.SetActive(false);
         for (int i = 0; i < choiceButtons.Length; i++)
