@@ -50,22 +50,19 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float jumpForce = 100f;
-		[SerializeField] float initialJumpImpulse, extraDescentAcceleration = 5f;
+		[SerializeField] float jumpTime = 0.3f, initialJumpImpulse, fallGravityMult = 2f, terminalVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
-		float _jumpBufferCountdown = 0f, _preLandJumpBufferCountdown = 0f;
-		const float MAX_JUMP_TIME = 0.3f;
-		float _jumpTimeLeft = MAX_JUMP_TIME;
+		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f;
+		float _jumpTimeLeft;
 		public bool IsGrounded, IsJumping;
 		public float InitJumpImpulse => initialJumpImpulse;
 
 		[Header("Dash")]
 		[SerializeField] float dashImpulse = 2000f;
 		[SerializeField] float dashCooldown = 1.0f, dashTime = 0.3f;
-		bool dashAvail = true, groundedSinceDash = true, isDashing = false;
-		float _dashTimeLeft, _dashCountdown;
-
-		readonly int GROUND_LAYER = 7;
+		bool dashAvail = true, grndedSceDash = true, isDashing = false;
+		float _dashTimeLeft, _dashCd;
 
 		// Attacking
 		[Header("Damage")]
@@ -101,7 +98,7 @@ namespace Abyss.Player
 
 			portrait.Initialize();
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
-			_dashCountdown = dashCooldown;
+			_dashCd = dashCooldown;
 		}
 
 		private void Update()
@@ -114,10 +111,10 @@ namespace Abyss.Player
 				if (!_isTakingDamage) rb2D.velocity = new(_currXSpeed, rb2D.velocity.y);
 			}
 
-			if (_jumpBufferCountdown > 0)
-				_jumpBufferCountdown = Mathf.Max(0, _jumpBufferCountdown - Time.deltaTime);
-			if (_preLandJumpBufferCountdown > 0)
-				_preLandJumpBufferCountdown = Mathf.Max(0, _preLandJumpBufferCountdown - Time.deltaTime);
+			if (_jmpBuffCd > 0)
+				_jmpBuffCd = Mathf.Max(0, _jmpBuffCd - Time.deltaTime);
+			if (_preLandJmpBuffCd > 0)
+				_preLandJmpBuffCd = Mathf.Max(0, _preLandJmpBuffCd - Time.deltaTime);
 
 			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
 			if (!_isTakingDamage)
@@ -129,12 +126,12 @@ namespace Abyss.Player
 			}
 
 			if (!dashAvail)
-				_dashCountdown -= Time.deltaTime;
+				_dashCd -= Time.deltaTime;
 
-			if (_dashCountdown <= 0 && groundedSinceDash)
+			if (_dashCd <= 0 && grndedSceDash)
 			{
 				dashAvail = true;
-				_dashCountdown = dashCooldown;
+				_dashCd = dashCooldown;
 			}
 		}
 
@@ -148,7 +145,7 @@ namespace Abyss.Player
 			}
 
 			if (!IsGrounded && rb2D.velocity.y < 0)
-				rb2D.AddForce(extraDescentAcceleration * rb2D.mass * Vector2.down);
+				rb2D.AddForce(fallGravityMult * rb2D.mass * Vector2.down);
 
 			if (isDashing)
 			{
@@ -159,31 +156,31 @@ namespace Abyss.Player
 			}
 		}
 
-		private void OnCollisionEnter2D(Collision2D coll2D)
+		private void OnTriggerEnter2D(Collider2D coll2D)
 		{
 			// Check if player is on the ground
 			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				IsGrounded = true;
-				groundedSinceDash = true;
-				if (_preLandJumpBufferCountdown > 0)
+				grndedSceDash = true;
+				if (_preLandJmpBuffCd > 0)
 				{
 					Jump();
-					_preLandJumpBufferCountdown = 0;
+					_preLandJmpBuffCd = 0;
 				}
 			}
 		}
 
-		private void OnCollisionExit2D(Collision2D coll2D)
+		private void OnTriggerExit2D(Collider2D coll2D)
 		{
 			// Check if player is leaving the ground
 			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				if (isDashing)
-					groundedSinceDash = false;
+					grndedSceDash = false;
 				IsGrounded = false;
 				if (!IsJumping)
-					_jumpBufferCountdown = jumpBuffer;
+					_jmpBuffCd = jumpBuffer;
 			}
 		}
 
@@ -307,8 +304,8 @@ namespace Abyss.Player
 			if (IsAttacking || _isTakingDamage || _isDead) return;
 			if (context.started)
 			{
-				if (IsGrounded || _jumpBufferCountdown > 0) Jump();
-				else _preLandJumpBufferCountdown = preLandJumpBuffer;
+				if (IsGrounded || _jmpBuffCd > 0) Jump();
+				else _preLandJmpBuffCd = preLandJumpBuffer;
 			}
 			else if (context.canceled) // On button released
 			{
@@ -343,7 +340,7 @@ namespace Abyss.Player
 				isDashing = true;
 				_dashTimeLeft = dashTime;
 				dashAvail = false;
-				groundedSinceDash = false;
+				grndedSceDash = false;
 				rb2D.AddForce((IsFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
 				TransitionToState(Enum.Parse<State>($"Dash_{Weapon}"));
 			}
@@ -445,7 +442,7 @@ namespace Abyss.Player
 		{
 			_playerSfx.PlayJump();
 			rb2D.AddForce(Vector2.up * initialJumpImpulse, ForceMode2D.Impulse);
-			_jumpTimeLeft = MAX_JUMP_TIME;
+			_jumpTimeLeft = jumpTime;
 			IsJumping = true;
 			TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 		}

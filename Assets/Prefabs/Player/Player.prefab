@@ -27820,7 +27820,7 @@ Rigidbody2D:
   m_Mass: 8
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -27847,18 +27847,20 @@ MonoBehaviour:
   Foot: {fileID: 8556364574421759163}
   portrait: {fileID: 6794293284907382098}
   crossFadeSeconds: 0.2
-  walkSpeed: 7
-  runSpeed: 10
-  jumpForce: 300
-  initialJumpImpulse: 90
-  extraDescentAcceleration: 10
+  walkSpeed: 10
+  runSpeed: 15
+  jumpForce: 275
+  jumpTime: 0.2
+  initialJumpImpulse: 120
+  fallGravityMult: 2
+  terminalVelocity: 15
   jumpBuffer: 0.1
   preLandJumpBuffer: 0.1
   IsGrounded: 0
   IsJumping: 0
-  dashImpulse: 125
+  dashImpulse: 200
   dashCooldown: 1
-  dashTime: 0.3
+  dashTime: 0.2
   knockbackImpulse: 75
   fireColumn: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,
     type: 3}
@@ -27899,11 +27901,11 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0934906, y: 0.1796124}
-  m_Size: {x: 2.7783508, y: 4.762303}
+  m_Offset: {x: 0.034721375, y: 0.09145522}
+  m_Size: {x: 2.8958893, y: 4.938617}
   m_Direction: 0
 --- !u!114 &6421215665509773657
 MonoBehaviour:
@@ -27935,7 +27937,11 @@ MonoBehaviour:
     FriendlinessPurity: 0
   purityLoseItemsThreshold: 40
   portionLost: 0.5
-  sceneCrossSpawnPoints: []
+  sceneCrossSpawnPoints:
+  - Head: 4
+    Tail: {fileID: 0}
+  - Head: 6
+    Tail: {fileID: 0}
 --- !u!82 &194525144408556434
 AudioSource:
   m_ObjectHideFlags: 0
@@ -103882,7 +103888,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8414581205102149228}
-  - component: {fileID: 6360445677386955105}
+  - component: {fileID: 3312289961248784694}
   m_Layer: 0
   m_Name: Side
   m_TagString: Untagged
@@ -103905,8 +103911,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2923312552569966562}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &6360445677386955105
-BoxCollider2D:
+--- !u!70 &3312289961248784694
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103914,7 +103920,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 8815147010968147288}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 02a93e0fbb3cd49a981ccae95b5aa8a4, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -103937,19 +103943,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.10684204, y: 0.12398243}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.9744873, y: 3.0632763}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: 0.2689972}
+  m_Size: {x: 3.8696136, y: 4.652771}
+  m_Direction: 0
 --- !u!1 &8968165274653268215
 GameObject:
   m_ObjectHideFlags: 0
