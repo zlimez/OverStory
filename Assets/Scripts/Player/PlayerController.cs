@@ -22,16 +22,6 @@ namespace Abyss.Player
 			Idle_Axe_t1, Walk_Axe_t1, Run_Axe_t1, Jump_Axe_t1, Dash_Axe_t1, Damage_Axe_t1, Attack_Axe_t1, Death_Axe_t1,
 		}
 
-		bool IsIdleState => currState.ToString().StartsWith("Idle");
-		bool IsWalkState => currState.ToString().StartsWith("Walk");
-		bool IsRunState => currState.ToString().StartsWith("Run");
-		bool IsJumpState => currState.ToString().StartsWith("Jump");
-		bool IsDashState => currState.ToString().StartsWith("Dash");
-		bool IsDamageState => currState.ToString().StartsWith("Damage");
-		bool IsAttackState => currState.ToString().StartsWith("Attack");
-		bool IsDeathState => currState.ToString().StartsWith("Death");
-		string BaseState => currState.ToString().Split('_')[0];
-
 		public Transform Foot;
 
 		// Animation support
@@ -50,19 +40,20 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float jumpForce = 100f;
-		[SerializeField] float jumpTime = 0.3f, initialJumpImpulse, fallGravityMult = 2f, terminalVelocity = 15f;
+		[SerializeField] float timeToApex, maxJumpHeight = 5;
+		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, _gravMult;
+		[SerializeField] float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
 		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f;
-		float _jumpTimeLeft;
+		bool _willJmp = false, _pressingJmp = false;
 		public bool IsGrounded, IsJumping;
-		public float InitJumpImpulse => initialJumpImpulse;
 
 		[Header("Dash")]
-		[SerializeField] float dashImpulse = 2000f;
-		[SerializeField] float dashCooldown = 1.0f, dashTime = 0.3f;
-		bool dashAvail = true, grndedSceDash = true, isDashing = false;
-		float _dashTimeLeft, _dashCd;
+		[SerializeField] float dashSpeed = 25f;
+		[SerializeField] float dashTime = 0.3f;
+		bool _dashAvail = true, _isDashing = false, _isDashLeft;
+		float _dashTimeLeft;
 
 		// Attacking
 		[Header("Damage")]
@@ -91,24 +82,29 @@ namespace Abyss.Player
 
 		#region Lifecyle Methods
 
-		private void Awake()
+		void Awake()
 		{
 			rb2D = GetComponent<Rigidbody2D>();
 			_playerSfx = GetComponent<PlayerSfx>();
 
 			portrait.Initialize();
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
-			_dashCd = dashCooldown;
 		}
 
-		private void Update()
+		void Update()
 		{
 			if (IsFrozen) _moveDir = 0;
 
-			if (!isDashing)
+			if (_isDashing)
 			{
-				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-				if (!_isTakingDamage) rb2D.velocity = new(_currXSpeed, rb2D.velocity.y);
+
+				if (_dashTimeLeft > 0f)
+					_dashTimeLeft -= Time.deltaTime;
+				else
+				{
+					_isDashing = false;
+					_dashAvail = IsGrounded;
+				}
 			}
 
 			if (_jmpBuffCd > 0)
@@ -119,65 +115,53 @@ namespace Abyss.Player
 			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
 			if (!_isTakingDamage)
 			{
-				if (rb2D.velocity.x > 0 && IsFacingLeft)
+				if (_moveDir > 0 && IsFacingLeft)
 					FlipSprite();
-				else if (rb2D.velocity.x < 0 && !IsFacingLeft)
+				else if (_moveDir < 0 && !IsFacingLeft)
 					FlipSprite();
-			}
-
-			if (!dashAvail)
-				_dashCd -= Time.deltaTime;
-
-			if (_dashCd <= 0 && grndedSceDash)
-			{
-				dashAvail = true;
-				_dashCd = dashCooldown;
 			}
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
-			if (IsJumping && _jumpTimeLeft > 0f)
+			SetBodyGrav();
+			if (!_isDashing)
 			{
-				// Continue jump to max
-				rb2D.AddForce(Vector2.up * jumpForce);
-				_jumpTimeLeft -= Time.fixedDeltaTime;
+				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
+				if (!_isTakingDamage) rb2D.velocity = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+			}
+			else rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
+
+			if (_willJmp)
+			{
+				Jump();
+				return;
 			}
 
-			if (!IsGrounded && rb2D.velocity.y < 0)
-				rb2D.AddForce(fallGravityMult * rb2D.mass * Vector2.down);
-
-			if (isDashing)
-			{
-				// Debug.Log($"Dashing {remainingDashTime}");
-				if (_dashTimeLeft > 0f)
-					_dashTimeLeft -= Time.fixedDeltaTime;
-				else isDashing = false;
-			}
+			CalcGravity();
 		}
 
-		private void OnTriggerEnter2D(Collider2D coll2D)
+		void OnTriggerEnter2D(Collider2D coll2D)
 		{
 			// Check if player is on the ground
 			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				IsGrounded = true;
-				grndedSceDash = true;
+				_dashAvail |= !_isDashing;
+				IsJumping = false;
 				if (_preLandJmpBuffCd > 0)
 				{
-					Jump();
+					_willJmp = true;
 					_preLandJmpBuffCd = 0;
 				}
 			}
 		}
 
-		private void OnTriggerExit2D(Collider2D coll2D)
+		void OnTriggerExit2D(Collider2D coll2D)
 		{
 			// Check if player is leaving the ground
 			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
-				if (isDashing)
-					grndedSceDash = false;
 				IsGrounded = false;
 				if (!IsJumping)
 					_jmpBuffCd = jumpBuffer;
@@ -272,7 +256,7 @@ namespace Abyss.Player
 			}
 			else if (IsDashState)
 			{
-				if (!isDashing)
+				if (!_isDashing)
 				{
 					if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -300,28 +284,22 @@ namespace Abyss.Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
-			if (IsAttacking || _isTakingDamage || _isDead) return;
+			if (!CanJumpReact) return;
+
 			if (context.started)
 			{
-				if (IsGrounded || _jmpBuffCd > 0) Jump();
+				if (IsGrounded || _jmpBuffCd > 0) _willJmp = true;
 				else _preLandJmpBuffCd = preLandJumpBuffer;
 			}
-			else if (context.canceled) // On button released
-			{
-				// Stop jump and reset jumpTime
-				IsJumping = false;
-				_jumpTimeLeft = 0f;
-			}
+			else if (context.canceled) _pressingJmp = false;
 		}
 
 		public void OnRun(InputAction.CallbackContext context)
 		{
 			if (IsFrozen) return;
-			if (context.started)
-				_shouldRun = true;
-			else if (context.canceled)
-				_shouldRun = false;
+
+			if (context.started) _shouldRun = true;
+			else if (context.canceled) _shouldRun = false;
 		}
 
 		public void OnMove(InputAction.CallbackContext context)
@@ -332,27 +310,25 @@ namespace Abyss.Player
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
-			if (IsAttacking || _isTakingDamage || _isDead) return;
-			if (context.started && dashAvail)
+			if (!CanDash) return;
+
+			if (context.started)
 			{
 				_playerSfx.PlayDash();
-				isDashing = true;
+				_isDashing = true;
+				_isDashLeft = IsFacingLeft;
 				_dashTimeLeft = dashTime;
-				dashAvail = false;
-				grndedSceDash = false;
-				rb2D.AddForce((IsFacingLeft ? Vector2.left : Vector2.right) * dashImpulse, ForceMode2D.Impulse);
+				_dashAvail = false;
 				TransitionToState(Enum.Parse<State>($"Dash_{Weapon}"));
 			}
 		}
 
 		public void OnAttack(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
-			if (isDashing || _isTakingDamage || _isDead) return;
+			if (!CanAttack) return;
+
 			if (context.started)
 			{
-				if (IsAttacking) return;
 				IsAttacking = true;
 				currState = Enum.Parse<State>($"Attack_{Weapon}");
 				portrait.Play($"Attack_{Weapon}"); // CrossFade is glitchy here
@@ -364,46 +340,36 @@ namespace Abyss.Player
 
 		public void OnInteract(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
+			if (!CanInteract) return;
 			if (context.started)
 				OnAttemptInteract?.Invoke();
 		}
 
 		public void OnSpell1(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
-			if (context.started)
-				CastSpell(0);
+			if (!CanCastSpell) return;
+			if (context.started) CastSpell(0);
 		}
 
 		public void OnSpell2(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
-			if (context.started)
-				CastSpell(1);
+			if (!CanCastSpell) return;
+			if (context.started) CastSpell(1);
 		}
 
 		public void OnSpell3(InputAction.CallbackContext context)
 		{
-			if (IsFrozen) return;
-			if (context.started)
-				CastSpell(2);
+			if (!CanCastSpell) return;
+			if (context.started) CastSpell(2);
 		}
 
 		public bool TakeHit(bool hasKnockback, Vector3 from, float kbImpulse)
 		{
 			if (_isTakingDamage || _isDead) return true;
-			IsAttacking = false;
 			_playerSfx.PlayHurt();
-			if (isDashing)
-			{
-				// NOTE: compensate for dash -> damage then in Update method isTakingDamage check preserves dashing momentum
-				isDashing = false;
-				_dashTimeLeft = 0f;
-				if (hasKnockback) rb2D.AddForce((rb2D.velocity.x > 0 ? Vector2.left : Vector2.right) * (knockbackImpulse + kbImpulse), ForceMode2D.Impulse);
-			}
-			IsJumping = false;
-			_jumpTimeLeft = 0f;
+			IsAttacking = false;
+			InterruptDash();
+			_pressingJmp = false;
 			_isTakingDamage = true;
 			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * (knockbackImpulse + kbImpulse), ForceMode2D.Impulse);
 			TransitionToState(Enum.Parse<State>($"Damage_{Weapon}"));
@@ -413,10 +379,8 @@ namespace Abyss.Player
 		public void Die()
 		{
 			IsAttacking = false;
-			isDashing = false;
-			_dashTimeLeft = 0f;
-			IsJumping = false;
-			_jumpTimeLeft = 0f;
+			InterruptDash();
+			_pressingJmp = false;
 			_isTakingDamage = false;
 			_isDead = true;
 			TransitionToState(Enum.Parse<State>($"Death_{Weapon}"));
@@ -438,14 +402,57 @@ namespace Abyss.Player
 		#region Helper Methods
 		bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
 
+		bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail;
+		bool CanAttack => !IsFrozen && !IsAttacking && !_isDashing && !_isTakingDamage && !_isDead;
+		bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !_isDashing;
+		bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !_isDashing;
+		bool CanJumpReact => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !_isDashing;
+
+		bool IsIdleState => currState.ToString().StartsWith("Idle");
+		bool IsWalkState => currState.ToString().StartsWith("Walk");
+		bool IsRunState => currState.ToString().StartsWith("Run");
+		bool IsJumpState => currState.ToString().StartsWith("Jump");
+		bool IsDashState => currState.ToString().StartsWith("Dash");
+		bool IsDamageState => currState.ToString().StartsWith("Damage");
+		bool IsAttackState => currState.ToString().StartsWith("Attack");
+		bool IsDeathState => currState.ToString().StartsWith("Death");
+		string BaseState => currState.ToString().Split('_')[0];
+
+		void InterruptDash()
+		{
+			_isDashing = false;
+			_dashTimeLeft = 0f;
+			_dashAvail = IsGrounded;
+		}
+
 		void Jump()
 		{
 			_playerSfx.PlayJump();
-			rb2D.AddForce(Vector2.up * initialJumpImpulse, ForceMode2D.Impulse);
-			_jumpTimeLeft = jumpTime;
+			_willJmp = false;
 			IsJumping = true;
+			_pressingJmp = true;
+			var jumpVel = Mathf.Sqrt(-2f * Physics2D.gravity.y * rb2D.gravityScale * maxJumpHeight);
+			rb2D.velocity = new Vector2(rb2D.velocity.x, jumpVel);
 			TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 		}
+
+		void CalcGravity()
+		{
+			if (IsGrounded)
+			{
+				_gravMult = 1;
+				return;
+			}
+
+			if (rb2D.velocity.y > 0.01f)
+			{
+				if (_pressingJmp && IsJumping) _gravMult = upGravityMult;
+				else _gravMult = jumpCutoffMult;
+			}
+			else if (rb2D.velocity.y < -0.01f) _gravMult = downGravityMult;
+		}
+
+		void SetBodyGrav() => rb2D.gravityScale = -2 * maxJumpHeight / (timeToApex * timeToApex) / Physics2D.gravity.y * _gravMult;
 
 		void FlipSprite()
 		{

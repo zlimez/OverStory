@@ -27850,16 +27850,18 @@ MonoBehaviour:
   walkSpeed: 10
   runSpeed: 15
   jumpForce: 275
-  jumpTime: 0.2
-  initialJumpImpulse: 120
-  fallGravityMult: 2
-  terminalVelocity: 15
+  timeToApex: 0.4
+  maxJumpHeight: 5
+  downGravityMult: 2
+  upGravityMult: 0.7
+  jumpCutoffMult: 1
+  _gravMult: 1
+  maxFallVelocity: 40
   jumpBuffer: 0.1
   preLandJumpBuffer: 0.1
   IsGrounded: 0
   IsJumping: 0
-  dashImpulse: 200
-  dashCooldown: 1
+  dashSpeed: 30
   dashTime: 0.2
   knockbackImpulse: 75
   fireColumn: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,
@@ -103920,7 +103922,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 8815147010968147288}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 02a93e0fbb3cd49a981ccae95b5aa8a4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

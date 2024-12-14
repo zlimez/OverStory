@@ -13,7 +13,7 @@ public class FlippablePlatform : MonoBehaviour
     [SerializeField] float angularInertia, angularRetardation;
     [SerializeField][Tooltip("Makes the platform act like seesaw ")] float maxSpringAngularAccel;
     [SerializeField][Tooltip("When angular velocity and z-angle are below these thresholds platform will return to default stationery state (Radians)")] float stillAngularVelocityThreshold, stillZAngleThreshold;
-    [SerializeField] float playerImpulseDamper = 0.1f, playerVelocityDamper = 0.1f;
+    [SerializeField] float playerImpulseDamper = 0.1f, playerVelocityDamper = 0.1f, playerJumpImpulse = 90f;
 
     [Header("Hog Interaction")]
     [SerializeField] float raycastRadius = 2f;
@@ -47,7 +47,7 @@ public class FlippablePlatform : MonoBehaviour
             if (_player != null && _player.GetComponent<PlayerController>().IsJumping)
             {
                 Vector2 cog2Cp = _player.GetComponent<PlayerController>().Foot.position - cog.position;
-                float angularImpulse = _player.GetComponent<PlayerController>().InitJumpImpulse * playerImpulseDamper * Vector2.Dot(Vector2.down, Vector2.Perpendicular(cog2Cp));
+                float angularImpulse = playerJumpImpulse * playerImpulseDamper * Vector2.Dot(Vector2.down, Vector2.Perpendicular(cog2Cp));
                 _angularVel += angularImpulse / angularInertia;
             }
             _inContact = false;
