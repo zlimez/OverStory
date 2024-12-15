@@ -59,5 +59,6 @@ namespace Abyss.EventSystem
         PlayerIntelligenceChange = 42,
         PlayerItemChange = 43,
         Message = 44,
+        ChangeCameraBG = 45,
     }
 }

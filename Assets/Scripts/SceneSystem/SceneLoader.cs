@@ -95,6 +95,7 @@ namespace Abyss.SceneSystem
             EventManager.InvokeEvent(SystemEvents.SceneTransitDone);
             EventManager.InvokeQueueEvents();
             if (rmMasterAftTransit) UnloadScene(AbyssScene.Master);
+            EventManager.InvokeEvent(SystemEvents.ChangeCameraBG);
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene.ToString()));
         }

@@ -9,6 +9,7 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent SceneTransitPrep;
         public static readonly StaticEvent TimeBcastEvent;
         public static readonly StaticEvent EnemyPopManagerReady;
+        public static readonly StaticEvent ChangeCameraBG;
 
 
         static SystemEvents()
@@ -20,6 +21,7 @@ namespace Abyss.EventSystem
             SceneTransitPrep = StaticEvent.SceneTransitPrep;
             TimeBcastEvent = StaticEvent.TimeBcastEvent;
             EnemyPopManagerReady = StaticEvent.EnemyPopManagerReady;
+            ChangeCameraBG = StaticEvent.ChangeCameraBG;
         }
     }
 
