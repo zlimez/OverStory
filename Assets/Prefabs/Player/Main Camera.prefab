@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6140906687649938542}
   - component: {fileID: 1527877556423227061}
   - component: {fileID: 8097437853148426298}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BackImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 1135048089868632054}
   - component: {fileID: 1948277506436138725}
   - component: {fileID: 6685617236338353236}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,9 +170,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2691340454360204448}
   - component: {fileID: 4062042016918283339}
-  m_Layer: 0
+  - component: {fileID: 7769115318796021192}
+  m_Layer: 8
   m_Name: PlayerFollowVcam
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +211,7 @@ MonoBehaviour:
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
   m_Priority: 10
-  m_StandbyUpdate: 2
+  m_StandbyUpdate: 1
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
@@ -232,6 +233,23 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1135048089868632054}
+--- !u!114 &7769115318796021192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4708467263955153033}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449ef5ebbe24720439ec31d15f7b6f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusTracking: 0
+  m_FocusTarget: {fileID: 0}
+  m_FocusOffset: 0
+  m_Profile: {fileID: 11400000, guid: d80100e1d59e0434baf1f1e42919ec5b, type: 2}
 --- !u!1 &5186872117908060079
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +261,7 @@ GameObject:
   - component: {fileID: 3800112003919033073}
   - component: {fileID: 5253526059027166304}
   - component: {fileID: 1716452430042817877}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: FrontImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +315,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 7b912a4e5a5d74ac3b7d77afd0538e39, type: 3}
+  m_Texture: {fileID: 2800000, guid: 6adf349c24c63418caa1df38a975fbd1, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -317,7 +335,7 @@ GameObject:
   - component: {fileID: 3591309650458619742}
   - component: {fileID: 1880081177491641389}
   - component: {fileID: 7812078880552504966}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,6 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontBG: {fileID: 1716452430042817877}
   backBG: {fileID: 8097437853148426298}
+  fadeDuration: 1
 --- !u!1 &6570125113287195864
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +454,7 @@ GameObject:
   - component: {fileID: 2768016385978110514}
   - component: {fileID: 3104073449365795558}
   - component: {fileID: 4857914532684817370}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -469,7 +488,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.17249401, g: 0.4656542, b: 0.518, a: 1}
+  m_BackGroundColor: {r: 0.6019491, g: 0.73993397, b: 0.764151, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -498,7 +517,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 16383
+    m_Bits: 114687
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
