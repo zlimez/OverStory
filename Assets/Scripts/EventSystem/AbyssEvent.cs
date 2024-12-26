@@ -60,5 +60,7 @@ namespace Abyss.EventSystem
         PlayerItemChange = 43,
         Message = 44,
         ChangeCameraBG = 45,
+        TutorialDisplay = 46,
+        TutorialClose = 47,
     }
 }

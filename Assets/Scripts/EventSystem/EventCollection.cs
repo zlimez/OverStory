@@ -32,6 +32,9 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent DraggedItem;
         public static readonly StaticEvent SelectItem;
         public static readonly StaticEvent UpdateNPCInventory;
+        public static readonly StaticEvent TutorialDisplay;
+        public static readonly StaticEvent TutorialClose;
+
 
         static UIEvents()
         {
@@ -40,6 +43,8 @@ namespace Abyss.EventSystem
             DraggedItem = StaticEvent.DraggedItem;
             UpdateNPCInventory = StaticEvent.UpdateNPCInventory;
             SelectItem = StaticEvent.SelectItem;
+            TutorialDisplay = StaticEvent.TutorialDisplay;
+            TutorialClose = StaticEvent.TutorialClose;
         }
     }
 
