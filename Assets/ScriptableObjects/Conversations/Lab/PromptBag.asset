@@ -20,7 +20,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: We need a bag of some sort to carry these items. Lets look around.
+    dialogue: "We need a bag to carry these items. Let\u2019s look around."
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

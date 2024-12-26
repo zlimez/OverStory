@@ -20,14 +20,41 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: We've made it out. Now back to where we left off, your first steps
-      were graced by blaring alarms, tolling of bells of some sort, shall we call
-      you Bell?
+    dialogue: We've made it. Now back to where we left off, your name.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
   - isLeft: 1
     speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: Why do I need a name?
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: "I suppose I have never given a thought to the reason behind this convention
+      in my 8 minutes and 10 seconds of existence. Nonetheless, I don\u2019t see
+      any harm."
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: 'How about Bell, considering the circumstances of your first steps? '
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 11400000, guid: c9724d051ed9f41c0b734118984563c1, type: 2}
     name: 
     isCentered: 0
     audio: {fileID: 0}
@@ -40,17 +67,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: "Right, Bell Cancer, Cancer Bell. We seem to be in a cave, and a deep
-      one at that. For now, let\u2019s look arou..zzz\u2026nd."
-    onLineStart:
-      RelatedStaticEvent: 0
-      _eventName: 
-  - isLeft: 1
-    speaker: {fileID: 11400000, guid: c9724d051ed9f41c0b734118984563c1, type: 2}
-    name: 
-    isCentered: 0
-    audio: {fileID: 0}
-    dialogue: (Looks up) [A blue glowing veil spans the sky]
+    dialogue: Yes. Bell, Cancer; Cancer, Bell.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

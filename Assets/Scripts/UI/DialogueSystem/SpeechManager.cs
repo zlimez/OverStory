@@ -15,7 +15,7 @@ public class SpeechManager : MonoBehaviour
     [SerializeField] private GameObject playerSpeechBox; // Assign this in the inspector to the UI element above the player's head
     [SerializeField] private TextMeshProUGUI playerSpeechTMP; // Assign this in the inspector to the TextMeshProUGUI component in the playerDialogBox
 
-    private Queue<string> dialogueQueue = new Queue<string>();
+    private readonly Queue<string> dialogueQueue = new();
     private bool isDialoguePlaying = false;
     private Coroutine dialogueCoroutine;
     public bool IsFacingLeft { get; private set; } = false;
@@ -46,10 +46,7 @@ public class SpeechManager : MonoBehaviour
     public void EnqueueDialogue(string dialogue, float duration)
     {
         dialogueQueue.Enqueue(dialogue);
-        if (!isDialoguePlaying)
-        {
-            StartNextDialogue(duration);
-        }
+        if (!isDialoguePlaying) StartNextDialogue(duration);
     }
 
     private void StartNextDialogue(float duration)
@@ -78,18 +75,13 @@ public class SpeechManager : MonoBehaviour
         playerSpeechBox.SetActive(false);
         isDialoguePlaying = false;
 
-        if (dialogueQueue.Count > 0)
-        {
-            StartNextDialogue(duration);
-        }
+        if (dialogueQueue.Count > 0) StartNextDialogue(duration);
     }
 
     public void ClearQueue()
     {
-        if (dialogueCoroutine != null)
-        {
-            StopCoroutine(dialogueCoroutine);
-        }
+        if (dialogueCoroutine != null) StopCoroutine(dialogueCoroutine);
+
         dialogueQueue.Clear();
         playerSpeechBox.SetActive(false);
         isDialoguePlaying = false;
@@ -111,7 +103,6 @@ public class SpeechManager : MonoBehaviour
         playerSpeechTMP.gameObject.transform.localScale = currScale;
 
         IsFacingLeft = !IsFacingLeft;
-
         AdjustPosition();
 
     }

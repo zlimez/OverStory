@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HakemMerch
   m_EditorClassIdentifier: 
   leftSpeaker: {fileID: 11400000, guid: 3ec48901f2d584550be9284bdc909e76, type: 2}
-  rightSpeaker: {fileID: 11400000, guid: 7ac69b18ab13145f094d5bf46a6d82dd, type: 2}
+  rightSpeaker: {fileID: 11400000, guid: abf7d7e5d1a774e2697ec330690aae86, type: 2}
   allLines:
   - isLeft: 0
     speaker: {fileID: 0}
@@ -29,7 +29,16 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: (I am nothing like this blockhead.)
+    dialogue: I am nothing like this blockhead. Not with my chiseled edges.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: Come, what do you need?
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

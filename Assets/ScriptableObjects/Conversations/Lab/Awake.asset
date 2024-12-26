@@ -38,7 +38,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: My apologies, little one, can you understand me now?
+    dialogue: Excuse me, can you understand what I am saying now?
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
@@ -47,8 +47,8 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: Don't be surprised, you and I, we are connected apparently, I gave
-      you my tongue in bits, that's all.
+    dialogue: Don't be surprised, you and I, we are connected. I gave you my tongue
+      bits, that's all.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
@@ -66,9 +66,8 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: (Thinking...) That I do not know, as with you I just blipped to life
-      a moment ago, though my records suggest I was made on the 5th cycle of cancer.
-      Well then, call me cancer.
+    dialogue: " I \u2026 don\u2019t know? I only blipped to life a moment ago. Records
+      suggest I was made on the 5th cycle of cancer. Well then, call me Cancer."
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
@@ -77,7 +76,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: Now for you ... (Alarm blares)
+    dialogue: Now for you,
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
@@ -86,7 +85,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: The power grid is failing, we should leave, name later I suppose.
+    dialogue: "\u2026, that doesn\u2019t sound good, we should get out now."
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

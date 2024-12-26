@@ -20,9 +20,30 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: Round 257 - No abnormalities with the Veil. The explorers have descended
-      to the next layer. The telescope needs some oiling, the moisture is damaging
-      the gears.
+    dialogue: Europa 169 - I destroyed all communication devices today. I am now
+      in complete irreversible isolation.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: Europa 197 - The first batch of explorers have arrived, not only men
+      but women and kids as well. Their eyes gleamed with hope. I admit I felt this
+      unwitting jolt of joy to see someone again, how embarrassing.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 1
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: The cave measures 10 km in diameter. Neither ultrasound nor radar was
+      able to accurately probe its depth due to some unknown interference. The only
+      way to know will be to make the journey down myself.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

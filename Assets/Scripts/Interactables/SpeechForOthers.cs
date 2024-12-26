@@ -22,7 +22,7 @@ namespace Abyss.Interactables
             {
                 if (EventLedger.Instance != null && eventCond.IsMet())
                 {
-                    InvokeRepeating("Speak", 0f, intervalTime);
+                    InvokeRepeating(nameof(Speak), 0f, intervalTime);
                     _isRepeating = true;
                 }
                 else EventManager.StartListening(SystemEvents.LedgerReady, RepWrapper);
@@ -31,14 +31,14 @@ namespace Abyss.Interactables
 
         void RepWrapper(object input = null)
         {
-            InvokeRepeating("Speak", 0f, intervalTime);
+            InvokeRepeating(nameof(Speak), 0f, intervalTime);
             _isRepeating = true;
             EventManager.StopListening(SystemEvents.LedgerReady, RepWrapper);
         }
 
         void OnDisable()
         {
-            if (_isRepeating) CancelInvoke("Speak");
+            if (_isRepeating) CancelInvoke(nameof(Speak));
         }
 
         void OnTriggerEnter2D(Collider2D collider)

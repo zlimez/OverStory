@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fd9bf9ca7674ccf9fbb58cbe9468e4, type: 3}
+  m_Name: DocDiary
+  m_EditorClassIdentifier: 
+  leftSpeaker: {fileID: 0}
+  rightSpeaker: {fileID: 0}
+  allLines:
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: "W2D5 - Adam and his gadgets\u2026 I told him to bring more rations
+      on today\u2019s mission, but he didn\u2019t listen and I had to share my sandwich
+      with him - again."
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: W4D6 - Like the tale goes, a towering beanstalk stands in the middle
+      of this cavern. Its stems will bring us deeper down the reach, said Cooper,
+      our scout.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: W7D2 - I have never seen such a wound before. The scabs have this almost
+      metallic shine. Josh says he doesn't feel any pain, but I asked him to check
+      in again the day after. It's my responsibility to keep everyone safe.
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 

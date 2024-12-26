@@ -20,7 +20,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: Ah, exactly what we need - a bag.
+    dialogue: ' Exactly what we need.'
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 
