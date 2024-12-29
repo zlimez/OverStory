@@ -16,9 +16,9 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     void Start() => choicePanel.SetActive(false);
 
-    public void StartChoice(params Choice[] choices)
+    public void StartChoice(Choice[] choices, bool forceOpen = false)
     {
-        if (!GameManager.Instance.UI.Open(UiController.Type.Choice, Clear)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Choice, Clear, forceOpen)) return;
         InChoice = true;
         _choices = choices;
         PopulateChoices();

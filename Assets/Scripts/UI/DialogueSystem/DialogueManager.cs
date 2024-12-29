@@ -23,11 +23,13 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] GameObject dialogBox;
     [SerializeField] TextMeshProUGUI speakerName, dialog;
     [SerializeField] Image leftSpeakerImg, rightSpeakerImg;
+    [SerializeField][Tooltip("Line can only be skipped once it started printing for this amt of time")] float skipCrit = 0.2f;
 
     protected int currInd = -1;
     protected Queue<Conversation> queuedConvos = new();
     protected Conversation currConvo;
     protected bool isCurrLinePrinting, isCentered;
+    protected float lineETime = 0f;
     protected Coroutine dialogLineCoroutine;
 
     public delegate void OnDialogFinished();
@@ -45,17 +47,17 @@ public class DialogueManager : Singleton<DialogueManager>
         rightSpeakerImg.preserveAspect = true;
     }
 
-    public void SoftStartConvo(Conversation convo)
+    public void SoftStartConvo(Conversation convo, bool forceOpen = false)
     {
-        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog, forceOpen)) return;
         queuedConvos.Enqueue(convo);
         if (queuedConvos.Count == 1)
             StartConvo(convo);
     }
 
-    public void HardStartConvo(Conversation convo, OnDialogFinished callback = null)
+    public void HardStartConvo(Conversation convo, OnDialogFinished callback = null, bool forceOpen = false)
     {
-        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog)) return;
+        if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog, forceOpen)) return;
         queuedConvos.Clear();
         queuedConvos.Enqueue(convo);
         StartConvo(convo, callback);
@@ -111,7 +113,7 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             if (!isCurrLinePrinting)
                 ReadNext();
-            else FlashCurrLine();
+            else if (lineETime > skipCrit) FlashCurrLine();
         }
     }
 
@@ -141,6 +143,7 @@ public class DialogueManager : Singleton<DialogueManager>
     protected void ProcessCurrLine()
     {
         isCurrLinePrinting = true;
+        lineETime = 0;
 
         if (dialogLineCoroutine != null)
             StopCoroutine(dialogLineCoroutine);
@@ -206,6 +209,7 @@ public class DialogueManager : Singleton<DialogueManager>
         foreach (char letter in line.ToCharArray())
         {
             yield return new WaitForSecondsRealtime(charInterval);
+            lineETime += charInterval;
             dialog.text += letter;
         }
         isCurrLinePrinting = false;
@@ -237,22 +241,23 @@ public class DialogueManager : Singleton<DialogueManager>
         if (dialogLineCoroutine != null)
             StopCoroutine(dialogLineCoroutine);
 
-        OnEndDialogue?.Invoke();
-        OnEndDialogue = null;
         if (queuedConvos.Count > 0)
             StartConvo(queuedConvos.Peek());
         else CloseDialogUI();
+        OnEndDialogue?.Invoke();
+        OnEndDialogue = null;
     }
 
     protected void CloseDialogUI()
     {
-        GameManager.Instance.UI.Close();
         dialogBox.SetActive(false);
+        GameManager.Instance.UI.Close();
     }
 
     protected void KillDialog()
     {
         InDialogue = false;
+        isCurrLinePrinting = false;
         dialog.text = "";
         currInd = -1;
         if (dialogLineCoroutine != null)

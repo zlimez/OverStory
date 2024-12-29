@@ -15,11 +15,11 @@ public class UiController
 
     bool IsDisabled => SceneLoader.Instance.InTransit;
 
-    public bool Open(Type type, Action interruptHandler = null)
+    public bool Open(Type type, Action interruptHandler = null, bool forceOpen = false)
     {
-        if (IsDisabled || Compare(type) < 0) return false;
+        if (IsDisabled || (Compare(type) < 0 && !forceOpen)) return false;
         Debug.Log($"Opening {type} panel");
-        _currInterruptHandler?.Invoke();
+        if (IsOpen) _currInterruptHandler?.Invoke();
 
         if (ShouldPause(type))
             GameManager.Instance.PauseGame();
