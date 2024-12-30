@@ -20,7 +20,7 @@ public class BugBT : MonoBT
     public Transform LeftEnd;
     public Transform RightEnd;
     [SerializeField] AnimationCurve dashCurve;
-    [SerializeField] float dashSpeed, dashDamage;
+    [SerializeField] float dashSpeed, dashDamage, minDashDistRatio;
     [SerializeField] float scanPitRaycastDist;
 
     [Header("Jump Settings")]
@@ -38,6 +38,8 @@ public class BugBT : MonoBT
         GetComponent<EnemyManager>().OnDefeated -= StopBT;
         base.OnDisable();
     }
+
+    void OnValidate() => minDashDistRatio = Mathf.Clamp(minDashDistRatio, 0, 1);
 
     // Invoked by spawner
     // NOTE: Delayed due to apPortrait bug
@@ -63,6 +65,7 @@ public class BugBT : MonoBT
             new("dashCurve", dashCurve),
             new("scanPitRaycastDist", scanPitRaycastDist),
             new("dashSpeed", dashSpeed * attr.speed),
+            new("minDashDistRatio", minDashDistRatio),
             new("dashKb", true),
             new("dashDamage", dashDamage),
             new("dashBy", GotoTargetByCurve.MoveBy.Speed),
@@ -86,7 +89,7 @@ public class BugBT : MonoBT
                 new CheckPlayerInArena(new string[] { "arena", "target" }),
 
                 new StartAnim(new string[] { "bugAnim", BugAnim.State.Drop.ToString() }),
-                new DropFrmCanopy(new string[] { "leftEnd", "rightEnd", "bugTfm", "dropCurve", "dropDuration", "minSpace", "jumpDest", "dashDest", "bugSprite" }),
+                new DropFrmCanopy(new string[] { "leftEnd", "rightEnd", "bugTfm", "dropCurve", "dropDuration", "minSpace", "jumpDest", "dashDest", "bugSprite", "minDashDistRatio" }),
 
                 new StartAnim(new string[] { "bugAnim", BugAnim.State.Dash.ToString() }),
                 new RegisterAttack(new string[] { "dashDamage", "dashKb", "bugManager", "dashAttack" }),

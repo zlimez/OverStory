@@ -11,7 +11,7 @@ namespace BehaviorTree.Actions
     {
         Transform _transform, _leftEnd, _rightEnd;
         AnimationCurve _dropCurve;
-        float _duration, _minSpace;
+        float _duration, _minSpace, _minDashDistRatio;
         string _jumpDestVarName, _dashDestVarName;
         SpriteManager _bugSprite;
 
@@ -32,6 +32,7 @@ namespace BehaviorTree.Actions
             _jumpDestVarName = _params[6];
             _dashDestVarName = _params[7];
             _bugSprite = Tree.GetDatum<SpriteManager>(_params[8]);
+            _minDashDistRatio = Tree.GetDatum<float>(_params[9]);
         }
 
         public override void Update()
@@ -70,8 +71,10 @@ namespace BehaviorTree.Actions
         {
             float rd = (float)new System.Random().NextDouble();
             _dropPos = new Vector3(player.position.x + _minSpace + rd * (rspace - _minSpace), _rightEnd.position.y, _rightEnd.position.z);
-            Tree.SetDatum(_dashDestVarName, _leftEnd.position);
-            Tree.SetDatum(_jumpDestVarName, new Vector3(_leftEnd.position.x, _transform.position.y, _transform.position.z));
+            float leftEndX = _rightEnd.position.x - (_rightEnd.position.x - _leftEnd.position.x) * Random.Range(_minDashDistRatio, 1.0f);
+            Debug.Log($"LeftEndX: {leftEndX}");
+            Tree.SetDatum(_dashDestVarName, new Vector3(leftEndX, _leftEnd.position.y, _leftEnd.position.z));
+            Tree.SetDatum(_jumpDestVarName, new Vector3(leftEndX, _transform.position.y, _transform.position.z));
             _bugSprite.FaceDir(Vector2.left);
         }
 
@@ -79,8 +82,10 @@ namespace BehaviorTree.Actions
         {
             float rd = (float)new System.Random().NextDouble();
             _dropPos = new Vector3(player.position.x - _minSpace - rd * (lspace - _minSpace), _leftEnd.position.y, _leftEnd.position.z);
-            Tree.SetDatum(_dashDestVarName, _rightEnd.position);
-            Tree.SetDatum(_jumpDestVarName, new Vector3(_rightEnd.position.x, _transform.position.y, _transform.position.z));
+            float rightEndX = _leftEnd.position.x + (_rightEnd.position.x - _leftEnd.position.x) * Random.Range(_minDashDistRatio, 1.0f);
+            Debug.Log($"RightEndX: {rightEndX}");
+            Tree.SetDatum(_dashDestVarName, new Vector3(rightEndX, _rightEnd.position.y, _rightEnd.position.z));
+            Tree.SetDatum(_jumpDestVarName, new Vector3(rightEndX, _transform.position.y, _transform.position.z));
             _bugSprite.FaceDir(Vector2.right);
         }
     }

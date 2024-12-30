@@ -22100,6 +22100,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   dashSpeed: 15
   dashDamage: 30
+  minDashDistRatio: 0.7
   scanPitRaycastDist: 3
   jumpCurve:
     serializedVersion: 2
