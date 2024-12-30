@@ -19,7 +19,7 @@ MonoBehaviour:
   - m_Id: 5
     m_Sprites:
     - {fileID: 684867076, guid: 0fdf9e40d8a672b4da5223c94e609080, type: 3}
-    - {fileID: -1060891715, guid: 0fdf9e40d8a672b4da5223c94e609080, type: 3}
+    - {fileID: -1132744955, guid: 0fdf9e40d8a672b4da5223c94e609080, type: 3}
     - {fileID: 451311144, guid: 0fdf9e40d8a672b4da5223c94e609080, type: 3}
     - {fileID: -1556242115, guid: 0fdf9e40d8a672b4da5223c94e609080, type: 3}
     m_GameObject: {fileID: 0}

@@ -360112,12 +360112,12 @@ PrefabInstance:
     - target: {fileID: 2923312552569966562, guid: c4538f33e5ede4a3cac2da3b2f501081,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -53.1
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 2923312552569966562, guid: c4538f33e5ede4a3cac2da3b2f501081,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -122.6
+      value: -11.9
       objectReference: {fileID: 0}
     - target: {fileID: 2923312552569966562, guid: c4538f33e5ede4a3cac2da3b2f501081,
         type: 3}
@@ -541401,14 +541401,14 @@ MonoBehaviour:
   speech:
   - Head: ' My dear had the cavern taken you, leaving me without a cale to hold in
       the dark night.'
-    Tail: 1
+    Tail: 2
   - Head: Our child, whose trail will he follow now?
-    Tail: 1
+    Tail: 1.5
   - Head: "Mommy, who\u2019s that? Why does he not wear a cale?"
-    Tail: 1
+    Tail: 1.5
   - Head: Sheesh, question not. Do you wish us banished?
-    Tail: 1
-  intervalTime: 0
+    Tail: 1.5
+  intervalTime: 1
   speechManager: {fileID: 2842919826042471371}
   isLoop: 0
   eventCond:
@@ -541671,12 +541671,12 @@ PrefabInstance:
     - target: {fileID: 2296038729523555351, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -53.1
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 2296038729523555351, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -122.6
+      value: -11.9
       objectReference: {fileID: 0}
     - target: {fileID: 2296038729523555351, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
         type: 3}
