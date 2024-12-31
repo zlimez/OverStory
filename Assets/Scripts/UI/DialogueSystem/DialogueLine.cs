@@ -10,7 +10,7 @@ public class DialogueLine
     [SerializeField] bool isCentered;
     [SerializeField] AudioClip audio;
     [SerializeField, TextArea(3, 5)] string dialogue;
-    [SerializeField] GameEvent onLineStart = GameEvent.NoEvent;
+    public DynamicEvent onLineStart;
 
 
     public bool IsLeft => isLeft;
@@ -19,6 +19,4 @@ public class DialogueLine
     public bool IsCentered => isCentered;
     public AudioClip Audio => audio;
     public string Dialogue => dialogue;
-    public GameEvent OnLineStart => onLineStart;
-    public bool HasLineStartEvent => onLineStart != GameEvent.NoEvent;
 }

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] AudioSource uiSource, bgmSource;
+    [SerializeField] AudioSource sfxSource, bgmSource;
     [SerializeField] float transitionDuration = 1f, bgmVolume = 0.5f;
     [SerializeField] Pair<AbyssScene, AudioClip>[] sceneStartBgmClips;
 
@@ -28,10 +28,11 @@ public class AudioManager : Singleton<AudioManager>
 
     void OnDisable() => EventManager.StopListening(SystemEvents.SceneTransitStart, ChangeBgm);
 
-    public void PlayUIClip(AudioClip audioClip)
+    public void PlaySFXClip(AudioClip audioClip, bool loop = false)
     {
-        uiSource.clip = audioClip;
-        uiSource.Play();
+        sfxSource.clip = audioClip;
+        sfxSource.loop = loop;
+        sfxSource.Play();
     }
 
     public void ChangeBgm(object input = null)
@@ -50,10 +51,10 @@ public class AudioManager : Singleton<AudioManager>
         if (!found) StartCoroutine(Transition(bgmSource, transitionDuration, 0));
     }
 
-    public void StopUIClip()
+    public void StopSFXClip()
     {
-        uiSource.Stop();
-        uiSource.clip = null;
+        sfxSource.Stop();
+        sfxSource.clip = null;
     }
 
     public static IEnumerator Transition(AudioSource audioSource, float duration, float targetVolume)

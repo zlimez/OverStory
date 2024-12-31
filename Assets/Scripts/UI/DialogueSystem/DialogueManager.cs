@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using Tuples;
+using Abyss.EventSystem;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -153,6 +154,8 @@ public class DialogueManager : Singleton<DialogueManager>
         charInterval = defaultCharInterval / speedMod;
         isCentered = currLine.IsCentered;
 
+        if (currLine.onLineStart != null && currLine.onLineStart.EventName != GameEvent.NoEvent.EventName)
+            EventManager.InvokeEvent(new GameEvent(currLine.onLineStart.EventName));
         dialogLineCoroutine = StartCoroutine(DisplayLine(currLine.Dialogue));
 
         UpdateSpeakerUI(currLine);

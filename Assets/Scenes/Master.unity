@@ -780,6 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e071beec7bd6a40ac9b0fe2b5394575b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventToEmit: {fileID: 0}
 --- !u!1001 &523519035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1313,7 +1314,7 @@ GameObject:
   - component: {fileID: 754332333}
   - component: {fileID: 754332334}
   m_Layer: 0
-  m_Name: UI
+  m_Name: SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2534,7 +2535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945fe49bdb8464edfba635b6ce056ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiSource: {fileID: 754332334}
+  sfxSource: {fileID: 754332334}
   bgmSource: {fileID: 141166314}
   transitionDuration: 1
   bgmVolume: 0.5
