@@ -7,6 +7,25 @@ using UnityEngine.Assertions;
 
 namespace BehaviorTree.Actions
 {
+    public class ToggleVis : CfAction
+    {
+        SpriteManager _spriteManager;
+        bool _isAppear;
+        public ToggleVis(string[] parameters) : base(parameters) { }
+
+        public override void Setup(BT tree)
+        {
+            base.Setup(tree);
+            _spriteManager = Tree.GetDatum<SpriteManager>(_params[0]);
+            _isAppear = bool.Parse(_params[1]);
+        }
+
+        public override void Update()
+        {
+            if (_isAppear) _spriteManager.Appear(); else _spriteManager.Disappear();
+            State = State.SUCCESS;
+        }
+    }
     public class DropFrmCanopy : CfAction
     {
         Transform _transform, _leftEnd, _rightEnd;

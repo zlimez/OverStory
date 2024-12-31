@@ -55,8 +55,8 @@ public class ChoiceManager : Singleton<ChoiceManager>
 
     public void Close()
     {
-        Clear();
         GameManager.Instance.UI.Close();
+        Clear();
     }
 
     void Clear()

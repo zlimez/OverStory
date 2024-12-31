@@ -119,7 +119,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.14405906, y: 2.212027}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -130,7 +130,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8.11624, y: 14.970929}
+  m_Size: {x: 15.534954, y: 14.970929}
   m_EdgeRadius: 0
 --- !u!114 &5912251661293348732
 MonoBehaviour:
@@ -144,8 +144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df552d2e5de3b42ef93af977fa991c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conversation: {fileID: 11400000, guid: e66abd17db24c420c9ff31dfb9d0b00a, type: 2}
+  conversation: {fileID: 11400000, guid: 5360eec1c85304156bb9ee517fd85717, type: 2}
   condChecker:
+    invert: 0
     dynamicEventConditions:
     - Head: {fileID: 11400000, guid: 8b9e7dc050b6f4092b84bd709c45835f, type: 2}
       Tail: 0
@@ -156,6 +157,9 @@ MonoBehaviour:
   eventsToTriggerAndRecord:
   - Head: {fileID: 11400000, guid: 8b9e7dc050b6f4092b84bd709c45835f, type: 2}
     Tail: 1
+  itemsToGive: []
+  itemsToRemove: []
+  cooldownTime: 5
 --- !u!1 &5092913751445619204
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,8 +169,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7271317963001844559}
-  - component: {fileID: 2518221733221920107}
   - component: {fileID: 2404479819565460711}
+  - component: {fileID: 5971708794707066083}
   m_Layer: 0
   m_Name: Trade
   m_TagString: Untagged
@@ -183,31 +187,12 @@ Transform:
   m_GameObject: {fileID: 5092913751445619204}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.5255632, y: -0.066666596, z: -0.53670937}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.6666665, y: 1.6666665, z: 1.6666665}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3385279584225282995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2518221733221920107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5092913751445619204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f776bd90e3824406f90d32850a73b406, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  infoText: 
-  namePrefab: {fileID: 0}
-  nameText: 
-  tribe: 0
-  initialItems:
-  - Head: {fileID: 11400000, guid: 9c18df5d117e84bd39db82653506ca09, type: 2}
-    Tail: 5
 --- !u!61 &2404479819565460711
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -240,7 +225,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.5328526, y: -0.48920143}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -251,5 +236,22 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.5825205, y: 5.1782217}
+  m_Size: {x: 5.44452, y: 5.1782217}
   m_EdgeRadius: 0
+--- !u!114 &5971708794707066083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092913751445619204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6137d1f5db17848c99893ebdc418e1d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoText: E to trade
+  namePrefab: {fileID: 0}
+  nameText: 
+  condCheckers: []
+  interactRoot: {fileID: 11400000, guid: 53469a33232bd4dfa9d8df20a72ec210, type: 2}

@@ -31,6 +31,7 @@ public class BugBT : MonoBT
     {
         StartCoroutine(SetupRoutine());
         GetComponent<EnemyManager>().OnDefeated += StopBT;
+        GetComponent<SpriteManager>().Disappear();
     }
 
     protected override void OnDisable()
@@ -87,6 +88,7 @@ public class BugBT : MonoBT
         _bT = new BT(
             new Sequence(new List<Node> {
                 new CheckPlayerInArena(new string[] { "arena", "target" }),
+                new ToggleVis(new string[] { "bugSprite", "true" }),
 
                 new StartAnim(new string[] { "bugAnim", BugAnim.State.Drop.ToString() }),
                 new DropFrmCanopy(new string[] { "leftEnd", "rightEnd", "bugTfm", "dropCurve", "dropDuration", "minSpace", "jumpDest", "dashDest", "bugSprite", "minDashDistRatio" }),
@@ -108,6 +110,7 @@ public class BugBT : MonoBT
                 new StartAnim(new string[] { "bugAnim", BugAnim.State.Drop.ToString() }),
                 new GotoTargetByCurve(new string[] { "bugTfm", "jumpDest", "jumpCurve", "jumpDestType", "jumpBy", "jumpDuration" }),
 
+                new ToggleVis(new string[] { "bugSprite", "false" }),
                 new StartAnim(new string[] { "bugAnim", BugAnim.State.Idle.ToString() }),
                 new Wait(new string[] { "aftComboRT" }),
             })

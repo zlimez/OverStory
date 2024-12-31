@@ -31,8 +31,6 @@ public class TradingSystem : MonoBehaviour
     // private readonly bool bargainButtonState = false;
     // private readonly bool tradeButtonState = false;
     private bool BargainFailed = false;
-
-    PlayerAttr _playerAttr;
     Tribe _tribe;
 
     void Start() => tradingPanel.SetActive(false);
@@ -42,8 +40,13 @@ public class TradingSystem : MonoBehaviour
 
     public void CloseTrading()
     {
-        Stop();
+        ClearArea();
+        UpdateTradingArea();
+        IsTradingOpen = false;
+        tradingPanel.SetActive(false);
+        EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
         GameManager.Instance.UI.Close();
+        EventManager.InvokeEvent(PlayEvents.TradePostExited);
     }
 
     public void Stop()
@@ -53,16 +56,16 @@ public class TradingSystem : MonoBehaviour
         IsTradingOpen = false;
         tradingPanel.SetActive(false);
         EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
+        EventManager.InvokeEvent(PlayEvents.TradePostExited);
     }
 
     public void OpenTrading(object input)
     {
-        (Tribe tribe, PlayerAttr playerAttr, Collection itemCollection) = ((Tribe, PlayerAttr, Collection))input;
+        (Tribe tribe, Collection itemCollection) = ((Tribe, Collection))input;
         if (Tribe != tribe) return;
         if (!GameManager.Instance.UI.Open(UiController.Type.Trade, Stop)) return;
 
         npcBagUI.Init(itemCollection);
-        _playerAttr = playerAttr;
         _tribe = tribe;
         ClearArea();
         UpdateTradingArea();
@@ -267,7 +270,7 @@ public class TradingSystem : MonoBehaviour
         float bottomVal = bottomArea.TotalValue(_tribe);
         float proportion = bottomVal / topVal;
         // Discount% = purity% - 60%；
-        float purity = _playerAttr.Purity / 100f;
+        float purity = GameManager.Instance.PlayerPersistence.PlayerAttr.Purity / 100f;
         if (topArea.tag == AreaType.NPC)
         {
             if (proportion + purity - 0.6f < 1)
@@ -275,7 +278,7 @@ public class TradingSystem : MonoBehaviour
                 BargainFailed = true;
                 EventManager.InvokeEvent(PlayEvents.Message, "Your attempt at bargaining has failed.");
             }
-            else 
+            else
             {
                 SetTradeButton(true);
                 EventManager.InvokeEvent(PlayEvents.Message, "You have sucessfully negotiated for cheaper prices.");
@@ -284,7 +287,7 @@ public class TradingSystem : MonoBehaviour
         }
         else if (topArea.tag == AreaType.Player)
         {
-            if (proportion - purity + 0.6f > 1) 
+            if (proportion - purity + 0.6f > 1)
             {
                 BargainFailed = true;
                 EventManager.InvokeEvent(PlayEvents.Message, "Your attempt at bargaining has failed.");

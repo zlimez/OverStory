@@ -73,7 +73,6 @@ namespace Abyss.Interactables
                 if (lastPurityRestoreTime == -1 || TimeCycle.Instance.TotalTime - lastPurityRestoreTime >= purityRestoreCooldown)
                 {
                     EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, purityRestoration);
-                    _playerManager.UpdatePurity();
                     lastPurityRestoreTime = TimeCycle.Instance.TotalTime;
                 }
 

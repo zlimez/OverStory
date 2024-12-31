@@ -5,6 +5,7 @@ using Abyss.Utils;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using Tuples;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -26,14 +27,14 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField][Tooltip("Line can only be skipped once it started printing for this amt of time")] float skipCrit = 0.2f;
 
     protected int currInd = -1;
-    protected Queue<Conversation> queuedConvos = new();
+    protected Queue<Pair<Conversation, OnConvoDone>> queuedConvos = new();
     protected Conversation currConvo;
     protected bool isCurrLinePrinting, isCentered;
     protected float lineETime = 0f;
     protected Coroutine dialogLineCoroutine;
 
-    public delegate void OnDialogFinished();
-    private event OnDialogFinished OnEndDialogue;
+    public delegate void OnConvoDone();
+    OnConvoDone onConvoDone;
 
     protected override void Awake()
     {
@@ -47,31 +48,31 @@ public class DialogueManager : Singleton<DialogueManager>
         rightSpeakerImg.preserveAspect = true;
     }
 
-    public void SoftStartConvo(Conversation convo, bool forceOpen = false)
+    public void SoftStartConvo(Conversation convo, OnConvoDone callback = null, bool forceOpen = false)
     {
         if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog, forceOpen)) return;
-        queuedConvos.Enqueue(convo);
+        queuedConvos.Enqueue(new(convo, callback));
         if (queuedConvos.Count == 1)
-            StartConvo(convo);
+            StartConvo(convo, callback);
     }
 
-    public void HardStartConvo(Conversation convo, OnDialogFinished callback = null, bool forceOpen = false)
+    public void HardStartConvo(Conversation convo, OnConvoDone callback = null, bool forceOpen = false)
     {
         if (!GameManager.Instance.UI.Open(UiController.Type.Dialogue, KillDialog, forceOpen)) return;
         queuedConvos.Clear();
-        queuedConvos.Enqueue(convo);
+        queuedConvos.Enqueue(new(convo, callback));
         StartConvo(convo, callback);
     }
 
-    protected void StartConvo(Conversation convo, OnDialogFinished callback = null)
+    protected void StartConvo(Conversation convo, OnConvoDone callback)
     {
         PrepConvoUI(convo);
         BeginDialog();
 
-        if (callback != null) OnEndDialogue += callback;
+        onConvoDone = callback;
     }
 
-    public void StartAutoConvo(Conversation convo, OnDialogFinished callback = null)
+    public void StartAutoConvo(Conversation convo, OnConvoDone callback = null)
     {
         HardStartConvo(convo, callback);
         StartCoroutine(AutoRead());
@@ -242,16 +243,21 @@ public class DialogueManager : Singleton<DialogueManager>
             StopCoroutine(dialogLineCoroutine);
 
         if (queuedConvos.Count > 0)
-            StartConvo(queuedConvos.Peek());
-        else CloseDialogUI();
-        OnEndDialogue?.Invoke();
-        OnEndDialogue = null;
+        {
+            onConvoDone?.Invoke();
+            StartConvo(queuedConvos.Peek().Head, queuedConvos.Peek().Tail);
+        }
+        else
+        {
+            CloseDialogUI();
+            onConvoDone?.Invoke(); // Order changed as on convo end can have callbacks that opens another panel afterwards should be considered normal flow and not interrupt
+        }
     }
 
     protected void CloseDialogUI()
     {
-        dialogBox.SetActive(false);
         GameManager.Instance.UI.Close();
+        dialogBox.SetActive(false);
     }
 
     protected void KillDialog()

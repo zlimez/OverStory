@@ -136,16 +136,13 @@ namespace Abyss.Player
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
         }
 
-        public void UpdatePurity()
-        {
-            PlayerAttr.Purity = PlayerAttr.ActionPurity + PlayerAttr.FriendlinessPurity;
-            EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
-        }
+        void UpdatePurity() => EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
 
         public void UpdateActionPurity(object input)
         {
             float actionPurityChange = (float)input;
             PlayerAttr.ActionPurity = Mathf.Clamp(PlayerAttr.ActionPurity + actionPurityChange, 0, PlayerAttr.MaxActionPurity);
+            UpdatePurity();
         }
 
         public void UpdateFriendlinessPurity(object input)

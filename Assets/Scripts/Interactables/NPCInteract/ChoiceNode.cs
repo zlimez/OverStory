@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Abyss.EventSystem;
 using Tuples;
 using UnityEngine;
 
@@ -11,13 +12,13 @@ namespace NPC
         public Pair<string, ActionNode>[] Branches;
         public List<Choice> Choices = new();
 
-        public override void Execute()
+        public override void Execute(GameEvent interactEvent)
         {
             Choices.Clear();
             foreach (var branch in Branches)
             {
                 Choice choice = new(branch.Head);
-                choice.OnSelected += branch.Tail.Execute;
+                choice.OnSelected += () => branch.Tail.Execute(interactEvent);
                 Choices.Add(choice);
             }
 

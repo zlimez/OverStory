@@ -30,16 +30,18 @@ public class CraftingSystem : MonoBehaviour
 
     public void CloseCrafting()
     {
-        Stop();
+        IsCraftingOpen = false;
+        craftingPanel.SetActive(false);
         EventManager.StopListening(UIEvents.SelectItem, Select);
         GameManager.Instance.UI.Close();
+        _onClose?.Invoke();
     }
 
     void Stop()
     {
-        _chosenBlueprint = null;
         IsCraftingOpen = false;
         craftingPanel.SetActive(false);
+        EventManager.StopListening(UIEvents.SelectItem, Select);
         _onClose?.Invoke();
     }
 

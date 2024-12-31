@@ -62,5 +62,7 @@ namespace Abyss.EventSystem
         ChangeCameraBG = 45,
         TutorialDisplay = 46,
         TutorialClose = 47,
+        TradePostExited = 48,
+        LearningPostExited = 49,
     }
 }

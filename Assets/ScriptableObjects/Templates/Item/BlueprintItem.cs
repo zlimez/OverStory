@@ -13,6 +13,7 @@ public class BlueprintItem : Item
     public PlayerAttr prerequisiteAttr;
     // FIXME: This is temporary hack, all blueprint should be craftable, but such will cos as spell and construction art are considered blueprint now they will show wrongly in the crafting panel
     public bool isCraftable = true;
+    public Conversation onAcquireConvo;
 
     protected override void OnValidate()
     {

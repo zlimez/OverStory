@@ -1,3 +1,4 @@
+using Abyss.EventSystem;
 using UnityEngine;
 
 namespace NPC
@@ -7,11 +8,11 @@ namespace NPC
     {
         public Conversation convo;
 
-        public override void Execute()
+        public override void Execute(GameEvent interactEvent)
         {
             if (Next == null)
-                DialogueManager.Instance.HardStartConvo(convo, null, true);
-            else DialogueManager.Instance.HardStartConvo(convo, Next.Execute, true);
+                DialogueManager.Instance.SoftStartConvo(convo);
+            else DialogueManager.Instance.SoftStartConvo(convo, () => Next.Execute(interactEvent));
         }
     }
 }

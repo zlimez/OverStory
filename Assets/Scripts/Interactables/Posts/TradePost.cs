@@ -22,7 +22,7 @@ namespace Abyss.Interactables
 
         public override void Interact()
         {
-            EventManager.InvokeEvent(PlayEvents.TradePostEntered, (tribe, player.GetComponent<PlayerManager>().PlayerAttr, itemCollection));
+            EventManager.InvokeEvent(PlayEvents.TradePostEntered, (tribe, itemCollection));
             base.Interact();
         }
     }

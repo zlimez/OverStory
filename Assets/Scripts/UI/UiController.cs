@@ -18,6 +18,7 @@ public class UiController
     public bool Open(Type type, Action interruptHandler = null, bool forceOpen = false)
     {
         if (IsDisabled || (Compare(type) < 0 && !forceOpen)) return false;
+        if (IsOpen && _currType == type) return true;
         Debug.Log($"Opening {type} panel");
         if (IsOpen) _currInterruptHandler?.Invoke();
 
@@ -31,6 +32,7 @@ public class UiController
         return true;
     }
 
+    // NOTE: Should only be invoked by normal closing flow of the respective UI panels not interrupts
     public void Close()
     {
         _currType = Type.None;

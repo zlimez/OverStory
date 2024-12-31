@@ -17,7 +17,7 @@ namespace Abyss.Player
         public float Intelligence;
         public float Agility;
         public float Health;
-        public float Purity;
+        public float Purity => ActionPurity + FriendlinessPurity;
         public float ActionPurity;
         public float FriendlinessPurity;
 
@@ -41,7 +41,6 @@ namespace Abyss.Player
             Health = health;
             ActionPurity = actionPurity;
             FriendlinessPurity = friendlinessPurity;
-            Purity = actionPurity + friendlinessPurity;
         }
 
         public bool IsLessThanOrEqual(PlayerAttr other)

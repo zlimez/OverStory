@@ -41,7 +41,7 @@ MonoBehaviour:
     Intelligence: 5
     Agility: 0
     Health: 0
-    Purity: 0
     ActionPurity: 0
     FriendlinessPurity: 0
   isCraftable: 0
+  onAcquireConvo: {fileID: 11400000, guid: 31ae2351b87cc433c8684979fc4118d5, type: 2}

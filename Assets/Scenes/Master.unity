@@ -735,7 +735,6 @@ MonoBehaviour:
       Intelligence: 1
       Agility: 1
       Health: 100
-      Purity: 80
       ActionPurity: 60
       FriendlinessPurity: 20
     WeaponItem: {fileID: 0}
@@ -974,6 +973,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: LearingCanvas-Fara
       objectReference: {fileID: 0}
+    - target: {fileID: 7432681840067298845, guid: fdd048f2c1f304dbeaf3806bb0f9f4bc,
+        type: 3}
+      propertyPath: firstSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: e9a7065a51fb14045bf874aafbd9c909,
+        type: 2}
+    - target: {fileID: 7432681840067298845, guid: fdd048f2c1f304dbeaf3806bb0f9f4bc,
+        type: 3}
+      propertyPath: firstSpellConvo
+      value: 
+      objectReference: {fileID: 11400000, guid: 8496336e415ee4d50a748ad3ddcc414b,
+        type: 2}
+    - target: {fileID: 7432681840067298845, guid: fdd048f2c1f304dbeaf3806bb0f9f4bc,
+        type: 3}
+      propertyPath: firstConstruction
+      value: 
+      objectReference: {fileID: 11400000, guid: abe708a63e10248cb8522b37d208bcb8,
+        type: 2}
+    - target: {fileID: 7432681840067298845, guid: fdd048f2c1f304dbeaf3806bb0f9f4bc,
+        type: 3}
+      propertyPath: firstConstructionConvo
+      value: 
+      objectReference: {fileID: 11400000, guid: 828b70dcc30d14619a94e783c242520b,
+        type: 2}
     - target: {fileID: 7819297628911789125, guid: fdd048f2c1f304dbeaf3806bb0f9f4bc,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -3791,6 +3814,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: LearingCanvas-Hakem
       objectReference: {fileID: 0}
+    - target: {fileID: 7432681840067298845, guid: a8de87a4d75a743e7a6ec4bec00fc731,
+        type: 3}
+      propertyPath: firstSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: e9a7065a51fb14045bf874aafbd9c909,
+        type: 2}
+    - target: {fileID: 7432681840067298845, guid: a8de87a4d75a743e7a6ec4bec00fc731,
+        type: 3}
+      propertyPath: firstSpellConvo
+      value: 
+      objectReference: {fileID: 11400000, guid: 8496336e415ee4d50a748ad3ddcc414b,
+        type: 2}
+    - target: {fileID: 7432681840067298845, guid: a8de87a4d75a743e7a6ec4bec00fc731,
+        type: 3}
+      propertyPath: firstConstruction
+      value: 
+      objectReference: {fileID: 11400000, guid: abe708a63e10248cb8522b37d208bcb8,
+        type: 2}
+    - target: {fileID: 7432681840067298845, guid: a8de87a4d75a743e7a6ec4bec00fc731,
+        type: 3}
+      propertyPath: firstConstructionConvo
+      value: 
+      objectReference: {fileID: 11400000, guid: 828b70dcc30d14619a94e783c242520b,
+        type: 2}
     - target: {fileID: 7819297628911789125, guid: a8de87a4d75a743e7a6ec4bec00fc731,
         type: 3}
       propertyPath: m_AnchorMax.x

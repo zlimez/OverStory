@@ -20,9 +20,19 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: The flame is a fidgety thing, her lick seductive and ruthless. To control
-      her shape and power is no simple feat that even the eldest caster takes the
-      utmost caution. You should practice a little at the grounds above.
+    dialogue: 'The flame is a fidgety thing, her lick seductive and ruthless. To
+      control her shape and power is no simple feat that even the eldest caster takes
+      the utmost caution. '
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: You would need some practice. Start by clearing the vines blocking
+      passage further down to the right of the falls.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

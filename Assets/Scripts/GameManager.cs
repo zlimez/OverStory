@@ -10,7 +10,6 @@ using System.Collections.Generic;
 public class GameManager : Singleton<GameManager>
 {
     public UiController UI;
-    // public GameObject InteractableHint;
 
     public Inventory Inventory = new();
     public PlayerPersistence PlayerPersistence = new();

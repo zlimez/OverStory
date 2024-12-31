@@ -59,7 +59,9 @@ namespace Abyss.EventSystem
         public static readonly StaticEvent PlayerActionPurityChange;
         public static readonly StaticEvent PlayerFriendlinessPurityChange;
         public static readonly StaticEvent TradePostEntered;
+        public static readonly StaticEvent TradePostExited;
         public static readonly StaticEvent LearningPostEntered;
+        public static readonly StaticEvent LearningPostExited;
         public static readonly StaticEvent CraftingPostEntered;
         public static readonly StaticEvent WeaponEquipped;
         public static readonly StaticEvent WeaponUnequipped;
@@ -90,7 +92,9 @@ namespace Abyss.EventSystem
             InteractableEntered = StaticEvent.InteractableEntered;
             InteractableExited = StaticEvent.InteractableExited;
             TradePostEntered = StaticEvent.TradePostEntered;
+            TradePostExited = StaticEvent.TradePostExited;
             LearningPostEntered = StaticEvent.LearningPostEntered;
+            LearningPostExited = StaticEvent.LearningPostExited;
             CraftingPostEntered = StaticEvent.CraftingPostEntered;
             WeaponEquipped = StaticEvent.WeaponEquipped;
             WeaponUnequipped = StaticEvent.WeaponUnequipped;

@@ -61,10 +61,10 @@ namespace Abyss.Player
                 }
                 else if (hit.gameObject.TryGetComponent<Breakable>(out var breakable))
                     breakable.TakeHit(weaponItem.Damage + str);
-                else if (hit.gameObject.GetComponentInParent<MaterialDeposit>() is MaterialDeposit materialDeposit && !_depoHits.Contains(materialDeposit.DepoId))
+                else if (hit.gameObject.GetComponentInParent<MaterialDeposit>() is MaterialDeposit materialDeposit && !_depoHits.Contains(materialDeposit.TempDepoId))
                 {
                     materialDeposit.TakeHit();
-                    _depoHits.Add(materialDeposit.DepoId);
+                    _depoHits.Add(materialDeposit.TempDepoId);
                 }
             }
         }

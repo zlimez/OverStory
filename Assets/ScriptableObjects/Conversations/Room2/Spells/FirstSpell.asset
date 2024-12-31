@@ -20,11 +20,20 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: All spells require Dan, the essence of life. When a creature dies,
+    dialogue: 'All spells require Dan, the essence of life. When a creature dies,
       its Dan dissipates into the environment. Yet if you preserve the flesh, its
-      Dan remains concentrated. I have added a compartment in your sack, inscribed
-      with a rune that slows decay. Keep the flesh of your kills there. Whenever
-      you cast a spell, Dan shall be drawn from these tissues.
+      Dan remains concentrated. '
+    onLineStart:
+      RelatedStaticEvent: 0
+      _eventName: 
+  - isLeft: 0
+    speaker: {fileID: 0}
+    name: 
+    isCentered: 0
+    audio: {fileID: 0}
+    dialogue: I have added a compartment in your sack, inscribed with a rune that
+      slows decay. Keep the flesh of your kills there. Whenever you cast a spell,
+      Dan shall be drawn from these tissues.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

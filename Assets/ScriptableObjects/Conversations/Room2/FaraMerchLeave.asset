@@ -20,9 +20,7 @@ MonoBehaviour:
     name: 
     isCentered: 0
     audio: {fileID: 0}
-    dialogue: Gyahh., a new visitor, those nails will fetch a precious price. Have
-      a look, my goods fresh and preserved with care, imbued with the omens of the
-      depths.
+    dialogue: Please visit anytime. Your fresh presence is rejuvenating.
     onLineStart:
       RelatedStaticEvent: 0
       _eventName: 

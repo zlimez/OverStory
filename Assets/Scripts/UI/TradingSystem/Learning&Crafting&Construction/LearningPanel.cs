@@ -21,11 +21,15 @@ public class LearningSystem : MonoBehaviour
     [SerializeField] Image learnButtonImage;
 
     [SerializeField] Collection npcBag;
+    [SerializeField] DynamicEvent firstSpell, firstConstruction;
+    [SerializeField] Conversation firstSpellConvo, firstConstructionConvo;
+    bool _isFirstSpell = false, _isFirstConstruction = false;
 
     public bool IsLearningOpen { get; private set; } = false;
     public Tribe Tribe => tribe;
 
     BlueprintItem _chosenBlueprint;
+    readonly List<Conversation> _acquiredConvos = new();
 
     void Start() => learningPanel.SetActive(false);
 
@@ -34,16 +38,31 @@ public class LearningSystem : MonoBehaviour
 
     public void CloseLearning()
     {
-        Stop();
+        IsLearningOpen = false;
+        learningPanel.SetActive(false);
         EventManager.StopListening(UIEvents.SelectItem, Select);
         GameManager.Instance.UI.Close();
+        foreach (var convo in _acquiredConvos) DialogueManager.Instance.SoftStartConvo(convo);
+        if (_isFirstSpell)
+        {
+            EventLedger.Instance.Record(new GameEvent(firstSpell.EventName));
+            DialogueManager.Instance.SoftStartConvo(firstSpellConvo);
+        }
+
+        if (_isFirstConstruction)
+        {
+            EventLedger.Instance.Record(new GameEvent(firstConstruction.EventName));
+            DialogueManager.Instance.SoftStartConvo(firstConstructionConvo);
+        }
+
+        EventManager.InvokeEvent(PlayEvents.LearningPostExited);
     }
 
     void Stop()
     {
-        _chosenBlueprint = null;
         IsLearningOpen = false;
         learningPanel.SetActive(false);
+        EventManager.InvokeEvent(PlayEvents.LearningPostExited);
     }
 
     public void OpenLearning(object input)
@@ -54,6 +73,9 @@ public class LearningSystem : MonoBehaviour
 
         npcBag = itemCollection;
         _chosenBlueprint = null;
+        _isFirstSpell = false;
+        _isFirstConstruction = false;
+        _acquiredConvos.Clear();
         UpdateLearningPanel();
         IsLearningOpen = true;
         learningPanel.SetActive(true);
@@ -181,7 +203,6 @@ public class LearningSystem : MonoBehaviour
             }
         }
 
-        // Buttom
         SetLearnButton(canLearn);
     }
 
@@ -213,6 +234,11 @@ public class LearningSystem : MonoBehaviour
         foreach (var itemStock in materials) GameManager.Instance.Inventory.MaterialCollection.RemoveStock(itemStock.Head, itemStock.Tail);
         GameManager.Instance.Inventory.MaterialCollection.Add(objectItem);
         npcBag.Remove(_chosenBlueprint);
+
+        if (_chosenBlueprint.onAcquireConvo != null) _acquiredConvos.Add(_chosenBlueprint.onAcquireConvo);
+        if (_chosenBlueprint.objectItem.itemType == ItemType.Spells && !EventLedger.Instance.HasOccurred(new GameEvent(firstSpell.EventName))) _isFirstSpell = true;
+        if (_chosenBlueprint.objectItem.itemType == ItemType.Constructions && !EventLedger.Instance.HasOccurred(new GameEvent(firstConstruction.EventName))) _isFirstConstruction = true;
+
         if (_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
         UpdateLearningPanel();
     }
