@@ -7,12 +7,14 @@ namespace NPC
     [CreateAssetMenu(menuName = "NPCInteract/Item")]
     public class ItemNode : ActionNode
     {
+        public static readonly string ItemExchangedRec = "ItemExchangedRec";
         public Pair<Item, int>[] itemsAdded, itemsRemoved;
 
         public override void Execute(GameEvent interactEvent)
         {
-            if (EventLedger.Instance.GetEventCount(interactEvent) > 1)
-                return;
+            GameEvent fullEvent = new(interactEvent + "/" + ItemExchangedRec + "/" + name);
+            if (EventLedger.Instance.HasOccurred(fullEvent)) return;
+            EventLedger.Instance.Record(fullEvent);
             foreach (var item in itemsAdded)
                 GameManager.Instance.Inventory.MaterialCollection.Add(item.Head, item.Tail);
 

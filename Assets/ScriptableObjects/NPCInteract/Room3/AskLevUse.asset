@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fb95306952743789c2fd1bd5b2c344, type: 3}
-  m_Name: HakemEng
+  m_Script: {fileID: 11500000, guid: 5f7f0c39c88614107b4737a8ec5a5e5a, type: 3}
+  m_Name: AskLevUse
   m_EditorClassIdentifier: 
-  speakerName: Omega
-  sprite: {fileID: 21300000, guid: 0792c71592b9b439788a51e6d59a45a0, type: 3}
+  Next: {fileID: 11400000, guid: e847dd200c5f64afaae2b961fa95e8a7, type: 2}
+  convo: {fileID: 11400000, guid: c2027370d48ea4452b18c0c3fd697189, type: 2}

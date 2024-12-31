@@ -239,7 +239,7 @@ public class LearningSystem : MonoBehaviour
         if (_chosenBlueprint.objectItem.itemType == ItemType.Spells && !EventLedger.Instance.HasOccurred(new GameEvent(firstSpell.EventName))) _isFirstSpell = true;
         if (_chosenBlueprint.objectItem.itemType == ItemType.Constructions && !EventLedger.Instance.HasOccurred(new GameEvent(firstConstruction.EventName))) _isFirstConstruction = true;
 
-        if (_chosenBlueprint.objectItem.itemType == ItemType.Spells) _chosenBlueprint = null;
+        _chosenBlueprint = null;
         UpdateLearningPanel();
     }
 

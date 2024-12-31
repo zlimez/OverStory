@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fb95306952743789c2fd1bd5b2c344, type: 3}
-  m_Name: HakemEng
+  m_Script: {fileID: 11500000, guid: 17ba2fb55108848c8ae6e168435510c1, type: 3}
+  m_Name: GiveWheel
   m_EditorClassIdentifier: 
-  speakerName: Omega
-  sprite: {fileID: 21300000, guid: 0792c71592b9b439788a51e6d59a45a0, type: 3}
+  Next: {fileID: 0}
+  itemsAdded:
+  - Head: {fileID: 11400000, guid: 23eca386ee0b74afdbc51da28652728f, type: 2}
+    Tail: 1
+  itemsRemoved: []

@@ -60,6 +60,7 @@ public class EventCondChecker
     [SerializeField][Tooltip("Static core events that must have either occurred or not occurred (and)")] Pair<StaticEvent, bool>[] staticEventConditions;
     [SerializeField][Tooltip("Static core events that must have occured exactly n times (and)")] Pair<StaticEvent, int>[] staticEventCountConditions;
     [SerializeField][Tooltip("Dynamic events (none core) that must have occured exactly n times (and)")] Pair<DynamicEvent, int>[] dynamicEventCountConditions;
+    [SerializeField] Pair<Item, int>[] itemsReq;
 
     public bool IsMet()
     {
@@ -83,6 +84,10 @@ public class EventCondChecker
             int count = EventLedger.Instance.GetEventCount(eventCountCond.Head);
             if (count != eventCountCond.Tail) return invert;
         }
+
+        foreach (var item in itemsReq)
+            if (GameManager.Instance.Inventory.MaterialCollection.StockOf(item.Head) < item.Tail) return invert;
+
         return !invert;
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf9bad4f8b6f46f089422996d797b40, type: 3}
   m_Name: RottenFlesh
   m_EditorClassIdentifier: 
-  itemName: Pungent Flesh
+  itemName: Preserved Flesh
   description: "Consumed when casting spells.\n\n\u201CA putrescent mound of matter
     saturated with magical energy.\u201D"
   icon: {fileID: 21300000, guid: e8ec0199516a24517b7206d2d67dab05, type: 3}

@@ -104280,6 +104280,7 @@ MonoBehaviour:
     staticEventConditions: []
     staticEventCountConditions: []
     dynamicEventCountConditions: []
+    itemsReq: []
   noRepeat: 1
   eventsToTriggerAndRecord:
   - Head: {fileID: 11400000, guid: 51d38421cc5614d03913fe0e3a634647, type: 2}
@@ -105519,6 +105520,7 @@ MonoBehaviour:
     staticEventConditions: []
     staticEventCountConditions: []
     dynamicEventCountConditions: []
+    itemsReq: []
   noRepeat: 0
   eventsToTriggerAndRecord: []
   itemsToGive: []
@@ -117151,7 +117153,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -577903389
   m_SortingLayer: 1
-  m_SortingOrder: 65
+  m_SortingOrder: 120
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16

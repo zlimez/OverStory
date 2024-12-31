@@ -18,7 +18,10 @@ namespace NPC
             foreach (var branch in Branches)
             {
                 Choice choice = new(branch.Head);
-                choice.OnSelected += () => branch.Tail.Execute(interactEvent);
+                choice.OnSelected += () =>
+                {
+                    if (branch.Tail != null) branch.Tail.Execute(interactEvent);
+                };
                 Choices.Add(choice);
             }
 
