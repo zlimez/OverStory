@@ -11,6 +11,7 @@ public class MaterialDeposit : MonoBehaviour
 	[SerializeField] GameObject materialDropPrefab;
 	[SerializeField] Pair<GameObject, GameObject> beforeAfter;
 	[SerializeField] SpriteFlash spriteFlash;
+	[SerializeField] Transform dropBL, dropTR;
 	public int TempDepoId { get; private set; }
 	public static int DepoIdCnter = 0;
 
@@ -43,8 +44,8 @@ public class MaterialDeposit : MonoBehaviour
 		Vector3 newItemPos;
 		for (int i = 0; i < pop; i++)
 		{
-			newItemPos.x = transform.position.x + UnityEngine.Random.Range(-1.5f, 1.5f);
-			newItemPos.y = transform.position.y + UnityEngine.Random.Range(0.1f, 0.4f);
+			newItemPos.x = UnityEngine.Random.Range(dropBL.position.x, dropTR.position.x);
+			newItemPos.y = UnityEngine.Random.Range(dropBL.position.y, dropTR.position.y);
 			newItemPos.z = 0;
 			Instantiate(materialDropPrefab, newItemPos, Quaternion.identity);
 		}

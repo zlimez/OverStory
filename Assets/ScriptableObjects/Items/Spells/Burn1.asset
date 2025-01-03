@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Burn1
   m_EditorClassIdentifier: 
   itemName: Ember
-  description: 'Raise a pillar of flame in front of you that burns enemies, dealing
-    damage and causing them to take more damage temporarily.
+  description: 'Consumes 1 serving of preserved flesh per use.
 
-    Consumes 1 serving
-    of preserved flesh per use.'
+    Raises a pillar
+    of flame in front of you that burns all in its path.'
   icon: {fileID: 21300000, guid: 88242345c11ab44fbbe531ad6b1e7b63, type: 3}
   itemImage: {fileID: 0}
   itemPrefab: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,

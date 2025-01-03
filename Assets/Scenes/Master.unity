@@ -780,7 +780,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e071beec7bd6a40ac9b0fe2b5394575b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventToEmit: {fileID: 0}
 --- !u!1001 &523519035
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -27855,7 +27855,7 @@ MonoBehaviour:
   downGravityMult: 2
   upGravityMult: 0.7
   jumpCutoffMult: 1
-  _gravMult: 1
+  defGravityMult: 1
   maxFallVelocity: 40
   jumpBuffer: 0.1
   preLandJumpBuffer: 0.1
@@ -27863,9 +27863,10 @@ MonoBehaviour:
   IsJumping: 0
   dashSpeed: 30
   dashTime: 0.2
-  knockbackImpulse: 75
+  knockbackImpulse: 30
   fireColumn: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,
     type: 3}
+  postDmgInvulnTime: 0.5
   weaponMapping:
   - Head: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
     Tail: Axe_t1
@@ -27934,7 +27935,6 @@ MonoBehaviour:
     Intelligence: 0
     Agility: 0
     Health: 0
-    Purity: 0
     ActionPurity: 0
     FriendlinessPurity: 0
   purityLoseItemsThreshold: 40

@@ -343,6 +343,8 @@ MonoBehaviour:
     Head: {fileID: 824564139577245768}
     Tail: {fileID: 7292715407209076576}
   spriteFlash: {fileID: 0}
+  dropBL: {fileID: 1560497844211225387}
+  dropTR: {fileID: 190775254131539489}
 --- !u!114 &8564994689477299659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +361,37 @@ MonoBehaviour:
   flashColor: {r: 1, g: 1, b: 1, a: 0.5882353}
   flashDuration: 0.3
   reps: 1
+--- !u!1 &4889133455711424268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1560497844211225387}
+  m_Layer: 0
+  m_Name: DropBL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1560497844211225387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889133455711424268}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.67, y: -1.54, z: 0.09682505}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8567178067927199431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7159437638986020356
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +421,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1560497844211225387}
+  - {fileID: 190775254131539489}
   - {fileID: 1954659047292662827}
   - {fileID: 7584984367034225216}
   m_Father: {fileID: 0}
@@ -476,3 +511,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8226170197289753427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 190775254131539489}
+  m_Layer: 0
+  m_Name: DropTR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &190775254131539489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8226170197289753427}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.22, y: 1.32, z: 0.09682505}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8567178067927199431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

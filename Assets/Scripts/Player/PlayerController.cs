@@ -41,11 +41,11 @@ namespace Abyss.Player
 		[Header("Jump")]
 		[SerializeField] float jumpForce = 100f;
 		[SerializeField] float timeToApex, maxJumpHeight = 5;
-		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, _gravMult;
+		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravityMult = 1f;
 		[SerializeField] float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
-		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f;
+		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f, _gravMult = 1;
 		bool _willJmp = false, _pressingJmp = false;
 		public bool IsGrounded, IsJumping;
 
@@ -57,8 +57,10 @@ namespace Abyss.Player
 
 		// Attacking
 		[Header("Damage")]
-		[SerializeField][Tooltip("Knock back and dash impulse should be the same order of magnitude to prevent player from dashing further when damaged")] float knockbackImpulse = 1000f;
+		[SerializeField] float knockbackImpulse = 1000f;
 		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
+		[SerializeField] float postDmgInvulnTime = 0.5f;
+		float _invulnTimeLeft = 0f;
 
 		[Header("Weapon")]
 		[SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
@@ -68,7 +70,7 @@ namespace Abyss.Player
 		float _slashSize;
 
 		public bool IsAttacking { get; private set; } = false;
-		bool _isTakingDamage = false, _isDead = false, _isResting = false;
+		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false;
 		public Action OnAttackEnded, OnAttemptInteract;
 
 
@@ -112,6 +114,10 @@ namespace Abyss.Player
 			if (_preLandJmpBuffCd > 0)
 				_preLandJmpBuffCd = Mathf.Max(0, _preLandJmpBuffCd - Time.deltaTime);
 
+			if (_invulnTimeLeft > 0)
+				_invulnTimeLeft = Mathf.Max(0, _invulnTimeLeft - Time.deltaTime);
+			else _isInVuln = false;
+
 			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
 			if (!_isTakingDamage)
 			{
@@ -125,12 +131,16 @@ namespace Abyss.Player
 		void FixedUpdate()
 		{
 			SetBodyGrav();
-			if (!_isDashing)
+
+			if (!_isTakingDamage)
 			{
-				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-				if (!_isTakingDamage) rb2D.velocity = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+				if (!_isDashing)
+				{
+					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
+					rb2D.velocity = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+				}
+				else rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
 			}
-			else rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
 
 			if (_willJmp)
 			{
@@ -147,6 +157,8 @@ namespace Abyss.Player
 			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
 			{
 				IsGrounded = true;
+				// Imm sets grav mult to def to prevent the case whr setbodygrav runs before calcgrav, willJmp uses downGrav > defGrav to calc init jump vel
+				_gravMult = defGravityMult;
 				_dashAvail |= !_isDashing;
 				IsJumping = false;
 				if (_preLandJmpBuffCd > 0)
@@ -155,6 +167,11 @@ namespace Abyss.Player
 					_preLandJmpBuffCd = 0;
 				}
 			}
+		}
+
+		void OnTriggerStay2D(Collider2D coll2D)
+		{
+			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup) IsGrounded = true;
 		}
 
 		void OnTriggerExit2D(Collider2D coll2D)
@@ -363,15 +380,16 @@ namespace Abyss.Player
 			if (context.started) CastSpell(2);
 		}
 
-		public bool TakeHit(bool hasKnockback, Vector3 from, float kbImpulse)
+		public bool TakeHit(bool hasKnockback, Vector2 from, float kbImpulse)
 		{
-			if (_isTakingDamage || _isDead) return true;
+			if (_isTakingDamage || _isDead || _isInVuln) return true;
 			_playerSfx.PlayHurt();
 			IsAttacking = false;
-			InterruptDash();
 			_pressingJmp = false;
 			_isTakingDamage = true;
-			if (hasKnockback) rb2D.AddForce(new Vector3(transform.position.x - from.x, 0, 0).normalized * (knockbackImpulse + kbImpulse), ForceMode2D.Impulse);
+			// Debug.Log("Impulse " + (new Vector2(transform.position.x - from.x, 0).normalized * (knockbackImpulse + kbImpulse) - rb2D.velocity * rb2D.mass));
+			if (hasKnockback) rb2D.AddForce(new Vector2(transform.position.x - from.x, 0).normalized * (knockbackImpulse + kbImpulse) - rb2D.velocity * rb2D.mass, ForceMode2D.Impulse);
+			else rb2D.velocity = new Vector2(0, rb2D.velocity.y);
 			TransitionToState(Enum.Parse<State>($"Damage_{Weapon}"));
 			return false;
 		}
@@ -388,7 +406,12 @@ namespace Abyss.Player
 		#endregion
 
 		#region Animation Event Handlers
-		void DamageEnd() => _isTakingDamage = false;
+		void DamageEnd()
+		{
+			_isTakingDamage = false;
+			_isInVuln = true;
+			_invulnTimeLeft = postDmgInvulnTime;
+		}
 
 		void AttackEnd()
 		{
@@ -420,6 +443,7 @@ namespace Abyss.Player
 
 		void InterruptDash()
 		{
+			Debug.Log("Dash interrupted");
 			_isDashing = false;
 			_dashTimeLeft = 0f;
 			_dashAvail = IsGrounded;
@@ -440,7 +464,7 @@ namespace Abyss.Player
 		{
 			if (IsGrounded)
 			{
-				_gravMult = 1;
+				_gravMult = defGravityMult;
 				return;
 			}
 

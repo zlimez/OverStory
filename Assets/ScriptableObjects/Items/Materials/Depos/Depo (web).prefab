@@ -95,6 +95,37 @@ MonoBehaviour:
   nameText: 
   journal: {fileID: 11400000, guid: 3360e3f98aca0411b9ed800c18af9095, type: 2}
   IntellLevelUp: 0
+--- !u!1 &5618044619520304095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5472298958795066246}
+  m_Layer: 0
+  m_Name: DropBL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5472298958795066246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5618044619520304095}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.65, y: -0.1, z: 0.09560445}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 518523342409799313}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5885689902837669850
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +210,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6913647359089542935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4083763438619052244}
+  m_Layer: 0
+  m_Name: DropTR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4083763438619052244
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6913647359089542935}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.3, y: 0.59, z: 0.09560445}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 518523342409799313}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7561813472605102078
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +295,8 @@ MonoBehaviour:
     Head: {fileID: 7592009821365308945}
     Tail: {fileID: 5885689902837669850}
   spriteFlash: {fileID: 0}
+  dropBL: {fileID: 5472298958795066246}
+  dropTR: {fileID: 4083763438619052244}
 --- !u!114 &1950440699700141380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,5 +494,7 @@ Transform:
   m_Children:
   - {fileID: 8770126953756290096}
   - {fileID: 580092450359046521}
+  - {fileID: 5472298958795066246}
+  - {fileID: 4083763438619052244}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

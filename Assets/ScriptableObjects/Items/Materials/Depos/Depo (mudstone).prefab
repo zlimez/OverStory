@@ -54,6 +54,8 @@ MonoBehaviour:
     Head: {fileID: 7713778456729388012}
     Tail: {fileID: 4919856519487222926}
   spriteFlash: {fileID: 0}
+  dropBL: {fileID: 8862211215215432684}
+  dropTR: {fileID: 5994118276903989802}
 --- !u!114 &7187424003377700047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +101,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8862211215215432684}
+  - {fileID: 5994118276903989802}
   - {fileID: 4485320503063257232}
   - {fileID: 3161623271809676083}
   m_Father: {fileID: 0}
@@ -282,6 +286,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5300918478503373044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5994118276903989802}
+  m_Layer: 0
+  m_Name: DropTR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5994118276903989802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5300918478503373044}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.46, y: 0.82, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9112977292076736240}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7713778456729388012
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,3 +465,34 @@ PolygonCollider2D:
       - {x: 1.4765625, y: -0.71875}
       - {x: 1.2578125, y: -0.296875}
   m_UseDelaunayMesh: 0
+--- !u!1 &7928898505178698927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8862211215215432684}
+  m_Layer: 0
+  m_Name: DropBL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8862211215215432684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7928898505178698927}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.82, y: 0.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9112977292076736240}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
