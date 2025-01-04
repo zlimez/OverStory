@@ -44918,6 +44918,16 @@ PrefabInstance:
       objectReference: {fileID: 1083487840}
     - target: {fileID: 6421215665509773657, guid: c4538f33e5ede4a3cac2da3b2f501081,
         type: 3}
+      propertyPath: sceneCrossSpawnPoints.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421215665509773657, guid: c4538f33e5ede4a3cac2da3b2f501081,
+        type: 3}
+      propertyPath: sceneCrossSpawnPoints.Array.data[0].Head
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421215665509773657, guid: c4538f33e5ede4a3cac2da3b2f501081,
+        type: 3}
       propertyPath: sceneCrossSpawnPoints.Array.data[0].Tail
       value: 
       objectReference: {fileID: 1808712937}
