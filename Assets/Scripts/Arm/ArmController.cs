@@ -35,9 +35,11 @@ public class ArmController : MonoBehaviour
             GameObject newSeg = Instantiate(armSegmentPrefab, pos, Quaternion.identity, this.transform);
             segments.Add(newSeg);
 
+            // SpringJoint2D joint = newSeg.GetComponent<SpringJoint2D>();
             DistanceJoint2D joint = newSeg.GetComponent<DistanceJoint2D>();
             joint.connectedBody = previousRB;
             joint.distance = segmentLength;
+            // joint.enableCollision = false; 
 
             previousRB = newSeg.GetComponent<Rigidbody2D>();
         }
@@ -60,9 +62,11 @@ public class ArmController : MonoBehaviour
         Vector2 pos = last.transform.position - new Vector3(0, segmentLength, 0);
         GameObject newSeg = Instantiate(armSegmentPrefab, pos, Quaternion.identity);
 
-        DistanceJoint2D joint = newSeg.GetComponent<DistanceJoint2D>();
+        SpringJoint2D joint = newSeg.GetComponent<SpringJoint2D>();
+        // DistanceJoint2D joint = newSeg.GetComponent<DistanceJoint2D>();
         joint.connectedBody = lastRB;
         joint.distance = segmentLength;
+        joint.enableCollision = true; 
 
         segments.Add(newSeg);
     }
