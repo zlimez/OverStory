@@ -129,8 +129,6 @@ public class ArmController : MonoBehaviour
             _willAppImp = false;
             _fistRb.AddForce(aim * softExtImpulse, ForceMode2D.Impulse);
         }
-
-        if (playerController.PressingRet) OnSoRet();
     }
 
     #region Transition Actions
