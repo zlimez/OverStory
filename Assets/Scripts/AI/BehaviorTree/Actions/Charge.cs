@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using BehaviorTree;
+using AI.BehaviorTree;
 using Abyss.Environment.Enemy.Anim;
 using Abyss.Player;
 using Abyss.Environment.Enemy;
-using Abyss;
 using Abyss.EventSystem;
 
 public class Charge : CfAction
 {
-    static readonly int _obstacleLayerMask = 1 << (int)AbyssSettings.Layers.Ground | 1 << (int)AbyssSettings.Layers.Obstacle | 1 << (int)AbyssSettings.Layers.Buildup;
     float _stunTime, _restTime;
     float _chargeDist, _chargeDmg, _chargeSpeed; // Avg speed of charge
     float _chargeupTime, _stunRaycastDist;
@@ -80,10 +78,10 @@ public class Charge : CfAction
             }
 
             // Consider collision into wall
-            var castHit = Physics2D.Raycast(_transform.position, _spriteManager.forward, _stunRaycastDist, _obstacleLayerMask);
+            var castHit = Physics2D.Raycast(_transform.position, _spriteManager.forward, _stunRaycastDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK);
             if (castHit.collider != null)
             {
-                if (castHit.collider.CompareTag("Wall (Construct)"))
+                if (castHit.collider.CompareTag(Abyss.Settings.Tag.WallConstruct))
                     castHit.collider.GetComponent<Construct>().TakeDmg();
 
                 _vfx(castHit.point);

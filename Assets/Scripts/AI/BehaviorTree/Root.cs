@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public class Root : Node
     {

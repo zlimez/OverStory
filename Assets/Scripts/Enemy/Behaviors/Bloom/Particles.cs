@@ -1,6 +1,7 @@
 using Abyss.Environment.Enemy;
 using Abyss.Player;
 using UnityEngine;
+using Abyss.Settings;
 
 namespace Abyss.Environment
 {
@@ -23,7 +24,7 @@ namespace Abyss.Environment
         void OnParticleCollision(GameObject other)
         {
             // NOTE: A bit of an antipattern against usual impl -> manager calls strike and listeners from combos determine the actual attack
-            if (other.CompareTag("Player"))
+            if (other.CompareTag(Tag.Player))
                 other.GetComponent<PlayerManager>().TakeHit(damage + enemyManager.attributes.strength);
         }
 

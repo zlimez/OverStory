@@ -1,6 +1,7 @@
 using System.Collections;
 using Abyss.EventSystem;
 using Abyss.Interactables;
+using Palmmedia.ReportGenerator.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class BGChanger : MonoBehaviour
 {
     [SerializeField] public RawImage frontBG;
     [SerializeField] public RawImage backBG;
-    [SerializeField] private float fadeDuration = 1.0f; 
+    [SerializeField] private float fadeDuration = 1.0f;
 
     private Coroutine fadeCoroutine;
 
@@ -17,7 +18,7 @@ public class BGChanger : MonoBehaviour
         UpdateBackgroundImage(null);
         EventManager.StartListening(SystemEvents.ChangeCameraBG, UpdateBackgroundImage);
     }
-    
+
     void OnDisable() => EventManager.StopListening(SystemEvents.ChangeCameraBG, UpdateBackgroundImage);
 
     private void UpdateBackgroundImage(object input)
@@ -33,7 +34,7 @@ public class BGChanger : MonoBehaviour
                 return;
             }
 
-            GameObject[] bgTriggers = GameObject.FindGameObjectsWithTag("CameraBGTrigger");
+            GameObject[] bgTriggers = GameObject.FindGameObjectsWithTag(Abyss.Settings.Tag.CameraBGTrigger);
 
             foreach (var trigger in bgTriggers)
             {
@@ -77,7 +78,7 @@ public class BGChanger : MonoBehaviour
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            color.a = Mathf.Clamp01(elapsedTime / fadeDuration); 
+            color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
             frontBG.color = color;
             yield return null;
         }

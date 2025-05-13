@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using Abyss.Environment.Enemy.Anim;
-using BehaviorTree;
 using UnityEngine;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class Aoe : CfAction
     {

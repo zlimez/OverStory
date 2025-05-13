@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Abyss.Settings;
 
 namespace Abyss.Interactables
 {
@@ -18,7 +19,7 @@ namespace Abyss.Interactables
 
         protected override void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.CompareTag("Player"))
+            if (collider.CompareTag(Tag.Player))
             {
                 bg.SetActive(true);
                 StartCoroutine(FadeInText());

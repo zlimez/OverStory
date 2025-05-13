@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     /// <summary>
     /// Requires blackboards to be set up with the variables to be observed. Does not "restart" if previous child is the first child, such that no node ticks more that once in running state per turn.

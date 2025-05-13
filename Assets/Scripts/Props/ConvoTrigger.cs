@@ -2,6 +2,7 @@ using System;
 using Abyss.EventSystem;
 using Tuples;
 using UnityEngine;
+using Abyss.Settings;
 
 public class ConvoTrigger : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class ConvoTrigger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && CheckConditionsMet())
+        if (other.CompareTag(Tag.Player) && CheckConditionsMet())
         {
             player = other.gameObject;
             Execute();

@@ -1,5 +1,6 @@
 using Abyss.Player;
 using UnityEngine;
+using Abyss.Settings;
 
 public class EnvHazard : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class EnvHazard : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag(Tag.Player))
         {
             // var knockbackImpulse = (collision.contacts[0].normal.y > 0 ? fromTopKnockbackImpulse : fromBottomKnockbackImpulse) * Mathf.Abs(collision.contacts[0].normal.y) + horizontalKnockbackImpulse * Mathf.Abs(collision.contacts[0].normal.x);
             // collision.gameObject.GetComponent<PlayerManager>().TakeHit(damage, true, collision.contacts[0].point, knockbackImpulse);

@@ -1,18 +1,17 @@
 using System;
-using System.Collections;
 using Abyss.EventSystem;
 using Abyss.Player.Spells;
-using Abyss.SceneSystem;
 using AnyPortrait;
 using Tuples;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.VFX;
 
 // FIXME: When damaged seems to charge further
 namespace Abyss.Player
 {
-	public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
+	public class PlayerController : MonoBehaviour, ActionInputs.IPlayerActions
 	{
 		#region Fields
 
@@ -23,6 +22,9 @@ namespace Abyss.Player
 		}
 
 		public Transform Foot;
+		public ArmController armController;
+		[SerializeField] float groundCheckDist = 1f;
+		[SerializeField] Vector2 groundCheckSize = new(1f, 1f);
 
 		// Animation support
 		[Header("Animation")]
@@ -46,13 +48,13 @@ namespace Abyss.Player
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
 		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f, _gravMult = 1;
-		bool _willJmp = false, _pressingJmp = false;
-		public bool IsGrounded, IsJumping;
+		bool _willJmp = false, _pressingJmp = false, _pressingRet = false;
+		public bool IsJumping, IsDashing = false;
 
 		[Header("Dash")]
 		[SerializeField] float dashSpeed = 25f;
 		[SerializeField] float dashTime = 0.3f;
-		bool _dashAvail = true, _isDashing = false, _isDashLeft;
+		bool _dashAvail = true, _isDashLeft;
 		float _dashTimeLeft;
 
 		// Attacking
@@ -73,7 +75,6 @@ namespace Abyss.Player
 		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false;
 		public Action OnAttackEnded, OnAttemptInteract;
 
-
 		Rigidbody2D rb2D;
 		State currState;
 		[NonSerialized] public string Weapon = "Nil";
@@ -81,9 +82,7 @@ namespace Abyss.Player
 		PlayerSfx _playerSfx;
 		#endregion
 
-
 		#region Lifecyle Methods
-
 		void Awake()
 		{
 			rb2D = GetComponent<Rigidbody2D>();
@@ -93,39 +92,29 @@ namespace Abyss.Player
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
 		}
 
+
 		void Update()
 		{
+			if (_pressingRet) armController.ProcessEvent(ArmController.Trigger.Ret);
 			if (IsFrozen) _moveDir = 0;
-
-			if (_isDashing)
+			if (IsDashing)
 			{
-
-				if (_dashTimeLeft > 0f)
-					_dashTimeLeft -= Time.deltaTime;
+				if (_dashTimeLeft > 0f) _dashTimeLeft -= Time.deltaTime;
 				else
 				{
-					_isDashing = false;
-					_dashAvail = IsGrounded;
+					IsDashing = false;
+					_dashAvail = IsGrounded();
 				}
 			}
 
-			if (_jmpBuffCd > 0)
-				_jmpBuffCd = Mathf.Max(0, _jmpBuffCd - Time.deltaTime);
-			if (_preLandJmpBuffCd > 0)
-				_preLandJmpBuffCd = Mathf.Max(0, _preLandJmpBuffCd - Time.deltaTime);
+			if (_jmpBuffCd > 0) _jmpBuffCd = Mathf.Max(0, _jmpBuffCd - Time.deltaTime);
+			if (_preLandJmpBuffCd > 0) _preLandJmpBuffCd = Mathf.Max(0, _preLandJmpBuffCd - Time.deltaTime);
 
-			if (_invulnTimeLeft > 0)
-				_invulnTimeLeft = Mathf.Max(0, _invulnTimeLeft - Time.deltaTime);
+			if (_invulnTimeLeft > 0) _invulnTimeLeft = Mathf.Max(0, _invulnTimeLeft - Time.deltaTime);
 			else _isInVuln = false;
 
 			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
-			if (!_isTakingDamage)
-			{
-				if (_moveDir > 0 && IsFacingLeft)
-					FlipSprite();
-				else if (_moveDir < 0 && !IsFacingLeft)
-					FlipSprite();
-			}
+			if (!_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
 		}
 
 		void FixedUpdate()
@@ -134,7 +123,7 @@ namespace Abyss.Player
 
 			if (!_isTakingDamage)
 			{
-				if (!_isDashing)
+				if (!IsDashing)
 				{
 					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
 					rb2D.velocity = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
@@ -154,12 +143,11 @@ namespace Abyss.Player
 		void OnTriggerEnter2D(Collider2D coll2D)
 		{
 			// Check if player is on the ground
-			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
+			if (coll2D.gameObject.layer == (int)Settings.Layer.Ground || coll2D.gameObject.layer == (int)Settings.Layer.Buildup)
 			{
-				IsGrounded = true;
 				// Imm sets grav mult to def to prevent the case whr setbodygrav runs before calcgrav, willJmp uses downGrav > defGrav to calc init jump vel
 				_gravMult = defGravityMult;
-				_dashAvail |= !_isDashing;
+				_dashAvail |= !IsDashing;
 				IsJumping = false;
 				if (_preLandJmpBuffCd > 0)
 				{
@@ -169,20 +157,10 @@ namespace Abyss.Player
 			}
 		}
 
-		void OnTriggerStay2D(Collider2D coll2D)
-		{
-			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup) IsGrounded = true;
-		}
-
 		void OnTriggerExit2D(Collider2D coll2D)
 		{
-			// Check if player is leaving the ground
-			if (coll2D.gameObject.layer == (int)AbyssSettings.Layers.Ground || coll2D.gameObject.layer == (int)AbyssSettings.Layers.Buildup)
-			{
-				IsGrounded = false;
-				if (!IsJumping)
-					_jmpBuffCd = jumpBuffer;
-			}
+			if (coll2D.gameObject.layer == (int)Settings.Layer.Ground || coll2D.gameObject.layer == (int)Settings.Layer.Buildup)
+				if (!IsJumping) _jmpBuffCd = jumpBuffer;
 		}
 
 		void OnEnable()
@@ -190,6 +168,7 @@ namespace Abyss.Player
 			EventManager.StartListening(PlayEvents.WeaponEquipped, EquipWeapon);
 			EventManager.StartListening(PlayEvents.WeaponUnequipped, UnequipWeapon);
 		}
+
 		void OnDisable()
 		{
 			EventManager.StopListening(PlayEvents.WeaponEquipped, EquipWeapon);
@@ -230,13 +209,12 @@ namespace Abyss.Player
 			TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
 		}
 
-
 		// Animation stuff
 		void HandleState()
 		{
 			if (IsAttackState)
 			{
-				if (!IsGrounded)
+				if (!IsGrounded())
 					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 				else if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -246,7 +224,7 @@ namespace Abyss.Player
 			}
 			else if (IsDamageState)
 			{
-				if (!IsGrounded)
+				if (!IsGrounded())
 					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 				else if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -273,7 +251,7 @@ namespace Abyss.Player
 			}
 			else if (IsDashState)
 			{
-				if (!_isDashing)
+				if (!IsDashing)
 				{
 					if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -284,7 +262,7 @@ namespace Abyss.Player
 			}
 			else if (IsJumpState)
 			{
-				if (IsGrounded && Mathf.Abs(rb2D.velocity.y) < .1f)
+				if (IsGrounded() && Mathf.Abs(rb2D.velocity.y) < .1f)
 				{
 					if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -296,16 +274,14 @@ namespace Abyss.Player
 		}
 		#endregion
 
-
 		#region Event Handlers
-
 		public void OnJump(InputAction.CallbackContext context)
 		{
 			if (!CanJumpReact) return;
 
-			if (context.started)
+			if (context.performed)
 			{
-				if (IsGrounded || _jmpBuffCd > 0) _willJmp = true;
+				if (IsGrounded() || _jmpBuffCd > 0) _willJmp = true;
 				else _preLandJmpBuffCd = preLandJumpBuffer;
 			}
 			else if (context.canceled) _pressingJmp = false;
@@ -315,7 +291,7 @@ namespace Abyss.Player
 		{
 			if (IsFrozen) return;
 
-			if (context.started) _shouldRun = true;
+			if (context.performed) _shouldRun = true;
 			else if (context.canceled) _shouldRun = false;
 		}
 
@@ -327,12 +303,10 @@ namespace Abyss.Player
 
 		public void OnDash(InputAction.CallbackContext context)
 		{
-			if (!CanDash) return;
-
-			if (context.started)
+			if (CanDash && context.performed)
 			{
 				_playerSfx.PlayDash();
-				_isDashing = true;
+				IsDashing = true;
 				_isDashLeft = IsFacingLeft;
 				_dashTimeLeft = dashTime;
 				_dashAvail = false;
@@ -340,44 +314,73 @@ namespace Abyss.Player
 			}
 		}
 
-		public void OnAttack(InputAction.CallbackContext context)
+		public void OnAttackAim(InputAction.CallbackContext context)
 		{
-			if (!CanAttack) return;
-
-			if (context.started)
+			if (context.performed)
 			{
-				IsAttacking = true;
-				currState = Enum.Parse<State>($"Attack_{Weapon}");
-				portrait.Play($"Attack_{Weapon}"); // CrossFade is glitchy here
-				weaponSlash.SetInt(xDirParam, IsFacingLeft ? -1 : 1);
-				weaponSlash.SetFloat(sizeParam, _slashSize);
-				weaponSlash.SendEvent(attackEvent);
+				if (context.interaction is PressInteraction && CanAttack)
+				{
+					IsAttacking = true;
+					currState = Enum.Parse<State>($"Attack_{Weapon}");
+					portrait.Play($"Attack_{Weapon}"); // NOTE: CrossFade is glitchy here
+					weaponSlash.SetInt(xDirParam, IsFacingLeft ? -1 : 1);
+					weaponSlash.SetFloat(sizeParam, _slashSize);
+					weaponSlash.SendEvent(attackEvent);
+				}
+				else if (context.interaction is HoldInteraction)
+				{
+					armController.SetAim();
+					armController.ProcessEvent(ArmController.Trigger.Aim);
+				}
 			}
 		}
 
-		public void OnInteract(InputAction.CallbackContext context)
+		public void OnExtRel(InputAction.CallbackContext context)
 		{
-			if (!CanInteract) return;
-			if (context.started)
-				OnAttemptInteract?.Invoke();
+			if (context.performed)
+			{
+				if (context.interaction is TapInteraction)
+					armController.ProcessEvent(ArmController.Trigger.ExtRel);
+				else if (context.interaction is MultiTapInteraction)
+					armController.ProcessEvent(ArmController.Trigger.Disc);
+			}
+		}
+
+		public void OnHardSoft(InputAction.CallbackContext context)
+		{
+			if (context.performed) armController.ProcessEvent(ArmController.Trigger.HardSoft);
+		}
+
+		public void OnInteractRet(InputAction.CallbackContext context)
+		{
+			if (context.performed)
+			{
+				if (CanInteract && context.interaction is TapInteraction) OnAttemptInteract?.Invoke();
+				else if (context.interaction is PressInteraction) _pressingRet = true;
+			}
+			else if (context.canceled)
+			{
+				_pressingRet = false;
+				armController.ProcessEvent(ArmController.Trigger.Ret);
+			}
 		}
 
 		public void OnSpell1(InputAction.CallbackContext context)
 		{
 			if (!CanCastSpell) return;
-			if (context.started) CastSpell(0);
+			if (context.performed) CastSpell(0);
 		}
 
 		public void OnSpell2(InputAction.CallbackContext context)
 		{
 			if (!CanCastSpell) return;
-			if (context.started) CastSpell(1);
+			if (context.performed) CastSpell(1);
 		}
 
 		public void OnSpell3(InputAction.CallbackContext context)
 		{
 			if (!CanCastSpell) return;
-			if (context.started) CastSpell(2);
+			if (context.performed) CastSpell(2);
 		}
 
 		public bool TakeHit(bool hasKnockback, Vector2 from, float kbImpulse)
@@ -424,12 +427,11 @@ namespace Abyss.Player
 
 		#region Helper Methods
 		bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
-
-		bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail;
-		bool CanAttack => !IsFrozen && !IsAttacking && !_isDashing && !_isTakingDamage && !_isDead;
-		bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !_isDashing;
-		bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !_isDashing;
-		bool CanJumpReact => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !_isDashing;
+		bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail && !armController.ArmActive;
+		bool CanAttack => !IsFrozen && !IsAttacking && !IsDashing && !_isTakingDamage && !_isDead && !armController.ArmActive;
+		bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !IsDashing && !armController.ArmActive;
+		bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing;
+		bool CanJumpReact => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing;
 
 		bool IsIdleState => currState.ToString().StartsWith("Idle");
 		bool IsWalkState => currState.ToString().StartsWith("Walk");
@@ -444,9 +446,9 @@ namespace Abyss.Player
 		void InterruptDash()
 		{
 			Debug.Log("Dash interrupted");
-			_isDashing = false;
+			IsDashing = false;
 			_dashTimeLeft = 0f;
-			_dashAvail = IsGrounded;
+			_dashAvail = IsGrounded();
 		}
 
 		void Jump()
@@ -462,7 +464,7 @@ namespace Abyss.Player
 
 		void CalcGravity()
 		{
-			if (IsGrounded)
+			if (IsGrounded())
 			{
 				_gravMult = defGravityMult;
 				return;
@@ -505,9 +507,7 @@ namespace Abyss.Player
 			}
 			catch (Exception)
 			{
-				Debug.LogWarning(
-					$"Error playing animation {animToPlay}. The portrait is likely not initialized"
-				);
+				Debug.LogWarning($"Error playing animation {animToPlay}. The portrait is likely not initialized");
 			}
 		}
 
@@ -519,6 +519,32 @@ namespace Abyss.Player
 			var spellObj = Instantiate(spellItems[ind].itemPrefab, transform.position, Quaternion.identity);
 			spellObj.GetComponent<Spell>().Cast(IsFacingLeft);
 		}
+
+		bool IsGrounded()
+		{
+			// BoxCast version (more reliable for platforms)
+			RaycastHit2D boxHit = Physics2D.BoxCast(
+				transform.position,
+				groundCheckSize,
+				0f,
+				Vector2.down,
+				groundCheckDist,
+				Settings.LayerMask.GROUND_LMASK
+			);
+
+			return boxHit.collider != null;
+		}
+
+#if UNITY_EDITOR
+		void OnDrawGizmos()
+		{
+			Gizmos.color = Color.red;
+			Gizmos.DrawWireCube(
+				transform.position + Vector3.down * groundCheckDist,
+				groundCheckSize
+			);
+		}
+#endif
 		#endregion
 	}
 }

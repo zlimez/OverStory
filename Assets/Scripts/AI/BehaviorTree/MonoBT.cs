@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Abyss.Environment.Enemy;
 using UnityEngine;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public abstract class MonoBT : MonoBehaviour
     {

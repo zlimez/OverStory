@@ -1,5 +1,6 @@
 using Abyss.EventSystem;
 using UnityEngine;
+using Abyss.Settings;
 
 namespace Abyss.Interactables
 {
@@ -13,7 +14,7 @@ namespace Abyss.Interactables
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (collider.CompareTag("Player"))
+			if (collider.CompareTag(Tag.Player))
 			{
 				_playerIn = true;
 				if (condChecker.IsMet())
@@ -36,7 +37,7 @@ namespace Abyss.Interactables
 
 		void OnTriggerExit2D(Collider2D collider)
 		{
-			if (collider.CompareTag("Player") && _active)
+			if (collider.CompareTag(Tag.Player) && _active)
 			{
 				EventManager.InvokeEvent(UIEvents.TutorialClose, tip);
 				if (DestroyAfterUse) gameObject.SetActive(false);

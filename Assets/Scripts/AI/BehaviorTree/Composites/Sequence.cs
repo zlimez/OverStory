@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public class Sequence : Composite
     {
         protected int _currChildInd;
 
-        public Sequence(List<Node> children) : base(children) {}
+        public Sequence(List<Node> children) : base(children) { }
 
         public override void OnChildComplete(Node child, State childState)
         {

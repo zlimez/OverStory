@@ -1,4 +1,3 @@
-using Abyss.EventSystem;
 using Abyss.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,8 +9,8 @@ namespace Abyss.SceneSystem
         void Awake()
         {
             // Load the master scene if it is not already loaded
-            if (SceneLoader.Instance == null && Parser.GetSceneFromText(SceneManager.GetActiveScene().name) != AbyssScene.Master)
-                SceneManager.LoadSceneAsync(AbyssScene.Master.ToString(), LoadSceneMode.Additive);
+            if (SceneLoader.Instance == null && Parser.GetSceneFromText(SceneManager.GetActiveScene().name) != Settings.Scene.Master)
+                SceneManager.LoadSceneAsync(Settings.Scene.Master.ToString(), LoadSceneMode.Additive);
         }
     }
 }

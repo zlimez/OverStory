@@ -3,14 +3,13 @@ using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Utils;
 using Tuples;
-using Abyss.SceneSystem;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] AudioSource sfxSource, bgmSource;
     [SerializeField] float transitionDuration = 1f, bgmVolume = 0.5f;
-    [SerializeField] Pair<AbyssScene, AudioClip>[] sceneStartBgmClips;
+    [SerializeField] Pair<Abyss.Settings.Scene, AudioClip>[] sceneStartBgmClips;
 
     void OnEnable()
     {
@@ -37,7 +36,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void ChangeBgm(object input = null)
     {
-        AbyssScene scene = (AbyssScene)input;
+        Abyss.Settings.Scene scene = (Abyss.Settings.Scene)input;
         bool found = false;
         foreach (var p in sceneStartBgmClips)
             if (p.Head == scene)

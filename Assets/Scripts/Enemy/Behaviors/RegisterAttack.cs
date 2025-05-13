@@ -1,5 +1,5 @@
 using System;
-using BehaviorTree;
+using AI.BehaviorTree;
 using UnityEngine;
 
 namespace Abyss.Environment.Enemy

@@ -5,13 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Arena
-  - Ground
   - Enemy
-  - Obstacle
   - Burnable
   - Wall (Construct)
   - Pit (Construct)
   - CameraBGTrigger
+  - Hookable
+  - Movable
   layers:
   - Default
   - TransparentFX
@@ -21,15 +21,15 @@ TagManager:
   - UI
   - Enemy
   - Ground
-  - Post Processing
-  - Lights
-  - Pickable Item
-  - Obstacle (NOT GROUND)
+  - 
+  - 
+  - Pickable
+  - Obstacle
   - Breakable
   - NPC
-  - OnUI
+  - 
   - Buildup
-  - Cover BG
+  - 
   - 
   - 
   - 

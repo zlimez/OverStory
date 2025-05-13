@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Abyss.Environment.Enemy.Anim;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class Patrol : CfAction
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public class Selector : Composite
     {

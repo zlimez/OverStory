@@ -1,4 +1,5 @@
 using Abyss.EventSystem;
+using Abyss.Settings;
 using UnityEngine;
 
 public class Arena : MonoBehaviour
@@ -32,7 +33,7 @@ public class Arena : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Tag.Player))
         {
             Player = other.gameObject;
             PlayerIn = true;
@@ -42,7 +43,7 @@ public class Arena : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Tag.Player))
         {
             Player = null;
             PlayerIn = false;

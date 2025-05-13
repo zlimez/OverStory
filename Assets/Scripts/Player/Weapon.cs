@@ -7,7 +7,7 @@ namespace Abyss.Player
 {
     public class Weapon : MonoBehaviour
     {
-        static readonly int _layerMask = (1 << (int)AbyssSettings.Layers.Enemy) | (1 << (int)AbyssSettings.Layers.Breakable); // 6 for enemy, 12 for breakable
+        static readonly int LayerMask = (1 << (int)Settings.Layer.Enemy) | (1 << (int)Settings.Layer.Breakable); // 6 for enemy, 12 for breakable
         public WeaponItem weaponItem;
         readonly HashSet<int> _enemyHits = new(), _depoHits = new();
         ParticleSystem _particleSystem;
@@ -44,7 +44,7 @@ namespace Abyss.Player
         {
             if (weaponItem == null) return;
             // TODO: Change position based on weapon movement
-            var hits = Physics2D.OverlapCircleAll(transform.position, weaponItem.Radius, _layerMask);
+            var hits = Physics2D.OverlapCircleAll(transform.position, weaponItem.Radius, LayerMask);
             bool psPlayed = false;
             foreach (var hit in hits)
             {

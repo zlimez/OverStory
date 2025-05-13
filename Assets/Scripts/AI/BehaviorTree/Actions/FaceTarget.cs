@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // DO NOT USE
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class FaceTarget : CfAction
     {

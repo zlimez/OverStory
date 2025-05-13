@@ -1,15 +1,16 @@
 using Abyss.SceneSystem;
 using UnityEngine;
+using Abyss.Settings;
 
 public class NextScene : MonoBehaviour
 {
-    public AbyssScene nextScene;
+    public Scene nextScene;
     [SerializeField] bool loadWithMaster = true;
 
     void OnTriggerEnter2D(Collider2D other)
     {
         // TODO: Change to PrepLoadWithMaster
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Tag.Player))
             SceneLoader.Instance.PrepLoadWithMaster(nextScene, !loadWithMaster);
     }
 }

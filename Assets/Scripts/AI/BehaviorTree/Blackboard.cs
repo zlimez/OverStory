@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Abyss.EventSystem;
 using Tuples;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     /// <summary>
     /// Connected to EventManager to listen for events that changes data and retrieve from respective systems / data containers.

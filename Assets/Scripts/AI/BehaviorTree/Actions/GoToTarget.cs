@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class GotoTargetByFixedSpd : CfAction
     {

@@ -3,7 +3,6 @@ using Abyss.EventSystem;
 using Abyss.SceneSystem;
 using Tuples;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Abyss.Player
 {
@@ -18,11 +17,11 @@ namespace Abyss.Player
         [SerializeField] PlayerController playerController;
         [SerializeField] Weapon weapon;
         [SerializeField] SpriteFlash spriteFlash;
-        public RefPair<AbyssScene, Vector3> LastRest = new();
+        public RefPair<Settings.Scene, Vector3> LastRest = new();
         public PlayerAttr PlayerAttr; // By reference when assign to gamemanager playerattr changes are on the same instance
         [Header("Settings")]
         [SerializeField] float purityLoseItemsThreshold = 40, portionLost = 0.5f;
-        [SerializeField] Pair<AbyssScene, Transform>[] sceneCrossSpawnPoints;
+        [SerializeField] Pair<Settings.Scene, Transform>[] sceneCrossSpawnPoints;
 
         public bool BelowPurityThreshold => PlayerAttr.Purity < purityLoseItemsThreshold;
         public WeaponItem WeaponItem => weapon.weaponItem;
@@ -36,7 +35,7 @@ namespace Abyss.Player
                 transform.position = LastRest.Tail;
             }
 
-            if (SceneLoader.Instance && SceneLoader.Instance.LastScene != AbyssScene.None)
+            if (SceneLoader.Instance && SceneLoader.Instance.LastScene != Settings.Scene.None)
             {
                 foreach (var spawnPoint in sceneCrossSpawnPoints)
                     if (spawnPoint.Head == SceneLoader.Instance.LastScene)
@@ -95,10 +94,8 @@ namespace Abyss.Player
         void Save(object input = null)
         {
 #if UNITY_EDITOR
-            if (!getPlayerAttrFrmMaster)
-                GameManager.Instance.PlayerPersistence.PlayerAttr = PlayerAttr;
-            if (!getLastRestFrmMaster)
-                GameManager.Instance.PlayerPersistence.LastRest = LastRest;
+            if (!getPlayerAttrFrmMaster) GameManager.Instance.PlayerPersistence.PlayerAttr = PlayerAttr;
+            if (!getLastRestFrmMaster) GameManager.Instance.PlayerPersistence.LastRest = LastRest;
 #endif
         }
 

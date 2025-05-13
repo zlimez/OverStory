@@ -4,7 +4,7 @@ using UnityEngine;
 using Algorithms;
 using UnityEngine.Assertions;
 
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     // TODO: Consider Composition over Inheritance
     public class ProbSelector : Selector

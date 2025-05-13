@@ -1,8 +1,8 @@
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public class Inverter : Decorator
     {
-        public Inverter(Node child) : base(child) {}
+        public Inverter(Node child) : base(child) { }
 
         public override void OnChildComplete(Node child, State childState)
         {

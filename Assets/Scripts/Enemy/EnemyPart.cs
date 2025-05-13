@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+using Abyss.Settings;
 
 namespace Abyss.Environment.Enemy
 {
@@ -19,7 +20,7 @@ namespace Abyss.Environment.Enemy
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player") && canHurtPlayer)
+            if (other.CompareTag(Tag.Player) && canHurtPlayer)
                 enemyManager.Strike();
         }
 

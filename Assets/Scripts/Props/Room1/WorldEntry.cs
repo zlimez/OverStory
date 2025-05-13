@@ -1,16 +1,18 @@
 using Abyss.Player;
-using Abyss.SceneSystem;
 using UnityEngine;
 
-public class WorldEntry : ConvoTrigger
+namespace Abyss.Gameplay
 {
-    [SerializeField] Transform initRespawnPoint;
-
-    protected override void Execute()
+    public class WorldEntry : ConvoTrigger
     {
-        base.Execute();
-        var playerManager = player.GetComponent<PlayerManager>();
-        playerManager.LastRest.Head = AbyssScene.Room1;
-        playerManager.LastRest.Tail = initRespawnPoint.position;
+        [SerializeField] Transform initRespawnPoint;
+
+        protected override void Execute()
+        {
+            base.Execute();
+            var playerManager = player.GetComponent<PlayerManager>();
+            playerManager.LastRest.Head = Settings.Scene.Room1;
+            playerManager.LastRest.Tail = initRespawnPoint.position;
+        }
     }
 }

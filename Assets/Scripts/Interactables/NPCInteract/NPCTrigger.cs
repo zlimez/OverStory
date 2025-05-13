@@ -1,6 +1,7 @@
 using Abyss.EventSystem;
 using Tuples;
 using UnityEngine;
+using Abyss.Settings;
 
 namespace NPC
 {
@@ -13,7 +14,7 @@ namespace NPC
 
         void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.CompareTag("Player") && condChecker.IsMet())
+            if (collider.CompareTag(Tag.Player) && condChecker.IsMet())
             {
                 GameEvent triggerEvent = new(TriggerRec + "/" + name);
                 interactRoot.Execute(triggerEvent);

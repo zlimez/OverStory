@@ -1,6 +1,7 @@
 using Abyss.EventSystem;
 using Abyss.Player;
 using UnityEngine;
+using Abyss.Settings;
 
 public class FirstRestRecLost : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class FirstRestRecLost : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Tag.Player))
         {
             if (EventLedger.Instance == null)
             {

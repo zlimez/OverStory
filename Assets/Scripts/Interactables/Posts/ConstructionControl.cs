@@ -1,5 +1,6 @@
 using Tuples;
 using UnityEngine;
+using Abyss.Settings;
 
 /// <summary>
 /// Controls which construction post is activated, the highest tier the player can build, upgrade tree in a sense
@@ -13,7 +14,7 @@ public class ConstructionControl : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         // Tier3ItemPost.Tail.SetActive(false);
-        if (collider.CompareTag("Player"))
+        if (collider.CompareTag(Tag.Player))
         {
             // if (Tier3ItemPost.Head != null && GameManager.Instance.Inventory.MaterialCollection.Contains(Tier3ItemPost.Head))
             //     Tier3ItemPost.Tail.SetActive(true);

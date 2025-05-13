@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using BehaviorTree;
-using BehaviorTree.Actions;
+using AI.BehaviorTree;
+using AI.BehaviorTree.Actions;
 using Tuples;
 using UnityEngine;
 

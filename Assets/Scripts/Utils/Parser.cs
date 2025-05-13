@@ -13,11 +13,11 @@ namespace Abyss.Utils
             else return StaticEvent.NoEvent;
         }
 
-        public static AbyssScene GetSceneFromText(string text)
+        public static Settings.Scene GetSceneFromText(string text)
         {
-            if (Enum.TryParse(text, out AbyssScene parsedScene))
+            if (Enum.TryParse(text, out Settings.Scene parsedScene))
                 return parsedScene;
-            else return AbyssScene.None;
+            else return Settings.Scene.None;
         }
     }
 }

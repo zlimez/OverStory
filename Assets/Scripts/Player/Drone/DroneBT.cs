@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Abyss.EventSystem;
-using BehaviorTree;
-using BehaviorTree.Actions;
+using AI.BehaviorTree;
+using AI.BehaviorTree.Actions;
 using Tuples;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;

@@ -1,5 +1,5 @@
 using Abyss.Environment.Enemy.Anim;
-using BehaviorTree;
+using AI.BehaviorTree;
 
 namespace Abyss.Environment.Enemy
 {

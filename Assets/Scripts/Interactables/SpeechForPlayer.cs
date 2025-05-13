@@ -13,7 +13,7 @@ namespace Abyss.Interactables
 
         void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.CompareTag("Player") && eventCond.IsMet())
+            if (collider.CompareTag(Settings.Tag.Player) && eventCond.IsMet())
                 foreach (var s in speech) EventManager.InvokeEvent(PlayEvents.PlayerSpeak, s);
         }
     }

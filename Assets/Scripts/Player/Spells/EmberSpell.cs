@@ -1,16 +1,12 @@
 using System.Collections.Generic;
 using Abyss.Environment.Enemy;
+using Abyss.Settings;
 using UnityEngine;
 
 namespace Abyss.Player.Spells
 {
 	public class EmberSpell : Spell
 	{
-
-		#region Fields
-		const string TAG_BURNABLE = "Burnable";
-
-		// Movement
 		private Vector2 currLocation;
 		[SerializeField] private float moveSpeedValue = 0.02f;
 		private Vector2 moveVector;
@@ -20,8 +16,6 @@ namespace Abyss.Player.Spells
 		[SerializeField] private float existForTime = 1f;
 
 		readonly HashSet<int> _enemyHits = new();
-
-		#endregion
 
 		void Start() => Destroy(gameObject, existForTime);
 
@@ -41,7 +35,7 @@ namespace Abyss.Player.Spells
 				enemyPart.TakeHit(damageAmount);
 				_enemyHits.Add(enemyPart.EnemyIntanceId);
 			}
-			else if (other.gameObject.CompareTag(TAG_BURNABLE) && other.TryGetComponent(out Burnable burnable))
+			else if (other.gameObject.CompareTag(Tag.Burnable) && other.TryGetComponent(out Burnable burnable))
 				burnable.Ignite();
 		}
 

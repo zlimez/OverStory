@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // DO NOT USE
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class Attack : CfAction
     {

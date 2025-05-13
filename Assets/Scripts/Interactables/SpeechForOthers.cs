@@ -43,7 +43,7 @@ namespace Abyss.Interactables
 
         void OnTriggerEnter2D(Collider2D collider)
         {
-            if (!isLoop && collider.CompareTag("Player") && eventCond.IsMet()) Speak();
+            if (!isLoop && collider.CompareTag(Settings.Tag.Player) && eventCond.IsMet()) Speak();
         }
 
         private void Speak()

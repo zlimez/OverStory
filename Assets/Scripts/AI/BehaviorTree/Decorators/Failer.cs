@@ -1,8 +1,8 @@
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public class Failer : Decorator
     {
-        public Failer(Node child) : base(child) {}
+        public Failer(Node child) : base(child) { }
 
         public override void OnChildComplete(Node child, State childState)
         {

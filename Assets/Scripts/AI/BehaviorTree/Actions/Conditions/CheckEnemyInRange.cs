@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class CheckEnemyInRange : CfAction
     {

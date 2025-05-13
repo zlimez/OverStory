@@ -1,6 +1,7 @@
 using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Player;
+using Abyss.Settings;
 
 namespace Abyss.Interactables
 {
@@ -30,7 +31,7 @@ namespace Abyss.Interactables
 
         protected virtual void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.CompareTag("Player"))
+            if (collider.CompareTag(Tag.Player))
                 PlayerEnterAction(collider);
         }
 
@@ -44,7 +45,7 @@ namespace Abyss.Interactables
 
         protected virtual void OnTriggerExit2D(Collider2D collider)
         {
-            if (collider.CompareTag("Player"))
+            if (collider.CompareTag(Tag.Player))
                 PlayerExitAction(collider);
         }
 

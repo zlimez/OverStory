@@ -5,7 +5,7 @@ using Abyss.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class ToggleVis : CfAction
     {
@@ -111,8 +111,6 @@ namespace BehaviorTree.Actions
 
     public class Dash : GotoTargetByCurve
     {
-        static readonly int _obstacleLayerMask = 1 << (int)AbyssSettings.Layers.Obstacle;
-
         string _pitJumpDelayVarName;
         float _scanPitRaycastDist;
         EnemyManager _enemyManager;
@@ -136,7 +134,7 @@ namespace BehaviorTree.Actions
             if (_timer < _duration)
             {
                 _transform.position = Vector3.Lerp(_startPos, _destPos, _mvmtCurve.Evaluate(_timer / _duration));
-                RaycastHit2D hit = Physics2D.Raycast(_transform.position, _bugSprite.forward, _scanPitRaycastDist, _obstacleLayerMask);
+                RaycastHit2D hit = Physics2D.Raycast(_transform.position, _bugSprite.forward, _scanPitRaycastDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK);
                 if (hit.collider != null && hit.collider.CompareTag("Pit (Construct)") && !_pitIds.Contains(hit.collider.GetInstanceID()))
                 {
                     _pitIds.Add(hit.collider.GetInstanceID());

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Abyss.Environment.Enemy;
 using Abyss.Environment.Enemy.Anim;
-using BehaviorTree;
-using BehaviorTree.Actions;
+using AI.BehaviorTree;
+using AI.BehaviorTree.Actions;
 using Tuples;
 using UnityEngine;
 

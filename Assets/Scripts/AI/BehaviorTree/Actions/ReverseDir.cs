@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class ReverseDir : CfAction
     {

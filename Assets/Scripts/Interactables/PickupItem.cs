@@ -1,4 +1,5 @@
 using UnityEngine;
+using Abyss.Settings;
 
 public class PickupItem : MonoBehaviour
 {
@@ -9,12 +10,12 @@ public class PickupItem : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("Collision with: " + collider.name);
-        if (collider.CompareTag("Player") && !picked) Pickup();
+        if (collider.CompareTag(Tag.Player) && !picked) Pickup();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && !picked)
+        if (collision.gameObject.CompareTag(Tag.Player) && !picked)
             Pickup();
     }
 

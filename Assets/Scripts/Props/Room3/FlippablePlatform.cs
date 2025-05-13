@@ -1,12 +1,12 @@
-using Abyss;
 using Abyss.Environment.Enemy;
 using Abyss.EventSystem;
 using Abyss.Player;
 using UnityEngine;
+using Abyss.Settings;
 
 public class FlippablePlatform : MonoBehaviour
 {
-    static readonly int _enemyLayerMask = 1 << (int)AbyssSettings.Layers.Enemy;
+    static readonly int _enemyLayerMask = 1 << (int)Abyss.Settings.Layer.Enemy;
     [Header("Dynamic Rotation")]
     [SerializeField] Transform cog;
     [SerializeField] AnimationCurve retardAccelCurve;
@@ -29,7 +29,7 @@ public class FlippablePlatform : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag(Tag.Player))
         {
             _player = other.gameObject;
             Vector2 cog2Cp = _player.GetComponent<PlayerController>().Foot.position - cog.position;
@@ -42,7 +42,7 @@ public class FlippablePlatform : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag(Tag.Player))
         {
             if (_player != null && _player.GetComponent<PlayerController>().IsJumping)
             {

@@ -3,7 +3,7 @@ using Tuples;
 using UnityEngine;
 
 // TODO: Remove reliance on Unity
-namespace BehaviorTree
+namespace AI.BehaviorTree
 {
     public class BT
     {

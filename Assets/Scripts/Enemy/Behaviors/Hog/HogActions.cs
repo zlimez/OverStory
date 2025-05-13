@@ -1,11 +1,10 @@
 using Abyss;
 using UnityEngine;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class CheckHogLure : CfAction
     {
-        static readonly int _obstacleLayerMask = 1 << (int)AbyssSettings.Layers.Ground | 1 << (int)AbyssSettings.Layers.Obstacle;
         SpriteManager _spriteManager;
         Transform _transform;
         string _destVarName;
@@ -25,7 +24,7 @@ namespace BehaviorTree.Actions
             var lureInfo = Tree.GetDatum<(float, Vector3)>(_destVarName);
 
             if (Vector2.SqrMagnitude(lureInfo.Item2 - _transform.position) > lureInfo.Item1 * lureInfo.Item1
-                    || Physics2D.Raycast(_transform.position, lureInfo.Item2 - _transform.position, Vector2.Distance(lureInfo.Item2, _transform.position), _obstacleLayerMask))
+                    || Physics2D.Raycast(_transform.position, lureInfo.Item2 - _transform.position, Vector2.Distance(lureInfo.Item2, _transform.position), Abyss.Settings.LayerMask.OBSTACLE_LMASK))
             {
                 State = State.FAILURE;
                 return;

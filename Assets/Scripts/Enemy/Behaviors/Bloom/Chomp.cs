@@ -4,7 +4,7 @@ using Abyss.Environment.Enemy.Anim;
 using Abyss.Player;
 using UnityEngine;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class Chomp : CfAction
     {

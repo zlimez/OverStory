@@ -1,4 +1,5 @@
 using Abyss.EventSystem;
+using Abyss.Settings;
 using UnityEngine;
 
 public class Aggro : MonoBehaviour
@@ -10,7 +11,7 @@ public class Aggro : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Tag.Player))
         {
             Player = other.gameObject;
             PlayerIn = true;
@@ -20,7 +21,7 @@ public class Aggro : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(Tag.Player))
         {
             Player = null;
             PlayerIn = false;

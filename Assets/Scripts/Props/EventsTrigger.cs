@@ -1,6 +1,7 @@
 using Abyss.EventSystem;
 using Tuples;
 using UnityEngine;
+using Abyss.Settings;
 
 public class EventsTrigger : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class EventsTrigger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && condChecker.IsMet())
+        if (other.CompareTag(Tag.Player) && condChecker.IsMet())
         {
             foreach (var evt in eventsToTriggerAndRecord)
             {

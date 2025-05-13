@@ -11,7 +11,7 @@ namespace Abyss.DataPersistence
         public PlayerAttr PlayerAttr = new(1, 1, 1, PlayerAttr.MaxHealth, 60, 20);
         public WeaponItem WeaponItem;
         public SpellItem[] SpellItems = new SpellItem[3];
-        public RefPair<AbyssScene, UnityEngine.Vector3> LastRest = new();
+        public RefPair<Settings.Scene, UnityEngine.Vector3> LastRest = new();
         public string KilledBy = "";
         public bool JustDied = false;
         public bool IsBuilding = false;

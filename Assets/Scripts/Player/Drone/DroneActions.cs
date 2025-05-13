@@ -4,7 +4,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Rendering.Universal;
 using Utils;
 
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class DroneFollow : CfAction
     {

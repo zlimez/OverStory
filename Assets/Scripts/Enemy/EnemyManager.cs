@@ -110,7 +110,7 @@ namespace Abyss.Environment.Enemy
         // NOTE: If enemy always moving (enter/exit trigger), this is not required
         // void OnTriggerStay2D(Collider2D other)
         // {
-        //     if (other.CompareTag("Player"))
+        //     if (other.CompareTag(Tags.Player))
         //         OnStrikePlayer?.Invoke(attributes.strength);
         // }
     }

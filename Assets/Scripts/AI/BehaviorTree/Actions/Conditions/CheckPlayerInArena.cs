@@ -1,4 +1,4 @@
-namespace BehaviorTree.Actions
+namespace AI.BehaviorTree.Actions
 {
     public class CheckPlayerInArena : CfAction
     {
