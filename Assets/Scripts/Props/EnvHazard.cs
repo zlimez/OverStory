@@ -5,7 +5,7 @@ using Abyss.Settings;
 public class EnvHazard : MonoBehaviour
 {
     [SerializeField] float damage = 10;
-    [SerializeField] float horizontalKnockbackImpulse = 0, fromTopKnockbackImpulse = 0, fromBottomKnockbackImpulse = 0;
+    [SerializeField] float horizontalKnockbackImpulse = 0, fromBottomKnockbackImpulse = 0;
 
     void OnCollisionEnter2D(Collision2D collision)
     {

@@ -5,8 +5,8 @@ using UnityEngine;
 using AI.FSM;
 using UnityEngine.Rendering;
 using Abyss.Settings;
-using System.Collections.Generic;
 using Abyss.Player;
+using System.Collections.Generic;
 
 public class ArmController : MonoBehaviour
 {
@@ -27,7 +27,7 @@ public class ArmController : MonoBehaviour
     public Rope rope;
     public LineRenderer ropeRenderer;
     public DistanceJoint2D bodyJoint; // Placed on the player
-    public GameObject fistK, fistD, fistPH; // TODO: When fired disable default fist spawn fist instance as the moving part only when kept switch back
+    public GameObject fist, fistPH; // TODO: When fired disable default fist spawn fist instance as the moving part only when kept switch back
     public ColNotifier bodyExt;
     public PlayerController playerController;
     public Vector2 aim = Vector2.right;
@@ -41,20 +41,20 @@ public class ArmController : MonoBehaviour
     [SerializeField] ClampedFloatParameter aimResp = new(0.0f, 0.1f, 1f);
     [Header("Fist Settings")]
     [SerializeField] float softExtImpulse = 10f;
-    [SerializeField] float hardContImpulse = 10f, fistMass = 1f, fistJointExDist = 0.3f;
+    [SerializeField] float hardContImpulse = 10f, fistMass = 1f;
     [Header("Rope Settings")]
     [SerializeField] int minSegCount = 10;
     [SerializeField] int maxSegCount = 50;
     [SerializeField] float segLength = 0.2f;
-    Queue<Trigger> _eventQueue = new();
     IEnumerator _extRout;
+    readonly Queue<Trigger> _triggerQueue = new();
     bool _willAppImp = false;
-    // GameObject _activeFist;
 
     readonly FSM _fsm = new((int)State.So_CoOg_Lo);
 
     public State CurrState => (State)_fsm.CurrState;
     public bool ArmActive => _fsm.CurrState != (int)State.So_CoOg_Lo && _fsm.CurrState != (int)State.Ha_CoOg_Lo;
+    public bool Swinging => _fsm.CurrState == (int)State.So_CoRe_Fi;
 
     void Awake()
     {
@@ -67,17 +67,16 @@ public class ArmController : MonoBehaviour
         bodyJoint.autoConfigureDistance = false;
         bodyJoint.enabled = false;
 
-        _fistRb = fistK.GetComponent<Rigidbody2D>();
-        _fistJoint = fistK.GetComponent<DistanceJoint2D>();
-        _fistExt = fistK.GetComponent<ColNotifier>();
+        _fistRb = fist.GetComponent<Rigidbody2D>();
+        _fistJoint = fist.GetComponent<DistanceJoint2D>();
+        _fistExt = fist.GetComponent<ColNotifier>();
         _fistJoint.maxDistanceOnly = true;
         _fistJoint.autoConfigureDistance = false;
         _fistJoint.enabled = false;
         _fistRb.mass = fistMass;
         _fistJoint.connectedBody = GetComponent<Rigidbody2D>();
 
-        fistK.SetActive(false);
-        // fistD.SetActive(false);
+        fist.SetActive(false);
         fistPH.SetActive(true);
 
         AddTransition(State.So_CoOg_Lo, Trigger.HardSoft, State.Ha_CoOg_Lo, OnHaSoTog, true);
@@ -122,6 +121,12 @@ public class ArmController : MonoBehaviour
         AddTransition(State.So_CoOg_Fi, Trigger.ExtRel, State.So_CoOg_Lo, OnRel);
     }
 
+    void Update()
+    {
+        if (playerController.PressingRet) _fsm.ProcessEvent((int)Trigger.Ret);
+        if (_triggerQueue.Count > 0) _fsm.ProcessEvent((int)_triggerQueue.Dequeue());
+    }
+
     void FixedUpdate()
     {
         if (!_fistRb.isKinematic && _willAppImp)
@@ -134,15 +139,19 @@ public class ArmController : MonoBehaviour
     #region Transition Actions
     void OnKept(object input = null)
     {
-        fistK.SetActive(false);
+        fist.SetActive(false);
         fistPH.SetActive(true);
         _fistJoint.enabled = false;
+        ropeRenderer.enabled = false;
+        rope.enabled = false;
     }
 
     void OnRel(object input = null) => bodyJoint.enabled = false;
+
     void OnSoRel(object input = null)
     {
         bodyJoint.enabled = false;
+        _fistRb.isKinematic = false;
         _fistJoint.enabled = true;
     }
 
@@ -154,33 +163,36 @@ public class ArmController : MonoBehaviour
 
     void OnSoEx(object input = null)
     {
-        InitLaunch(false);
+        InitLaunch();
         _fistRb.isKinematic = false;
         _willAppImp = true;
+
         _extRout = Ext();
         StartCoroutine(_extRout);
         _fistExt.OnContact = (other) =>
         {
             if (!other.gameObject.CompareTag(Tag.Hookable)) return;
-            StopCoroutine(_extRout);
+            if (_extRout != null) StopCoroutine(_extRout);
             _extRout = null;
             _fistExt.OnContact = null;
+            _fistExt.OnCollision = null;
             _fistRb.isKinematic = true;
-            bodyJoint.enabled = true;
+            _fistRb.velocity = Vector3.zero;
             bodyJoint.connectedBody = _fistRb;
             bodyJoint.distance = rope.ropeLength;
-            _fistJoint.distance = rope.ropeLength;
-            ProcessEvent(Trigger.Hooked);
+            bodyJoint.enabled = true;
+            QueueEvent(Trigger.Hooked);
         };
 
         _fistExt.OnCollision = (col) =>
         {
-            StopCoroutine(_extRout);
+            if (_extRout != null) StopCoroutine(_extRout);
             _extRout = null;
+            _fistExt.OnContact = null;
             _fistExt.OnCollision = null;
             _fistJoint.distance = rope.ropeLength;
             _fistJoint.enabled = true;
-            ProcessEvent(Trigger.Contact);
+            QueueEvent(Trigger.Contact);
         };
     }
 
@@ -190,13 +202,12 @@ public class ArmController : MonoBehaviour
         {
             float ropeLen = (rope.EndPoint.position - rope.StartPoint.position).magnitude;
             rope.ropeLength = Mathf.Min(maxLength, ropeLen);
-            // _fistJoint.distance = rope.ropeLength + fistJointExDist;
             rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
             if (ropeLen >= maxLength - Mathf.Epsilon)
             {
                 _fistJoint.distance = rope.ropeLength;
                 _fistJoint.enabled = true;
-                ProcessEvent(Trigger.Ret);
+                QueueEvent(Trigger.Ret);
                 _fistExt.OnContact = null;
                 yield break;
             }
@@ -216,31 +227,38 @@ public class ArmController : MonoBehaviour
         rope.ropeLength = Mathf.Max(0, rope.ropeLength - retractRate * Time.deltaTime);
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
         _fistJoint.distance = rope.ropeLength;
-        if (Mathf.Abs(rope.ropeLength) <= Mathf.Epsilon) ProcessEvent(Trigger.Kept);
+        // NOTE: Do not remove prompts physics engine to adjust fist position
+        transform.position += 0.01f * Vector3.up;
+        transform.position -= 0.01f * Vector3.up;
+        if (Mathf.Abs(rope.ropeLength) <= Mathf.Epsilon) QueueEvent(Trigger.Kept);
     }
 
     void OnFiRet(object input = null)
     {
         bodyJoint.distance = rope.ropeLength = Mathf.Max(0, rope.ropeLength - retractRate * Time.deltaTime);
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
+        // NOTE: Do not remove prompts physics engine to adjust fist position
+        transform.position += 0.01f * Vector3.up;
+        transform.position -= 0.01f * Vector3.up;
     }
 
     void HaExLo(object input = null)
     {
-        InitLaunch(true);
+        InitLaunch();
 
         _extRout = HaExt();
         StartCoroutine(_extRout);
         _fistExt.OnContact = (other) =>
         {
             if (!other.gameObject.CompareTag(Tag.Hookable)) return;
-            StopCoroutine(_extRout);
+            if (_extRout != null) StopCoroutine(_extRout);
             _extRout = null;
             bodyJoint.enabled = true;
             bodyJoint.connectedBody = _fistRb;
             bodyJoint.distance = rope.ropeLength;
             _fistExt.OnContact = null;
-            ProcessEvent(Trigger.Hooked);
+            _fistExt.OnCollision = null;
+            QueueEvent(Trigger.Hooked);
         };
         _fistExt.OnCollision = (col) =>
         {
@@ -248,7 +266,7 @@ public class ArmController : MonoBehaviour
                 col.otherRigidbody.AddForce((rope.EndPoint.position - rope.StartPoint.position).normalized * hardContImpulse, ForceMode2D.Impulse);
             else
             {
-                StopCoroutine(_extRout);
+                if (_extRout != null) StopCoroutine(_extRout);
                 _extRout = Repel();
                 StartCoroutine(_extRout);
                 bodyJoint.enabled = true;
@@ -256,13 +274,15 @@ public class ArmController : MonoBehaviour
                 bodyJoint.distance = rope.ropeLength;
                 bodyExt.OnCollision = (bcol) =>
                 {
-                    StopCoroutine(_extRout);
+                    if (bcol.gameObject.layer != (int)Layer.Ground && bcol.gameObject.layer != (int)Layer.Obstacle && bcol.gameObject.layer != (int)Layer.Buildup) return;
+                    if (_extRout != null) StopCoroutine(_extRout);
                     _extRout = null;
                     bodyExt.OnCollision = null;
-                    ProcessEvent(Trigger.Ret);
+                    QueueEvent(Trigger.Ret);
                 };
+                _fistExt.OnContact = null;
                 _fistExt.OnCollision = null;
-                ProcessEvent(Trigger.Contact);
+                QueueEvent(Trigger.Contact);
             }
         };
     }
@@ -277,7 +297,7 @@ public class ArmController : MonoBehaviour
             rope.ropeLength = Mathf.Min(maxLength, (rope.EndPoint.position - rope.StartPoint.position).magnitude);
             rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
         }
-        ProcessEvent(Trigger.Ret);
+        QueueEvent(Trigger.Ret);
         yield return null;
     }
 
@@ -291,7 +311,7 @@ public class ArmController : MonoBehaviour
             rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
             rope.EndPoint.position = rope.StartPoint.position + (rope.EndPoint.position - rope.StartPoint.position).normalized * rope.ropeLength;
         }
-        ProcessEvent(Trigger.Ret);
+        QueueEvent(Trigger.Ret);
         _fistExt.OnContact = null;
         yield return null;
     }
@@ -301,7 +321,7 @@ public class ArmController : MonoBehaviour
         rope.ropeLength = Mathf.Max(0, rope.ropeLength - retractRate * Time.deltaTime);
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
         rope.EndPoint.position = rope.StartPoint.position + (rope.EndPoint.position - rope.StartPoint.position).normalized * rope.ropeLength;
-        if (Mathf.Abs(rope.ropeLength) <= Mathf.Epsilon) ProcessEvent(Trigger.Kept);
+        if (Mathf.Abs(rope.ropeLength) <= Mathf.Epsilon) QueueEvent(Trigger.Kept);
     }
 
     void HaLoAim(object input = null)
@@ -314,21 +334,15 @@ public class ArmController : MonoBehaviour
 
     #region Helpers
     void AddTransition(State start, Trigger trigger, State next, Action<object> action = null, bool bidir = false) => _fsm.AddTransition(new((int)start, (int)trigger, (int)next, action), bidir);
-    void InitLaunch(bool isKine)
+    void InitLaunch()
     {
         rope.enabled = true;
         ropeRenderer.enabled = true;
-        fistK.SetActive(true);
-        // _activeFist = isKine ? fistK : fistD;
-        // _activeFist.SetActive(true);
-        // _activeFist.transform.position = fistPH.transform.position;
-        fistK.transform.position = fistPH.transform.position;
+        fist.SetActive(true);
+        fist.transform.position = fistPH.transform.position;
         fistPH.SetActive(false);
-        // _fistJoint = fistK.GetComponent<DistanceJoint2D>();
-        // _fistRb = fistK.GetComponent<Rigidbody2D>();
-        // _fistExt = fistK.GetComponent<ColNotifier>();
     }
-    public void ProcessEvent(Trigger trigger) => _fsm.ProcessEvent((int)trigger);
+    public void QueueEvent(Trigger trigger) => _triggerQueue.Enqueue(trigger);
     public void SetAim() => aim = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - rope.StartPoint.position).normalized;
 #if UNITY_EDITOR
     void OnDrawGizmos()

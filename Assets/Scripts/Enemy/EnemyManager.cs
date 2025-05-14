@@ -21,7 +21,7 @@ namespace Abyss.Environment.Enemy
         [SerializeField] Triplet<GameObject, uint, float>[] probabalisticDrops;
         [SerializeField][Tooltip("Left and right endpoint where drops are spawned")] Pair<Transform, Transform> dropRange;
 
-        bool _isDefeated = false, _haveFightWithPlayer = false, _beAttacked = false;
+        bool _isDefeated = false, _haveFightWithPlayer = false;
         int _postDefeatStrikes = 0;
 
         public void OnValidate()
@@ -40,7 +40,6 @@ namespace Abyss.Environment.Enemy
             {
                 attributes.friendliness -= 3.0f;
                 _haveFightWithPlayer = true;
-                _beAttacked = true;
             }
 
             if (_isDefeated)

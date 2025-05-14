@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Disc",
+                    "type": "Button",
+                    "id": "4177a8b7-9665-4933-9814-9e4288c5eddf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -231,7 +240,7 @@
                     "name": "",
                     "id": "7b9b1b3b-69a7-4631-bbd9-25961e23ac78",
                     "path": "<Keyboard>/q",
-                    "interactions": "MultiTap,Tap",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "ExtRel",
@@ -246,6 +255,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "HardSoft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3ab664d-33a1-4bf8-96ac-85993df2825f",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Disc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

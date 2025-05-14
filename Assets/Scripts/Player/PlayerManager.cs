@@ -103,7 +103,7 @@ namespace Abyss.Player
         public void TakeHit(float baseDamage, string striker = "", bool hasKnockback = false, Vector3 from = default, float kbImpulse = 0)
         {
             if (PlayerAttr.Health == 0) return;
-            if (playerController.TakeHit(hasKnockback, from, kbImpulse)) return; // Is still taking last damage or isDead
+            if (playerController.OnHit(hasKnockback, from, kbImpulse)) return; // Is still taking last damage or isDead
             UpdateHealth(-baseDamage);
             spriteFlash.StartFlash();
             if (PlayerAttr.Health == 0)

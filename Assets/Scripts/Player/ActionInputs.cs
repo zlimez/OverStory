@@ -125,6 +125,15 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Disc"",
+                    ""type"": ""Button"",
+                    ""id"": ""4177a8b7-9665-4933-9814-9e4288c5eddf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -253,7 +262,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""7b9b1b3b-69a7-4631-bbd9-25961e23ac78"",
                     ""path"": ""<Keyboard>/q"",
-                    ""interactions"": ""MultiTap,Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ExtRel"",
@@ -268,6 +277,17 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HardSoft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3ab664d-33a1-4bf8-96ac-85993df2825f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Disc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -289,6 +309,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         m_Player_Spell3 = m_Player.FindAction("Spell3", throwIfNotFound: true);
         m_Player_ExtRel = m_Player.FindAction("ExtRel", throwIfNotFound: true);
         m_Player_HardSoft = m_Player.FindAction("HardSoft", throwIfNotFound: true);
+        m_Player_Disc = m_Player.FindAction("Disc", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -361,6 +382,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Spell3;
     private readonly InputAction m_Player_ExtRel;
     private readonly InputAction m_Player_HardSoft;
+    private readonly InputAction m_Player_Disc;
     public struct PlayerActions
     {
         private @ActionInputs m_Wrapper;
@@ -376,6 +398,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         public InputAction @Spell3 => m_Wrapper.m_Player_Spell3;
         public InputAction @ExtRel => m_Wrapper.m_Player_ExtRel;
         public InputAction @HardSoft => m_Wrapper.m_Player_HardSoft;
+        public InputAction @Disc => m_Wrapper.m_Player_Disc;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -418,6 +441,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @HardSoft.started += instance.OnHardSoft;
             @HardSoft.performed += instance.OnHardSoft;
             @HardSoft.canceled += instance.OnHardSoft;
+            @Disc.started += instance.OnDisc;
+            @Disc.performed += instance.OnDisc;
+            @Disc.canceled += instance.OnDisc;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -455,6 +481,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @HardSoft.started -= instance.OnHardSoft;
             @HardSoft.performed -= instance.OnHardSoft;
             @HardSoft.canceled -= instance.OnHardSoft;
+            @Disc.started -= instance.OnDisc;
+            @Disc.performed -= instance.OnDisc;
+            @Disc.canceled -= instance.OnDisc;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -485,5 +514,6 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         void OnSpell3(InputAction.CallbackContext context);
         void OnExtRel(InputAction.CallbackContext context);
         void OnHardSoft(InputAction.CallbackContext context);
+        void OnDisc(InputAction.CallbackContext context);
     }
 }

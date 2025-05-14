@@ -7,9 +7,7 @@ namespace Abyss.Environment.Enemy.Anim
     {
         // Polish to add stun animation
         public enum State { Idle, Walk, Charge, ChargeUp, Death, Stun, Wake }
-
         [SerializeField] float walkSpeed = 2.5f;
-        [SerializeField] float runSpeed = 8f;
 
         protected override void Awake()
         {
