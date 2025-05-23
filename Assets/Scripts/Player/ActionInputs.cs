@@ -64,7 +64,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""AttackAim"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""13371977-b1c9-438e-bf95-6caf632195a9"",
                     ""expectedControlType"": ""Button"",
@@ -130,6 +130,15 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""name"": ""Disc"",
                     ""type"": ""Button"",
                     ""id"": ""4177a8b7-9665-4933-9814-9e4288c5eddf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""548a1f50-4263-4aae-91b6-a5db33afd46a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -207,10 +216,10 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""8e1955c1-714b-438f-bf8f-cc166e7e2957"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AttackAim"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -290,6 +299,17 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Disc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f73d93e3-26c3-43b4-bf28-64a45f7f7009"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -302,7 +322,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
-        m_Player_AttackAim = m_Player.FindAction("AttackAim", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_InteractRet = m_Player.FindAction("InteractRet", throwIfNotFound: true);
         m_Player_Spell1 = m_Player.FindAction("Spell1", throwIfNotFound: true);
         m_Player_Spell2 = m_Player.FindAction("Spell2", throwIfNotFound: true);
@@ -310,6 +330,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         m_Player_ExtRel = m_Player.FindAction("ExtRel", throwIfNotFound: true);
         m_Player_HardSoft = m_Player.FindAction("HardSoft", throwIfNotFound: true);
         m_Player_Disc = m_Player.FindAction("Disc", throwIfNotFound: true);
+        m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -375,7 +396,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Run;
-    private readonly InputAction m_Player_AttackAim;
+    private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_InteractRet;
     private readonly InputAction m_Player_Spell1;
     private readonly InputAction m_Player_Spell2;
@@ -383,6 +404,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ExtRel;
     private readonly InputAction m_Player_HardSoft;
     private readonly InputAction m_Player_Disc;
+    private readonly InputAction m_Player_Aim;
     public struct PlayerActions
     {
         private @ActionInputs m_Wrapper;
@@ -391,7 +413,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Run => m_Wrapper.m_Player_Run;
-        public InputAction @AttackAim => m_Wrapper.m_Player_AttackAim;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @InteractRet => m_Wrapper.m_Player_InteractRet;
         public InputAction @Spell1 => m_Wrapper.m_Player_Spell1;
         public InputAction @Spell2 => m_Wrapper.m_Player_Spell2;
@@ -399,6 +421,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         public InputAction @ExtRel => m_Wrapper.m_Player_ExtRel;
         public InputAction @HardSoft => m_Wrapper.m_Player_HardSoft;
         public InputAction @Disc => m_Wrapper.m_Player_Disc;
+        public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -420,9 +443,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
-            @AttackAim.started += instance.OnAttackAim;
-            @AttackAim.performed += instance.OnAttackAim;
-            @AttackAim.canceled += instance.OnAttackAim;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
             @InteractRet.started += instance.OnInteractRet;
             @InteractRet.performed += instance.OnInteractRet;
             @InteractRet.canceled += instance.OnInteractRet;
@@ -444,6 +467,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @Disc.started += instance.OnDisc;
             @Disc.performed += instance.OnDisc;
             @Disc.canceled += instance.OnDisc;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -460,9 +486,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
-            @AttackAim.started -= instance.OnAttackAim;
-            @AttackAim.performed -= instance.OnAttackAim;
-            @AttackAim.canceled -= instance.OnAttackAim;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
             @InteractRet.started -= instance.OnInteractRet;
             @InteractRet.performed -= instance.OnInteractRet;
             @InteractRet.canceled -= instance.OnInteractRet;
@@ -484,6 +510,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @Disc.started -= instance.OnDisc;
             @Disc.performed -= instance.OnDisc;
             @Disc.canceled -= instance.OnDisc;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -507,7 +536,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
-        void OnAttackAim(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         void OnInteractRet(InputAction.CallbackContext context);
         void OnSpell1(InputAction.CallbackContext context);
         void OnSpell2(InputAction.CallbackContext context);
@@ -515,5 +544,6 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         void OnExtRel(InputAction.CallbackContext context);
         void OnHardSoft(InputAction.CallbackContext context);
         void OnDisc(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
     }
 }

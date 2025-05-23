@@ -176,7 +176,7 @@ namespace DataStructures
 
         public T Get(int index)
         {
-            index = index % Items.Count;
+            index %= Items.Count;
             return Items[index];
         }
     }
@@ -206,7 +206,7 @@ namespace DataStructures
             {
                 int parentIndex = (i - 1) / 2;
 
-                if (this.comparer.Compare(this.heap[parentIndex], this.heap[i]) <= 0)
+                if (comparer.Compare(heap[parentIndex], heap[i]) <= 0)
                 {
                     break;
                 }
@@ -222,7 +222,7 @@ namespace DataStructures
         {
             int lastIndex = this.heap.Count - 1;
             T frontItem = this.heap[0];
-            this.heap[0] = this.heap[lastIndex];
+            heap[0] = heap[lastIndex];
             this.heap.RemoveAt(lastIndex);
             lastIndex--;
 
@@ -235,19 +235,10 @@ namespace DataStructures
                 int smallestChild = i;
 
                 if (leftChild <= lastIndex && this.comparer.Compare(this.heap[leftChild], this.heap[smallestChild]) < 0)
-                {
                     smallestChild = leftChild;
-                }
-
                 if (rightChild <= lastIndex && this.comparer.Compare(this.heap[rightChild], this.heap[smallestChild]) < 0)
-                {
                     smallestChild = rightChild;
-                }
-
-                if (smallestChild == i)
-                {
-                    break;
-                }
+                if (smallestChild == i) break;
 
                 (this.heap[smallestChild], this.heap[i]) = (this.heap[i], this.heap[smallestChild]);
                 i = smallestChild;
@@ -258,19 +249,12 @@ namespace DataStructures
 
         public T Peek()
         {
-            if (this.heap.Count == 0)
-            {
-                throw new InvalidOperationException("The priority queue is empty.");
-            }
-
-            return this.heap[0];
+            if (this.heap.Count == 0) throw new InvalidOperationException("The priority queue is empty.");
+            return heap[0];
         }
 
 
-        public int Count
-        {
-            get { return this.heap.Count; }
-        }
+        public int Count => heap.Count;
 
         public bool IsEmpty => Count == 0;
     }

@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AttackAim",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "13371977-b1c9-438e-bf95-6caf632195a9",
                     "expectedControlType": "Button",
@@ -108,6 +108,15 @@
                     "name": "Disc",
                     "type": "Button",
                     "id": "4177a8b7-9665-4933-9814-9e4288c5eddf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "548a1f50-4263-4aae-91b6-a5db33afd46a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -185,10 +194,10 @@
                     "name": "",
                     "id": "8e1955c1-714b-438f-bf8f-cc166e7e2957",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AttackAim",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -266,6 +275,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Disc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f73d93e3-26c3-43b4-bf28-64a45f7f7009",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

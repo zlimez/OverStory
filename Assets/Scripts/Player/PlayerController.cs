@@ -42,7 +42,7 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float timeToApex, maxJumpHeight = 5;
-		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f;
+		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f, repelGravMult = 1f;
 		[SerializeField] float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
@@ -51,12 +51,13 @@ namespace Abyss.Player
 		// Hit params
 		bool _hasKb; Vector2 _hitFrm; float _kbImp;
 		public bool PressingRet { get; private set; } = false;
+		public bool PressingAim { get; private set; } = false;
 		public bool IsJumping, IsDashing = false, IsSwinging = false;
 
 		[Header("Dash")]
 		[SerializeField] float dashSpeed = 25f;
 		[SerializeField] float dashTime = 0.3f;
-		bool _dashAvail = true, _isDashLeft;
+		bool _dashAvail = true, _isDashLeft, _isGrounded;
 		float _dashTimeLeft;
 
 		// Attacking
@@ -75,7 +76,7 @@ namespace Abyss.Player
 
 		public bool IsAttacking { get; private set; } = false;
 		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false;
-		public Action OnAttackEnded, OnAttemptInteract;
+		public Action OnAttackEnded, OnAttemptInteract, OnGrounded;
 
 		Rigidbody2D rb2D;
 		State currState;
@@ -104,7 +105,7 @@ namespace Abyss.Player
 				else
 				{
 					IsDashing = false;
-					_dashAvail = IsGrounded();
+					_dashAvail = _isGrounded;
 				}
 			}
 
@@ -121,9 +122,16 @@ namespace Abyss.Player
 		void FixedUpdate()
 		{
 			SetBodyGrav();
+			_isGrounded = IsGrounded();
 
-			if (!IsSwinging && armController.Swinging && !IsGrounded()) IsSwinging = true;
-			else if (IsSwinging && IsGrounded()) IsSwinging = false; // Only when landed
+			if (_isGrounded && OnGrounded != null)
+			{
+				OnGrounded.Invoke();
+				OnGrounded = null;
+			}
+
+			if (!IsSwinging && armController.Swinging && !_isGrounded) IsSwinging = true;
+			else if (IsSwinging && _isGrounded) IsSwinging = false; // Only when landed
 
 			if (_willTakeHit)
 			{
@@ -131,7 +139,7 @@ namespace Abyss.Player
 				return;
 			}
 
-			if (!_isTakingDamage && !IsSwinging)
+			if (!_isTakingDamage && !IsSwinging && !armController.Repeling)
 			{
 				if (!IsDashing)
 				{
@@ -223,7 +231,7 @@ namespace Abyss.Player
 		{
 			if (IsAttackState)
 			{
-				if (!IsGrounded())
+				if (!_isGrounded)
 					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 				else if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -233,7 +241,7 @@ namespace Abyss.Player
 			}
 			else if (IsDamageState)
 			{
-				if (!IsGrounded())
+				if (!_isGrounded)
 					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
 				else if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -271,7 +279,7 @@ namespace Abyss.Player
 			}
 			else if (IsJumpState)
 			{
-				if (IsGrounded() && Mathf.Abs(rb2D.velocity.y) < .1f)
+				if (_isGrounded && Mathf.Abs(rb2D.velocity.y) < .1f)
 				{
 					if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
 						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
@@ -323,25 +331,23 @@ namespace Abyss.Player
 			}
 		}
 
-		public void OnAttackAim(InputAction.CallbackContext context)
+		public void OnAttack(InputAction.CallbackContext context)
 		{
 			if (context.performed)
 			{
-				if (context.interaction is PressInteraction && CanAttack)
-				{
-					IsAttacking = true;
-					currState = Enum.Parse<State>($"Attack_{Weapon}");
-					portrait.Play($"Attack_{Weapon}"); // NOTE: CrossFade is glitchy here
-					weaponSlash.SetInt(xDirParam, IsFacingLeft ? -1 : 1);
-					weaponSlash.SetFloat(sizeParam, _slashSize);
-					weaponSlash.SendEvent(attackEvent);
-				}
-				else if (context.interaction is HoldInteraction)
-				{
-					armController.SetAim();
-					armController.QueueEvent(ArmController.Trigger.Aim);
-				}
+				IsAttacking = true;
+				currState = Enum.Parse<State>($"Attack_{Weapon}");
+				portrait.Play($"Attack_{Weapon}"); // NOTE: CrossFade is glitchy here
+				weaponSlash.SetInt(xDirParam, IsFacingLeft ? -1 : 1);
+				weaponSlash.SetFloat(sizeParam, _slashSize);
+				weaponSlash.SendEvent(attackEvent);
 			}
+		}
+
+		public void OnAim(InputAction.CallbackContext context)
+		{
+			if (context.performed) PressingAim = true;
+			else if (context.canceled) PressingAim = false;
 		}
 
 		public void OnExtRel(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.ExtRel); }
@@ -462,9 +468,9 @@ namespace Abyss.Player
 
 		void CalcGravity()
 		{
-			if (IsGrounded() || IsSwinging)
+			if (_isGrounded || IsSwinging || armController.Repeling)
 			{
-				_gravMult = IsSwinging ? swingGravMult : defGravMult;
+				_gravMult = IsSwinging ? swingGravMult : armController.Repeling ? repelGravMult : defGravMult;
 				return;
 			}
 

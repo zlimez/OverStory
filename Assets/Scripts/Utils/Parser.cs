@@ -1,5 +1,4 @@
 using System;
-using Abyss.SceneSystem;
 using Abyss.EventSystem;
 
 namespace Abyss.Utils

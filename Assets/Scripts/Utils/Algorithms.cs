@@ -109,7 +109,7 @@ namespace Algorithms
 
         public static List<T> Merge<T>(List<T> sortedList1, List<T> sortedList2) where T : IComparable<T>
         {
-            List<T> mergedList = new List<T>();
+            List<T> mergedList = new();
             int index1 = 0;
             int index2 = 0;
 
