@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Abyss.EventSystem;
-using Tuples;
+using Utils.Tuples;
 
 public class SpeechManager : MonoBehaviour
 {

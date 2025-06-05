@@ -1,5 +1,5 @@
 using System;
-using Tuples;
+using Utils.Tuples;
 
 namespace Abyss.Environment
 {
@@ -54,7 +54,7 @@ namespace Abyss.Environment
                     float randonNum = (float)(ranges[j].Head + (random.NextDouble() * (ranges[j].Tail - ranges[j].Head)));
                     float midRange = (ranges[j].Tail + ranges[j].Head) / 2.0f;
                     // Scale Size = 0.2
-                    population[i, j] = (randonNum - midRange ) * 0.2f + midRange;
+                    population[i, j] = (randonNum - midRange) * 0.2f + midRange;
                 }
             }
 

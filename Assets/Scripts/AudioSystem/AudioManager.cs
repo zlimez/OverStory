@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Abyss.EventSystem;
 using Abyss.Utils;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Abyss.EventSystem;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 using Abyss.Settings;
 

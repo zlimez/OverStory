@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using Abyss.Utils;
 using Abyss.EventSystem;
-using Tuples;
+using Utils.Tuples;
 using System;
 
 public class BroadcastManager : MonoBehaviour
@@ -22,7 +22,7 @@ public class BroadcastManager : MonoBehaviour
     [SerializeField] public string WeaponUnequipped = "You unequip your weapon. You are now unarmed.";
     [SerializeField] public string GetItem = "You obtained x{quantity} {itemType}: \"{itemName}\".";
     [SerializeField] public string LoseItem = "You remove from your inventory x{quantity} {itemType}: \"{itemName}\".";
-    
+
     private Queue<string> msgQueue = new Queue<string>();
     private bool isMsgPlaying = false;
     private Coroutine msgCoroutine;
@@ -48,13 +48,13 @@ public class BroadcastManager : MonoBehaviour
 
     void PlayerIntelligenceChange2Msg(object args)
     {
-        float value = (float) args;
+        float value = (float)args;
         EnqueueMsg(PlayerIntelligenceChange.Replace("{value}", value.ToString()), MaintainTime);
     }
 
     void WeaponEquipped2Msg(object args)
     {
-        WeaponItem weapon = (WeaponItem) args;
+        WeaponItem weapon = (WeaponItem)args;
         EnqueueMsg(WeaponEquipped.Replace("{weaponName}", weapon.itemName), MaintainTime);
     }
 
@@ -65,7 +65,7 @@ public class BroadcastManager : MonoBehaviour
 
     void PlayerItemChange2Msg(object args)
     {
-        RefPair<Item, int> itemWithCnt = (RefPair<Item, int>) args;
+        RefPair<Item, int> itemWithCnt = (RefPair<Item, int>)args;
         Item item = itemWithCnt.Head;
         int cnt = itemWithCnt.Tail;
         if (item.itemType == ItemType.Spells || item.itemType == ItemType.Constructions || item.itemType == ItemType.Blueprints) return;
@@ -82,7 +82,7 @@ public class BroadcastManager : MonoBehaviour
 
     void UseEnqueueMsg(object args)
     {
-        string msg = (string) args;
+        string msg = (string)args;
         EnqueueMsg(msg, MaintainTime);
     }
 

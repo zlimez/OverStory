@@ -1,7 +1,7 @@
 using Abyss.EventSystem;
 using Abyss.Player;
 using UnityEngine;
-using Tuples;
+using Utils.Tuples;
 using System.Collections.Generic;
 
 namespace Abyss.Interactables

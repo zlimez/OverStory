@@ -1,7 +1,7 @@
 using System;
 using Abyss.Player;
 using Abyss.SceneSystem;
-using Tuples;
+using Utils.Tuples;
 
 namespace Abyss.DataPersistence
 {

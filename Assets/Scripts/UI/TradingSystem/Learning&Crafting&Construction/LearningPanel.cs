@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Abyss.EventSystem;
 using Abyss.Player;
 using TMPro;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 using UnityEngine.UI;
 

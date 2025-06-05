@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Abyss.EventSystem;
 using TMPro;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 using UnityEngine.UI;
 

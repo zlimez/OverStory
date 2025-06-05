@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 public class SpriteFlash : MonoBehaviour

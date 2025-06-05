@@ -136,48 +136,42 @@ namespace DataStructures
 
     public class LinkedNode<T>
     {
-        private T item;
+        public T Val { get; private set; }
         public LinkedNode<T> Previous { get; set; }
         public LinkedNode<T> Next { get; set; }
 
-        public LinkedNode(T item)
-        {
-            this.item = item;
-        }
+        public LinkedNode(T val) { Val = val; }
     }
 
     // Upon initialized items can neither be added or removed
     public class CircularList<T>
     {
-        public List<T> Items { get; private set; }
+        public List<T> Nodes { get; private set; }
         private int pointer = 0;
 
-        public CircularList(List<T> items)
-        {
-            this.Items = items;
-        }
+        public CircularList(List<T> nodes) { Nodes = nodes; }
 
-        public T Current => Items[pointer];
-        public int Count => Items.Count;
+        public T Current => Nodes[pointer];
+        public int Count => Nodes.Count;
 
         public T Next()
         {
             pointer++;
-            pointer = pointer >= Items.Count ? pointer - Items.Count : pointer;
-            return Items[pointer];
+            pointer = pointer >= Nodes.Count ? pointer - Nodes.Count : pointer;
+            return Nodes[pointer];
         }
 
         public T Previous()
         {
             pointer--;
-            pointer = pointer < 0 ? Items.Count - 1 : pointer;
-            return Items[pointer];
+            pointer = pointer < 0 ? Nodes.Count - 1 : pointer;
+            return Nodes[pointer];
         }
 
         public T Get(int index)
         {
-            index %= Items.Count;
-            return Items[index];
+            index %= Nodes.Count;
+            return Nodes[index];
         }
     }
 

@@ -143,6 +143,15 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lengthen"",
+                    ""type"": ""Button"",
+                    ""id"": ""85234744-96d8-4307-82e8-81ad72fbecb9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -310,6 +319,17 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9996c800-5610-4d11-97ee-6dfa451e7b68"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lengthen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -331,6 +351,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         m_Player_HardSoft = m_Player.FindAction("HardSoft", throwIfNotFound: true);
         m_Player_Disc = m_Player.FindAction("Disc", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
+        m_Player_Lengthen = m_Player.FindAction("Lengthen", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -405,6 +426,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HardSoft;
     private readonly InputAction m_Player_Disc;
     private readonly InputAction m_Player_Aim;
+    private readonly InputAction m_Player_Lengthen;
     public struct PlayerActions
     {
         private @ActionInputs m_Wrapper;
@@ -422,6 +444,7 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         public InputAction @HardSoft => m_Wrapper.m_Player_HardSoft;
         public InputAction @Disc => m_Wrapper.m_Player_Disc;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
+        public InputAction @Lengthen => m_Wrapper.m_Player_Lengthen;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -470,6 +493,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
+            @Lengthen.started += instance.OnLengthen;
+            @Lengthen.performed += instance.OnLengthen;
+            @Lengthen.canceled += instance.OnLengthen;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -513,6 +539,9 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
+            @Lengthen.started -= instance.OnLengthen;
+            @Lengthen.performed -= instance.OnLengthen;
+            @Lengthen.canceled -= instance.OnLengthen;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -545,5 +574,6 @@ public partial class @ActionInputs: IInputActionCollection2, IDisposable
         void OnHardSoft(InputAction.CallbackContext context);
         void OnDisc(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
+        void OnLengthen(InputAction.CallbackContext context);
     }
 }

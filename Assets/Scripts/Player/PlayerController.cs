@@ -2,7 +2,7 @@ using System;
 using Abyss.EventSystem;
 using Abyss.Player.Spells;
 using AnyPortrait;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -51,8 +51,9 @@ namespace Abyss.Player
 		// Hit params
 		bool _hasKb; Vector2 _hitFrm; float _kbImp;
 		public bool PressingRet { get; private set; } = false;
+		public bool PressingLen { get; private set; } = false;
 		public bool PressingAim { get; private set; } = false;
-		public bool IsJumping, IsDashing = false, IsSwinging = false;
+		public bool IsJumping, IsDashing = false, IsSwinging = false; // Distinct from Swinging in armController, IsSwinging is true for the duration player is in air starting from leaving ground and start swinging motion
 
 		[Header("Dash")]
 		[SerializeField] float dashSpeed = 25f;
@@ -73,6 +74,8 @@ namespace Abyss.Player
 		[SerializeField][Tooltip("Used by slash VFX")] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
 		[SerializeField][Tooltip("Conversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
 		float _slashSize;
+
+		[SerializeField][Tooltip("Affects magnitude of wiggle during arm swing state")] float swingAngDec = 4f, wiggleForce = 10f;
 
 		public bool IsAttacking { get; private set; } = false;
 		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false;
@@ -116,7 +119,7 @@ namespace Abyss.Player
 			else _isInVuln = false;
 
 			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
-			if (!_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
+			if (!IsSwinging && !armController.Repeling && !_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
 		}
 
 		void FixedUpdate()
@@ -139,12 +142,29 @@ namespace Abyss.Player
 				return;
 			}
 
-			if (!_isTakingDamage && !IsSwinging && !armController.Repeling)
+			if (IsSwinging)
+			{
+				if (armController.Swinging)
+				{
+					float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - armController.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
+					rb2D.AddForce(_moveDir * Mathf.Cos(ang) * wiggleForce * Vector2.right);
+				}
+				else rb2D.velocity = new(rb2D.velocity.x, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+			}
+			else if (!_isTakingDamage && !armController.Repeling)
 			{
 				if (!IsDashing)
 				{
 					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-					rb2D.velocity = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+					// if (!(!armController.Swinging || (armController.Swinging && !PressingRet && armController.IsSoft && (armController.PlayerFree || Vector2.Dot(armController.AnchorDir, newVel) > 0)))) Debug.Log("Disabling move");
+					if (armController.Swinging && PressingRet)
+					{
+						transform.position += 0.01f * Vector3.up;
+						transform.position -= 0.01f * Vector3.up;
+					}
+					if (!armController.Swinging || (armController.Swinging && !PressingRet && armController.IsSoft && (armController.PlayerFree || Vector2.Dot(armController.AnchorDir, newVel) > 0)))
+						rb2D.velocity = newVel;
 				}
 				else rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
 			}
@@ -351,7 +371,10 @@ namespace Abyss.Player
 		}
 
 		public void OnExtRel(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.ExtRel); }
-		public void OnDisc(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.Disc); }
+		public void OnDisc(InputAction.CallbackContext context)
+		{
+			// if (context.performed) armController.QueueEvent(ArmController.Trigger.Disc);
+		}
 		public void OnHardSoft(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.HardSoft); }
 
 		public void OnInteractRet(InputAction.CallbackContext context)
@@ -362,6 +385,12 @@ namespace Abyss.Player
 				else if (context.interaction is PressInteraction) PressingRet = true;
 			}
 			else if (context.canceled) PressingRet = false;
+		}
+
+		public void OnLengthen(InputAction.CallbackContext context)
+		{
+			if (context.performed) PressingLen = true;
+			else if (context.canceled) PressingLen = false;
 		}
 
 		public void OnSpell1(InputAction.CallbackContext context)

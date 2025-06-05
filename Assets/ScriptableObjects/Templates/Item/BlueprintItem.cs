@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Abyss.Player;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Item/Blueprint")]

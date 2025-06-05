@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using AI.BehaviorTree;
 using AI.BehaviorTree.Actions;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 public class GuardBT : MonoBehaviour

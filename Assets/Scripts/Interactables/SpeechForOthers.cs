@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Tuples;
+using Utils.Tuples;
 using Abyss.EventSystem;
 
 namespace Abyss.Interactables

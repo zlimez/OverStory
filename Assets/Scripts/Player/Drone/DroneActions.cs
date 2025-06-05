@@ -114,7 +114,7 @@ namespace AI.BehaviorTree.Actions
     {
         Light2D _droneLight;
         float _intensity;
-        Color _color;
+        UnityEngine.Color _color;
         Transform _transform;
 
         public DroneInDefault(string[] parameters) : base(parameters) { }
@@ -125,7 +125,7 @@ namespace AI.BehaviorTree.Actions
             List<object> dataRef = Tree.GetData(_params);
             _droneLight = (Light2D)dataRef[0];
             _intensity = (float)dataRef[1];
-            _color = (Color)dataRef[2];
+            _color = (UnityEngine.Color)dataRef[2];
             _transform = (Transform)dataRef[3];
         }
 
@@ -137,7 +137,7 @@ namespace AI.BehaviorTree.Actions
         Light2D _droneLight;
         float _adjustTime, _intensity, _zRot, _startRot;
         int _rotDir;
-        Color _color;
+        UnityEngine.Color _color;
         AnimationCurve _adjustCurve;
         Transform _transform;
         SpriteManager _spriteManager;
@@ -153,7 +153,7 @@ namespace AI.BehaviorTree.Actions
             _droneLight = (Light2D)dataRef[0];
             _adjustTime = (float)dataRef[1];
             _intensity = (float)dataRef[2];
-            _color = (Color)dataRef[3];
+            _color = (UnityEngine.Color)dataRef[3];
             _zRot = (float)dataRef[4];
             _adjustCurve = (AnimationCurve)dataRef[5];
             _transform = (Transform)dataRef[6];
@@ -172,7 +172,7 @@ namespace AI.BehaviorTree.Actions
             else
             {
                 _droneLight.intensity = _adjustCurve.Evaluate(_timer / _adjustTime) * _intensity;
-                _droneLight.color = Color.Lerp(Color.clear, _color, _adjustCurve.Evaluate(_timer / _adjustTime));
+                _droneLight.color = UnityEngine.Color.Lerp(UnityEngine.Color.clear, _color, _adjustCurve.Evaluate(_timer / _adjustTime));
                 _transform.rotation = Quaternion.Euler(0, 0, _startRot + _rotDir * (_zRot * _adjustCurve.Evaluate(_timer / _adjustTime)));
                 _timer += Time.deltaTime;
             }

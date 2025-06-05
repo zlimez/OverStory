@@ -1,4 +1,4 @@
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Specy Attributes")]

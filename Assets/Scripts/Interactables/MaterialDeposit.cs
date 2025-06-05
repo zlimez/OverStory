@@ -1,6 +1,6 @@
 using System;
 using Abyss.SceneSystem;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

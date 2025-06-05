@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Abyss.EventSystem;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
     // [SerializeField] private float speedMod = 1f, defaultCharInterval = 0.005f;
-    [SerializeField] private TextMeshProUGUI tutorialTMP; 
+    [SerializeField] private TextMeshProUGUI tutorialTMP;
 
     void OnEnable()
     {

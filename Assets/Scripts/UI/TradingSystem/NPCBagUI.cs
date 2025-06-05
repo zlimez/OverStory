@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using Abyss.Player;
-using Tuples;
+using Utils.Tuples;
 
 public class NPCBagUI : MonoBehaviour
 {

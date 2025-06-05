@@ -1,6 +1,6 @@
 
 using System.Collections.Generic;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 /** <summary> Makes required transform operations on root object such that sprite reflects movement </summary> **/

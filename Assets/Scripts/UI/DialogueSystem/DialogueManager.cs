@@ -5,7 +5,7 @@ using Abyss.Utils;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
-using Tuples;
+using Utils.Tuples;
 using Abyss.EventSystem;
 
 public class DialogueManager : Singleton<DialogueManager>

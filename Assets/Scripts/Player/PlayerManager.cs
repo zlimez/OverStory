@@ -1,7 +1,7 @@
 using Abyss.Environment.Enemy;
 using Abyss.EventSystem;
 using Abyss.SceneSystem;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 namespace Abyss.Player

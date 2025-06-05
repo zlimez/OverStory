@@ -1,7 +1,7 @@
 using System;
 using Abyss.EventSystem;
 using Abyss.Interactables;
-using Tuples;
+using Utils.Tuples;
 using UnityEngine;
 
 public class PowerPanel : Interactable
