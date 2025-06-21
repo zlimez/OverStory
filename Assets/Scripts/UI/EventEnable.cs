@@ -11,8 +11,8 @@ public class EventEnable : MonoBehaviour
 {
     [SerializeField] Pair<DynamicEvent, GameObject>[] enableDEventObjectPairs;
     [SerializeField] Pair<DynamicEvent, GameObject>[] disableDEventObjectPairs;
-    [SerializeField] Pair<StaticEvent, GameObject>[] enableSEventObjectPairs;
-    [SerializeField] Pair<StaticEvent, GameObject>[] disableSEventObjectPairs;
+    [SerializeField] Pair<NamedEvent, GameObject>[] enableSEventObjectPairs;
+    [SerializeField] Pair<NamedEvent, GameObject>[] disableSEventObjectPairs;
     List<Pair<GameEvent, Action<object>>> _eventActions = new();
 
     void Awake()

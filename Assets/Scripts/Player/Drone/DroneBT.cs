@@ -11,11 +11,13 @@ public class DroneBT : MonoBT
     [Header("Follow Settings")]
     [SerializeField] Transform followTransform;
     [SerializeField] float smoothTime;
+
     [Header("Follow Hover Settings")]
     [SerializeField] float hoverInterval;
     [SerializeField] Transform hoverTop, hoverBtm;
     [SerializeField][Tooltip("Threshold distance from the player that the drone will stop follow and start hovering")] float distToStop;
     [SerializeField][Tooltip("Threshold distance from the player that the drone will exit hover and start following again")] float distToStart;
+
     [Header("Construction Settings")]
     [SerializeField] float timeToBuildLoc;
     [SerializeField] float transitionTime;
@@ -25,26 +27,33 @@ public class DroneBT : MonoBT
     [SerializeField] Color buildColor;
     [SerializeField] Vector3 buildHoverAmp;
 
+    [Header("Pick Settings")]
+    [SerializeField] Transform dropOffPt;
+
+    readonly string _buildLoc = "buildLoc", _armLoc = "getArm";
 
     public override void Setup()
     {
-        Blackboard bb = new(new Pair<string, string[]>[] { new("buildLoc", new string[] { PlayEvents.BuildStart.ToString(), PlayEvents.BuildEnd.ToString() }) });
+        Blackboard bb = new(new Pair<string, string[]>[] {
+            new(_buildLoc, new string[] { PlayEvents.BuildStart.ToString(), PlayEvents.BuildEnd.ToString() }),
+            new(_armLoc, new string[] { PlayEvents.GetArm.ToString() })
+        });
         Pair<string, object>[] droneParams = {
             new("followTransform", followTransform),
             new("droneTransform", transform),
             new("droneSprite", GetComponent<SpriteManager>()),
             new("smoothTime", smoothTime),
-             new("distToStop", distToStop),
+            new("distToStop", distToStop),
             new("distToStart", distToStart),
 
             new("hoverTop", hoverTop),
             new("hoverBtm", hoverBtm),
             new("hoverInterval", hoverInterval),
 
-            new("mvToBuildCurve", moveToBuildLocCurve),
-            new("mvToBuildType", GotoTargetByCurve.TargetType.Transform),
-            new("mvToBuildBy", GotoTargetByCurve.MoveBy.Duration),
-            new("mvToBuildDuration", timeToBuildLoc),
+            new("mvCurve", moveToBuildLocCurve),
+            new("mvType", GotoTargetByCurve.TargetType.Transform),
+            new("mvBy", GotoTargetByCurve.MoveBy.Duration),
+            new("mvTime", timeToBuildLoc),
 
             new("headLight", headLight),
             new("normalIntensity", headLight.intensity),
@@ -55,17 +64,28 @@ public class DroneBT : MonoBT
             new("buildZRot", buildZRot),
             new("buildHoverAmp", buildHoverAmp),
             new("transitionCurve", transitionCurve),
-            new("transitionTime", transitionTime)
+            new("transitionTime", transitionTime),
+
+            new("dropOffPt", dropOffPt),
         };
 
         _bT = new BT(new ObserveSelector(new List<Node> {
             new ObserveSequence(new List<Node> {
-                new CheckVarExists(new string[] { "buildLoc" }),
-                new XFaceTarget(new string[] { "droneSprite", "buildLoc" }),
-                new GotoTargetByCurve(new string[] { "droneTransform", "buildLoc", "mvToBuildCurve", "mvToBuildType", "mvToBuildBy", "mvToBuildDuration" }),
+                new CheckVarExists(new string[] { _buildLoc }),
+                new XFaceTarget(new string[] { "droneSprite", _buildLoc }),
+                new GotoTargetByCurve(new string[] { "droneTransform", _buildLoc, "mvCurve", "mvType", "mvBy", "mvTime" }),
                 new DroneAdjust(new string[] { "headLight", "transitionTime", "buildIntensity", "buildColor", "buildZRot", "transitionCurve", "droneTransform", "droneSprite" }),
-                new Hover(new string[] { "buildLoc", "buildHoverAmp", "hoverInterval", "droneTransform" })
-            }, new string[] { "buildLoc" }, (obj) => { return true; }),
+                new Hover(new string[] { _buildLoc, "buildHoverAmp", "hoverInterval", "droneTransform" })
+            }, new string[] { _buildLoc }, (obj) => { return true; }),
+
+            // new Sequence(new List<Node> {
+            //     new CheckVarExists(new string[] { _armLoc }),
+            //     new XFaceTarget(new string[] {"droneSprite", _armLoc}),
+            //     new GotoTargetByCurve(new string[] { "droneTransform", _armLoc, "mvCurve", "mvType", "mvBy", "mvTime" }),
+            //     new XFaceTarget(new string[] { "dropOffPt" }),
+            //     new GotoTargetByCurve(new string[] { "droneTransform", "dropOffPt", "mvCurve", "mvType", "mvBy", "mvTime" }),
+            //     // TODO: Make this a pick routine interact with arm broadly something that can be picked
+            // }),
 
             new Failer(new Selector(new List<Node> {
                 new DroneInDefault(new string[] { "headLight", "normalIntensity", "normalColor", "droneTransform" }),
@@ -73,7 +93,7 @@ public class DroneBT : MonoBT
             })),
 
             new DroneFollow(new string[] { "followTransform", "droneTransform", "smoothTime", "hoverTop", "hoverBtm", "hoverInterval", "distToStop", "distToStart", "droneSprite" })
-        }, new string[] { "buildLoc" }, (obj) => { return true; })
+        }, new string[] { _buildLoc }, (args) => { return true; })
         , droneParams, new Blackboard[] { bb });
     }
 }

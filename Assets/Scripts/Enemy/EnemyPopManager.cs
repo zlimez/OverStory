@@ -70,7 +70,7 @@ namespace Abyss.Environment.Enemy
             }
             EventManager.InvokeEvent(SystemEvents.EnemyPopManagerReady);
             IsReady = true;
-            EventManager.InvokeEvent(PlayEvents.PlayerFriendlinessPurityChange);
+            EventManager.InvokeEvent(PlayEvents.FriendlinessPurityChange);
         }
 
         void OnEnable() => EventManager.StartListening(SystemEvents.TimeBcastEvent, Breed);
@@ -190,7 +190,7 @@ namespace Abyss.Environment.Enemy
 #endif
             }
             FriendlinessAverage = FriendlinessCount / (float)EnemyCount;
-            EventManager.InvokeEvent(PlayEvents.PlayerFriendlinessPurityChange);
+            EventManager.InvokeEvent(PlayEvents.FriendlinessPurityChange);
         }
 
         // Invoked at the start of each scene by the SpawnManager

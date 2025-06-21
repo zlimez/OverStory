@@ -5,64 +5,27 @@ namespace Abyss.EventSystem
     // of the code that rely on these values. If you need to add new values, append them to
     // the end of the list and assign them new unique integer values.
     [System.Serializable]
-    public enum StaticEvent
+    public enum NamedEvent
     {
-        NoEvent = 0,
-        SystemsReady = 1,
-        EnemyPopManagerReady = 21,
+        NoEvent,
+        SystemsReady, EnemyPopManagerReady, LedgerReady,
+        SceneTransitStart, SceneTransitDone, SceneTransitPrep,
+        BlackIn, BlackOut,
 
-        SceneTransitStart = 2,
-        SceneTransitDone = 3,
-        SceneTransitPrep = 4,
+        PlayerDeath, Respawn, GetArm,
+        InteractableEntered, InteractableExited,
+        PlayerHealthChange, PurityChange, ActionPurityChange, FriendlinessPurityChange,
+        PlayerIntelChange, PlayerItemChange,
+        DraggedItem, UpdateNPCInventory, SelectItem,
 
-        BlackIn = 5,
-        BlackOut = 6,
-
-        PlayerDeath = 11,
-        Respawn = 29,
-
-        InteractableEntered = 14,
-        InteractableExited = 15,
-
-        PlayerHealthChange = 16,
-        PlayerPurityChange = 17,
-
-        DraggedItem = 18,
-        UpdateNPCInventory = 19,
-        SelectItem = 31,
-
-        TradePostEntered = 22,
-        LearningPostEntered = 30,
-        CraftingPostEntered = 32,
-
-        WeaponEquipped = 23,
-        WeaponUnequipped = 24,
-        SpellEquippedStateChange = 26,
-
-        LureUsed = 37,
-        LurePlaced = 38,
-
-        RestStart = 25,
-        InRest = 36,
-        RestEnd = 35,
-
-        PlayerActionPurityChange = 27,
-        PlayerFriendlinessPurityChange = 28,
-
-        TimeBcastEvent = 20,
-
-        BuildStart = 33,
-        BuildEnd = 34,
-        PlayerSpeak = 39,
-        PlayerSpeakFlip = 40,
-        LedgerReady = 41,
-        PlayerIntelligenceChange = 42,
-        PlayerItemChange = 43,
-        Message = 44,
-        ChangeCameraBG = 45,
-        TutorialDisplay = 46,
-        TutorialClose = 47,
-        TradePostExited = 48,
-        LearningPostExited = 49,
+        TradePostEntered, TradePostExited, LearningPostEntered, LearningPostExited, CraftingPostEntered,
+        WeaponEquipped, WeaponUnequipped, SpellChange,
+        LureUsed, LurePlaced,
+        RestStart, InRest, RestEnd,
+        TimeBcast,
+        BuildStart, BuildEnd,
+        PlayerSpeak, PlayerSpriteFlip,
+        Message, ChangeCameraBG,
+        TutorialDisplay, TutorialClose,
     }
 }

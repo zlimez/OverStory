@@ -100,21 +100,21 @@ public class SlotForSpell : MonoBehaviour
     {
         Debug.Log("Equip " + item.itemName + " to " + KeyBorad[0]);
         GameManager.Instance.PlayerPersistence.SpellItems[0] = item;
-        EventManager.InvokeEvent(PlayEvents.SpellEquippedStateChange);
+        EventManager.InvokeEvent(PlayEvents.SpellChange);
         CloseContextMenu();
     }
     void Equip1()
     {
         Debug.Log("Equip " + item.itemName + " to " + KeyBorad[1]);
         GameManager.Instance.PlayerPersistence.SpellItems[1] = item;
-        EventManager.InvokeEvent(PlayEvents.SpellEquippedStateChange);
+        EventManager.InvokeEvent(PlayEvents.SpellChange);
         CloseContextMenu();
     }
     void Equip2()
     {
         Debug.Log("Equip " + item.itemName + " to " + KeyBorad[2]);
         GameManager.Instance.PlayerPersistence.SpellItems[2] = item;
-        EventManager.InvokeEvent(PlayEvents.SpellEquippedStateChange);
+        EventManager.InvokeEvent(PlayEvents.SpellChange);
         CloseContextMenu();
     }
     void Unequip()
@@ -124,7 +124,7 @@ public class SlotForSpell : MonoBehaviour
         {
             if (index[i]) GameManager.Instance.PlayerPersistence.SpellItems[i] = null;
         }
-        EventManager.InvokeEvent(PlayEvents.SpellEquippedStateChange);
+        EventManager.InvokeEvent(PlayEvents.SpellChange);
         CloseContextMenu();
     }
 

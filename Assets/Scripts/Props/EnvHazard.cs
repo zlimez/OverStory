@@ -2,6 +2,7 @@ using Abyss.Player;
 using UnityEngine;
 using Abyss.Settings;
 
+// TODO: Need significant improvement feels weird!
 public class EnvHazard : MonoBehaviour
 {
     [SerializeField] float damage = 10;

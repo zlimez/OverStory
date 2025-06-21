@@ -28,23 +28,10 @@ namespace AI.BehaviorTree
             return State;
         }
 
-        public virtual void Setup(BT tree)
-        {
-            Tree = tree;
-        }
-
+        public virtual void Setup(BT tree) => Tree = tree;
         public virtual void Teardown() { }
-
-        protected virtual void OnInit()
-        {
-            State = State.RUNNING;
-        }
-
-        // Cleanup resources here
-        public virtual void Done()
-        {
-            State = State.INACTIVE;
-        }
+        protected virtual void OnInit() => State = State.RUNNING;
+        public virtual void Done() => State = State.INACTIVE; // Cleanup resources here
 
         public virtual void Abort()
         {
@@ -56,12 +43,7 @@ namespace AI.BehaviorTree
         }
 
         public bool Completed => State == State.SUCCESS || State == State.FAILURE;
-
-        public virtual void OnChildComplete(Node child, State childState)
-        {
-            child.Done();
-        }
-
+        public virtual void OnChildComplete(Node child, State childState) => child.Done();
         public abstract List<Node> GetChildren();
     }
 }

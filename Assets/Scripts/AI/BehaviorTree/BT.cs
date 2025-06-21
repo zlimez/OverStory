@@ -150,8 +150,8 @@ namespace AI.BehaviorTree
             // Active controls nodes that require condition recheck every turn do not pop until recheck is done (Reevaluated toggles back to false)
             if ((node is ActiveSelector selector && selector.Restarted)
                 || (node is ActiveSequence sequence && sequence.Restarted)
-                || (node is ObserveSelector observeSelector && observeSelector.Restarted)
-                || (node is ObserveSequence observeSequence && observeSequence.Restarted)
+                || (node is ObserveSelector observeSelector && observeSelector.WillRestart)
+                || (node is ObserveSequence observeSequence && observeSequence.WillRestart)
             ) return true;
             if (ogState == State.INACTIVE) return true;
 

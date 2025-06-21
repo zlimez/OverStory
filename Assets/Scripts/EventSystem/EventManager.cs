@@ -18,7 +18,7 @@ namespace Abyss.EventSystem
                 eventTable[gameEvent] += listener;
             else eventTable.Add(gameEvent, listener);
         }
-        public static void StartListening(StaticEvent gameEvent, Action<object> listener) => StartListening(new GameEvent(gameEvent.ToString()), listener);
+        public static void StartListening(NamedEvent gameEvent, Action<object> listener) => StartListening(new GameEvent(gameEvent.ToString()), listener);
 
         public static void StopListening(GameEvent gameEvent, Action<object> listener)
         {
@@ -30,17 +30,17 @@ namespace Abyss.EventSystem
                     eventTable.Remove(gameEvent);
             }
         }
-        public static void StopListening(StaticEvent gameEvent, Action<object> listener) => StopListening(new GameEvent(gameEvent.ToString()), listener);
+        public static void StopListening(NamedEvent gameEvent, Action<object> listener) => StopListening(new GameEvent(gameEvent.ToString()), listener);
 
         public static void StopListeningAll(GameEvent gameEvent)
         {
             if (eventTable.ContainsKey(gameEvent))
                 eventTable.Remove(gameEvent);
         }
-        public static void StopListeningAll(StaticEvent gameEvent) => StopListeningAll(new GameEvent(gameEvent.ToString()));
+        public static void StopListeningAll(NamedEvent gameEvent) => StopListeningAll(new GameEvent(gameEvent.ToString()));
 
         public static void QueueEvent(GameEvent gameEvent) => sceneTransitionQueuedEvents.Enqueue(gameEvent);
-        public static void QueueEvent(StaticEvent gameEvent) => QueueEvent(new GameEvent(gameEvent.ToString()));
+        public static void QueueEvent(NamedEvent gameEvent) => QueueEvent(new GameEvent(gameEvent.ToString()));
 
         public static void InvokeQueueEvents()
         {
@@ -59,6 +59,6 @@ namespace Abyss.EventSystem
                 eventTable[gameEvent]?.Invoke(inputParam);
         }
 
-        public static void InvokeEvent(StaticEvent gameEvent, object inputParam = null) => InvokeEvent(new GameEvent(gameEvent.ToString()), inputParam);
+        public static void InvokeEvent(NamedEvent gameEvent, object inputParam = null) => InvokeEvent(new GameEvent(gameEvent.ToString()), inputParam);
     }
 }

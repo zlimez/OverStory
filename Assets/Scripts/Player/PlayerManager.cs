@@ -53,8 +53,8 @@ namespace Abyss.Player
                 EventManager.StartListening(SystemEvents.SystemsReady, Load);
             else Load();
             EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StartListening(PlayEvents.PlayerActionPurityChange, UpdateActionPurity);
-            EventManager.StartListening(PlayEvents.PlayerFriendlinessPurityChange, UpdateFriendlinessPurity);
+            EventManager.StartListening(PlayEvents.ActionPurityChange, UpdateActionPurity);
+            EventManager.StartListening(PlayEvents.FriendlinessPurityChange, UpdateFriendlinessPurity);
         }
 
         void OnDisable()
@@ -62,8 +62,8 @@ namespace Abyss.Player
             playerController.OnAttackEnded -= weapon.Reset;
             EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
             EventManager.StopListening(SystemEvents.SystemsReady, Load);
-            EventManager.StopListening(PlayEvents.PlayerActionPurityChange, UpdateActionPurity);
-            EventManager.StopListening(PlayEvents.PlayerFriendlinessPurityChange, UpdateFriendlinessPurity);
+            EventManager.StopListening(PlayEvents.ActionPurityChange, UpdateActionPurity);
+            EventManager.StopListening(PlayEvents.FriendlinessPurityChange, UpdateFriendlinessPurity);
         }
 
         void FixedUpdate()
@@ -88,7 +88,7 @@ namespace Abyss.Player
 #endif
             if (weapon.weaponItem != null) playerController.EquipWeapon(weapon.weaponItem);
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
-            EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
+            EventManager.InvokeEvent(PlayEvents.PurityChange, PlayerAttr.Purity);
         }
 
         void Save(object input = null)
@@ -133,7 +133,7 @@ namespace Abyss.Player
             EventManager.InvokeEvent(PlayEvents.PlayerHealthChange, PlayerAttr.Health);
         }
 
-        void UpdatePurity() => EventManager.InvokeEvent(PlayEvents.PlayerPurityChange, PlayerAttr.Purity);
+        void UpdatePurity() => EventManager.InvokeEvent(PlayEvents.PurityChange, PlayerAttr.Purity);
 
         public void UpdateActionPurity(object input)
         {

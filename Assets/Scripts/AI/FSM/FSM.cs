@@ -10,15 +10,17 @@ namespace AI.FSM
     {
         public State StartState { get; }
         public Event Trigger { get; }
+        public Func<object, bool> Cond { get; }
         public State NextState { get; }
         public Action<object> Action { get; }
 
-        public Transition(State startState, Event trigger, State nextState, Action<object> action = null)
+        public Transition(State startState, Event trigger, State nextState, Action<object> action = null, Func<object, bool> cond = null)
         {
             StartState = startState;
             Trigger = trigger;
             NextState = nextState;
             Action = action;
+            Cond = cond;
         }
     }
 
@@ -30,7 +32,8 @@ namespace AI.FSM
         private readonly Dictionary<State, Action<object>> _exitActions = new();
 
         public FSM(State initState) => CurrState = initState;
-        public void AddTransition(Transition transition, bool bidir = false) {
+        public void AddTransition(Transition transition, bool bidir = false)
+        {
             _transitions[(transition.StartState, transition.Trigger)] = transition;
             if (bidir) _transitions[(transition.NextState, transition.Trigger)] = new Transition(transition.NextState, transition.Trigger, transition.StartState, transition.Action);
         }
@@ -41,6 +44,7 @@ namespace AI.FSM
         {
             if (_transitions.TryGetValue((CurrState, trigger), out var transition))
             {
+                if (transition.Cond != null && !transition.Cond(input)) return;
                 if (_exitActions.TryGetValue(CurrState, out var exitAction))
                     exitAction?.Invoke(input);
                 transition.Action?.Invoke(input);

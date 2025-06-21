@@ -48,7 +48,7 @@ namespace Abyss.Environment.Enemy
                 {
                     attributes.isAlive = false;
                     OnDeath?.Invoke();
-                    EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -10f);
+                    EventManager.InvokeEvent(PlayEvents.ActionPurityChange, -10f);
                     Drop();
                     Destroy(gameObject);
                 }

@@ -30,20 +30,20 @@ public class BroadcastManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEvents.PlayerIntelligenceChange, PlayerIntelligenceChange2Msg);
+        EventManager.StartListening(PlayEvents.PlayerIntelChange, PlayerIntelligenceChange2Msg);
         EventManager.StartListening(PlayEvents.WeaponEquipped, WeaponEquipped2Msg);
         EventManager.StartListening(PlayEvents.WeaponUnequipped, WeaponUnequipped2Msg);
         EventManager.StartListening(PlayEvents.PlayerItemChange, PlayerItemChange2Msg);
-        EventManager.StartListening(PlayEvents.Message, UseEnqueueMsg);
+        EventManager.StartListening(UIEvents.Message, UseEnqueueMsg);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(PlayEvents.PlayerIntelligenceChange, PlayerIntelligenceChange2Msg);
+        EventManager.StopListening(PlayEvents.PlayerIntelChange, PlayerIntelligenceChange2Msg);
         EventManager.StopListening(PlayEvents.WeaponEquipped, WeaponEquipped2Msg);
         EventManager.StopListening(PlayEvents.WeaponUnequipped, WeaponUnequipped2Msg);
         EventManager.StopListening(PlayEvents.PlayerItemChange, PlayerItemChange2Msg);
-        EventManager.StopListening(PlayEvents.Message, UseEnqueueMsg);
+        EventManager.StopListening(UIEvents.Message, UseEnqueueMsg);
     }
 
     void PlayerIntelligenceChange2Msg(object args)

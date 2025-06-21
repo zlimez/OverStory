@@ -12,16 +12,13 @@ namespace AI.BehaviorTree
     /// </summary>
     public class ObserveSelector : Selector
     {
-        public bool Restarted { get; private set; } = false;
+        public bool WillRestart { get; private set; } = false;
         Node _prevChild;
         readonly string[] _observedVars;
         bool _shouldReevaluate = false;
-        readonly Func<object, bool> _restartCondition;
+        readonly Func<List<object>, bool> _restartCondition;
 
-        void PromptReevaluate()
-        {
-            if (State == State.RUNNING) _shouldReevaluate = true;
-        }
+        void PromptReevaluate() { if (State == State.RUNNING) _shouldReevaluate = true; }
 
         /// <summary>
         /// The object params in restart conditions contains the values of the observed vars retrieved from the headboard
@@ -29,7 +26,7 @@ namespace AI.BehaviorTree
         /// <param name="children"></param>
         /// <param name="observedVars"></param>
         /// <param name="restartCondition"></param>
-        public ObserveSelector(List<Node> children, string[] observedVars, Func<object, bool> restartCondition) : base(children)
+        public ObserveSelector(List<Node> children, string[] observedVars, Func<List<object>, bool> restartCondition) : base(children)
         {
             _observedVars = observedVars;
             _restartCondition = restartCondition;
@@ -62,10 +59,9 @@ namespace AI.BehaviorTree
                 if (_currChildInd + 1 < Children.Count)
                 {
                     // Do not want to push a child in running state onto the scheduler to have it ticked again
-                    if (!Restarted || (Restarted && _prevChild != Children[_currChildInd + 1]))
+                    if (!WillRestart || (WillRestart && _prevChild != Children[_currChildInd + 1]))
                         Tree.Scheduled.AddFirst(Children[++_currChildInd]);
                     else ++_currChildInd;
-                    return;
                 }
                 else State = State.FAILURE;
             }
@@ -73,42 +69,35 @@ namespace AI.BehaviorTree
 
         public override State Tick()
         {
-            if (State == State.SUSPENDED)
-            {
-                Done();
-            }
-            else if (State == State.INACTIVE)
-            {
-                OnInit();
-            }
+            if (State == State.SUSPENDED) Done();
+            else if (State == State.INACTIVE) OnInit();
             else if (State == State.RUNNING)
             {
                 if (_shouldReevaluate)
                 {
                     _shouldReevaluate = false;
-                    Restarted = _restartCondition(Tree.GetData(_observedVars, true)); // nullable set to true as one or more env variable might not have changed the first time to be registed in headboard
-                    if (Restarted)
+                    WillRestart = _restartCondition(Tree.GetData(_observedVars, true)); // nullable set to true as one or more env variable might not have changed the first time to be registed in headboard
+                    if (WillRestart)
                     {
                         _prevChild = Children[_currChildInd];
-                        if (_currChildInd != 0)
-                            OnInit();
-                        else Restarted = false;
+                        if (_currChildInd != 0) OnInit();
+                        else WillRestart = false;
                     }
                 }
                 else
                 {
-                    if (Restarted && _prevChild != Children[_currChildInd]) _prevChild.Abort();
-                    Restarted = false;
+                    if (WillRestart && _prevChild != Children[_currChildInd]) _prevChild.Abort();
+                    WillRestart = false;
                 }
             }
-            else if (Restarted)
+            else if (WillRestart)
             {
-                // Failure means prevChild have also been executed this turn and failed violating at most one tick starting at running state per turn
+                // Must be success due to after restart the new child succeeded, if failed must mean all inc prevChild executed again when it should be in running
 #if UNITY_EDITOR
                 Assert.IsTrue(State == State.SUCCESS);
 #endif
                 _prevChild.Abort();
-                Restarted = false;
+                WillRestart = false;
             }
 
             return State;

@@ -6,11 +6,11 @@ namespace AI.BehaviorTree
 {
     public class ObserveSequence : Sequence
     {
-        public bool Restarted { get; private set; } = false;
+        public bool WillRestart { get; private set; } = false;
         Node _prevChild;
         readonly string[] _observedVars;
         bool _shouldReevaluate = false;
-        readonly Func<object, bool> _restartCondition;
+        readonly Func<List<object>, bool> _restartCondition;
 
         void PromptReevaluate()
         {
@@ -50,10 +50,9 @@ namespace AI.BehaviorTree
                 if (_currChildInd + 1 < Children.Count)
                 {
                     // Do not want to push a child in running state onto the scheduler to have it ticked again
-                    if (!Restarted || (Restarted && _prevChild != Children[_currChildInd + 1]))
+                    if (!WillRestart || (WillRestart && _prevChild != Children[_currChildInd + 1]))
                         Tree.Scheduled.AddFirst(Children[++_currChildInd]);
                     else ++_currChildInd;
-                    return;
                 }
                 else State = State.SUCCESS;
             }
@@ -61,41 +60,34 @@ namespace AI.BehaviorTree
 
         public override State Tick()
         {
-            if (State == State.SUSPENDED)
-            {
-                Done();
-            }
-            else if (State == State.INACTIVE)
-            {
-                OnInit();
-            }
+            if (State == State.SUSPENDED) Done();
+            else if (State == State.INACTIVE) OnInit();
             else if (State == State.RUNNING)
             {
                 if (_shouldReevaluate)
                 {
                     _shouldReevaluate = false;
-                    Restarted = _restartCondition(Tree.GetData(_observedVars, true));
-                    if (Restarted)
+                    WillRestart = _restartCondition(Tree.GetData(_observedVars, true));
+                    if (WillRestart)
                     {
                         _prevChild = Children[_currChildInd];
-                        if (_currChildInd != 0)
-                            OnInit();
-                        else Restarted = false;
+                        if (_currChildInd != 0) OnInit();
+                        else WillRestart = false;
                     }
                 }
                 else
                 {
-                    if (Restarted && _prevChild != Children[_currChildInd]) _prevChild.Abort();
-                    Restarted = false;
+                    if (WillRestart && _prevChild != Children[_currChildInd]) _prevChild.Abort();
+                    WillRestart = false;
                 }
             }
-            else if (Restarted)
+            else if (WillRestart)
             {
 #if UNITY_EDITOR
                 Assert.IsTrue(State == State.FAILURE);
 #endif
                 _prevChild.Abort();
-                Restarted = false;
+                WillRestart = false;
             }
 
             return State;

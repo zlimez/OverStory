@@ -43,7 +43,7 @@ public class FirstRestRecLost : MonoBehaviour
                 {
                     GameManager.Instance.Inventory.MaterialCollection.Add(journalItem);
                     GameManager.Instance.PlayerPersistence.PlayerAttr.Intelligence += 1;
-                    EventManager.InvokeEvent(PlayEvents.PlayerIntelligenceChange, 1);
+                    EventManager.InvokeEvent(PlayEvents.PlayerIntelChange, 1);
                 }
             }
         }

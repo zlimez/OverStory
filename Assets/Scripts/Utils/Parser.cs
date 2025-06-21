@@ -5,11 +5,11 @@ namespace Abyss.Utils
 {
     class Parser
     {
-        public static StaticEvent GetStaticEventFromText(string text)
+        public static NamedEvent GetStaticEventFromText(string text)
         {
-            if (Enum.TryParse(text, out StaticEvent parsedEvent))
+            if (Enum.TryParse(text, out NamedEvent parsedEvent))
                 return parsedEvent;
-            else return StaticEvent.NoEvent;
+            else return NamedEvent.NoEvent;
         }
 
         public static Settings.Scene GetSceneFromText(string text)

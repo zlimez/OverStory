@@ -116,7 +116,7 @@ public class TradingSystem : MonoBehaviour
             }
             else
             {
-                EventManager.InvokeEvent(PlayEvents.Message, "You must first offer items to barter, then choose 'Trade'.");
+                EventManager.InvokeEvent(UIEvents.Message, "You must first offer items to barter, then choose 'Trade'.");
             }
         }
         else if (destination == AreaType.Bottom)
@@ -132,12 +132,12 @@ public class TradingSystem : MonoBehaviour
                 }
                 else
                 {
-                    EventManager.InvokeEvent(PlayEvents.Message, "You may only offer your own items to barter. Drag them in from your inventory.");
+                    EventManager.InvokeEvent(UIEvents.Message, "You may only offer your own items to barter. Drag them in from your inventory.");
                 }
             }
             else
             {
-                EventManager.InvokeEvent(PlayEvents.Message, "The " + _tribe.ToString() + " do not find this item to be of value.");
+                EventManager.InvokeEvent(UIEvents.Message, "The " + _tribe.ToString() + " do not find this item to be of value.");
             }
         }
         else if (original == AreaType.Bottom)
@@ -150,7 +150,7 @@ public class TradingSystem : MonoBehaviour
             }
             else
             {
-                EventManager.InvokeEvent(PlayEvents.Message, "You may only offer your own items to barter. Drag them in from your inventory.");
+                EventManager.InvokeEvent(UIEvents.Message, "You may only offer your own items to barter. Drag them in from your inventory.");
             }
         }
         UpdateTradingArea();
@@ -276,12 +276,12 @@ public class TradingSystem : MonoBehaviour
             if (proportion + purity - 0.6f < 1)
             {
                 BargainFailed = true;
-                EventManager.InvokeEvent(PlayEvents.Message, "Your attempt at bargaining has failed.");
+                EventManager.InvokeEvent(UIEvents.Message, "Your attempt at bargaining has failed.");
             }
             else
             {
                 SetTradeButton(true);
-                EventManager.InvokeEvent(PlayEvents.Message, "You have sucessfully negotiated for cheaper prices.");
+                EventManager.InvokeEvent(UIEvents.Message, "You have sucessfully negotiated for cheaper prices.");
             }
             SetBargainButton(false);
         }
@@ -290,12 +290,12 @@ public class TradingSystem : MonoBehaviour
             if (proportion - purity + 0.6f > 1)
             {
                 BargainFailed = true;
-                EventManager.InvokeEvent(PlayEvents.Message, "Your attempt at bargaining has failed.");
+                EventManager.InvokeEvent(UIEvents.Message, "Your attempt at bargaining has failed.");
             }
             else
             {
                 SetTradeButton(true);
-                EventManager.InvokeEvent(PlayEvents.Message, "You have sucessfully negotiated for cheaper prices.");
+                EventManager.InvokeEvent(UIEvents.Message, "You have sucessfully negotiated for cheaper prices.");
             }
             SetBargainButton(false);
         }
@@ -333,7 +333,7 @@ public class TradingSystem : MonoBehaviour
 
     private void TradeDone()
     {
-        EventManager.InvokeEvent(PlayEvents.Message, "Happy trading!! :)");
+        EventManager.InvokeEvent(UIEvents.Message, "Happy trading!! :)");
         topArea.ReverseClear();
         bottomArea.ReverseClear();
     }
@@ -377,12 +377,12 @@ public class TradingSystem : MonoBehaviour
     {
         if ((original == AreaType.Player || original == AreaType.NPC) && (destination == AreaType.Player || destination == AreaType.NPC))
         {
-            EventManager.InvokeEvent(PlayEvents.Message, "You must first offer items to barter, then complete the trade.");
+            EventManager.InvokeEvent(UIEvents.Message, "You must first offer items to barter, then complete the trade.");
             return false;
         }
         if ((original == AreaType.Top || original == AreaType.Bottom) && (destination == AreaType.Top || destination == AreaType.Bottom))
         {
-            EventManager.InvokeEvent(PlayEvents.Message, "Items cannot be dragged directly into the trade area. Please place them back into your inventory first.");
+            EventManager.InvokeEvent(UIEvents.Message, "Items cannot be dragged directly into the trade area. Please place them back into your inventory first.");
             return false;
         }
         return true;

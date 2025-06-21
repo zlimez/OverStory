@@ -34,7 +34,6 @@ namespace AI.BehaviorTree
         public void AddListener(string varName, Action<object> func) => dataEvents[varName].Head += func;
         public void RemoveListener(string varName, Action<object> func) => dataEvents[varName].Head -= func;
 
-
         public void Teardown()
         {
             foreach (var dataEvent in dataEvents)

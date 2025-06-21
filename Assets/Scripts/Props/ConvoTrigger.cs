@@ -58,8 +58,8 @@ public class EventCondChecker
 {
     [SerializeField] bool invert = false;
     [SerializeField][Tooltip("Dyanamic events (none core) that must have either occurred or not occurred (and)")] Pair<DynamicEvent, bool>[] dynamicEventConditions; // TODO: Expand to include ors and parantheses
-    [SerializeField][Tooltip("Static core events that must have either occurred or not occurred (and)")] Pair<StaticEvent, bool>[] staticEventConditions;
-    [SerializeField][Tooltip("Static core events that must have occured exactly n times (and)")] Pair<StaticEvent, int>[] staticEventCountConditions;
+    [SerializeField][Tooltip("Static core events that must have either occurred or not occurred (and)")] Pair<NamedEvent, bool>[] staticEventConditions;
+    [SerializeField][Tooltip("Static core events that must have occured exactly n times (and)")] Pair<NamedEvent, int>[] staticEventCountConditions;
     [SerializeField][Tooltip("Dynamic events (none core) that must have occured exactly n times (and)")] Pair<DynamicEvent, int>[] dynamicEventCountConditions;
     [SerializeField] Pair<Item, int>[] itemsReq;
 

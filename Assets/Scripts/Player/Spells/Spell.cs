@@ -10,7 +10,7 @@ namespace Abyss.Player.Spells
 
         public virtual void Cast(bool toLeft)
         {
-            EventManager.InvokeEvent(PlayEvents.PlayerActionPurityChange, -purityPenalty);
+            EventManager.InvokeEvent(PlayEvents.ActionPurityChange, -purityPenalty);
             GameManager.Instance.Inventory.MaterialCollection.RemoveStock(spellItem.rottenFlesh, spellItem.rottenFleshNeeded);
         }
     }

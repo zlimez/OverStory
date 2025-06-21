@@ -9,11 +9,11 @@ namespace Abyss.EventSystem
     {
         public static GameEvent NoEvent { get; private set; } = new GameEvent(string.Empty);
         [Tooltip("The related static event, if any.")]
-        public StaticEvent RelatedStaticEvent;
+        public NamedEvent BindedNamedEvent;
 
         public string EventName
         {
-            readonly get { return RelatedStaticEvent != StaticEvent.NoEvent ? RelatedStaticEvent.ToString() : _eventName; }
+            readonly get { return BindedNamedEvent != NamedEvent.NoEvent ? BindedNamedEvent.ToString() : _eventName; }
             set { _eventName = value; }
         }
         [Tooltip("Specify this only if it is a dynamic event. Otherwise, it will be ignored.")]
@@ -21,17 +21,17 @@ namespace Abyss.EventSystem
         [SerializeField]
         private string _eventName;
 
-        public GameEvent(string eventName, StaticEvent relatedStaticEvent = StaticEvent.NoEvent)
+        public GameEvent(string eventName, NamedEvent bindedNamedEvent = NamedEvent.NoEvent)
         {
-            if (relatedStaticEvent == StaticEvent.NoEvent)
+            if (bindedNamedEvent == NamedEvent.NoEvent)
             {
-                RelatedStaticEvent = StaticEvent.NoEvent;
+                BindedNamedEvent = NamedEvent.NoEvent;
                 _eventName = eventName;
                 return;
             }
 
-            RelatedStaticEvent = relatedStaticEvent;
-            _eventName = relatedStaticEvent.ToString();
+            BindedNamedEvent = bindedNamedEvent;
+            _eventName = bindedNamedEvent.ToString();
         }
 
         public override readonly bool Equals(object obj) => obj is GameEvent otherEvent && EventName.Equals(otherEvent.EventName);
@@ -41,8 +41,8 @@ namespace Abyss.EventSystem
 
         public override readonly string ToString()
         {
-            if (RelatedStaticEvent != StaticEvent.NoEvent)
-                return $"{RelatedStaticEvent} ({EventName})";
+            if (BindedNamedEvent != NamedEvent.NoEvent)
+                return $"{BindedNamedEvent} ({EventName})";
             else return EventName;
         }
     }

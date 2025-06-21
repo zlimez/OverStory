@@ -2,115 +2,96 @@ namespace Abyss.EventSystem
 {
     public static class SystemEvents
     {
-        public static readonly StaticEvent SystemsReady;
-        public static readonly StaticEvent LedgerReady;
-        public static readonly StaticEvent SceneTransitStart;
-        public static readonly StaticEvent SceneTransitDone;
-        public static readonly StaticEvent SceneTransitPrep;
-        public static readonly StaticEvent TimeBcastEvent;
-        public static readonly StaticEvent EnemyPopManagerReady;
-        public static readonly StaticEvent ChangeCameraBG;
+        public static readonly NamedEvent SystemsReady;
+        public static readonly NamedEvent LedgerReady;
+        public static readonly NamedEvent SceneTransitStart;
+        public static readonly NamedEvent SceneTransitDone;
+        public static readonly NamedEvent SceneTransitPrep;
+        public static readonly NamedEvent TimeBcastEvent;
+        public static readonly NamedEvent EnemyPopManagerReady;
+        public static readonly NamedEvent ChangeCameraBG;
 
 
         static SystemEvents()
         {
-            SystemsReady = StaticEvent.SystemsReady;
-            LedgerReady = StaticEvent.LedgerReady;
-            SceneTransitStart = StaticEvent.SceneTransitStart;
-            SceneTransitDone = StaticEvent.SceneTransitDone;
-            SceneTransitPrep = StaticEvent.SceneTransitPrep;
-            TimeBcastEvent = StaticEvent.TimeBcastEvent;
-            EnemyPopManagerReady = StaticEvent.EnemyPopManagerReady;
-            ChangeCameraBG = StaticEvent.ChangeCameraBG;
+            SystemsReady = NamedEvent.SystemsReady;
+            LedgerReady = NamedEvent.LedgerReady;
+            SceneTransitStart = NamedEvent.SceneTransitStart;
+            SceneTransitDone = NamedEvent.SceneTransitDone;
+            SceneTransitPrep = NamedEvent.SceneTransitPrep;
+            TimeBcastEvent = NamedEvent.TimeBcast;
+            EnemyPopManagerReady = NamedEvent.EnemyPopManagerReady;
+            ChangeCameraBG = NamedEvent.ChangeCameraBG;
         }
     }
 
     public static class UIEvents
     {
-        public static readonly StaticEvent BlackIn;
-        public static readonly StaticEvent BlackOut;
-        public static readonly StaticEvent DraggedItem;
-        public static readonly StaticEvent SelectItem;
-        public static readonly StaticEvent UpdateNPCInventory;
-        public static readonly StaticEvent TutorialDisplay;
-        public static readonly StaticEvent TutorialClose;
+        public static readonly NamedEvent BlackIn, BlackOut;
+        public static readonly NamedEvent DraggedItem, SelectItem;
+        public static readonly NamedEvent UpdateNPCInventory;
+        public static readonly NamedEvent TutorialDisplay, TutorialClose, Message;
 
 
         static UIEvents()
         {
-            BlackIn = StaticEvent.BlackIn;
-            BlackOut = StaticEvent.BlackOut;
-            DraggedItem = StaticEvent.DraggedItem;
-            UpdateNPCInventory = StaticEvent.UpdateNPCInventory;
-            SelectItem = StaticEvent.SelectItem;
-            TutorialDisplay = StaticEvent.TutorialDisplay;
-            TutorialClose = StaticEvent.TutorialClose;
+            BlackIn = NamedEvent.BlackIn;
+            BlackOut = NamedEvent.BlackOut;
+            DraggedItem = NamedEvent.DraggedItem;
+            UpdateNPCInventory = NamedEvent.UpdateNPCInventory;
+            SelectItem = NamedEvent.SelectItem;
+            TutorialDisplay = NamedEvent.TutorialDisplay;
+            TutorialClose = NamedEvent.TutorialClose;
+            Message = NamedEvent.Message;
         }
     }
 
     public static class PlayEvents
     {
-        public static readonly StaticEvent PlayerDeath;
-        public static readonly StaticEvent InteractableEntered;
-        public static readonly StaticEvent InteractableExited;
-        public static readonly StaticEvent PlayerIntelligenceChange;
-        public static readonly StaticEvent PlayerHealthChange;
-        public static readonly StaticEvent PlayerPurityChange;
-        public static readonly StaticEvent PlayerActionPurityChange;
-        public static readonly StaticEvent PlayerFriendlinessPurityChange;
-        public static readonly StaticEvent TradePostEntered;
-        public static readonly StaticEvent TradePostExited;
-        public static readonly StaticEvent LearningPostEntered;
-        public static readonly StaticEvent LearningPostExited;
-        public static readonly StaticEvent CraftingPostEntered;
-        public static readonly StaticEvent WeaponEquipped;
-        public static readonly StaticEvent WeaponUnequipped;
-        public static readonly StaticEvent RestStart;
-        public static readonly StaticEvent InRest;
-        public static readonly StaticEvent RestEnd;
-        public static readonly StaticEvent SpellEquippedStateChange;
-        public static readonly StaticEvent Respawn;
-        public static readonly StaticEvent BuildStart;
-        public static readonly StaticEvent BuildEnd;
-        public static readonly StaticEvent LureUsed;
-        public static readonly StaticEvent LurePlaced;
-        public static readonly StaticEvent PlayerSpeak;
-        public static readonly StaticEvent PlayerSpeakFlip;
-        public static readonly StaticEvent PlayerItemChange;
-        public static readonly StaticEvent Message;
-
+        public static readonly NamedEvent PlayerDeath, Respawn;
+        public static readonly NamedEvent InteractableEntered, InteractableExited;
+        public static readonly NamedEvent PlayerIntelChange;
+        public static readonly NamedEvent PlayerHealthChange;
+        public static readonly NamedEvent PurityChange, ActionPurityChange, FriendlinessPurityChange;
+        public static readonly NamedEvent TradePostEntered, TradePostExited;
+        public static readonly NamedEvent LearningPostEntered, LearningPostExited;
+        public static readonly NamedEvent CraftingPostEntered;
+        public static readonly NamedEvent WeaponEquipped, WeaponUnequipped, SpellChange;
+        public static readonly NamedEvent RestStart, InRest, RestEnd; public static readonly NamedEvent BuildStart, BuildEnd;
+        public static readonly NamedEvent LureUsed, LurePlaced;
+        public static readonly NamedEvent PlayerSpeak, PlayerSpriteFlip, PlayerItemChange;
+        public static readonly NamedEvent GetArm;
 
 
         static PlayEvents()
         {
-            PlayerDeath = StaticEvent.PlayerDeath;
-            PlayerIntelligenceChange = StaticEvent.PlayerIntelligenceChange;
-            PlayerHealthChange = StaticEvent.PlayerHealthChange;
-            PlayerPurityChange = StaticEvent.PlayerPurityChange;
-            PlayerActionPurityChange = StaticEvent.PlayerActionPurityChange;
-            PlayerFriendlinessPurityChange = StaticEvent.PlayerFriendlinessPurityChange;
-            InteractableEntered = StaticEvent.InteractableEntered;
-            InteractableExited = StaticEvent.InteractableExited;
-            TradePostEntered = StaticEvent.TradePostEntered;
-            TradePostExited = StaticEvent.TradePostExited;
-            LearningPostEntered = StaticEvent.LearningPostEntered;
-            LearningPostExited = StaticEvent.LearningPostExited;
-            CraftingPostEntered = StaticEvent.CraftingPostEntered;
-            WeaponEquipped = StaticEvent.WeaponEquipped;
-            WeaponUnequipped = StaticEvent.WeaponUnequipped;
-            RestStart = StaticEvent.RestStart;
-            InRest = StaticEvent.InRest;
-            RestEnd = StaticEvent.RestEnd;
-            SpellEquippedStateChange = StaticEvent.SpellEquippedStateChange;
-            Respawn = StaticEvent.Respawn;
-            BuildStart = StaticEvent.BuildStart;
-            BuildEnd = StaticEvent.BuildEnd;
-            LureUsed = StaticEvent.LureUsed;
-            LurePlaced = StaticEvent.LurePlaced;
-            PlayerSpeak = StaticEvent.PlayerSpeak;
-            PlayerSpeakFlip = StaticEvent.PlayerSpeakFlip;
-            PlayerItemChange = StaticEvent.PlayerItemChange;
-            Message = StaticEvent.Message;
+            PlayerDeath = NamedEvent.PlayerDeath;
+            PlayerIntelChange = NamedEvent.PlayerIntelChange;
+            PlayerHealthChange = NamedEvent.PlayerHealthChange;
+            PurityChange = NamedEvent.PurityChange;
+            ActionPurityChange = NamedEvent.ActionPurityChange;
+            FriendlinessPurityChange = NamedEvent.FriendlinessPurityChange;
+            InteractableEntered = NamedEvent.InteractableEntered;
+            InteractableExited = NamedEvent.InteractableExited;
+            TradePostEntered = NamedEvent.TradePostEntered;
+            TradePostExited = NamedEvent.TradePostExited;
+            LearningPostEntered = NamedEvent.LearningPostEntered;
+            LearningPostExited = NamedEvent.LearningPostExited;
+            CraftingPostEntered = NamedEvent.CraftingPostEntered;
+            WeaponEquipped = NamedEvent.WeaponEquipped;
+            WeaponUnequipped = NamedEvent.WeaponUnequipped;
+            RestStart = NamedEvent.RestStart;
+            InRest = NamedEvent.InRest;
+            RestEnd = NamedEvent.RestEnd;
+            SpellChange = NamedEvent.SpellChange;
+            Respawn = NamedEvent.Respawn;
+            BuildStart = NamedEvent.BuildStart;
+            BuildEnd = NamedEvent.BuildEnd;
+            LureUsed = NamedEvent.LureUsed;
+            LurePlaced = NamedEvent.LurePlaced;
+            PlayerSpeak = NamedEvent.PlayerSpeak;
+            PlayerSpriteFlip = NamedEvent.PlayerSpriteFlip;
+            PlayerItemChange = NamedEvent.PlayerItemChange;
         }
     }
 }

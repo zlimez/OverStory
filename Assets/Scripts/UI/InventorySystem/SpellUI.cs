@@ -24,7 +24,7 @@ public class SpellUI : MonoBehaviour
         else
         {
             UpdateSpellUI();
-            EventManager.StartListening(PlayEvents.SpellEquippedStateChange, UpdateSelectedArea);
+            EventManager.StartListening(PlayEvents.SpellChange, UpdateSelectedArea);
         }
     }
 
@@ -33,10 +33,10 @@ public class SpellUI : MonoBehaviour
     {
         UpdateSpellUI();
         EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateSpellUI);
-        EventManager.StartListening(PlayEvents.SpellEquippedStateChange, UpdateSelectedArea);
+        EventManager.StartListening(PlayEvents.SpellChange, UpdateSelectedArea);
     }
 
-    void OnDisable() => EventManager.StopListening(PlayEvents.SpellEquippedStateChange, UpdateSelectedArea);
+    void OnDisable() => EventManager.StopListening(PlayEvents.SpellChange, UpdateSelectedArea);
 
     public void UpdateSpellUI()
     {
@@ -56,7 +56,7 @@ public class SpellUI : MonoBehaviour
                 equippedSlots[i].gameObject.SetActive(true);
             }
             else equippedSlots[i].gameObject.SetActive(false);
-            
+
         }
     }
 
@@ -71,14 +71,14 @@ public class SpellUI : MonoBehaviour
 
                 Transform spriteObject = spellSlot.transform.Find("ItemIcon");
                 Image icon = spriteObject.GetComponent<Image>();
-                if (playerInventory.Contains(spell)) 
+                if (playerInventory.Contains(spell))
                 {
                     icon.sprite = spell.icon;
                     spellSlot.GetComponent<Button>().interactable = true;
                     spellSlot.GetComponent<EventTrigger>().enabled = true;
                     // spellSlot.GetComponent<SlotForSpell>().enabled = true;
                 }
-                else 
+                else
                 {
                     icon.sprite = spell.iconInactive;
                     spellSlot.GetComponent<Button>().interactable = false;
@@ -87,7 +87,7 @@ public class SpellUI : MonoBehaviour
                 }
             }
             else Debug.LogError("Spell is not assigned!");
-            
+
         }
     }
 }

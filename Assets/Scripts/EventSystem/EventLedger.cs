@@ -34,10 +34,10 @@ namespace Abyss.EventSystem
             return latestEvent != GameEvent.NoEvent && latestEvent == gameEvent;
         }
 
-        public bool IsMostRecent(StaticEvent gameEvent) => IsMostRecent(new GameEvent(gameEvent.ToString()));
+        public bool IsMostRecent(NamedEvent gameEvent) => IsMostRecent(new GameEvent(gameEvent.ToString()));
 
         public bool IsRecent(GameEvent gameEvent) => recentEvents.Contains(gameEvent);
-        public bool IsRecent(StaticEvent gameEvent) => IsRecent(new GameEvent(gameEvent.ToString()));
+        public bool IsRecent(NamedEvent gameEvent) => IsRecent(new GameEvent(gameEvent.ToString()));
 
         public void AddToRecent(GameEvent gameEvent)
         {
@@ -45,7 +45,7 @@ namespace Abyss.EventSystem
             if (recentEvents.Count() > RecentEventsSize)
                 recentEvents.Dequeue();
         }
-        public void AddToRecent(StaticEvent gameEvent) => AddToRecent(new GameEvent(gameEvent.ToString()));
+        public void AddToRecent(NamedEvent gameEvent) => AddToRecent(new GameEvent(gameEvent.ToString()));
 
         /// <summary> Returns the most recent event from the given list of events </summary>
         public GameEvent GetMostRecentEvent(params GameEvent[] events)
@@ -63,7 +63,7 @@ namespace Abyss.EventSystem
             return mostRecentEvent;
         }
 
-        public StaticEvent GetMostRecentEvent(params StaticEvent[] events) => Parser.GetStaticEventFromText(GetMostRecentEvent(events.Select(s => new GameEvent(s.ToString())).ToArray()).EventName);
+        public NamedEvent GetMostRecentEvent(params NamedEvent[] events) => Parser.GetStaticEventFromText(GetMostRecentEvent(events.Select(s => new GameEvent(s.ToString())).ToArray()).EventName);
 
         public void Record(GameEvent gameEvent, bool isSilent = true)
         {
@@ -77,7 +77,7 @@ namespace Abyss.EventSystem
                 EventManager.InvokeEvent(gameEvent);
         }
 
-        public void Record(StaticEvent gameEvent, bool isSilent = false) => Record(new GameEvent(gameEvent.ToString()), isSilent);
+        public void Record(NamedEvent gameEvent, bool isSilent = false) => Record(new GameEvent(gameEvent.ToString()), isSilent);
 
         public void Remove(GameEvent gameEvent)
         {
@@ -86,13 +86,13 @@ namespace Abyss.EventSystem
             recentEvents.Remove(gameEvent);
         }
 
-        public void Remove(StaticEvent gameEvent) => Remove(new GameEvent(gameEvent.ToString()));
+        public void Remove(NamedEvent gameEvent) => Remove(new GameEvent(gameEvent.ToString()));
 
         public int GetEventCount(GameEvent gameEvent) => PastEvents.ContainsKey(gameEvent) ? PastEvents[gameEvent] : 0;
-        public int GetEventCount(StaticEvent gameEvent) => this.GetEventCount(new GameEvent(gameEvent.ToString()));
+        public int GetEventCount(NamedEvent gameEvent) => this.GetEventCount(new GameEvent(gameEvent.ToString()));
 
         public bool HasOccurred(GameEvent gameEvent) => this.GetEventCount(gameEvent) > 0;
-        public bool HasOccurred(StaticEvent gameEvent) => HasOccurred(new GameEvent(gameEvent.ToString()));
+        public bool HasOccurred(NamedEvent gameEvent) => HasOccurred(new GameEvent(gameEvent.ToString()));
 
 
         /// <summary>
@@ -107,6 +107,6 @@ namespace Abyss.EventSystem
             else eventDict.Add(gameEvent, 1);
         }
 
-        public void IncEventCount(Dictionary<StaticEvent, int> eventDict, StaticEvent gameEvent) => IncEventCount(eventDict.ToDictionary(kvp => new GameEvent(kvp.Key.ToString()), kvp => kvp.Value), new GameEvent(gameEvent.ToString()));
+        public void IncEventCount(Dictionary<NamedEvent, int> eventDict, NamedEvent gameEvent) => IncEventCount(eventDict.ToDictionary(kvp => new GameEvent(kvp.Key.ToString()), kvp => kvp.Value), new GameEvent(gameEvent.ToString()));
     }
 }

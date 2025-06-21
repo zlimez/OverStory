@@ -42,7 +42,7 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float timeToApex, maxJumpHeight = 5;
-		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f, repelGravMult = 1f;
+		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f, slantedRepelGravMult = 1f;
 		[SerializeField] float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
@@ -371,10 +371,7 @@ namespace Abyss.Player
 		}
 
 		public void OnExtRel(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.ExtRel); }
-		public void OnDisc(InputAction.CallbackContext context)
-		{
-			// if (context.performed) armController.QueueEvent(ArmController.Trigger.Disc);
-		}
+		public void OnDisc(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.Disc); }
 		public void OnHardSoft(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.HardSoft); }
 
 		public void OnInteractRet(InputAction.CallbackContext context)
@@ -499,7 +496,7 @@ namespace Abyss.Player
 		{
 			if (_isGrounded || IsSwinging || armController.Repeling)
 			{
-				_gravMult = IsSwinging ? swingGravMult : armController.Repeling ? repelGravMult : defGravMult;
+				_gravMult = IsSwinging ? swingGravMult : armController.Repeling ? armController.VertRepeling ? 0 : slantedRepelGravMult : defGravMult;
 				return;
 			}
 
@@ -520,7 +517,7 @@ namespace Abyss.Player
 			gameObject.transform.localScale = currScale;
 
 			IsFacingLeft = !IsFacingLeft;
-			EventManager.InvokeEvent(PlayEvents.PlayerSpeakFlip);
+			EventManager.InvokeEvent(PlayEvents.PlayerSpriteFlip);
 		}
 
 		void TransitionToState(State newState)
