@@ -7,8 +7,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.VFX;
+using UnityEngine.Rendering;
 
 // FIXME: When damaged seems to charge further
+// TODO: Combine arm and player controller most importantly their states?
 namespace Abyss.Player
 {
 	public class PlayerController : MonoBehaviour, ActionInputs.IPlayerActions
@@ -26,12 +28,10 @@ namespace Abyss.Player
 		[SerializeField] float groundCheckDist = 1f;
 		[SerializeField] Vector2 groundCheckSize = new(1f, 1f);
 
-		// Animation support
 		[Header("Animation")]
 		[SerializeField] apPortrait portrait;
 		[SerializeField] float crossFadeSeconds = .01f;
 
-		// Movement support
 		[Header("Movement")]
 		[SerializeField] float walkSpeed = 4f;
 		[SerializeField] float runSpeed = 8f;
@@ -42,26 +42,21 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float timeToApex, maxJumpHeight = 5;
-		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f, slantedRepelGravMult = 1f;
+		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f, slantRepelGravAcc = 5f;
 		[SerializeField] float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
+
 		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f, _gravMult = 1;
 		bool _willJmp = false, _willTakeHit = false, _pressingJmp = false;
-		// Hit params
 		bool _hasKb; Vector2 _hitFrm; float _kbImp;
-		public bool PressingRet { get; private set; } = false;
-		public bool PressingLen { get; private set; } = false;
-		public bool PressingAim { get; private set; } = false;
-		public bool IsJumping, IsDashing = false, IsSwinging = false; // Distinct from Swinging in armController, IsSwinging is true for the duration player is in air starting from leaving ground and start swinging motion
 
 		[Header("Dash")]
 		[SerializeField] float dashSpeed = 25f;
 		[SerializeField] float dashTime = 0.3f;
-		bool _dashAvail = true, _isDashLeft, _isGrounded;
+		bool _dashAvail = true, _isDashLeft;
 		float _dashTimeLeft;
 
-		// Attacking
 		[Header("Damage")]
 		[SerializeField] float knockbackImpulse = 1000f;
 		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
@@ -77,9 +72,18 @@ namespace Abyss.Player
 
 		[SerializeField][Tooltip("Affects magnitude of wiggle during arm swing state")] float swingAngDec = 4f, wiggleForce = 10f;
 
+		public bool PressingRet { get; private set; } = false;
+		public bool PressingLen { get; private set; } = false;
+		public bool PressingAim { get; private set; } = false;
+
+		[NonSerialized] public bool IsJumping, IsDashing = false, IsSwinging = false; // Distinct from Swinging in armController, IsSwinging is true for the duration player is in air starting from leaving ground and start swinging motion
 		public bool IsAttacking { get; private set; } = false;
-		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false;
+		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false, _isGrounded;
 		public Action OnAttackEnded, OnAttemptInteract, OnGrounded;
+
+		[NonSerialized] public bool RepStart = false;
+		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")] ClampedFloatParameter repYDamper = new(2, 1, 10);
+		float _perpVel; // Used to calc vel perp to repel dir (arm ext)
 
 		Rigidbody2D rb2D;
 		State currState;
@@ -149,14 +153,51 @@ namespace Abyss.Player
 					float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - armController.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
 					rb2D.AddForce(_moveDir * Mathf.Cos(ang) * wiggleForce * Vector2.right);
 				}
-				else rb2D.velocity = new(rb2D.velocity.x, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+				else rb2D.velocity = new(rb2D.velocity.x, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
+			}
+			else if (armController.Repeling)
+			{
+				if (armController.CurrState == ArmController.State.Ha_CoEx_To)
+				{
+					if (armController.VertRepeling) rb2D.MovePosition(rb2D.position - armController.fixedRetractRate * Time.fixedDeltaTime * armController.Taim);
+					else
+					{
+						Vector2 nad = armController.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
+						if (perp.y > 0) perp = -perp;
+						if (RepStart)
+						{
+							_perpVel = Vector2.Dot(Vector2.up * rb2D.velocity.y, perp) / repYDamper.value;
+							RepStart = false;
+						}
+						else _perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
+						Vector2 nv = _perpVel * perp - nad * armController.fixedRetractRate;
+						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
+					}
+				}
+				else
+				{
+					if (armController.VertRepeling)
+					{
+						if (PressingRet) rb2D.MovePosition(rb2D.position + armController.fixedRetractRate * Time.fixedDeltaTime * armController.Taim);
+						else rb2D.velocity = Vector2.zero;
+					}
+					else
+					{
+						Vector2 nad = armController.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
+						if (perp.y > 0) perp = -perp;
+						_perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
+						Vector2 nv = _perpVel * perp;
+						if (PressingRet) nv += nad * armController.fixedRetractRate;
+						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
+					}
+				}
 			}
 			else if (!_isTakingDamage && !armController.Repeling)
 			{
 				if (!IsDashing)
 				{
 					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, 100));
+					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
 					// if (!(!armController.Swinging || (armController.Swinging && !PressingRet && armController.IsSoft && (armController.PlayerFree || Vector2.Dot(armController.AnchorDir, newVel) > 0)))) Debug.Log("Disabling move");
 					if (armController.Swinging && PressingRet)
 					{
@@ -246,7 +287,7 @@ namespace Abyss.Player
 			TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
 		}
 
-		// Animation stuff
+		// Animation states
 		void HandleState()
 		{
 			if (IsAttackState)
@@ -315,7 +356,6 @@ namespace Abyss.Player
 		public void OnJump(InputAction.CallbackContext context)
 		{
 			if (!CanJump) return;
-
 			if (context.performed)
 			{
 				if (IsGrounded() || _jmpBuffCd > 0) _willJmp = true;
@@ -327,7 +367,6 @@ namespace Abyss.Player
 		public void OnRun(InputAction.CallbackContext context)
 		{
 			if (IsFrozen) return;
-
 			if (context.performed) _shouldRun = true;
 			else if (context.canceled) _shouldRun = false;
 		}
@@ -496,7 +535,7 @@ namespace Abyss.Player
 		{
 			if (_isGrounded || IsSwinging || armController.Repeling)
 			{
-				_gravMult = IsSwinging ? swingGravMult : armController.Repeling ? armController.VertRepeling ? 0 : slantedRepelGravMult : defGravMult;
+				_gravMult = IsSwinging ? swingGravMult : armController.Repeling ? 0 : defGravMult;
 				return;
 			}
 

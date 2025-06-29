@@ -44689,7 +44689,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
 --- !u!114 &3893845226591364317
 MonoBehaviour:
@@ -58920,13 +58920,10 @@ MonoBehaviour:
   jumpCutoffMult: 1
   defGravMult: 1
   swingGravMult: 2
-  slantedRepelGravMult: 1
+  slantRepelGravAcc: 10
   maxFallVelocity: 30
   jumpBuffer: 0.1
   preLandJumpBuffer: 0.1
-  IsJumping: 0
-  IsDashing: 0
-  IsSwinging: 0
   dashSpeed: 30
   dashTime: 0.2
   knockbackImpulse: 30
@@ -58943,6 +58940,9 @@ MonoBehaviour:
   slashSizeConversion: 4.571429
   swingAngDec: 8
   wiggleForce: 40
+  repYDamper:
+    m_OverrideState: 0
+    m_Value: 3
 --- !u!4 &5613661407887179353
 Transform:
   m_ObjectHideFlags: 0
@@ -112026,8 +112026,10 @@ MonoBehaviour:
   maxSegCount: 50
   segLength: 0.2
   maxLength: 20
-  repColDetDist: 1
-  noGravRng: 0.5
+  repColDetDist: 2
+  noGravRng:
+    m_OverrideState: 0
+    m_Value: 0.9
   speed: 30
   discColDetDist: 1
   VertRepeling: 0

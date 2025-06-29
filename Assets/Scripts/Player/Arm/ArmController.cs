@@ -6,6 +6,7 @@ using Abyss.Settings;
 using Abyss.Player;
 using System.Collections.Generic;
 using Abyss.EventSystem;
+using UnityEngine.Rendering;
 
 public class ArmController : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ArmController : MonoBehaviour
     {
         So_CoOg_Lo, Ha_CoOg_Lo, So_CoEx_Lo, Ha_CoEx_Lo,
         So_CoRe_Lo, Ha_CoRe_Lo,
-        So_CoRe_Fi, Ha_CoRe_Fi, Ha_CoEx_To, Ha_CoRe_To,
+        So_CoRe_Fi, Ha_CoEx_To, Ha_CoRe_To,
         So_CoOg_Fi, Ha_CoOg_Fi,
         Ha_DiMo, So_DiMo, Ha_DiSt, Ha_DiOg, So_DiOg, Ha_DiCa, So_DiCa
     }
@@ -36,26 +37,30 @@ public class ArmController : MonoBehaviour
     DistanceJoint2D _fistJoint;
     PolygonCollider2D _fistCol;
     ColNotifier _fistExt;
-    Vector2 _taim;
+    public Vector2 Taim { get; private set; }
 
     [Header("延展／回收")]
     [SerializeField][Tooltip("軟式發射衝力")] float softExtImp = 45f;
     [SerializeField][Tooltip("硬式延展速率")] float hardExtRate = 5f;
     [SerializeField][Tooltip("軟式延展速率")] float softExtRate = 5f;
-    [SerializeField][Tooltip("一端固定時回收速率")] float fixedRetractRate = 40f;
+    [Tooltip("一端固定時回收速率")] public float fixedRetractRate = 40f;
     [SerializeField][Tooltip("無固定時回收速率")] float freeRetractRate = 20f;
     [SerializeField][Tooltip("固定回收初始衝力")] float fiRetImp = 100f;
     [SerializeField][Tooltip("瞄準敏感度")] float aimResp = 2f;
+
     [Header("拳頭")]
     [SerializeField][Tooltip("拳頭質量")] float mass = 1f;
     [SerializeField][Tooltip("拳頭重力加成")] float gravScale = 2f;
+
     [Header("繩子")]
     [SerializeField][Tooltip("最低線段數")] int minSegCount = 10;
     [SerializeField][Tooltip("最高線段數")] int maxSegCount = 50;
     [SerializeField][Tooltip("線段長")] float segLength = 0.2f, maxLength = 10f;
+
     [Header("反撐")]
     [SerializeField][Tooltip("反撐時偵測玩家與他物碰撞的距離")] float repColDetDist = 1f;
-    [SerializeField][Tooltip("數值愈低玩家反撐且不受重力影響的角度愈廣 [0,1]")] float noGravRng = 0.75f;
+    [SerializeField][Tooltip("數值愈低玩家反撐且不受重力影響的角度愈廣 [0,1]")] ClampedFloatParameter noGravRng = new(0.75f, 0, 1);
+
     [Header("脫離")]
     [SerializeField][Tooltip("速度")] float speed = 15f;
     [SerializeField][Tooltip("脫離時偵測拳頭與他物碰撞的距離")] float discColDetDist = 1f;
@@ -69,17 +74,15 @@ public class ArmController : MonoBehaviour
 
     public State CurrState => (State)_fsm.CurrState;
     public bool ArmActive => _fsm.CurrState != (int)State.So_CoOg_Lo && _fsm.CurrState != (int)State.Ha_CoOg_Lo;
-    public bool Swinging => CurrState == State.So_CoRe_Fi || CurrState == State.Ha_CoRe_Fi;
+    public bool Swinging => CurrState == State.So_CoRe_Fi;
     public bool Repeling => CurrState == State.Ha_CoEx_To || CurrState == State.Ha_CoRe_To;
     public bool VertRepeling = false;
     public bool IsSoft => CurrState.ToString().StartsWith("So");
     public Vector2 Anchor => _fistRb.transform.position;
-    public Vector2 AnchorDir => Anchor - ((Vector2)bodyJoint.transform.position + bodyJoint.anchor);
+    public Vector2 AnchorDir => Anchor - (Vector2)bodyJoint.transform.position;
     public float Dist2Fist => AnchorDir.magnitude;
     public float JointLen => rope.ropeLength;
     public bool PlayerFree => Dist2Fist < JointLen - Utils.Const.EPS;
-
-    void OnValidate() { noGravRng = Mathf.Clamp(noGravRng, 0, 1); }
 
     void Awake()
     {
@@ -125,14 +128,8 @@ public class ArmController : MonoBehaviour
         AddTransition(State.So_CoRe_Fi, Trigger.Kept, State.So_CoOg_Fi, OnKept);
         // AddTransition(State.So_CoRe_Fi, Trigger.HardSoft, State.Ha_CoRe_Fi, null, true);
 
-        AddTransition(State.Ha_CoRe_Fi, Trigger.ExtRel, State.Ha_CoRe_Lo, OnRel);
-        AddTransition(State.Ha_CoRe_Fi, Trigger.Ret, State.Ha_CoRe_Fi, OnFiRet);
-        AddTransition(State.Ha_CoRe_Fi, Trigger.Kept, State.Ha_CoOg_Fi, OnKept);
-        // AddTransition(State.Ha_CoRe_Fi, Trigger.Aim, State.Ha_CoRe_Fi);
-
         AddTransition(State.Ha_CoEx_Lo, Trigger.Aim, State.Ha_CoEx_Lo, OnHaLoAim);
         AddTransition(State.Ha_CoEx_Lo, Trigger.Ret, State.Ha_CoRe_Lo, OnHaRet);
-        AddTransition(State.Ha_CoEx_Lo, Trigger.Hooked, State.Ha_CoRe_Fi);
         AddTransition(State.Ha_CoEx_Lo, Trigger.Contact, State.Ha_CoEx_To);
         AddTransition(State.Ha_CoEx_Lo, Trigger.Disc, State.Ha_DiSt); // TODO: Clarify if acts like a separate entity and drops what happens?
         // AddTransition(State.Ha_CoEx_Lo, Trigger.HardSoft, State.So_CoRe_Lo);
@@ -195,7 +192,7 @@ public class ArmController : MonoBehaviour
         _fistJoint.enabled = false;
         bodyJoint.enabled = false;
         _fistRb.isKinematic = true;
-        _taim = aim;
+        Taim = aim;
 
         rope.SetEndPoint(fistEnd.transform);
         rope.ropeLength = 0;
@@ -204,13 +201,13 @@ public class ArmController : MonoBehaviour
 
     void Move()
     {
-        if (Physics2D.Raycast(fist.transform.position, _taim, discColDetDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK))
+        if (Physics2D.Raycast(fist.transform.position, Taim, discColDetDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK))
         {
             _phyActions -= Move;
             QueueEvent(Trigger.Contact);
             return;
         }
-        fist.transform.position += speed * Time.fixedDeltaTime * (Vector3)_taim.normalized;
+        fist.transform.position += speed * Time.fixedDeltaTime * (Vector3)Taim;
     }
 
     void OnHaDiRet(object isRet)
@@ -229,7 +226,7 @@ public class ArmController : MonoBehaviour
         }
         else if (rope.ropeLength < maxLength - Utils.Const.EPS) rope.ropeLength = Mathf.Min(maxLength, rope.ropeLength + hardExtRate * Time.fixedDeltaTime);
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
-        rope.EndPoint.position = rope.StartPoint.position - rope.ropeLength * (Vector3)_taim.normalized;
+        rope.EndPoint.position = rope.StartPoint.position - rope.ropeLength * (Vector3)Taim;
         Vector2 dir = rope.StartPoint.position - rope.EndPoint.position;
         Vector2 pdir = Vector2.Perpendicular(dir.normalized);
         Vector2[] colVtx = new Vector2[4];
@@ -393,30 +390,16 @@ public class ArmController : MonoBehaviour
         _fistRb.gravityScale = 0;
 
         _phyActions += HaExt;
-        _taim = aim;
-        _fistExt.OnContact = (other) =>
-        {
-            if (!other.gameObject.CompareTag(Tag.Hookable)) return;
-            _phyActions -= HaExt;
-            _fistExt.OnContact = null;
-            _fistExt.OnCollision = null;
-            _fistRb.isKinematic = true;
-            _fistRb.velocity = Vector3.zero;
-            bodyJoint.enabled = true;
-            bodyJoint.connectedBody = _fistRb;
-            bodyJoint.distance = rope.ropeLength;
-            QueueEvent(Trigger.Hooked);
-        };
+        Taim = aim;
         _fistExt.OnCollision = (col) =>
         {
             if (col.rigidbody == null || !col.rigidbody.CompareTag(Tag.Movable)) // NOTE: Movable when collide against immovable should change tag
             {
                 _phyActions -= HaExt;
                 _phyActions += Repel;
-                VertRepeling = Vector2.Dot(Vector2.down, aim) > noGravRng;
-                bodyJoint.enabled = true;
-                bodyJoint.connectedBody = _fistRb;
-                bodyJoint.distance = rope.ropeLength;
+                VertRepeling = Vector2.Dot(Vector2.down, aim) > noGravRng.value;
+                Taim = aim;
+                playerCtr.RepStart = true;
                 _fistRb.isKinematic = true;
                 _fistExt.OnContact = null;
                 _fistExt.OnCollision = null;
@@ -433,21 +416,15 @@ public class ArmController : MonoBehaviour
 
     void Repel()
     {
-        bodyJoint.distance = Mathf.Min(maxLength, bodyJoint.distance + fixedRetractRate * Time.fixedDeltaTime);
-        // NOTE: DO NOT COMMENT THIS OUT FORCES PHYSICS TO UPDATE
-        bodyJoint.transform.position += 0.01f * Vector3.up;
-        bodyJoint.transform.position -= 0.01f * Vector3.up;
-
-        rope.ropeLength = bodyJoint.distance;
+        rope.ropeLength = (rope.StartPoint.position - rope.EndPoint.position).magnitude;
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
         Vector2 repdir = (rope.EndPoint.position - rope.StartPoint.position).normalized;
-        if (bodyJoint.distance > maxLength - Utils.Const.EPS || Physics2D.Raycast(playerCtr.transform.position, repdir, repColDetDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK)) QueueEvent(Trigger.Ret, true);
+        if (rope.ropeLength > maxLength - Utils.Const.EPS || Physics2D.Raycast(playerCtr.transform.position, repdir, repColDetDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK)) QueueEvent(Trigger.Ret, true);
     }
 
     void OnHaToRet(object input = null)
     {
-        bodyJoint.distance = Mathf.Max(0, bodyJoint.distance - fixedRetractRate * Time.fixedDeltaTime);
-        rope.ropeLength = bodyJoint.distance;
+        rope.ropeLength = (rope.StartPoint.position - rope.EndPoint.position).magnitude;
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
     }
 
@@ -457,7 +434,7 @@ public class ArmController : MonoBehaviour
         rope.linePoints = Math.Clamp(Mathf.CeilToInt(rope.ropeLength / segLength), minSegCount, maxSegCount);
         // NOTE: newEnd stores temp calc res to possibly be used by aim in the same turn: see sequence of invocation in fixed update
         _hasNewEnd = true;
-        _newEnd = rope.EndPoint.position + (Vector3)_taim.normalized * rope.ropeLength;
+        _newEnd = rope.EndPoint.position + (Vector3)Taim * rope.ropeLength;
         _fistRb.MovePosition(_newEnd);
         if (rope.ropeLength > maxLength - Utils.Const.EPS)
         {
@@ -470,10 +447,10 @@ public class ArmController : MonoBehaviour
     {
         Vector3 caim = (_hasNewEnd ? _newEnd : _fistRb.transform.position) - rope.EndPoint.position;
         _hasNewEnd = false;
-        Vector3 naim = Quaternion.Euler(0, 0, Vector2.SignedAngle(caim, aim) * aimResp * Time.fixedDeltaTime) * caim;
-        if (!Physics2D.BoxCast(rope.EndPoint.position, new(0.5f, rope.ropeWidth), Vector2.SignedAngle(Vector2.right, naim), naim.normalized, naim.magnitude, Abyss.Settings.LayerMask.OBSTACLE_LMASK))
+        Vector3 naim = Quaternion.Euler(0, 0, Vector2.SignedAngle(caim, aim) * aimResp * Time.fixedDeltaTime) * caim, nnaim = naim.normalized;
+        if (!Physics2D.BoxCast(rope.EndPoint.position, new(0.5f, rope.ropeWidth), Vector2.SignedAngle(Vector2.right, naim), nnaim, naim.magnitude, Abyss.Settings.LayerMask.OBSTACLE_LMASK))
         {
-            _taim = naim;
+            Taim = nnaim;
             _fistRb.MovePosition(rope.EndPoint.position + naim);
         }
     }
@@ -492,7 +469,7 @@ public class ArmController : MonoBehaviour
         fistPH.SetActive(false);
     }
     public void QueueEvent(Trigger trigger, object arg = null) => _triggerQueue.Enqueue((trigger, arg));
-    public void SetAim() => aim = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - rope.EndPoint.position).normalized;
+    public void SetAim() => aim = ((Vector2)(Camera.main.ScreenToWorldPoint(Input.mousePosition) - rope.EndPoint.position)).normalized;
 
     void AppImp()
     {
@@ -506,7 +483,6 @@ public class ArmController : MonoBehaviour
         _fistRb.isKinematic = false;
         _fistJoint.enabled = true;
         _fistJoint.distance = rope.ropeLength;
-        bodyJoint.enabled = false;
         QueueEvent(Trigger.Grnded);
     }
     #endregion
