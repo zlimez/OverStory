@@ -112018,7 +112018,7 @@ MonoBehaviour:
   softExtRate: 5
   fixedRetractRate: 15
   freeRetractRate: 20
-  fiRetImp: 500
+  fiRetImp: 400
   aimResp: 3
   mass: 1
   gravScale: 2
@@ -112026,12 +112026,12 @@ MonoBehaviour:
   maxSegCount: 50
   segLength: 0.2
   maxLength: 20
-  repColDetDist: 2
+  playerColDetDist: 1.5
   noGravRng:
     m_OverrideState: 0
     m_Value: 0.9
   speed: 30
-  discColDetDist: 1
+  fistColDetDist: 1
   VertRepeling: 0
 --- !u!50 &8522068405312327259
 Rigidbody2D:

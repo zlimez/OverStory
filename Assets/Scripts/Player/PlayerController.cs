@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.VFX;
 using UnityEngine.Rendering;
+using GogoGaga.OptimizedRopesAndCables;
 
 // FIXME: When damaged seems to charge further
 // TODO: Combine arm and player controller most importantly their states?
@@ -76,7 +77,7 @@ namespace Abyss.Player
 		public bool PressingLen { get; private set; } = false;
 		public bool PressingAim { get; private set; } = false;
 
-		[NonSerialized] public bool IsJumping, IsDashing = false, IsSwinging = false; // Distinct from Swinging in armController, IsSwinging is true for the duration player is in air starting from leaving ground and start swinging motion
+		[NonSerialized] public bool IsJumping, IsDashing = false, IsSwinging = false; // Distinct from Swinging in armController, is true from leaving ground and start swinging motion, ends when reach ground
 		public bool IsAttacking { get; private set; } = false;
 		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false, _isGrounded;
 		public Action OnAttackEnded, OnAttemptInteract, OnGrounded;
@@ -131,11 +132,7 @@ namespace Abyss.Player
 			SetBodyGrav();
 			_isGrounded = IsGrounded();
 
-			if (_isGrounded && OnGrounded != null)
-			{
-				OnGrounded.Invoke();
-				OnGrounded = null;
-			}
+			if (_isGrounded) OnGrounded?.Invoke();
 
 			if (!IsSwinging && armController.Swinging && !_isGrounded) IsSwinging = true;
 			else if (IsSwinging && _isGrounded) IsSwinging = false; // Only when landed
@@ -170,6 +167,7 @@ namespace Abyss.Player
 							RepStart = false;
 						}
 						else _perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
+						CheckRepelArmCol(perp);
 						Vector2 nv = _perpVel * perp - nad * armController.fixedRetractRate;
 						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
 					}
@@ -186,28 +184,37 @@ namespace Abyss.Player
 						Vector2 nad = armController.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
 						if (perp.y > 0) perp = -perp;
 						_perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
+						CheckRepelArmCol(perp);
 						Vector2 nv = _perpVel * perp;
 						if (PressingRet) nv += nad * armController.fixedRetractRate;
 						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
 					}
 				}
 			}
-			else if (!_isTakingDamage && !armController.Repeling)
+			else if (armController.HaExtended)
 			{
-				if (!IsDashing)
+				Rope rope = armController.rope;
+				Vector2 dir = rope.StartPoint.position - rope.EndPoint.position;
+				// TODO: Update fist position
+				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
+				Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
+				var hit = Physics2D.BoxCast((Vector2)rope.EndPoint.position + newVel * Time.fixedDeltaTime, new(0.5f, rope.ropeWidth), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK);
+				if (hit && Vector2.Dot(hit.normal, newVel) < 0)
+				{
+					Debug.Log($"Hit dot prod {Vector2.Dot(hit.normal, newVel)} {hit.normal} {newVel}");
+					rb2D.velocity = Vector2.zero;
+				}
+				else rb2D.velocity = newVel;
+			}
+			else if (!_isTakingDamage)
+			{
+				if (IsDashing) rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
+				else
 				{
 					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
 					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
-					// if (!(!armController.Swinging || (armController.Swinging && !PressingRet && armController.IsSoft && (armController.PlayerFree || Vector2.Dot(armController.AnchorDir, newVel) > 0)))) Debug.Log("Disabling move");
-					if (armController.Swinging && PressingRet)
-					{
-						transform.position += 0.01f * Vector3.up;
-						transform.position -= 0.01f * Vector3.up;
-					}
-					if (!armController.Swinging || (armController.Swinging && !PressingRet && armController.IsSoft && (armController.PlayerFree || Vector2.Dot(armController.AnchorDir, newVel) > 0)))
-						rb2D.velocity = newVel;
+					rb2D.velocity = newVel;
 				}
-				else rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
 			}
 
 			if (_willJmp)
@@ -223,7 +230,7 @@ namespace Abyss.Player
 		{
 			if (coll2D.gameObject.layer == (int)Settings.Layer.Ground || coll2D.gameObject.layer == (int)Settings.Layer.Buildup)
 			{
-				// Imm sets grav mult to def to prevent the case whr setbodygrav runs before calcgrav, willJmp uses downGrav > defGrav to calc init jump vel
+				// Imm sets grav mult to def to prevent setbodygrav running before calcgrav, willJmp uses downGrav>defGrav to calc init jump vel
 				_gravMult = defGravMult;
 				_dashAvail |= !IsDashing;
 				IsJumping = false;
@@ -602,6 +609,13 @@ namespace Abyss.Player
 			);
 
 			return boxHit.collider != null;
+		}
+
+		void CheckRepelArmCol(Vector2 perp)
+		{
+			Rope rope = armController.rope;
+			var dir = (Vector2)rope.StartPoint.position + _perpVel * Time.fixedDeltaTime * perp - (Vector2)rope.EndPoint.position; // Sufficient approx rope anchor and rb is close
+			if (Physics2D.BoxCast(rope.EndPoint.position, new(0.5f, rope.ropeWidth), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK)) _perpVel = 0;
 		}
 
 #if UNITY_EDITOR

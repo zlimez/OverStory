@@ -29,6 +29,7 @@ namespace AI.FSM
         public State CurrState { get; private set; }
         private readonly Dictionary<(State, Event), Transition> _transitions = new();
         private readonly Dictionary<State, Action<object>> _enterActions = new();
+        private readonly Dictionary<State, Action> _inActions = new();
         private readonly Dictionary<State, Action<object>> _exitActions = new();
 
         public FSM(State initState) => CurrState = initState;
@@ -39,19 +40,23 @@ namespace AI.FSM
         }
         public void AddEntryAction(State state, Action<object> action) => _enterActions[state] = action;
         public void AddExitAction(State state, Action<object> action) => _exitActions[state] = action;
+        public void AddInAction(State state, Action action) => _inActions[state] = action;
 
         public void ProcessEvent(Event trigger, object input = null)
         {
             if (_transitions.TryGetValue((CurrState, trigger), out var transition))
             {
                 if (transition.Cond != null && !transition.Cond(input)) return;
-                if (_exitActions.TryGetValue(CurrState, out var exitAction))
+                bool stateChange = CurrState != transition.NextState;
+                if (stateChange && _exitActions.TryGetValue(CurrState, out var exitAction))
                     exitAction?.Invoke(input);
                 transition.Action?.Invoke(input);
                 CurrState = transition.NextState;
-                if (_enterActions.TryGetValue(CurrState, out var enterAction))
+                if (stateChange && _enterActions.TryGetValue(CurrState, out var enterAction))
                     enterAction?.Invoke(input);
             }
         }
+
+        public void Tick() { if (_inActions.TryGetValue(CurrState, out var action)) action?.Invoke(); }
     }
 }
