@@ -8,19 +8,20 @@ namespace Utils
         public static readonly float EPS = 0.001f;
     }
 
-    public class Color
+    public class ColorFuncs
     {
-        public static UnityEngine.Color CubicLerpColor(UnityEngine.Color from, UnityEngine.Color to, float t)
+        public static Color CubicLerpColor(Color from, Color to, float t)
         {
             float clampedT = Mathf.Clamp(t, 0, 1);
-            return UnityEngine.Color.LerpUnclamped(from, to, 1 + Mathf.Pow(clampedT - 1, 3));
+            return Color.LerpUnclamped(from, to, 1 + Mathf.Pow(clampedT - 1, 3));
         }
-        public static UnityEngine.Color HexToRGB(string hex, float alpha)
+
+        public static Color HexToRGB(string hex, float alpha)
         {
             if (hex.Length != 6)
             {
                 Debug.LogError("Invalid hex color: " + hex);
-                return UnityEngine.Color.black;
+                return Color.black;
             }
 
             int r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
@@ -31,7 +32,7 @@ namespace Utils
             float gf = g / 255.0f;
             float bf = b / 255.0f;
 
-            return new UnityEngine.Color(rf, gf, bf, alpha);
+            return new Color(rf, gf, bf, alpha);
         }
     }
 

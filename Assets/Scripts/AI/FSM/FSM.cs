@@ -29,7 +29,7 @@ namespace AI.FSM
         public State CurrState { get; private set; }
         private readonly Dictionary<(State, Event), Transition> _transitions = new();
         private readonly Dictionary<State, Action<object>> _enterActions = new();
-        private readonly Dictionary<State, Action> _inActions = new();
+        private readonly Dictionary<State, Action<object>> _inActions = new();
         private readonly Dictionary<State, Action<object>> _exitActions = new();
 
         public FSM(State initState) => CurrState = initState;
@@ -40,7 +40,7 @@ namespace AI.FSM
         }
         public void AddEntryAction(State state, Action<object> action) => _enterActions[state] = action;
         public void AddExitAction(State state, Action<object> action) => _exitActions[state] = action;
-        public void AddInAction(State state, Action action) => _inActions[state] = action;
+        public void AddInAction(State state, Action<object> action) => _inActions[state] = action;
 
         public void ProcessEvent(Event trigger, object input = null)
         {
@@ -57,6 +57,6 @@ namespace AI.FSM
             }
         }
 
-        public void Tick() { if (_inActions.TryGetValue(CurrState, out var action)) action?.Invoke(); }
+        public void Tick(object input = null) { if (_inActions.TryGetValue(CurrState, out var action)) action?.Invoke(input); }
     }
 }

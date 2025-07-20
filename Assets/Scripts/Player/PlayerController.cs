@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.VFX;
 using UnityEngine.Rendering;
-using GogoGaga.OptimizedRopesAndCables;
+using VerletPhysics;
 
 // FIXME: When damaged seems to charge further
 // TODO: Combine arm and player controller most importantly their states?
@@ -25,7 +25,7 @@ namespace Abyss.Player
 		}
 
 		public Transform Foot;
-		public ArmController armController;
+		public ArmController MechArm;
 		[SerializeField] float groundCheckDist = 1f;
 		[SerializeField] Vector2 groundCheckSize = new(1f, 1f);
 
@@ -43,7 +43,7 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] float timeToApex, maxJumpHeight = 5;
-		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, swingGravMult = 2f, slantRepelGravAcc = 5f;
+		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, slantRepelGravAcc = 5f;
 		[SerializeField] float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
@@ -55,14 +55,14 @@ namespace Abyss.Player
 		[Header("Dash")]
 		[SerializeField] float dashSpeed = 25f;
 		[SerializeField] float dashTime = 0.3f;
-		bool _dashAvail = true, _isDashLeft;
-		float _dashTimeLeft;
+		bool _dashAvail = true, _isLeftDash;
+		float _dashTTL;
 
 		[Header("Damage")]
 		[SerializeField] float knockbackImpulse = 1000f;
 		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
 		[SerializeField] float postDmgInvulnTime = 0.5f;
-		float _invulnTimeLeft = 0f;
+		float _invulnTTL = 0f;
 
 		[Header("Weapon")]
 		[SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
@@ -71,20 +71,22 @@ namespace Abyss.Player
 		[SerializeField][Tooltip("Conversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
 		float _slashSize;
 
-		[SerializeField][Tooltip("Affects magnitude of wiggle during arm swing state")] float swingAngDec = 4f, wiggleForce = 10f;
+		[Header("Swing")]
+		[SerializeField][Tooltip("Higher the value greater the penalty multiplier on wiggle force")] float swingAngDec = 4f;
+		[SerializeField][Tooltip("magnitude of wiggle when swinging")] float wiggleForce = 10f;
+		[Header("Repel")]
+		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")] ClampedFloatParameter repYDamper = new(2, 1, 10);
+		[NonSerialized] public bool RepStart = false;
+		float _perpVel; // Used to calc vel perp to repel dir (arm ext)
 
 		public bool PressingRet { get; private set; } = false;
 		public bool PressingLen { get; private set; } = false;
 		public bool PressingAim { get; private set; } = false;
 
-		[NonSerialized] public bool IsJumping, IsDashing = false, IsSwinging = false; // Distinct from Swinging in armController, is true from leaving ground and start swinging motion, ends when reach ground
+		[NonSerialized] public bool IsJumping, IsDashing = false, IsSwinging = false;
 		public bool IsAttacking { get; private set; } = false;
 		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false, _isGrounded;
 		public Action OnAttackEnded, OnAttemptInteract, OnGrounded;
-
-		[NonSerialized] public bool RepStart = false;
-		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")] ClampedFloatParameter repYDamper = new(2, 1, 10);
-		float _perpVel; // Used to calc vel perp to repel dir (arm ext)
 
 		Rigidbody2D rb2D;
 		State currState;
@@ -98,8 +100,10 @@ namespace Abyss.Player
 		{
 			rb2D = GetComponent<Rigidbody2D>();
 			_playerSfx = GetComponent<PlayerSfx>();
+			MechArm.PlayerCtr = this;
 
 			portrait.Initialize();
+			MechArm.Init();
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
 		}
 
@@ -109,7 +113,7 @@ namespace Abyss.Player
 			if (IsFrozen) _moveDir = 0;
 			if (IsDashing)
 			{
-				if (_dashTimeLeft > 0f) _dashTimeLeft -= Time.deltaTime;
+				if (_dashTTL > 0f) _dashTTL -= Time.deltaTime;
 				else
 				{
 					IsDashing = false;
@@ -120,22 +124,34 @@ namespace Abyss.Player
 			if (_jmpBuffCd > 0) _jmpBuffCd = Mathf.Max(0, _jmpBuffCd - Time.deltaTime);
 			if (_preLandJmpBuffCd > 0) _preLandJmpBuffCd = Mathf.Max(0, _preLandJmpBuffCd - Time.deltaTime);
 
-			if (_invulnTimeLeft > 0) _invulnTimeLeft = Mathf.Max(0, _invulnTimeLeft - Time.deltaTime);
+			if (_invulnTTL > 0) _invulnTTL = Mathf.Max(0, _invulnTTL - Time.deltaTime);
 			else _isInVuln = false;
 
-			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleState();
-			if (!IsSwinging && !armController.Repeling && !_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
+			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleAnim();
+			if (!IsSwinging && !MechArm.Repeling && !_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
 		}
 
 		void FixedUpdate()
 		{
+			MechArm.Tick(Time.fixedDeltaTime);
 			SetBodyGrav();
 			_isGrounded = IsGrounded();
 
 			if (_isGrounded) OnGrounded?.Invoke();
 
-			if (!IsSwinging && armController.Swinging && !_isGrounded) IsSwinging = true;
-			else if (IsSwinging && _isGrounded) IsSwinging = false; // Only when landed
+			if (!IsSwinging && MechArm.Swingable && !_isGrounded)
+			{
+				IsSwinging = true;
+				rb2D.isKinematic = true;
+				MechArm.arm.Pin(Rope.PinPoint.Start);
+			}
+			else if (IsSwinging && (_isGrounded || !MechArm.Swingable))
+			{
+				IsSwinging = false; // Only when landed
+				rb2D.isKinematic = false;
+				if (!_isGrounded) rb2D.velocity = MechArm.arm.PointVel(MechArm.arm.NumPoints - 1, Time.fixedDeltaTime);
+				else if (MechArm.Swingable) MechArm.arm.Pin(Rope.PinPoint.Both);
+			}
 
 			if (_willTakeHit)
 			{
@@ -145,21 +161,18 @@ namespace Abyss.Player
 
 			if (IsSwinging)
 			{
-				if (armController.Swinging)
-				{
-					float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - armController.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
-					rb2D.AddForce(_moveDir * Mathf.Cos(ang) * wiggleForce * Vector2.right);
-				}
-				else rb2D.velocity = new(rb2D.velocity.x, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
+				// transform.position = MechArm.arm.PointPos(MechArm.arm.NumPoints - 1);
+				float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - MechArm.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
+				MechArm.arm.ApplyForce(_moveDir * Mathf.Cos(ang) * wiggleForce * Vector2.right, MechArm.arm.NumPoints - 1);
 			}
-			else if (armController.Repeling)
+			else if (MechArm.Repeling)
 			{
-				if (armController.CurrState == ArmController.State.Ha_CoEx_To)
+				if (MechArm.CurrState == ArmController.State.Ha_CoEx_To)
 				{
-					if (armController.VertRepeling) rb2D.MovePosition(rb2D.position - armController.fixedRetractRate * Time.fixedDeltaTime * armController.Taim);
+					if (MechArm.VertRepeling) rb2D.MovePosition(rb2D.position - MechArm.FixedRetractRate * Time.fixedDeltaTime * MechArm.Taim);
 					else
 					{
-						Vector2 nad = armController.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
+						Vector2 nad = MechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
 						if (perp.y > 0) perp = -perp;
 						if (RepStart)
 						{
@@ -168,37 +181,37 @@ namespace Abyss.Player
 						}
 						else _perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
 						CheckRepelArmCol(perp);
-						Vector2 nv = _perpVel * perp - nad * armController.fixedRetractRate;
+						Vector2 nv = _perpVel * perp - nad * MechArm.FixedRetractRate;
 						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
 					}
 				}
 				else
 				{
-					if (armController.VertRepeling)
+					if (MechArm.VertRepeling)
 					{
-						if (PressingRet) rb2D.MovePosition(rb2D.position + armController.fixedRetractRate * Time.fixedDeltaTime * armController.Taim);
+						if (PressingRet) rb2D.MovePosition(rb2D.position + MechArm.FixedRetractRate * Time.fixedDeltaTime * MechArm.Taim);
 						else rb2D.velocity = Vector2.zero;
 					}
 					else
 					{
-						Vector2 nad = armController.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
+						Vector2 nad = MechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
 						if (perp.y > 0) perp = -perp;
 						_perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
 						CheckRepelArmCol(perp);
 						Vector2 nv = _perpVel * perp;
-						if (PressingRet) nv += nad * armController.fixedRetractRate;
+						if (PressingRet) nv += nad * MechArm.FixedRetractRate;
 						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
 					}
 				}
 			}
-			else if (armController.HaExtended)
+			else if (MechArm.HaExtended)
 			{
-				Rope rope = armController.rope;
-				Vector2 dir = rope.StartPoint.position - rope.EndPoint.position;
+				Rope arm = MechArm.arm;
+				Vector2 dir = arm.Start.position - arm.End.position;
 				// TODO: Update fist position
 				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
 				Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
-				var hit = Physics2D.BoxCast((Vector2)rope.EndPoint.position + newVel * Time.fixedDeltaTime, new(0.5f, rope.ropeWidth), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK);
+				var hit = Physics2D.BoxCast((Vector2)arm.End.position + newVel * Time.fixedDeltaTime, new(0.5f, arm.Width), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK);
 				if (hit && Vector2.Dot(hit.normal, newVel) < 0)
 				{
 					Debug.Log($"Hit dot prod {Vector2.Dot(hit.normal, newVel)} {hit.normal} {newVel}");
@@ -208,7 +221,7 @@ namespace Abyss.Player
 			}
 			else if (!_isTakingDamage)
 			{
-				if (IsDashing) rb2D.velocity = (_isDashLeft ? -1 : 1) * dashSpeed * Vector2.right;
+				if (IsDashing) rb2D.velocity = (_isLeftDash ? -1 : 1) * dashSpeed * Vector2.right;
 				else
 				{
 					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
@@ -295,7 +308,7 @@ namespace Abyss.Player
 		}
 
 		// Animation states
-		void HandleState()
+		void HandleAnim()
 		{
 			if (IsAttackState)
 			{
@@ -390,8 +403,8 @@ namespace Abyss.Player
 			{
 				_playerSfx.PlayDash();
 				IsDashing = true;
-				_isDashLeft = IsFacingLeft;
-				_dashTimeLeft = dashTime;
+				_isLeftDash = IsFacingLeft;
+				_dashTTL = dashTime;
 				_dashAvail = false;
 				TransitionToState(Enum.Parse<State>($"Dash_{Weapon}"));
 			}
@@ -416,9 +429,9 @@ namespace Abyss.Player
 			else if (context.canceled) PressingAim = false;
 		}
 
-		public void OnExtRel(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.ExtRel); }
-		public void OnDisc(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.Disc); }
-		public void OnHardSoft(InputAction.CallbackContext context) { if (context.performed) armController.QueueEvent(ArmController.Trigger.HardSoft); }
+		public void OnExtRel(InputAction.CallbackContext context) { if (context.performed) MechArm.QueueEvent(ArmController.Trigger.ExtRel); }
+		public void OnDisc(InputAction.CallbackContext context) { if (context.performed) MechArm.QueueEvent(ArmController.Trigger.Disc); }
+		public void OnHardSoft(InputAction.CallbackContext context) { if (context.performed) MechArm.QueueEvent(ArmController.Trigger.HardSoft); }
 
 		public void OnInteractRet(InputAction.CallbackContext context)
 		{
@@ -478,7 +491,7 @@ namespace Abyss.Player
 		{
 			_isTakingDamage = false;
 			_isInVuln = true;
-			_invulnTimeLeft = postDmgInvulnTime;
+			_invulnTTL = postDmgInvulnTime;
 		}
 
 		void AttackEnd()
@@ -492,10 +505,10 @@ namespace Abyss.Player
 
 		#region Helper Methods
 		bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
-		bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail && !armController.ArmActive;
-		bool CanAttack => !IsFrozen && !IsAttacking && !IsDashing && !_isTakingDamage && !_isDead && !armController.ArmActive;
-		bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !IsDashing && !armController.ArmActive;
-		bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing && !armController.ArmActive;
+		bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail && !MechArm.ArmActive;
+		bool CanAttack => !IsFrozen && !IsAttacking && !IsDashing && !_isTakingDamage && !_isDead && !MechArm.ArmActive;
+		bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !IsDashing && !MechArm.ArmActive;
+		bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing && !MechArm.ArmActive;
 		bool CanJump => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing;
 
 		bool IsIdleState => currState.ToString().StartsWith("Idle");
@@ -512,7 +525,7 @@ namespace Abyss.Player
 		{
 			Debug.Log("Dash interrupted");
 			IsDashing = false;
-			_dashTimeLeft = 0f;
+			_dashTTL = 0f;
 			_dashAvail = IsGrounded();
 		}
 
@@ -540,9 +553,9 @@ namespace Abyss.Player
 
 		void CalcGravity()
 		{
-			if (_isGrounded || IsSwinging || armController.Repeling)
+			if (_isGrounded || IsSwinging || MechArm.Repeling)
 			{
-				_gravMult = IsSwinging ? swingGravMult : armController.Repeling ? 0 : defGravMult;
+				_gravMult = MechArm.Repeling ? 0 : defGravMult;
 				return;
 			}
 
@@ -598,7 +611,6 @@ namespace Abyss.Player
 
 		bool IsGrounded()
 		{
-			// BoxCast version (more reliable for platforms)
 			RaycastHit2D boxHit = Physics2D.BoxCast(
 				transform.position,
 				groundCheckSize,
@@ -613,11 +625,10 @@ namespace Abyss.Player
 
 		void CheckRepelArmCol(Vector2 perp)
 		{
-			Rope rope = armController.rope;
-			var dir = (Vector2)rope.StartPoint.position + _perpVel * Time.fixedDeltaTime * perp - (Vector2)rope.EndPoint.position; // Sufficient approx rope anchor and rb is close
-			if (Physics2D.BoxCast(rope.EndPoint.position, new(0.5f, rope.ropeWidth), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK)) _perpVel = 0;
+			Rope arm = MechArm.arm;
+			var dir = (Vector2)arm.Start.position + _perpVel * Time.fixedDeltaTime * perp - (Vector2)arm.End.position; // Sufficient approx rope anchor and rb is close
+			if (Physics2D.BoxCast(arm.End.position, new(0.5f, arm.Width), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK)) _perpVel = 0;
 		}
-
 #if UNITY_EDITOR
 		void OnDrawGizmos()
 		{
