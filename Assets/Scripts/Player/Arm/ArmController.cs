@@ -28,7 +28,7 @@ namespace Abyss.Player
             Contact, DronePick, Kept, Hooked
         }
 
-        public Rope arm;
+        public Rope Arm;
         public float HardLen = 0f;
 
         public Transform Fist, DiFist, Shoulder;
@@ -52,6 +52,7 @@ namespace Abyss.Player
         readonly Queue<(Trigger, object)> _triggerQueue = new();
         public bool IsHard { get; private set; } = false;
         bool _hasNewEnd = false, _willAppImp = false;
+        public Vector2 Aim => _aim;
         Vector2 _newEnd, _aim = Vector2.right;
         Rigidbody2D _fistRb;
         PolygonCollider2D _fistCol;
@@ -64,15 +65,18 @@ namespace Abyss.Player
         public bool Repeling => CurrState == State.Ha_CoEx_To || CurrState == State.Ha_CoRe_To;
         public bool VertRepeling = false;
         public bool Connected { get; private set; } = true;
-        public Vector2 Anchor => Fist.transform.position;
-        public Vector2 AnchorDir => Anchor - (Vector2)arm.End.position;
+        public Vector2 Anchor => Arm.Start.position;
+        public Vector2 AnchorDir => Anchor - (Vector2)Arm.End.position;
+
+        bool _tickToComp = false;
+        bool ShouldDraw => HardLen > Const.EPS || Arm.Len > Const.EPS;
 
         public void Init()
         {
-            arm.Init();
-            arm.Pin(Rope.PinPoint.Both);
-            arm.Start = Fist;
-            arm.End = Shoulder;
+            Arm.Init();
+            Arm.QueuePin(Rope.PinPoint.Both);
+            Arm.Start = Fist;
+            Arm.End = Shoulder;
 
             _fistRb = Fist.GetComponent<Rigidbody2D>();
             _fistExt = Fist.GetComponent<ColNotifier>();
@@ -86,17 +90,24 @@ namespace Abyss.Player
             AddStateActions();
         }
 
-        public void Tick(float deltaTime)
+        public void PartTick(float deltaTime)
         {
-            if (!IsHard && Connected && CurrState != State.So_CoOg_Lo) arm.Tick(deltaTime);
+            // NOTE: Since one rope tick will only be completed when CompleteTick is called the deltaTime will be shorter than actual
+            if (!IsHard && Connected && CurrState != State.So_CoOg_Lo && !_tickToComp)
+            {
+                _tickToComp = true;
+                Arm.StartTick(deltaTime);
+            }
+
             _fsm.Tick(deltaTime);
-            if (PlayerCtr.PressingRet) _fsm.ProcessEvent((int)Trigger.Ret, true);
-            else if (PlayerCtr.PressingLen) _fsm.ProcessEvent((int)Trigger.Ret, false);
+            if (PlayerCtr.PressingRet) _fsm.ProcessEvent((int)Trigger.Ret, (true, deltaTime));
+            else if (PlayerCtr.PressingLen) _fsm.ProcessEvent((int)Trigger.Ret, (false, deltaTime));
             while (_triggerQueue.Count > 0)
             {
                 var (trigger, arg) = _triggerQueue.Dequeue();
                 Debug.Log($"Processing {trigger}");
-                _fsm.ProcessEvent((int)trigger, arg);
+                if (trigger == Trigger.Ret) _fsm.ProcessEvent((int)trigger, ((bool)arg, deltaTime));
+                else _fsm.ProcessEvent((int)trigger, arg);
             }
             if (_willAppImp)
             {
@@ -108,17 +119,22 @@ namespace Abyss.Player
                 SetAim();
                 _fsm.ProcessEvent((int)Trigger.Aim);
             }
-        }
 
-        public void Draw()
-        {
-            if (IsHard)
+            if (ShouldDraw && IsHard)
             {
                 RopeRenderer.positionCount = 2;
-                RopeRenderer.SetPosition(0, arm.Start.position);
-                RopeRenderer.SetPosition(1, arm.End.position);
+                RopeRenderer.SetPosition(0, Arm.Start.position);
+                RopeRenderer.SetPosition(1, Arm.End.position);
             }
-            arm.Draw(RopeRenderer);
+        }
+
+        public void CompleteTick()
+        {
+            if (_tickToComp)
+            {
+                _tickToComp = false;
+                Arm.CompleteTick(RopeRenderer);
+            }
         }
 
         #region Transition Actions
@@ -128,8 +144,8 @@ namespace Abyss.Player
             Fist.transform.position = FistPH.transform.position;
             FistPH.SetActive(false);
             Connected = false;
-            arm.Start = Fist;
-            arm.End = DiFist;
+            Arm.Start = Fist;
+            Arm.End = DiFist;
             _fistRb.isKinematic = true;
             Taim = _aim;
         }
@@ -142,10 +158,7 @@ namespace Abyss.Player
 
         void OnHaDiRet(object args)
         {
-            var largs = (List<object>)args;
-            bool isRet = (bool)largs[0];
-            float deltaTime = (float)largs[1];
-            RopeRenderer.enabled = true;
+            var (isRet, deltaTime) = ((bool, float))args;
             DiFist.gameObject.SetActive(true);
             if (isRet)
             {
@@ -156,15 +169,15 @@ namespace Abyss.Player
                     return;
                 }
             }
-            else if (HardLen < arm.MaxLength - Const.EPS) HardLen = Mathf.Min(arm.MaxLength, HardLen + HardExtRate * deltaTime);
+            else if (HardLen < Arm.MaxLength - Const.EPS) HardLen = Mathf.Min(Arm.MaxLength, HardLen + HardExtRate * deltaTime);
 
-            arm.End.position = arm.Start.position - HardLen * (Vector3)Taim;
-            Vector2 dir = arm.Start.position - arm.End.position, pdir = Vector2.Perpendicular(dir.normalized);
+            Arm.End.position = Arm.Start.position - HardLen * (Vector3)Taim;
+            Vector2 dir = Arm.Start.position - Arm.End.position, pdir = Vector2.Perpendicular(dir.normalized);
             Vector2[] colVtx = new Vector2[4];
-            colVtx[0] = dir - pdir * arm.Width / 2;
-            colVtx[1] = dir + pdir * arm.Width / 2;
-            colVtx[2] = pdir * arm.Width / 2;
-            colVtx[3] = -pdir * arm.Width / 2;
+            colVtx[0] = dir - pdir * Arm.Width / 2;
+            colVtx[1] = dir + pdir * Arm.Width / 2;
+            colVtx[2] = pdir * Arm.Width / 2;
+            colVtx[3] = -pdir * Arm.Width / 2;
             for (int i = 0; i < 4; i++) colVtx[i] = new(colVtx[i].x / DiFist.transform.lossyScale.x, colVtx[i].y / DiFist.transform.lossyScale.y);
             _fistCol.SetPath(0, colVtx);
         }
@@ -173,8 +186,8 @@ namespace Abyss.Player
         {
             RopeRenderer.positionCount = 0;
             Connected = true;
-            arm.Start = Fist;
-            arm.End = Shoulder;
+            Arm.Start = Fist;
+            Arm.End = Shoulder;
         }
 
         void OnDrone(object input = null)
@@ -201,8 +214,8 @@ namespace Abyss.Player
         void OnSoEx(object input = null)
         {
             InitEx();
-            arm.Init();
-            arm.Pin(Rope.PinPoint.Both);
+            Arm.Init();
+            Arm.QueuePin(Rope.PinPoint.Both);
 
             _fistRb.isKinematic = false;
             _willAppImp = true;
@@ -223,41 +236,36 @@ namespace Abyss.Player
         void SoStop(object input = null)
         {
             _fistRb.isKinematic = true;
+            _fistRb.velocity = Vector3.zero;
             _fistExt.OnContact = null;
             _fistExt.OnCollision = null;
         }
 
         void SoEx(object input = null)
         {
-            float dist = (arm.Start.position - arm.End.position).magnitude;
-            if (dist > arm.Len) arm.Extend(dist - arm.Len);
-            if (dist > arm.MaxLength) QueueEvent(Trigger.Ret, true);
+            float dist = (Arm.Start.position - Arm.End.position).magnitude;
+            if (dist > Arm.Len) Arm.QueueExtend(dist - Arm.Len);
+            if (dist > Arm.MaxLength) QueueEvent(Trigger.Ret, true);
         }
 
         void OnSoRet(object args)
         {
-            var largs = (List<object>)args;
-            bool isRet = (bool)largs[0];
-            float deltaTime = (float)largs[1];
-
-            if (isRet) arm.Retract(FreeRetractRate * deltaTime);
-            else arm.Extend(SoftExtRate * deltaTime);
-            if (arm.Len <= Const.EPS) QueueEvent(Trigger.Kept);
+            var (isRet, deltaTime) = ((bool, float))args;
+            if (isRet) Arm.QueueRetract(FreeRetractRate * deltaTime);
+            else Arm.QueueExtend(SoftExtRate * deltaTime);
+            if (Arm.Len <= Const.EPS) QueueEvent(Trigger.Kept);
         }
 
         void OnFiRet(object args)
         {
-            var largs = (List<object>)args;
-            bool isRet = (bool)largs[0];
-            float deltaTime = (float)largs[1];
-
-            if (isRet) arm.Retract(FixedRetractRate * deltaTime);
-            else arm.Extend(SoftExtRate * deltaTime);
+            var (isRet, deltaTime) = ((bool, float))args;
+            if (isRet) Arm.QueueRetract(FixedRetractRate * deltaTime);
+            else Arm.QueueExtend(SoftExtRate * deltaTime);
         }
 
         void HaEx(object deltaTime)
         {
-            HardLen = Mathf.Min(arm.MaxLength, HardLen + HardExtRate * (float)deltaTime);
+            HardLen = Mathf.Min(Arm.MaxLength, HardLen + HardExtRate * (float)deltaTime);
             if (CheckFistCol(Taim))
             {
                 QueueEvent(Trigger.Contact);
@@ -265,9 +273,9 @@ namespace Abyss.Player
             }
             // NOTE: newEnd stores temp calc res to possibly be used by aim in the same turn: see sequence of invocation in fixed update
             _hasNewEnd = true;
-            _newEnd = arm.End.position + (Vector3)Taim * HardLen;
+            _newEnd = Arm.End.position + (Vector3)Taim * HardLen;
             _fistRb.MovePosition(_newEnd);
-            if (HardLen > arm.MaxLength - Const.EPS) QueueEvent(Trigger.Ret, true);
+            if (HardLen > Arm.MaxLength - Const.EPS) QueueEvent(Trigger.Ret, true);
         }
 
         void OnHaCont(object input = null)
@@ -278,15 +286,12 @@ namespace Abyss.Player
 
         void OnHaRet(object args)
         {
-            var largs = (List<object>)args;
-            bool isRet = (bool)largs[0];
-            float deltaTime = (float)largs[1];
-
+            var (isRet, deltaTime) = ((bool, float))args;
             if (isRet) HardLen = Mathf.Max(0, HardLen - FreeRetractRate * deltaTime);
-            else if (HardLen < arm.MaxLength - Const.EPS) HardLen = Mathf.Min(arm.MaxLength, HardLen + HardExtRate * deltaTime);
+            else if (HardLen < Arm.MaxLength - Const.EPS) HardLen = Mathf.Min(Arm.MaxLength, HardLen + HardExtRate * deltaTime);
 
             _hasNewEnd = true;
-            _newEnd = arm.End.position + (arm.Start.position - arm.End.position).normalized * HardLen;
+            _newEnd = Arm.End.position + (Arm.Start.position - Arm.End.position).normalized * HardLen;
             _fistRb.MovePosition(_newEnd);
             if (Mathf.Abs(HardLen) <= Const.EPS) QueueEvent(Trigger.Kept);
         }
@@ -302,27 +307,26 @@ namespace Abyss.Player
 
         void Repel(object input = null)
         {
-            HardLen = (arm.Start.position - arm.End.position).magnitude;
-            Vector2 repdir = (arm.End.position - arm.Start.position).normalized;
-            if (HardLen > arm.MaxLength - Const.EPS || Physics2D.Raycast(PlayerCtr.transform.position, repdir, PlayerColDetDist, Settings.LayerMask.OBSTACLE_LMASK)) QueueEvent(Trigger.Ret, true);
+            HardLen = (Arm.Start.position - Arm.End.position).magnitude;
+            Vector2 repdir = (Arm.End.position - Arm.Start.position).normalized;
+            if (HardLen > Arm.MaxLength - Const.EPS || Physics2D.Raycast(PlayerCtr.transform.position, repdir, PlayerColDetDist, Settings.LayerMask.OBSTACLE_LMASK)) QueueEvent(Trigger.Ret, true);
         }
 
-        void OnHaToRet(object input = null) => HardLen = (arm.Start.position - arm.End.position).magnitude;
+        void OnHaToRet(object input = null) => HardLen = (Arm.Start.position - Arm.End.position).magnitude;
 
         void OnHaLoAim(object deltaTime)
         {
-            Vector3 caim = (_hasNewEnd ? _newEnd : _fistRb.transform.position) - arm.End.position;
+            Vector3 caim = (_hasNewEnd ? _newEnd : _fistRb.transform.position) - Arm.End.position;
             _hasNewEnd = false;
             Vector3 naim = Quaternion.Euler(0, 0, Vector2.SignedAngle(caim, _aim) * AimResp * (float)deltaTime) * caim, nnaim = naim.normalized;
-            if (!Physics2D.BoxCast(arm.End.position, new(0.5f, arm.Width), Vector2.SignedAngle(Vector2.right, naim), nnaim, naim.magnitude, Settings.LayerMask.OBSTACLE_LMASK))
+            if (!Physics2D.BoxCast(Arm.End.position, new(0.5f, Arm.Width), Vector2.SignedAngle(Vector2.right, naim), nnaim, naim.magnitude, Settings.LayerMask.OBSTACLE_LMASK))
             {
                 Taim = nnaim;
-                _fistRb.MovePosition(arm.End.position + naim);
+                _fistRb.MovePosition(Arm.End.position + naim);
             }
         }
 
-        // void DragFist(object input = null) => Fist.transform.position = arm.PointPos(0);
-        void EntCoReLo(object input = null) => arm.Pin(Rope.PinPoint.End);
+        void EntCoReLo(object input = null) => Arm.QueuePin(Rope.PinPoint.End);
         void EntHaReLo(object input = null) => Fist.transform.parent = Shoulder;
         void ExitHaReLo(object input = null) => Fist.transform.parent = null;
         #endregion
@@ -341,7 +345,7 @@ namespace Abyss.Player
         }
 
         public void QueueEvent(Trigger trigger, object arg = null) => _triggerQueue.Enqueue((trigger, arg));
-        public void SetAim() => _aim = ((Vector2)(Camera.main.ScreenToWorldPoint(Input.mousePosition) - arm.End.position)).normalized;
+        public void SetAim() => _aim = ((Vector2)(Camera.main.ScreenToWorldPoint(Input.mousePosition) - Arm.End.position)).normalized;
         bool CheckFistCol(Vector2 dir) => Physics2D.Raycast(Fist.transform.position, dir.normalized, FistColDetDist, Abyss.Settings.LayerMask.OBSTACLE_LMASK);
 
         void OnGrndAftRepel()
@@ -357,7 +361,6 @@ namespace Abyss.Player
             AddInAction(State.So_CoEx_Lo, SoEx);
             AddInAction(State.Ha_CoEx_Lo, HaEx);
             AddInAction(State.Ha_CoEx_To, Repel);
-            // AddInAction(State.So_CoRe_Lo, DragFist);
 
             AddEntryAction(State.So_CoRe_Lo, EntCoReLo);
             AddEntryAction(State.Ha_CoRe_Lo, EntHaReLo);
@@ -420,14 +423,5 @@ namespace Abyss.Player
         }
 
         #endregion
-        // #if UNITY_EDITOR
-        //         void OnDrawGizmos()
-        //         {
-        //             Gizmos.color = Color.red;
-        //             Gizmos.DrawLine(transform.position, transform.position + (Vector3)_aim);
-        //             Gizmos.color = Color.green;
-        //             Gizmos.DrawLine(PlayerCtr.transform.position, PlayerCtr.transform.position + (Earm.End.position - Earm.Start.position).normalized * PlayerColDetDist);
-        //         }
-        // #endif
     }
 }

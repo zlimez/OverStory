@@ -2,6 +2,7 @@ using System;
 using Abyss.EventSystem;
 using Abyss.Player.Spells;
 using AnyPortrait;
+using Utils;
 using Utils.Tuples;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,7 @@ using UnityEngine.InputSystem.Interactions;
 using UnityEngine.VFX;
 using UnityEngine.Rendering;
 using VerletPhysics;
+using System.Collections.Generic;
 
 // FIXME: When damaged seems to charge further
 // TODO: Combine arm and player controller most importantly their states?
@@ -73,7 +75,9 @@ namespace Abyss.Player
 
 		[Header("Swing")]
 		[SerializeField][Tooltip("Higher the value greater the penalty multiplier on wiggle force")] float swingAngDec = 4f;
-		[SerializeField][Tooltip("magnitude of wiggle when swinging")] float wiggleForce = 10f;
+		[SerializeField][Tooltip("Magnitude of wiggle when swinging")] float wiggleForce = 10f;
+		[SerializeField][Tooltip("When checking whether to enter swing state player's vel sqr must be leq this threshold for swinging to take place")] float maxRemVelSqMag = 2f;
+		public Vector2 ShoulderOffset;
 		[Header("Repel")]
 		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")] ClampedFloatParameter repYDamper = new(2, 1, 10);
 		[NonSerialized] public bool RepStart = false;
@@ -103,10 +107,17 @@ namespace Abyss.Player
 			MechArm.PlayerCtr = this;
 
 			portrait.Initialize();
+
 			MechArm.Init();
+			Collider2D[] cols = FindObjectsOfType<Collider2D>();
+			List<Collider2D> armCols = new();
+			foreach (Collider2D col in cols)
+				if ((1 << col.gameObject.layer & Settings.LayerMask.OBSTACLE_LMASK) > 0) armCols.Add(col);
+			MechArm.Arm.SetColliders(armCols);
+			ShoulderOffset = MechArm.Arm.End.position - transform.position;
+
 			currState = Enum.Parse<State>($"Idle_{Weapon}");
 		}
-
 
 		void Update()
 		{
@@ -131,26 +142,48 @@ namespace Abyss.Player
 			if (!IsSwinging && !MechArm.Repeling && !_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
 		}
 
+		void LateUpdate()
+		{
+			// MechArm.CompleteTick();
+			// if (IsSwinging)
+			// {
+			// 	// float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - MechArm.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
+			// 	if (Mathf.Abs(_moveDir) > Const.EPS)
+			// 	{
+			// 		Vector2 endForce = _moveDir * wiggleForce * Vector2.right;
+			// 		for (int i = 1; i <= MechArm.Arm.NumPoints; i++)
+			// 			MechArm.Arm.QueueForce(endForce * Mathf.Pow((float)i / MechArm.Arm.NumPoints, 2), i - 1);
+			// 		// Vector2 endForce = _moveDir * wiggleForce * Vector2.right;
+			// 		// MechArm.Arm.QueueForce(endForce, MechArm.Arm.NumPoints-1);
+			// 	}
+			// }
+			// if (IsSwinging) transform.position = MechArm.Arm.End.position - (Vector3)ShoulderOffset;
+		}
+
 		void FixedUpdate()
 		{
-			MechArm.Tick(Time.fixedDeltaTime);
+			MechArm.PartTick(Time.fixedDeltaTime);
+
 			SetBodyGrav();
 			_isGrounded = IsGrounded();
-
 			if (_isGrounded) OnGrounded?.Invoke();
-
-			if (!IsSwinging && MechArm.Swingable && !_isGrounded)
+			// might be worth putting jump into state machine consideration
+			// TODO: Freeze movement even when grounded but rope at max stretch
+			if (!IsSwinging && MechArm.Swingable && !_isGrounded && (!IsJumping || (IsJumping && rb2D.velocity.y < -0.01f)))
 			{
+				Debug.Log($"Start swinging anchor sqdist {MechArm.AnchorDir.sqrMagnitude} rope sqlen {MechArm.Arm.Len * MechArm.Arm.Len} grounded {_isGrounded}");
 				IsSwinging = true;
 				rb2D.isKinematic = true;
-				MechArm.arm.Pin(Rope.PinPoint.Start);
+				rb2D.velocity = Vector2.zero;
+				MechArm.Arm.QueuePin(Rope.PinPoint.Start);
 			}
 			else if (IsSwinging && (_isGrounded || !MechArm.Swingable))
 			{
+				Debug.Log($"Stop swinging anchor sqdist {MechArm.AnchorDir.sqrMagnitude} rope sqlen {MechArm.Arm.Len * MechArm.Arm.Len} grounded {_isGrounded}");
 				IsSwinging = false; // Only when landed
 				rb2D.isKinematic = false;
-				if (!_isGrounded) rb2D.velocity = MechArm.arm.PointVel(MechArm.arm.NumPoints - 1, Time.fixedDeltaTime);
-				else if (MechArm.Swingable) MechArm.arm.Pin(Rope.PinPoint.Both);
+				if (!_isGrounded) rb2D.velocity = MechArm.Arm.EndVel / Time.fixedDeltaTime; // Release preserve momentum
+				else if (MechArm.Swingable) MechArm.Arm.QueuePin(Rope.PinPoint.Both); // rope len greater than dist to anchor
 			}
 
 			if (_willTakeHit)
@@ -159,13 +192,8 @@ namespace Abyss.Player
 				return;
 			}
 
-			if (IsSwinging)
-			{
-				// transform.position = MechArm.arm.PointPos(MechArm.arm.NumPoints - 1);
-				float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - MechArm.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
-				MechArm.arm.ApplyForce(_moveDir * Mathf.Cos(ang) * wiggleForce * Vector2.right, MechArm.arm.NumPoints - 1);
-			}
-			else if (MechArm.Repeling)
+
+			if (MechArm.Repeling)
 			{
 				if (MechArm.CurrState == ArmController.State.Ha_CoEx_To)
 				{
@@ -206,7 +234,7 @@ namespace Abyss.Player
 			}
 			else if (MechArm.HaExtended)
 			{
-				Rope arm = MechArm.arm;
+				Rope arm = MechArm.Arm;
 				Vector2 dir = arm.Start.position - arm.End.position;
 				// TODO: Update fist position
 				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
@@ -228,6 +256,19 @@ namespace Abyss.Player
 					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
 					rb2D.velocity = newVel;
 				}
+			}
+
+			MechArm.CompleteTick();
+			if (IsSwinging)
+			{
+				// float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - MechArm.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
+				if (Mathf.Abs(_moveDir) > Const.EPS)
+				{
+					Vector2 endForce = _moveDir * wiggleForce * Vector2.right;
+					for (int i = 1; i <= MechArm.Arm.NumPoints; i++)
+						MechArm.Arm.QueueForce(endForce * Mathf.Pow((float)i / MechArm.Arm.NumPoints, 2), i - 1);
+				}
+				return;
 			}
 
 			if (_willJmp)
@@ -272,6 +313,8 @@ namespace Abyss.Player
 			EventManager.StopListening(PlayEvents.WeaponEquipped, EquipWeapon);
 			EventManager.StopListening(PlayEvents.WeaponUnequipped, UnequipWeapon);
 		}
+
+		void OnDestroy() => MechArm.Arm.Dispose();
 		#endregion
 
 		#region Other Methods
@@ -625,7 +668,7 @@ namespace Abyss.Player
 
 		void CheckRepelArmCol(Vector2 perp)
 		{
-			Rope arm = MechArm.arm;
+			Rope arm = MechArm.Arm;
 			var dir = (Vector2)arm.Start.position + _perpVel * Time.fixedDeltaTime * perp - (Vector2)arm.End.position; // Sufficient approx rope anchor and rb is close
 			if (Physics2D.BoxCast(arm.End.position, new(0.5f, arm.Width), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK)) _perpVel = 0;
 		}
@@ -637,6 +680,11 @@ namespace Abyss.Player
 				transform.position + Vector3.down * groundCheckDist,
 				groundCheckSize
 			);
+
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawLine(transform.position, transform.position + (Vector3)MechArm.Aim);
+			Gizmos.color = Color.green;
+			Gizmos.DrawLine(transform.position, transform.position + (MechArm.Arm.End.position - MechArm.Arm.Start.position).normalized * MechArm.PlayerColDetDist);
 		}
 #endif
 		#endregion
