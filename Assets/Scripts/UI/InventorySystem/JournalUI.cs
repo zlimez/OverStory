@@ -32,7 +32,7 @@ public class JournalUI : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateJournalUI);
+            EventManager.Subscribe(SystemEvents.SystemsReady, InitUpdateJournalUI);
         else
         {
             level = GameManager.Instance.Inventory.Level;
@@ -47,7 +47,7 @@ public class JournalUI : MonoBehaviour
         level = GameManager.Instance.Inventory.Level;
         UpdateJournalUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateJournalUI;
-        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateJournalUI);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, InitUpdateJournalUI);
     }
 
     void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateJournalUI;

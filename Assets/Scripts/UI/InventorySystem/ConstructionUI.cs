@@ -14,7 +14,7 @@ public class ConstructionUI : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateConstructionUI);
+            EventManager.Subscribe(SystemEvents.SystemsReady, InitUpdateConstructionUI);
         else
         {
             level = GameManager.Instance.Inventory.Level;
@@ -29,7 +29,7 @@ public class ConstructionUI : MonoBehaviour
         level = GameManager.Instance.Inventory.Level;
         UpdateConstructionUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateConstructionUI;
-        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateConstructionUI);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, InitUpdateConstructionUI);
     }
 
     void OnDisable()

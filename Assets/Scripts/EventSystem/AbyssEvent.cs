@@ -16,16 +16,16 @@ namespace Abyss.EventSystem
         InteractableEntered, InteractableExited,
         PlayerHealthChange, PurityChange, ActionPurityChange, FriendlinessPurityChange,
         PlayerIntelChange, PlayerItemChange,
-        DraggedItem, UpdateNPCInventory, SelectItem,
+        DraggedItem, UpdateNpcInventory, SelectItem,
 
         TradePostEntered, TradePostExited, LearningPostEntered, LearningPostExited, CraftingPostEntered,
         WeaponEquipped, WeaponUnequipped, SpellChange,
         LureUsed, LurePlaced,
         RestStart, InRest, RestEnd,
-        TimeBcast,
+        TimeBCast,
         BuildStart, BuildEnd,
         PlayerSpeak, PlayerSpriteFlip,
-        Message, ChangeCameraBG,
+        Message, ChangeCameraBg,
         TutorialDisplay, TutorialClose,
     }
 }

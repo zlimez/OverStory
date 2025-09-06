@@ -9,12 +9,12 @@ public class HpBar : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+        EventManager.Subscribe(PlayEvents.PlayerHealthChange, UpdateHpBar);
         if (GameManager.Instance != null)
             UpdateHpBar(GameManager.Instance.PlayerPersistence.PlayerAttr.Health);
     }
 
-    void OnDisable() => EventManager.StopListening(PlayEvents.PlayerHealthChange, UpdateHpBar);
+    void OnDisable() => EventManager.Unsubscribe(PlayEvents.PlayerHealthChange, UpdateHpBar);
 
     void UpdateHpBar(object input)
     {

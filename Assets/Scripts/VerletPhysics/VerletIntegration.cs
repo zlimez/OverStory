@@ -2,14 +2,15 @@ using UnityEngine;
 
 namespace VerletPhysics
 {
-    struct Point
+    internal struct Point
     {
         public Vector2 Pos;
         public Vector2 OldPos;
         public bool Pinned;
+        public float Mass;
     }
 
-    struct Stick
+    internal struct Stick
     {
         public int P0;
         public int P1;

@@ -12,7 +12,7 @@ namespace Abyss.Interactables
         void OnEnable()
         {
             if (GameManager.Instance == null)
-                EventManager.StartListening(SystemEvents.SystemsReady, initAddPost);
+                EventManager.Subscribe(SystemEvents.SystemsReady, initAddPost);
             else
             {
                 tryCloseThis();
@@ -21,7 +21,7 @@ namespace Abyss.Interactables
         void initAddPost(object input)
         {
             tryCloseThis();
-            EventManager.StopListening(SystemEvents.SystemsReady, initAddPost);
+            EventManager.Unsubscribe(SystemEvents.SystemsReady, initAddPost);
         }
 
         void tryCloseThis()

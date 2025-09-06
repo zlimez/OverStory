@@ -18,7 +18,7 @@ public class Watermill : Interactable
     void OnEnable()
     {
         if (EventLedger.Instance == null)
-            EventManager.StartListening(SystemEvents.LedgerReady, Load);
+            EventManager.Subscribe(SystemEvents.LedgerReady, Load);
         else Load();
     }
 
@@ -32,10 +32,10 @@ public class Watermill : Interactable
             _isFixed = true;
             _time = timeToReachMaxSpin;
         }
-        EventManager.StopListening(SystemEvents.LedgerReady, Load);
+        EventManager.Unsubscribe(SystemEvents.LedgerReady, Load);
     }
 
-    void OnDisable() => EventManager.StopListening(SystemEvents.LedgerReady, Load);
+    void OnDisable() => EventManager.Unsubscribe(SystemEvents.LedgerReady, Load);
 
     protected override void OnTriggerEnter2D(Collider2D collider)
     {

@@ -50,20 +50,20 @@ namespace Abyss.Player
         {
             playerController.OnAttackEnded += weapon.Reset;
             if (GameManager.Instance == null)
-                EventManager.StartListening(SystemEvents.SystemsReady, Load);
+                EventManager.Subscribe(SystemEvents.SystemsReady, Load);
             else Load();
-            EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StartListening(PlayEvents.ActionPurityChange, UpdateActionPurity);
-            EventManager.StartListening(PlayEvents.FriendlinessPurityChange, UpdateFriendlinessPurity);
+            EventManager.Subscribe(SystemEvents.SceneTransitStart, Save);
+            EventManager.Subscribe(PlayEvents.ActionPurityChange, UpdateActionPurity);
+            EventManager.Subscribe(PlayEvents.FriendlinessPurityChange, UpdateFriendlinessPurity);
         }
 
         void OnDisable()
         {
             playerController.OnAttackEnded -= weapon.Reset;
-            EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StopListening(SystemEvents.SystemsReady, Load);
-            EventManager.StopListening(PlayEvents.ActionPurityChange, UpdateActionPurity);
-            EventManager.StopListening(PlayEvents.FriendlinessPurityChange, UpdateFriendlinessPurity);
+            EventManager.Unsubscribe(SystemEvents.SceneTransitStart, Save);
+            EventManager.Unsubscribe(SystemEvents.SystemsReady, Load);
+            EventManager.Unsubscribe(PlayEvents.ActionPurityChange, UpdateActionPurity);
+            EventManager.Unsubscribe(PlayEvents.FriendlinessPurityChange, UpdateFriendlinessPurity);
         }
 
         void FixedUpdate()
@@ -111,7 +111,7 @@ namespace Abyss.Player
                 Save();
                 GameManager.Instance.PlayerPersistence.JustDied = true;
                 GameManager.Instance.PlayerPersistence.KilledBy = striker;
-                EventManager.StartListening(PlayEvents.PlayerDeath, ReturnToRestScene);
+                EventManager.Subscribe(PlayEvents.PlayerDeath, ReturnToRestScene);
                 playerController.Die();
             }
         }
@@ -124,7 +124,7 @@ namespace Abyss.Player
             else GameManager.Instance.Inventory.RanRemovePortion(portionLost);
 
             SceneLoader.Instance.PrepLoadWithMaster(LastRest.Head);
-            EventManager.StopListening(PlayEvents.PlayerDeath, ReturnToRestScene);
+            EventManager.Unsubscribe(PlayEvents.PlayerDeath, ReturnToRestScene);
         }
 
         public void UpdateHealth(float healthChange)

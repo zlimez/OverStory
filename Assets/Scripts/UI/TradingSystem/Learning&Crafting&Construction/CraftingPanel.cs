@@ -25,14 +25,14 @@ public class CraftingSystem : MonoBehaviour
 
     void Start() => craftingPanel.SetActive(false);
 
-    void OnEnable() => EventManager.StartListening(PlayEvents.CraftingPostEntered, OpenCrafting);
-    void OnDisable() => EventManager.StopListening(PlayEvents.CraftingPostEntered, OpenCrafting);
+    void OnEnable() => EventManager.Subscribe(PlayEvents.CraftingPostEntered, OpenCrafting);
+    void OnDisable() => EventManager.Unsubscribe(PlayEvents.CraftingPostEntered, OpenCrafting);
 
     public void CloseCrafting()
     {
         IsCraftingOpen = false;
         craftingPanel.SetActive(false);
-        EventManager.StopListening(UIEvents.SelectItem, Select);
+        EventManager.Unsubscribe(UIEvents.SelectItem, Select);
         GameManager.Instance.UI.Close();
         _onClose?.Invoke();
     }
@@ -41,7 +41,7 @@ public class CraftingSystem : MonoBehaviour
     {
         IsCraftingOpen = false;
         craftingPanel.SetActive(false);
-        EventManager.StopListening(UIEvents.SelectItem, Select);
+        EventManager.Unsubscribe(UIEvents.SelectItem, Select);
         _onClose?.Invoke();
     }
 
@@ -53,7 +53,7 @@ public class CraftingSystem : MonoBehaviour
         UpdateCraftingPanel();
         IsCraftingOpen = true;
         craftingPanel.SetActive(true);
-        EventManager.StartListening(UIEvents.SelectItem, Select);
+        EventManager.Subscribe(UIEvents.SelectItem, Select);
     }
 
     private void Select(object arg)

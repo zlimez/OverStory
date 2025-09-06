@@ -19,9 +19,9 @@ namespace Abyss.EventSystem
             SceneTransitStart = NamedEvent.SceneTransitStart;
             SceneTransitDone = NamedEvent.SceneTransitDone;
             SceneTransitPrep = NamedEvent.SceneTransitPrep;
-            TimeBcastEvent = NamedEvent.TimeBcast;
+            TimeBcastEvent = NamedEvent.TimeBCast;
             EnemyPopManagerReady = NamedEvent.EnemyPopManagerReady;
-            ChangeCameraBG = NamedEvent.ChangeCameraBG;
+            ChangeCameraBG = NamedEvent.ChangeCameraBg;
         }
     }
 
@@ -38,7 +38,7 @@ namespace Abyss.EventSystem
             BlackIn = NamedEvent.BlackIn;
             BlackOut = NamedEvent.BlackOut;
             DraggedItem = NamedEvent.DraggedItem;
-            UpdateNPCInventory = NamedEvent.UpdateNPCInventory;
+            UpdateNPCInventory = NamedEvent.UpdateNpcInventory;
             SelectItem = NamedEvent.SelectItem;
             TutorialDisplay = NamedEvent.TutorialDisplay;
             TutorialClose = NamedEvent.TutorialClose;

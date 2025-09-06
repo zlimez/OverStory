@@ -20,11 +20,11 @@ public class SpellUI : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateSpellUI);
+            EventManager.Subscribe(SystemEvents.SystemsReady, InitUpdateSpellUI);
         else
         {
             UpdateSpellUI();
-            EventManager.StartListening(PlayEvents.SpellChange, UpdateSelectedArea);
+            EventManager.Subscribe(PlayEvents.SpellChange, UpdateSelectedArea);
         }
     }
 
@@ -32,11 +32,11 @@ public class SpellUI : MonoBehaviour
     void InitUpdateSpellUI(object input = null)
     {
         UpdateSpellUI();
-        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateSpellUI);
-        EventManager.StartListening(PlayEvents.SpellChange, UpdateSelectedArea);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, InitUpdateSpellUI);
+        EventManager.Subscribe(PlayEvents.SpellChange, UpdateSelectedArea);
     }
 
-    void OnDisable() => EventManager.StopListening(PlayEvents.SpellChange, UpdateSelectedArea);
+    void OnDisable() => EventManager.Unsubscribe(PlayEvents.SpellChange, UpdateSelectedArea);
 
     public void UpdateSpellUI()
     {

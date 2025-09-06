@@ -9,11 +9,11 @@ using UnityEngine;
 /// </summary>
 public class EventEnable : MonoBehaviour
 {
-    [SerializeField] Pair<DynamicEvent, GameObject>[] enableDEventObjectPairs;
-    [SerializeField] Pair<DynamicEvent, GameObject>[] disableDEventObjectPairs;
-    [SerializeField] Pair<NamedEvent, GameObject>[] enableSEventObjectPairs;
-    [SerializeField] Pair<NamedEvent, GameObject>[] disableSEventObjectPairs;
-    List<Pair<GameEvent, Action<object>>> _eventActions = new();
+    [SerializeField] private Pair<DynamicEvent, GameObject>[] enableDEventObjectPairs;
+    [SerializeField] private Pair<DynamicEvent, GameObject>[] disableDEventObjectPairs;
+    [SerializeField] private Pair<NamedEvent, GameObject>[] enableSEventObjectPairs;
+    [SerializeField] private Pair<NamedEvent, GameObject>[] disableSEventObjectPairs;
+    private readonly List<Pair<GameEvent, Action<object>>> _eventActions = new();
 
     void Awake()
     {
@@ -33,12 +33,12 @@ public class EventEnable : MonoBehaviour
     void OnEnable()
     {
         foreach (var pair in _eventActions)
-            EventManager.StartListening(pair.Head, pair.Tail);
+            EventManager.Subscribe(pair.Head, pair.Tail);
     }
 
     void OnDisable()
     {
         foreach (var pair in _eventActions)
-            EventManager.StopListening(pair.Head, pair.Tail);
+            EventManager.Unsubscribe(pair.Head, pair.Tail);
     }
 }

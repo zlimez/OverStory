@@ -12,14 +12,14 @@ public class InfoHint : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEvents.InteractableEntered, ShowInfoPanel);
-        EventManager.StartListening(PlayEvents.InteractableExited, HideInfoPanel);
+        EventManager.Subscribe(PlayEvents.InteractableEntered, ShowInfoPanel);
+        EventManager.Subscribe(PlayEvents.InteractableExited, HideInfoPanel);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(PlayEvents.InteractableEntered, ShowInfoPanel);
-        EventManager.StopListening(PlayEvents.InteractableExited, HideInfoPanel);
+        EventManager.Unsubscribe(PlayEvents.InteractableEntered, ShowInfoPanel);
+        EventManager.Unsubscribe(PlayEvents.InteractableExited, HideInfoPanel);
     }
 
     void ShowInfoPanel(object obj)

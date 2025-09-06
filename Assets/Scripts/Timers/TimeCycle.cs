@@ -22,15 +22,15 @@ namespace Abyss.TimeManagers
         void OnEnable()
         {
             if (GameManager.Instance == null)
-                EventManager.StartListening(SystemEvents.SystemsReady, LoadStartCycle);
+                EventManager.Subscribe(SystemEvents.SystemsReady, LoadStartCycle);
             else LoadStartCycle();
-            EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.Subscribe(SystemEvents.SceneTransitStart, Save);
         }
 
         void OnDisable()
         {
-            EventManager.StopListening(SystemEvents.SystemsReady, LoadStartCycle);
-            EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.Unsubscribe(SystemEvents.SystemsReady, LoadStartCycle);
+            EventManager.Unsubscribe(SystemEvents.SceneTransitStart, Save);
         }
 
         void LoadStartCycle(object input = null)

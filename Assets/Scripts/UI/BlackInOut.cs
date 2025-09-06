@@ -17,54 +17,54 @@ public class BlackInOut : MonoBehaviour
     {
         if (closeTriggers != null)
             foreach (GameEvent closeTrigger in closeTriggers)
-                EventManager.StartListening(closeTrigger, Close);
+                EventManager.Subscribe(closeTrigger, Close);
 
         if (dynCloseTriggers != null)
             foreach (var dynCloseTrigger in dynCloseTriggers)
-                EventManager.StartListening(new GameEvent(dynCloseTrigger.EventName), Close);
+                EventManager.Subscribe(new GameEvent(dynCloseTrigger.EventName), Close);
 
         if (openTriggers != null)
             foreach (GameEvent openTrigger in openTriggers)
-                EventManager.StartListening(openTrigger, Open);
+                EventManager.Subscribe(openTrigger, Open);
 
         if (dynOpenTriggers != null)
             foreach (var dynOpenTrigger in dynOpenTriggers)
-                EventManager.StartListening(new GameEvent(dynOpenTrigger.EventName), Open);
+                EventManager.Subscribe(new GameEvent(dynOpenTrigger.EventName), Open);
 
         if (closeOpenTriggers != null)
             foreach (GameEvent closeOpenTrigger in closeOpenTriggers)
-                EventManager.StartListening(closeOpenTrigger, CloseOpen);
+                EventManager.Subscribe(closeOpenTrigger, CloseOpen);
 
         if (dynCloseOpenTriggers != null)
             foreach (var dynCloseOpenTrigger in dynCloseOpenTriggers)
-                EventManager.StartListening(new GameEvent(dynCloseOpenTrigger.EventName), CloseOpen);
+                EventManager.Subscribe(new GameEvent(dynCloseOpenTrigger.EventName), CloseOpen);
     }
 
     void OnDisable()
     {
         if (closeTriggers != null)
             foreach (GameEvent closeTrigger in closeTriggers)
-                EventManager.StopListening(closeTrigger, Close);
+                EventManager.Unsubscribe(closeTrigger, Close);
 
         if (dynCloseTriggers != null)
             foreach (var dynCloseTrigger in dynCloseTriggers)
-                EventManager.StopListening(new GameEvent(dynCloseTrigger.EventName), Close);
+                EventManager.Unsubscribe(new GameEvent(dynCloseTrigger.EventName), Close);
 
         if (openTriggers != null)
             foreach (GameEvent openTrigger in openTriggers)
-                EventManager.StopListening(openTrigger, Open);
+                EventManager.Unsubscribe(openTrigger, Open);
 
         if (dynOpenTriggers != null)
             foreach (var dynOpenTrigger in dynOpenTriggers)
-                EventManager.StopListening(new GameEvent(dynOpenTrigger.EventName), Open);
+                EventManager.Unsubscribe(new GameEvent(dynOpenTrigger.EventName), Open);
 
         if (closeOpenTriggers != null)
             foreach (GameEvent closeOpenTrigger in closeOpenTriggers)
-                EventManager.StopListening(closeOpenTrigger, CloseOpen);
+                EventManager.Unsubscribe(closeOpenTrigger, CloseOpen);
 
         if (dynCloseOpenTriggers != null)
             foreach (var dynCloseOpenTrigger in dynCloseOpenTriggers)
-                EventManager.StopListening(new GameEvent(dynCloseOpenTrigger.EventName), CloseOpen);
+                EventManager.Unsubscribe(new GameEvent(dynCloseOpenTrigger.EventName), CloseOpen);
     }
 
     public void Close(object input = null) => StartCoroutine(Close());

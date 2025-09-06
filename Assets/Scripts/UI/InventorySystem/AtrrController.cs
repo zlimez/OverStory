@@ -14,7 +14,7 @@ public class AttrController : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateBagUI);
+            EventManager.Subscribe(SystemEvents.SystemsReady, InitUpdateBagUI);
         else
         {
             UpdateAttr();
@@ -24,7 +24,7 @@ public class AttrController : MonoBehaviour
     void InitUpdateBagUI(object input = null)
     {
         UpdateAttr();
-        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
 

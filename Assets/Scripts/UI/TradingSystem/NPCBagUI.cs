@@ -40,7 +40,7 @@ public class NPCBagUI : MonoBehaviour
         _npcItemCollection = npcItemCollection;
         UpdateBagUI();
         _npcItemCollection.OnItemChanged += UpdateBagUI;
-        EventManager.StartListening(UIEvents.UpdateNPCInventory, OnInventoryUpdate);
+        EventManager.Subscribe(UIEvents.UpdateNPCInventory, OnInventoryUpdate);
         Debug.Log("NPCInventory initialized with " + _npcItemCollection.Items.Count + " items.");
     }
 

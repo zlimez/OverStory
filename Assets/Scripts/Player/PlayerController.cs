@@ -19,7 +19,6 @@ namespace Abyss.Player
 	public class PlayerController : MonoBehaviour, ActionInputs.IPlayerActions
 	{
 		#region Fields
-
 		private enum State // For reference only
 		{
 			Idle_Nil, Walk_Nil, Run_Nil, Jump_Nil, Dash_Nil, Damage_Nil, Attack_Nil, Death_Nil,
@@ -27,104 +26,113 @@ namespace Abyss.Player
 		}
 
 		public Transform Foot;
-		public ArmController MechArm;
-		[SerializeField] float groundCheckDist = 1f;
-		[SerializeField] Vector2 groundCheckSize = new(1f, 1f);
+		[SerializeField] private ArmArgs armArguments;
+		private ExtendableArm _mechArm;
+		
+		[SerializeField] private float groundCheckDist = 1f;
+		[SerializeField] private Vector2 groundCheckSize = new(1f, 1f);
 
 		[Header("Animation")]
-		[SerializeField] apPortrait portrait;
-		[SerializeField] float crossFadeSeconds = .01f;
+		[SerializeField] private apPortrait portrait;
+		[SerializeField] private float crossFadeSeconds = .01f;
 
 		[Header("Movement")]
-		[SerializeField] float walkSpeed = 4f;
-		[SerializeField] float runSpeed = 8f;
-		bool _shouldRun;
+		[SerializeField] private float walkSpeed = 4f;
+		[SerializeField] private float runSpeed = 8f;
+		private bool _shouldRun;
 
-		float _moveDir, _currXSpeed;
-		public bool IsFacingLeft { get; private set; } = false;
+		private float _moveDir, _currXSpeed;
+		public bool IsFacingLeft { get; private set; }
 
 		[Header("Jump")]
-		[SerializeField] float timeToApex, maxJumpHeight = 5;
-		[SerializeField] float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, slantRepelGravAcc = 5f;
-		[SerializeField] float maxFallVelocity = 15f;
-		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")] float jumpBuffer = 0.1f;
-		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")] float preLandJumpBuffer = 0.1f;
+		[SerializeField] private float timeToApex;
+		[SerializeField] private float maxJumpHeight = 5;
+		[SerializeField] private float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, slantRepelGravAcc = 5f;
+		[SerializeField] private float maxFallVelocity = 15f;
+		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")]
+		private float jumpBuffer = 0.1f;
+		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")]
+		private float preLandJumpBuffer = 0.1f;
 
-		float _jmpBuffCd = 0f, _preLandJmpBuffCd = 0f, _gravMult = 1;
-		bool _willJmp = false, _willTakeHit = false, _pressingJmp = false;
-		bool _hasKb; Vector2 _hitFrm; float _kbImp;
+		private float _jmpBuffCd, _preLandJmpBuffCd, _gravMult = 1;
+		private bool _willJmp, _willTakeHit, _pressingJmp;
+		private bool _hasKb;
+		private Vector2 _hitFrm;
+		private float _kbImp;
 
 		[Header("Dash")]
-		[SerializeField] float dashSpeed = 25f;
-		[SerializeField] float dashTime = 0.3f;
-		bool _dashAvail = true, _isLeftDash;
-		float _dashTTL;
+		[SerializeField] private float dashSpeed = 25f;
+		[SerializeField] private float dashTime = 0.3f;
+		private bool _dashAvail = true, _isLeftDash;
+		private float _dashTtl;
 
 		[Header("Damage")]
-		[SerializeField] float knockbackImpulse = 1000f;
-		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] GameObject fireColumn;
-		[SerializeField] float postDmgInvulnTime = 0.5f;
-		float _invulnTTL = 0f;
+		[SerializeField] private float knockbackImpulse = 1000f;
+		[SerializeField][Tooltip("Ember spell Fire Column Prefab")] private GameObject fireColumn;
+		[SerializeField] private float postDmgInvincibleTime = 0.5f;
+		private float _invincibleTtl;
 
 		[Header("Weapon")]
-		[SerializeField][Tooltip("Should match animation name suffix in anyportrait")] Pair<WeaponItem, string>[] weaponMapping;
-		[SerializeField] VisualEffect weaponSlash;
+		[SerializeField][Tooltip("Should match animation name suffix in AnyPortrait")]
+		private Pair<WeaponItem, string>[] weaponMapping;
+		[SerializeField] private VisualEffect weaponSlash;
 		[SerializeField][Tooltip("Used by slash VFX")] string attackEvent = "Attack", xDirParam = "xDir", sizeParam = "size";
-		[SerializeField][Tooltip("Conversion between weapon radius and slash vfx size")] float slashSizeConversion = 8f / 1.75f;
-		float _slashSize;
+		[SerializeField][Tooltip("Conversion between weapon radius and slash vfx size")]
+		private float slashSizeConversion = 8f / 1.75f;
+		private float _slashSize;
 
 		[Header("Swing")]
-		[SerializeField][Tooltip("Higher the value greater the penalty multiplier on wiggle force")] float swingAngDec = 4f;
-		[SerializeField][Tooltip("Magnitude of wiggle when swinging")] float wiggleForce = 10f;
-		[SerializeField][Tooltip("When checking whether to enter swing state player's vel sqr must be leq this threshold for swinging to take place")] float maxRemVelSqMag = 2f;
-		public Vector2 ShoulderOffset;
+		[SerializeField][Tooltip("Higher the value greater the penalty multiplier on wiggle force")] 
+		private float swingAngDec = 4f;
+		[SerializeField][Tooltip("Magnitude of wiggle when swinging")] 
+		private float wiggleForce = 10f;
+		[SerializeField][Tooltip("When checking whether to enter swing state player's vel sqr must be leq this threshold for swinging to take place")] 
+		private float maxRemVelSqMag = 2f;
+
 		[Header("Repel")]
-		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")] ClampedFloatParameter repYDamper = new(2, 1, 10);
+		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")]
+		private ClampedFloatParameter repYDamper = new(2, 1, 10);
 		[NonSerialized] public bool RepStart = false;
-		float _perpVel; // Used to calc vel perp to repel dir (arm ext)
+		private float _perpVel; // Used to calc vel perp to repel dir (arm ext)
 
-		public bool PressingRet { get; private set; } = false;
-		public bool PressingLen { get; private set; } = false;
-		public bool PressingAim { get; private set; } = false;
+		public bool PressingRet { get; private set; }
+		public bool PressingLen { get; private set; }
+		public bool PressingAim { get; private set; }
 
-		[NonSerialized] public bool IsJumping, IsDashing = false, IsSwinging = false;
-		public bool IsAttacking { get; private set; } = false;
-		bool _isTakingDamage = false, _isDead = false, _isResting = false, _isInVuln = false, _isGrounded;
+		[NonSerialized] public bool IsJumping, IsDashing, IsSwinging;
+		public bool IsAttacking { get; private set; }
+		private bool _isTakingDamage, _isDead, _isResting, _isInVuln, _isGrounded;
 		public Action OnAttackEnded, OnAttemptInteract, OnGrounded;
 
-		Rigidbody2D rb2D;
-		State currState;
-		[NonSerialized] public string Weapon = "Nil";
-
-		PlayerSfx _playerSfx;
+		private Rigidbody2D _rb2D;
+		private State _currState;
+		private PlayerSfx _playerSfx;
+		[NonSerialized] private string _weapon = "Nil";
 		#endregion
 
 		#region Lifecyle Methods
-		void Awake()
+		private void Awake()
 		{
-			rb2D = GetComponent<Rigidbody2D>();
+			_rb2D = GetComponent<Rigidbody2D>();
 			_playerSfx = GetComponent<PlayerSfx>();
-			MechArm.PlayerCtr = this;
-
 			portrait.Initialize();
-
-			MechArm.Init();
-			Collider2D[] cols = FindObjectsOfType<Collider2D>();
+			
+			var cols = FindObjectsOfType<Collider2D>();
 			List<Collider2D> armCols = new();
-			foreach (Collider2D col in cols)
+			foreach (var col in cols)
 				if ((1 << col.gameObject.layer & Settings.LayerMask.OBSTACLE_LMASK) > 0) armCols.Add(col);
-			MechArm.Arm.SetColliders(armCols);
-			ShoulderOffset = MechArm.Arm.End.position - transform.position;
+			_mechArm = new (armArguments);
+			_mechArm.Rope.SetColliders(armCols);
 
-			currState = Enum.Parse<State>($"Idle_{Weapon}");
+			_currState = Enum.Parse<State>($"Idle_{_weapon}");
 		}
 
-		void Update()
+		private void Update()
 		{
 			if (IsFrozen) _moveDir = 0;
 			if (IsDashing)
 			{
-				if (_dashTTL > 0f) _dashTTL -= Time.deltaTime;
+				if (_dashTtl > 0f) _dashTtl -= Time.deltaTime;
 				else
 				{
 					IsDashing = false;
@@ -135,55 +143,40 @@ namespace Abyss.Player
 			if (_jmpBuffCd > 0) _jmpBuffCd = Mathf.Max(0, _jmpBuffCd - Time.deltaTime);
 			if (_preLandJmpBuffCd > 0) _preLandJmpBuffCd = Mathf.Max(0, _preLandJmpBuffCd - Time.deltaTime);
 
-			if (_invulnTTL > 0) _invulnTTL = Mathf.Max(0, _invulnTTL - Time.deltaTime);
+			if (_invincibleTtl > 0) _invincibleTtl = Mathf.Max(0, _invincibleTtl - Time.deltaTime);
 			else _isInVuln = false;
 
 			if (!IsAttacking && !_isTakingDamage && !_isDead) HandleAnim();
-			if (!IsSwinging && !MechArm.Repeling && !_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
+			if (!IsSwinging && !_mechArm.Repelling && !_isTakingDamage && ((_moveDir > 0 && IsFacingLeft) || (_moveDir < 0 && !IsFacingLeft))) FlipSprite();
 		}
 
-		void LateUpdate()
+		// TODO: Freeze movement even when grounded but rope at max stretch
+		private void FixedUpdate()
 		{
-			// MechArm.CompleteTick();
-			// if (IsSwinging)
-			// {
-			// 	// float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - MechArm.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
-			// 	if (Mathf.Abs(_moveDir) > Const.EPS)
-			// 	{
-			// 		Vector2 endForce = _moveDir * wiggleForce * Vector2.right;
-			// 		for (int i = 1; i <= MechArm.Arm.NumPoints; i++)
-			// 			MechArm.Arm.QueueForce(endForce * Mathf.Pow((float)i / MechArm.Arm.NumPoints, 2), i - 1);
-			// 		// Vector2 endForce = _moveDir * wiggleForce * Vector2.right;
-			// 		// MechArm.Arm.QueueForce(endForce, MechArm.Arm.NumPoints-1);
-			// 	}
-			// }
-			// if (IsSwinging) transform.position = MechArm.Arm.End.position - (Vector3)ShoulderOffset;
-		}
-
-		void FixedUpdate()
-		{
-			MechArm.PartTick(Time.fixedDeltaTime);
+			_mechArm.PartTick(Time.fixedDeltaTime);
 
 			SetBodyGrav();
 			_isGrounded = IsGrounded();
 			if (_isGrounded) OnGrounded?.Invoke();
-			// might be worth putting jump into state machine consideration
-			// TODO: Freeze movement even when grounded but rope at max stretch
-			if (!IsSwinging && MechArm.Swingable && !_isGrounded && (!IsJumping || (IsJumping && rb2D.velocity.y < -0.01f)))
+			if (!IsSwinging && _mechArm.Swingable && !_isGrounded && (!IsJumping || (IsJumping && _rb2D.velocity.y < -0.01f)))
 			{
-				Debug.Log($"Start swinging anchor sqdist {MechArm.AnchorDir.sqrMagnitude} rope sqlen {MechArm.Arm.Len * MechArm.Arm.Len} grounded {_isGrounded}");
+#if UNITY_EDITOR
+				Debug.Log($"Start swinging anchor sqDist {_mechArm.AnchorDir.sqrMagnitude} rope sqLen {_mechArm.Rope.Len * _mechArm.Rope.Len} grounded {_isGrounded}");
+#endif
 				IsSwinging = true;
-				rb2D.isKinematic = true;
-				rb2D.velocity = Vector2.zero;
-				MechArm.Arm.QueuePin(Rope.PinPoint.Start);
+				_rb2D.isKinematic = true;
+				_rb2D.velocity = Vector2.zero;
+				_mechArm.Rope.QueuePin(Rope.PinPoint.Start);
 			}
-			else if (IsSwinging && (_isGrounded || !MechArm.Swingable))
+			else if (IsSwinging && (_isGrounded || !_mechArm.Swingable))
 			{
-				Debug.Log($"Stop swinging anchor sqdist {MechArm.AnchorDir.sqrMagnitude} rope sqlen {MechArm.Arm.Len * MechArm.Arm.Len} grounded {_isGrounded}");
+#if UNITY_EDITOR
+				Debug.Log($"Stop swinging anchor sqDist {_mechArm.AnchorDir.sqrMagnitude} rope sqLen {_mechArm.Rope.Len * _mechArm.Rope.Len} grounded {_isGrounded}");
+#endif
 				IsSwinging = false; // Only when landed
-				rb2D.isKinematic = false;
-				if (!_isGrounded) rb2D.velocity = MechArm.Arm.EndVel / Time.fixedDeltaTime; // Release preserve momentum
-				else if (MechArm.Swingable) MechArm.Arm.QueuePin(Rope.PinPoint.Both); // rope len greater than dist to anchor
+				_rb2D.isKinematic = false;
+				if (!_isGrounded) _rb2D.velocity = _mechArm.Rope.EndVel / Time.fixedDeltaTime; // Release preserve momentum
+				else if (_mechArm.Swingable) _mechArm.Rope.QueuePin(Rope.PinPoint.Both); // rope len greater than dist to anchor
 			}
 
 			if (_willTakeHit)
@@ -193,81 +186,80 @@ namespace Abyss.Player
 			}
 
 
-			if (MechArm.Repeling)
+			if (_mechArm.Repelling)
 			{
-				if (MechArm.CurrState == ArmController.State.Ha_CoEx_To)
+				if (_mechArm.CurrState == ExtendableArm.State.Ha_CoEx_To)
 				{
-					if (MechArm.VertRepeling) rb2D.MovePosition(rb2D.position - MechArm.FixedRetractRate * Time.fixedDeltaTime * MechArm.Taim);
+					if (_mechArm.VertRepelling) _rb2D.MovePosition(_rb2D.position - armArguments.FixedRetractRate * Time.fixedDeltaTime * _mechArm.TAim);
 					else
 					{
-						Vector2 nad = MechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
+						Vector2 nad = _mechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
 						if (perp.y > 0) perp = -perp;
 						if (RepStart)
 						{
-							_perpVel = Vector2.Dot(Vector2.up * rb2D.velocity.y, perp) / repYDamper.value;
+							_perpVel = Vector2.Dot(Vector2.up * _rb2D.velocity.y, perp) / repYDamper.value;
 							RepStart = false;
 						}
 						else _perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
 						CheckRepelArmCol(perp);
-						Vector2 nv = _perpVel * perp - nad * MechArm.FixedRetractRate;
-						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
+						var nv = _perpVel * perp - nad * armArguments.FixedRetractRate;
+						_rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
 					}
 				}
 				else
 				{
-					if (MechArm.VertRepeling)
+					if (_mechArm.VertRepelling)
 					{
-						if (PressingRet) rb2D.MovePosition(rb2D.position + MechArm.FixedRetractRate * Time.fixedDeltaTime * MechArm.Taim);
-						else rb2D.velocity = Vector2.zero;
+						if (PressingRet) _rb2D.MovePosition(_rb2D.position + armArguments.FixedRetractRate * Time.fixedDeltaTime * _mechArm.TAim);
+						else _rb2D.velocity = Vector2.zero;
 					}
 					else
 					{
-						Vector2 nad = MechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
+						Vector2 nad = _mechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
 						if (perp.y > 0) perp = -perp;
 						_perpVel += Vector2.Dot(-slantRepelGravAcc * Time.fixedDeltaTime * Vector2.up, perp);
 						CheckRepelArmCol(perp);
 						Vector2 nv = _perpVel * perp;
-						if (PressingRet) nv += nad * MechArm.FixedRetractRate;
-						rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
+						if (PressingRet) nv += nad * armArguments.FixedRetractRate;
+						_rb2D.velocity = new Vector2(nv.x, Mathf.Clamp(nv.y, -maxFallVelocity, maxFallVelocity));
 					}
 				}
 			}
-			else if (MechArm.HaExtended)
+			else if (_mechArm.HaExtended)
 			{
-				Rope arm = MechArm.Arm;
+				Rope arm = _mechArm.Rope;
 				Vector2 dir = arm.Start.position - arm.End.position;
 				// TODO: Update fist position
 				_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-				Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
+				Vector2 newVel = new(_currXSpeed, Mathf.Clamp(_rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
 				var hit = Physics2D.BoxCast((Vector2)arm.End.position + newVel * Time.fixedDeltaTime, new(0.5f, arm.Width), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK);
 				if (hit && Vector2.Dot(hit.normal, newVel) < 0)
 				{
+#if UNITY_EDITOR
 					Debug.Log($"Hit dot prod {Vector2.Dot(hit.normal, newVel)} {hit.normal} {newVel}");
-					rb2D.velocity = Vector2.zero;
+#endif
+					_rb2D.velocity = Vector2.zero;
 				}
-				else rb2D.velocity = newVel;
+				else _rb2D.velocity = newVel;
 			}
 			else if (!_isTakingDamage)
 			{
-				if (IsDashing) rb2D.velocity = (_isLeftDash ? -1 : 1) * dashSpeed * Vector2.right;
+				if (IsDashing) _rb2D.velocity = (_isLeftDash ? -1 : 1) * dashSpeed * Vector2.right;
 				else
 				{
 					_currXSpeed = (_isDead || IsAttacking) ? 0 : _moveDir * (_shouldRun ? runSpeed : walkSpeed);
-					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
-					rb2D.velocity = newVel;
+					Vector2 newVel = new(_currXSpeed, Mathf.Clamp(_rb2D.velocity.y, -maxFallVelocity, maxFallVelocity));
+					_rb2D.velocity = newVel;
 				}
 			}
 
-			MechArm.CompleteTick();
+			_mechArm.CompleteTick();
 			if (IsSwinging)
 			{
-				// float ang = Mathf.Clamp(Mathf.Acos(Vector2.Dot(Vector2.down, ((Vector2)transform.position - MechArm.Anchor).normalized)) * swingAngDec, 0, Mathf.PI / 2);
-				if (Mathf.Abs(_moveDir) > Const.EPS)
-				{
-					Vector2 endForce = _moveDir * wiggleForce * Vector2.right;
-					for (int i = 1; i <= MechArm.Arm.NumPoints; i++)
-						MechArm.Arm.QueueForce(endForce * Mathf.Pow((float)i / MechArm.Arm.NumPoints, 2), i - 1);
-				}
+				if (!(Mathf.Abs(_moveDir) > Const.EPS)) return;
+				var endForce = _moveDir * wiggleForce * Vector2.right;
+				for (var i = 1; i <= _mechArm.Rope.PointCnt; i++)
+					_mechArm.Rope.QueueForce(endForce * Mathf.Pow((float)i / _mechArm.Rope.PointCnt, 2), i - 1);
 				return;
 			}
 
@@ -280,41 +272,39 @@ namespace Abyss.Player
 			CalcGravity();
 		}
 
-		void OnTriggerEnter2D(Collider2D coll2D)
+		private void OnTriggerEnter2D(Collider2D coll2D)
 		{
-			if (coll2D.gameObject.layer == (int)Settings.Layer.Ground || coll2D.gameObject.layer == (int)Settings.Layer.Buildup)
-			{
-				// Imm sets grav mult to def to prevent setbodygrav running before calcgrav, willJmp uses downGrav>defGrav to calc init jump vel
-				_gravMult = defGravMult;
-				_dashAvail |= !IsDashing;
-				IsJumping = false;
-				if (_preLandJmpBuffCd > 0)
-				{
-					_willJmp = true;
-					_preLandJmpBuffCd = 0;
-				}
-			}
+			if (coll2D.gameObject.layer != (int)Settings.Layer.Ground &&
+			    coll2D.gameObject.layer != (int)Settings.Layer.Buildup) return;
+			// Imm sets grav mult to def to prevent SetBodyGrav running before CalcGrav, willJmp uses downGrav>defGrav to calc init jump vel
+			_gravMult = defGravMult;
+			_dashAvail |= !IsDashing;
+			IsJumping = false;
+			if (_preLandJmpBuffCd <= 0) return;
+			_willJmp = true;
+			_preLandJmpBuffCd = 0;
 		}
 
-		void OnTriggerExit2D(Collider2D coll2D)
+		private void OnTriggerExit2D(Collider2D coll2D)
 		{
-			if (coll2D.gameObject.layer == (int)Settings.Layer.Ground || coll2D.gameObject.layer == (int)Settings.Layer.Buildup)
-				if (!IsJumping) _jmpBuffCd = jumpBuffer;
+			if (coll2D.gameObject.layer != (int)Settings.Layer.Ground &&
+			    coll2D.gameObject.layer != (int)Settings.Layer.Buildup) return;
+			if (!IsJumping) _jmpBuffCd = jumpBuffer;
 		}
 
-		void OnEnable()
+		private void OnEnable()
 		{
-			EventManager.StartListening(PlayEvents.WeaponEquipped, EquipWeapon);
-			EventManager.StartListening(PlayEvents.WeaponUnequipped, UnequipWeapon);
+			EventManager.Subscribe(PlayEvents.WeaponEquipped, EquipWeapon);
+			EventManager.Subscribe(PlayEvents.WeaponUnequipped, UnequipWeapon);
 		}
 
-		void OnDisable()
+		private void OnDisable()
 		{
-			EventManager.StopListening(PlayEvents.WeaponEquipped, EquipWeapon);
-			EventManager.StopListening(PlayEvents.WeaponUnequipped, UnequipWeapon);
+			EventManager.Unsubscribe(PlayEvents.WeaponEquipped, EquipWeapon);
+			EventManager.Unsubscribe(PlayEvents.WeaponUnequipped, UnequipWeapon);
 		}
 
-		void OnDestroy() => MechArm.Arm.Dispose();
+		private void OnDestroy() => _mechArm.Rope.Dispose();
 		#endregion
 
 		#region Other Methods
@@ -327,90 +317,82 @@ namespace Abyss.Player
 		public void Unrest(WeaponItem weaponItem)
 		{
 			_isResting = false;
-			if (weaponItem != null) EquipWeapon(weaponItem);
+			if (weaponItem) EquipWeapon(weaponItem);
 		}
 
 		public void EquipWeapon(object input)
 		{
-			int ind = Array.FindIndex(weaponMapping, pair => pair.Head == (WeaponItem)input);
-			if (ind == -1)
-				Debug.LogWarning("Weapon not found in mapping");
-			else
-			{
-				Weapon = weaponMapping[ind].Tail;
-				_slashSize = weaponMapping[ind].Head.Radius * slashSizeConversion;
-				TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
-			}
+			var ind = Array.FindIndex(weaponMapping, pair => pair.Head == (WeaponItem)input);
+			if (ind == -1) throw new Exception("Weapon not found in mapping");
+			_weapon = weaponMapping[ind].Tail;
+			_slashSize = weaponMapping[ind].Head.Radius * slashSizeConversion;
+			TransitionToState(Enum.Parse<State>($"{BaseState}_{_weapon}"));
 		}
 
-		public void UnequipWeapon(object input = null)
+		private void UnequipWeapon(object input = null)
 		{
 			_slashSize = 0;
-			Weapon = "Nil";
-			TransitionToState(Enum.Parse<State>($"{BaseState}_{Weapon}"));
+			_weapon = "Nil";
+			TransitionToState(Enum.Parse<State>($"{BaseState}_{_weapon}"));
 		}
 
 		// Animation states
-		void HandleAnim()
+		private void HandleAnim()
 		{
 			if (IsAttackState)
 			{
 				if (!_isGrounded)
-					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Jump_{_weapon}"));
 				else if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
-					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Run_{_weapon}"));
 				else if (_currXSpeed == 0)
-					TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
-				else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Idle_{_weapon}"));
+				else TransitionToState(Enum.Parse<State>($"Walk_{_weapon}"));
 			}
 			else if (IsDamageState)
 			{
 				if (!_isGrounded)
-					TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Jump_{_weapon}"));
 				else if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
-					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Run_{_weapon}"));
 				else if (_currXSpeed == 0)
-					TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
-				else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Idle_{_weapon}"));
+				else TransitionToState(Enum.Parse<State>($"Walk_{_weapon}"));
 			}
 			else if (IsIdleState)
 			{
 				if (_currXSpeed != 0)
-					TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Walk_{_weapon}"));
 			}
 			else if (IsWalkState)
 			{
 				if (Mathf.Abs(_currXSpeed) > walkSpeed + .1f)
-					TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Run_{_weapon}"));
 				else if (_currXSpeed == 0)
-					TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Idle_{_weapon}"));
 			}
 			else if (IsRunState)
 			{
 				if (Mathf.Abs(_currXSpeed) < walkSpeed + 0.1f)
-					TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
+					TransitionToState(Enum.Parse<State>($"Walk_{_weapon}"));
 			}
 			else if (IsDashState)
 			{
-				if (!IsDashing)
-				{
-					if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
-						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
-					else if (_currXSpeed == 0)
-						TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
-					else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
-				}
+				if (IsDashing) return;
+				if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
+					TransitionToState(Enum.Parse<State>($"Run_{_weapon}"));
+				else if (_currXSpeed == 0)
+					TransitionToState(Enum.Parse<State>($"Idle_{_weapon}"));
+				else TransitionToState(Enum.Parse<State>($"Walk_{_weapon}"));
 			}
 			else if (IsJumpState)
 			{
-				if (_isGrounded && Mathf.Abs(rb2D.velocity.y) < .1f)
-				{
-					if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
-						TransitionToState(Enum.Parse<State>($"Run_{Weapon}"));
-					else if (_currXSpeed == 0)
-						TransitionToState(Enum.Parse<State>($"Idle_{Weapon}"));
-					else TransitionToState(Enum.Parse<State>($"Walk_{Weapon}"));
-				}
+				if (!_isGrounded || Mathf.Abs(_rb2D.velocity.y) >= .1f) return;
+				if (Mathf.Abs(_currXSpeed) > walkSpeed + 0.1f)
+					TransitionToState(Enum.Parse<State>($"Run_{_weapon}"));
+				else if (_currXSpeed == 0)
+					TransitionToState(Enum.Parse<State>($"Idle_{_weapon}"));
+				else TransitionToState(Enum.Parse<State>($"Walk_{_weapon}"));
 			}
 		}
 		#endregion
@@ -447,9 +429,9 @@ namespace Abyss.Player
 				_playerSfx.PlayDash();
 				IsDashing = true;
 				_isLeftDash = IsFacingLeft;
-				_dashTTL = dashTime;
+				_dashTtl = dashTime;
 				_dashAvail = false;
-				TransitionToState(Enum.Parse<State>($"Dash_{Weapon}"));
+				TransitionToState(Enum.Parse<State>($"Dash_{_weapon}"));
 			}
 		}
 
@@ -458,8 +440,8 @@ namespace Abyss.Player
 			if (context.performed)
 			{
 				IsAttacking = true;
-				currState = Enum.Parse<State>($"Attack_{Weapon}");
-				portrait.Play($"Attack_{Weapon}"); // NOTE: CrossFade is glitchy here
+				_currState = Enum.Parse<State>($"Attack_{_weapon}");
+				portrait.Play($"Attack_{_weapon}"); // NOTE: CrossFade is glitchy here
 				weaponSlash.SetInt(xDirParam, IsFacingLeft ? -1 : 1);
 				weaponSlash.SetFloat(sizeParam, _slashSize);
 				weaponSlash.SendEvent(attackEvent);
@@ -472,9 +454,23 @@ namespace Abyss.Player
 			else if (context.canceled) PressingAim = false;
 		}
 
-		public void OnExtRel(InputAction.CallbackContext context) { if (context.performed) MechArm.QueueEvent(ArmController.Trigger.ExtRel); }
-		public void OnDisc(InputAction.CallbackContext context) { if (context.performed) MechArm.QueueEvent(ArmController.Trigger.Disc); }
-		public void OnHardSoft(InputAction.CallbackContext context) { if (context.performed) MechArm.QueueEvent(ArmController.Trigger.HardSoft); }
+		public void OnExtRel(InputAction.CallbackContext context)
+		{
+			if (context.performed) 
+				_mechArm.QueueEvent(ExtendableArm.Trigger.ExtRel);
+		}
+
+		public void OnDisc(InputAction.CallbackContext context)
+		{
+			if (context.performed) 
+				_mechArm.QueueEvent(ExtendableArm.Trigger.Disc);
+		}
+
+		public void OnHardSoft(InputAction.CallbackContext context)
+		{
+			if (context.performed) 
+				_mechArm.QueueEvent(ExtendableArm.Trigger.HardSoft);
+		}
 
 		public void OnInteractRet(InputAction.CallbackContext context)
 		{
@@ -525,62 +521,62 @@ namespace Abyss.Player
 			_pressingJmp = false;
 			_isTakingDamage = false;
 			_isDead = true;
-			TransitionToState(Enum.Parse<State>($"Death_{Weapon}"));
+			TransitionToState(Enum.Parse<State>($"Death_{_weapon}"));
 		}
 		#endregion
 
 		#region Animation Event Handlers
-		void DamageEnd()
+		private void DamageEnd()
 		{
 			_isTakingDamage = false;
 			_isInVuln = true;
-			_invulnTTL = postDmgInvulnTime;
+			_invincibleTtl = postDmgInvincibleTime;
 		}
 
-		void AttackEnd()
+		private void AttackEnd()
 		{
 			IsAttacking = false;
 			OnAttackEnded?.Invoke();
 		}
 
-		void DeathEnd() => EventManager.InvokeEvent(PlayEvents.PlayerDeath);
+		private void DeathEnd() => EventManager.InvokeEvent(PlayEvents.PlayerDeath);
 		#endregion
 
 		#region Helper Methods
-		bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
-		bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail && !MechArm.ArmActive;
-		bool CanAttack => !IsFrozen && !IsAttacking && !IsDashing && !_isTakingDamage && !_isDead && !MechArm.ArmActive;
-		bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !IsDashing && !MechArm.ArmActive;
-		bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing && !MechArm.ArmActive;
-		bool CanJump => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing;
+		private bool IsFrozen => (GameManager.Instance != null && GameManager.Instance.UI.IsOpen) || _isResting;
+		private bool CanDash => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && _dashAvail && !_mechArm.ArmActive;
+		private bool CanAttack => !IsFrozen && !IsAttacking && !IsDashing && !_isTakingDamage && !_isDead && !_mechArm.ArmActive;
+		private bool CanCastSpell => !IsFrozen && !_isTakingDamage && !_isDead && !IsDashing && !_mechArm.ArmActive;
+		private bool CanInteract => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing && !_mechArm.ArmActive;
+		private bool CanJump => !IsFrozen && !IsAttacking && !_isTakingDamage && !_isDead && !IsDashing;
 
-		bool IsIdleState => currState.ToString().StartsWith("Idle");
-		bool IsWalkState => currState.ToString().StartsWith("Walk");
-		bool IsRunState => currState.ToString().StartsWith("Run");
-		bool IsJumpState => currState.ToString().StartsWith("Jump");
-		bool IsDashState => currState.ToString().StartsWith("Dash");
-		bool IsDamageState => currState.ToString().StartsWith("Damage");
-		bool IsAttackState => currState.ToString().StartsWith("Attack");
-		bool IsDeathState => currState.ToString().StartsWith("Death");
-		string BaseState => currState.ToString().Split('_')[0];
+		private bool IsIdleState => _currState.ToString().StartsWith("Idle");
+		private bool IsWalkState => _currState.ToString().StartsWith("Walk");
+		private bool IsRunState => _currState.ToString().StartsWith("Run");
+		private bool IsJumpState => _currState.ToString().StartsWith("Jump");
+		private bool IsDashState => _currState.ToString().StartsWith("Dash");
+		private bool IsDamageState => _currState.ToString().StartsWith("Damage");
+		private bool IsAttackState => _currState.ToString().StartsWith("Attack");
+		private bool IsDeathState => _currState.ToString().StartsWith("Death");
+		private string BaseState => _currState.ToString().Split('_')[0];
 
-		void InterruptDash()
+		private void InterruptDash()
 		{
 			Debug.Log("Dash interrupted");
 			IsDashing = false;
-			_dashTTL = 0f;
+			_dashTtl = 0f;
 			_dashAvail = IsGrounded();
 		}
 
-		void Jump()
+		private void Jump()
 		{
 			_playerSfx.PlayJump();
 			_willJmp = false;
 			IsJumping = true;
 			_pressingJmp = true;
-			var jumpVel = Mathf.Sqrt(-2f * Physics2D.gravity.y * rb2D.gravityScale * maxJumpHeight);
-			rb2D.velocity = new Vector2(rb2D.velocity.x, jumpVel);
-			TransitionToState(Enum.Parse<State>($"Jump_{Weapon}"));
+			var jumpVel = Mathf.Sqrt(-2f * Physics2D.gravity.y * _rb2D.gravityScale * maxJumpHeight);
+			_rb2D.velocity = new Vector2(_rb2D.velocity.x, jumpVel);
+			TransitionToState(Enum.Parse<State>($"Jump_{_weapon}"));
 		}
 
 		void TakeHit()
@@ -589,28 +585,28 @@ namespace Abyss.Player
 			IsAttacking = false;
 			_pressingJmp = false;
 			_isTakingDamage = true;
-			if (_hasKb) rb2D.AddForce(new Vector2(transform.position.x - _hitFrm.x, 0).normalized * (knockbackImpulse + _kbImp) - rb2D.velocity * rb2D.mass, ForceMode2D.Impulse);
-			else rb2D.velocity = new Vector2(0, rb2D.velocity.y);
-			TransitionToState(Enum.Parse<State>($"Damage_{Weapon}"));
+			if (_hasKb) _rb2D.AddForce(new Vector2(transform.position.x - _hitFrm.x, 0).normalized * (knockbackImpulse + _kbImp) - _rb2D.velocity * _rb2D.mass, ForceMode2D.Impulse);
+			else _rb2D.velocity = new Vector2(0, _rb2D.velocity.y);
+			TransitionToState(Enum.Parse<State>($"Damage_{_weapon}"));
 		}
 
 		void CalcGravity()
 		{
-			if (_isGrounded || IsSwinging || MechArm.Repeling)
+			if (_isGrounded || IsSwinging || _mechArm.Repelling)
 			{
-				_gravMult = MechArm.Repeling ? 0 : defGravMult;
+				_gravMult = _mechArm.Repelling ? 0 : defGravMult;
 				return;
 			}
 
-			if (rb2D.velocity.y > 0.01f)
+			if (_rb2D.velocity.y > 0.01f)
 			{
 				if (_pressingJmp && IsJumping) _gravMult = upGravityMult;
 				else _gravMult = jumpCutoffMult;
 			}
-			else if (rb2D.velocity.y < -0.01f) _gravMult = downGravityMult;
+			else if (_rb2D.velocity.y < -0.01f) _gravMult = downGravityMult;
 		}
 
-		void SetBodyGrav() => rb2D.gravityScale = -2 * maxJumpHeight / (timeToApex * timeToApex) / Physics2D.gravity.y * _gravMult;
+		void SetBodyGrav() => _rb2D.gravityScale = -2 * maxJumpHeight / (timeToApex * timeToApex) / Physics2D.gravity.y * _gravMult;
 
 		void FlipSprite()
 		{
@@ -622,39 +618,40 @@ namespace Abyss.Player
 			EventManager.InvokeEvent(PlayEvents.PlayerSpriteFlip);
 		}
 
-		void TransitionToState(State newState)
+		private void TransitionToState(State newState)
 		{
-			if (currState == newState) return;
-			currState = newState;
+			if (_currState == newState) return;
+			_currState = newState;
 			PlayAnimation(newState.ToString());
 		}
 
-		void PlayAnimation(string animToPlay)
+		private void PlayAnimation(string animToPlay)
 		{
 			try
 			{
-				apAnimPlayData animData = portrait.CrossFade(animToPlay, crossFadeSeconds);
-				if (animData == null)
-					Debug.LogWarning("Failed to play animation " + animToPlay);
+				var animData = portrait.CrossFade(animToPlay, crossFadeSeconds);
+				if (animData == null) throw new Exception("Failed to play animation " + animToPlay);
 			}
 			catch (Exception)
 			{
+#if UNITY_EDITOR
 				Debug.LogWarning($"Error playing animation {animToPlay}. The portrait is likely not initialized");
+#endif
 			}
 		}
 
-		void CastSpell(int ind)
+		private void CastSpell(int ind)
 		{
-			SpellItem[] spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
+			var spellItems = GameManager.Instance.PlayerPersistence.SpellItems;
 			if (spellItems[ind] == null || !spellItems[ind].CanCast) return;
 
 			var spellObj = Instantiate(spellItems[ind].itemPrefab, transform.position, Quaternion.identity);
 			spellObj.GetComponent<Spell>().Cast(IsFacingLeft);
 		}
 
-		bool IsGrounded()
+		private bool IsGrounded()
 		{
-			RaycastHit2D boxHit = Physics2D.BoxCast(
+			var boxHit = Physics2D.BoxCast(
 				transform.position,
 				groundCheckSize,
 				0f,
@@ -663,17 +660,21 @@ namespace Abyss.Player
 				Settings.LayerMask.GROUND_LMASK
 			);
 
-			return boxHit.collider != null;
+			return boxHit.collider;
 		}
 
-		void CheckRepelArmCol(Vector2 perp)
+		private void CheckRepelArmCol(Vector2 perp)
 		{
-			Rope arm = MechArm.Arm;
-			var dir = (Vector2)arm.Start.position + _perpVel * Time.fixedDeltaTime * perp - (Vector2)arm.End.position; // Sufficient approx rope anchor and rb is close
-			if (Physics2D.BoxCast(arm.End.position, new(0.5f, arm.Width), Vector2.SignedAngle(Vector2.right, dir), dir.normalized, dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK)) _perpVel = 0;
+			var rope = _mechArm.Rope;
+			var dir = (Vector2)rope.Start.position + _perpVel * Time.fixedDeltaTime * perp - (Vector2)rope.End.position; // Sufficient approx rope anchor and rb is close
+			if (Physics2D.BoxCast(
+				    rope.End.position, new(0.5f, rope.Width), 
+				    Vector2.SignedAngle(Vector2.right, dir), dir.normalized, 
+				    dir.magnitude, Settings.LayerMask.OBSTACLE_LMASK)) 
+				_perpVel = 0;
 		}
 #if UNITY_EDITOR
-		void OnDrawGizmos()
+		private void OnDrawGizmosSelected()
 		{
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireCube(
@@ -681,10 +682,13 @@ namespace Abyss.Player
 				groundCheckSize
 			);
 
+			if (_mechArm == null) return;
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawLine(transform.position, transform.position + (Vector3)MechArm.Aim);
+			Gizmos.DrawLine(transform.position, transform.position + (Vector3)_mechArm.Aim);
 			Gizmos.color = Color.green;
-			Gizmos.DrawLine(transform.position, transform.position + (MechArm.Arm.End.position - MechArm.Arm.Start.position).normalized * MechArm.PlayerColDetDist);
+			Gizmos.DrawLine(transform.position, 
+				transform.position + (_mechArm.Rope.End.position - 
+				                      _mechArm.Rope.Start.position).normalized * armArguments.PlayerCollisionDetectionDistance);
 		}
 #endif
 		#endregion

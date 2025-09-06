@@ -14,7 +14,7 @@ public class FaraMask : Interactable
     void OnEnable()
     {
         if (EventLedger.Instance == null)
-            EventManager.StartListening(SystemEvents.LedgerReady, Load);
+            EventManager.Subscribe(SystemEvents.LedgerReady, Load);
         else Load();
     }
 
@@ -26,7 +26,7 @@ public class FaraMask : Interactable
             withoutMask.SetActive(true);
             _maskTaken = true;
         }
-        EventManager.StopListening(SystemEvents.LedgerReady, Load);
+        EventManager.Unsubscribe(SystemEvents.LedgerReady, Load);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collider)
@@ -44,5 +44,5 @@ public class FaraMask : Interactable
         base.Interact();
     }
 
-    void OnDisable() => EventManager.StopListening(SystemEvents.LedgerReady, Load);
+    void OnDisable() => EventManager.Unsubscribe(SystemEvents.LedgerReady, Load);
 }

@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 149687828}
   - component: {fileID: 149687829}
   m_Layer: 3
-  m_Name: FistPH
+  m_Name: FistPh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1809,9 +1809,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.0015486274}
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.07839129
 --- !u!1 &398174244
 GameObject:
   m_ObjectHideFlags: 0
@@ -2614,12 +2614,12 @@ PrefabInstance:
     - target: {fileID: 2296038729523555351, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -52.1
+      value: -50.2
       objectReference: {fileID: 0}
     - target: {fileID: 2296038729523555351, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9
+      value: 11.2
       objectReference: {fileID: 0}
     - target: {fileID: 2296038729523555351, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
         type: 3}
@@ -4483,6 +4483,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259962409}
   m_CullTransparentMesh: 1
+--- !u!20 &1292223882 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 791916690695402611, guid: 08c56d3bb1528468487de1c7bd9ed1a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 633095234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1351429749
 GameObject:
   m_ObjectHideFlags: 0
@@ -41557,7 +41563,7 @@ Transform:
   m_GameObject: {fileID: 2762209602726547765}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -52.1, y: 9, z: 0}
+  m_LocalPosition: {x: -50.2, y: 11.2, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -45277,7 +45283,7 @@ MonoBehaviour:
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1292223882}
 --- !u!114 &4290604899548849474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58676,41 +58682,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Foot: {fileID: 8556364574917008588}
-  MechArm:
-    Arm:
-      SegmentLength: 0.2
-      MaxLength: 20
-      Start: {fileID: 4228162526528415644}
-      End: {fileID: 333689549374536293}
-      MoveEndsSmoothTime: 0.3
-      ConstrainRuns: 50
-      ResolveCollisionInterval: 4
-      gravity: {x: 0, y: -75}
-      drag: 0.1
-      bounceFactor: 0.5
-      PointUpdateBatchSize: 64
-      ResolveCollisionsBatchSize: 8
-    HardLen: 0
+  armArguments:
+    Cam: {fileID: 1292223882}
     Fist: {fileID: 4228162526528415644}
-    DiFist: {fileID: 869753168}
-    Shoulder: {fileID: 333689549374536293}
-    FistPH: {fileID: 149687827}
+    DisconnectedFist: {fileID: 869753168}
+    Shoulder: {fileID: 2923312553063917461}
+    FistPlaceholder: {fileID: 149687827}
     RopeRenderer: {fileID: 7210224077881836711}
-    PlayerCtr: {fileID: 5589660222652692589}
-    Drone: {fileID: 0}
-    SoftExtImp: 30
+    SoftExtImpulse: 30
     HardExtRate: 15
     SoftExtRate: 5
     FixedRetractRate: 10
     FreeRetractRate: 15
-    AimResp: 3
-    PlayerColDetDist: 1.5
-    NoGravRng:
+    AimSensitivity: 3
+    PlayerCollisionDetectionDistance: 1.5
+    FistCollisionDetectionDistance: 1
+    DisconnectedSpeed: 15
+    PlayerCtr: {fileID: 5589660222652692589}
+    NoGravityRangeAtRepel:
       m_OverrideState: 0
-      m_Value: 0.9
-    DiSpeed: 15
-    FistColDetDist: 1
-    VertRepeling: 0
+      m_Value: 0
+    RopeArguments:
+      SegmentLength: 0.2
+      MaxLength: 20
+      Start: {fileID: 4228162526528415644}
+      End: {fileID: 2923312553063917461}
+      StartMass: 10
+      EndMass: 50
+      ConstrainRuns: 50
+      ResolveCollisionInterval: 4
+      Gravity: {x: 0, y: -150}
+      Drag: 0.1
+      BounceFactor: 0.7
+      PointUpdateBatchSize: 64
+      ResolveCollisionsBatchSize: 8
   groundCheckDist: 1
   groundCheckSize: {x: 1, y: 1}
   portrait: {fileID: 6794293285418884389}
@@ -58732,7 +58737,7 @@ MonoBehaviour:
   knockbackImpulse: 30
   fireColumn: {fileID: 4373574001163554926, guid: 4470c9bbfb46947ab92910ef493ab1ff,
     type: 3}
-  postDmgInvulnTime: 0.5
+  postDmgInvincibleTime: 0.5
   weaponMapping:
   - Head: {fileID: 11400000, guid: ac6f7a5cc05564d89bac0accaa256489, type: 2}
     Tail: Axe_t1
@@ -58744,7 +58749,6 @@ MonoBehaviour:
   swingAngDec: 8
   wiggleForce: 80
   maxRemVelSqMag: 2
-  ShoulderOffset: {x: 0, y: 0}
   repYDamper:
     m_OverrideState: 0
     m_Value: 3

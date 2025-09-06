@@ -52,14 +52,14 @@ public class ConstructionSystem : MonoBehaviour
         UpdateConstructionPanel();
         IsPanelOpen = true;
         constructionPanel.SetActive(true);
-        EventManager.StartListening(PlayEvents.BuildEnd, SetBuildButton);
+        EventManager.Subscribe(PlayEvents.BuildEnd, SetBuildButton);
     }
 
     public void ClosePanel()
     {
         constructionPanel.SetActive(false);
         IsPanelOpen = false;
-        EventManager.StopListening(PlayEvents.BuildEnd, SetBuildButton);
+        EventManager.Unsubscribe(PlayEvents.BuildEnd, SetBuildButton);
     }
 
     private void UpdateConstructionPanel()

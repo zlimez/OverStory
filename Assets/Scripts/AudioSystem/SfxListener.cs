@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class SfxListener : MonoBehaviour
 {
-    [SerializeField] AudioClip audioClip;
-    [SerializeField] DynamicEvent triggerEvent, stopEvent;
-    [SerializeField] bool loop;
+    [SerializeField] private AudioClip audioClip;
+    [SerializeField] private DynamicEvent triggerEvent, stopEvent;
+    [SerializeField] private bool loop;
 
     void OnEnable()
     {
-        EventManager.StartListening(new GameEvent(triggerEvent.EventName), Play);
-        EventManager.StartListening(new GameEvent(stopEvent.EventName), Stop);
+        EventManager.Subscribe(new GameEvent(triggerEvent.EventName), Play);
+        EventManager.Subscribe(new GameEvent(stopEvent.EventName), Stop);
     }
 
     void Play(object input) => AudioManager.Instance.PlaySFXClip(audioClip, loop);
@@ -18,7 +18,7 @@ public class SfxListener : MonoBehaviour
 
     void OnDisable()
     {
-        EventManager.StopListening(new GameEvent(triggerEvent.EventName), Play);
-        EventManager.StopListening(new GameEvent(stopEvent.EventName), Stop);
+        EventManager.Unsubscribe(new GameEvent(triggerEvent.EventName), Play);
+        EventManager.Unsubscribe(new GameEvent(stopEvent.EventName), Stop);
     }
 }

@@ -26,16 +26,16 @@ namespace Abyss.Interactables
         void OnEnable()
         {
             if (GameManager.Instance == null)
-                EventManager.StartListening(SystemEvents.SystemsReady, Load);
+                EventManager.Subscribe(SystemEvents.SystemsReady, Load);
             else Load();
-            EventManager.StartListening(SystemEvents.SceneTransitStart, Save);
+            EventManager.Subscribe(SystemEvents.SceneTransitStart, Save);
         }
 
         void OnDisable()
         {
-            EventManager.StopListening(SystemEvents.SceneTransitStart, Save);
-            EventManager.StopListening(SystemEvents.SystemsReady, Load);
-            EventManager.StopListening(PlayEvents.RestEnd, EndRest);
+            EventManager.Unsubscribe(SystemEvents.SceneTransitStart, Save);
+            EventManager.Unsubscribe(SystemEvents.SystemsReady, Load);
+            EventManager.Unsubscribe(PlayEvents.RestEnd, EndRest);
         }
 
         // Lure spawning can be done here as player death always trigger scene reload
@@ -53,14 +53,14 @@ namespace Abyss.Interactables
             if (!GameManager.Instance.Inventory.MaterialCollection.Contains(bandageBP))
                 if (EventLedger.Instance != null)
                     FirstGiveBandage();
-                else EventManager.StartListening(SystemEvents.LedgerReady, FirstGiveBandage);
+                else EventManager.Subscribe(SystemEvents.LedgerReady, FirstGiveBandage);
         }
 
         void FirstGiveBandage(object input = null)
         {
             if (!EventLedger.Instance.HasOccurred(new GameEvent(firstDeathEvent.EventName)))
                 Instantiate(bandageBP.itemPrefab, lureSpawnPoint.position + Vector3.right, Quaternion.identity);
-            EventManager.StopListening(SystemEvents.LedgerReady, FirstGiveBandage);
+            EventManager.Unsubscribe(SystemEvents.LedgerReady, FirstGiveBandage);
         }
 
         void Save(object input = null) => GameManager.Instance.RestsitesPersistence[restSiteName] = lastPurityRestoreTime;
@@ -86,7 +86,7 @@ namespace Abyss.Interactables
                 if (GameManager.Instance.Inventory.MaterialCollection.HasItemType(ItemType.Blueprints))
                     EventManager.InvokeEvent(PlayEvents.CraftingPostEntered, (Action)EndCraft);
                 else EventManager.InvokeEvent(PlayEvents.InRest);
-                EventManager.StartListening(PlayEvents.RestEnd, EndRest);
+                EventManager.Subscribe(PlayEvents.RestEnd, EndRest);
 
                 base.Interact();
             }
@@ -100,7 +100,7 @@ namespace Abyss.Interactables
             TimeCycle.Instance.Forward(timeFastForward / 2);
             player.GetComponent<PlayerController>().Unrest(_playerManager.WeaponItem);
             _playerManager = null;
-            EventManager.StopListening(PlayEvents.RestEnd, EndRest);
+            EventManager.Unsubscribe(PlayEvents.RestEnd, EndRest);
         }
     }
 }

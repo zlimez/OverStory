@@ -13,14 +13,14 @@ public class TutorialManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening(UIEvents.TutorialDisplay, Display);
-        EventManager.StartListening(UIEvents.TutorialClose, Close);
+        EventManager.Subscribe(UIEvents.TutorialDisplay, Display);
+        EventManager.Subscribe(UIEvents.TutorialClose, Close);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(UIEvents.TutorialDisplay, Display);
-        EventManager.StopListening(UIEvents.TutorialClose, Close);
+        EventManager.Unsubscribe(UIEvents.TutorialDisplay, Display);
+        EventManager.Unsubscribe(UIEvents.TutorialClose, Close);
     }
 
     void Display(object args)

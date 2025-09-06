@@ -40,7 +40,7 @@ public class PlayerBagUI : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateBagUI);
+            EventManager.Subscribe(SystemEvents.SystemsReady, InitUpdateBagUI);
         else
         {
             UpdateBagUI();
@@ -53,7 +53,7 @@ public class PlayerBagUI : MonoBehaviour
     {
         UpdateBagUI();
         GameManager.Instance.Inventory.MaterialCollection.OnItemChanged += UpdateBagUI;
-        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateBagUI);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, InitUpdateBagUI);
     }
 
     // void OnDisable() => GameManager.Instance.Inventory.MaterialCollection.OnItemChanged -= UpdateBagUI;

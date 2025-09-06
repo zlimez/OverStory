@@ -11,133 +11,174 @@ using Utils;
 // https://youtu.be/bxG3XP4MVzk?si=uCBvvdi91vS84dh1
 // https://pikuma.com/blog/verlet-integration-2d-cloth-physics-simulation
 // https://github.com/EricHu33/Verlet-Integration-In-Unity/blob/master/Assets/Scripts/VerletIntegration.cs
+
+/* TODO:
+ * 1. Add weights to endpoint to prevent slip
+ * 2. Diagnose stability issues
+ */
 namespace VerletPhysics
 {
     [Serializable]
+    public struct RopeArgs
+    {
+        public float SegmentLength, MaxLength;
+        public Transform Start, End;
+        public float StartMass, EndMass;
+        public int ConstrainRuns, ResolveCollisionInterval;
+        public Vector2 Gravity;
+        public float Drag, BounceFactor;
+        public int PointUpdateBatchSize;
+        public int ResolveCollisionsBatchSize;
+    }
+    
     public class Rope
     {
         public enum PinPoint { Start, End, Both }
-        public float SegmentLength = 0.2f;
-        public float MaxLength = 20f;
+
+        private readonly float _segmentLength;
+        public readonly float MaxLength;
         public Transform Start, End;
-        public float Width => SegmentLength * 0.5f;
-        public float MoveEndsSmoothTime = 0.3f;
-
+        private readonly float _startMass, _endMass;
+        
         // Physics params
-        [Range(1, 100)] public int ConstrainRuns = 10;
-        [Range(1, 8)] public int ResolveCollisionInterval = 4;
-        public Vector2 gravity = new(0, -2f);
-        [Range(0, 1)] public float drag = 0.1f;
-        public float bounceFactor = 0.2f;
+        private readonly int _constrainRuns, _resolveCollisionInterval;
+        private readonly Vector2 _gravity;
+        private readonly float _drag, _bounceFactor;
 
-        public int PointUpdateBatchSize = 64;
-        public int ResolveCollisionsBatchSize = 8;
+        private readonly int _pointUpdateBatchSize, _resolveCollisionsBatchSize;
 
-        NativeArray<Point> n_activePoints;
-        NativeArray<(Vector2, bool)> n_pointForces;
-        NativeArray<Stick> n_sticks;
-        NativeArray<C_Collider> n_colliders;
-        NativeArray<Vector2> n_col_vertices;
-        JobHandle[] _jobHandles;
-        int _lastJobInd = 0;
+        private NativeArray<Point> _nActivePoints;
+        private NativeArray<(Vector2, bool)> _nPointForces;
+        private NativeArray<Stick> _nSticks;
+        private NativeArray<C_Collider> _nColliders;
+        private NativeArray<Vector2> _nColVertices;
+        private JobHandle[] _jobHandles;
+        private int _lastJobInd;
+        
+        public float Width => _segmentLength * 0.5f;
         public Vector2 EndVel { get; private set; } = Vector2.zero;
-        Vector3 _startVel, _endVel;
+        
+        private Vector3 _startVel, _endVel;
+        private bool _willAdjLen;
+        private float _lenChange;
+        private int _maxNumPoints;
+        private PinPoint _pinPoint = PinPoint.Both, _nxtPinPoint = PinPoint.Both;
+        
+        private readonly List<(int, Vector2, bool)> _forceQueue = new();
 
-        bool _willAdjLen = false;
-        float _lenChange = 0f;
-        List<(int, Vector2, bool)> _forceQueue = new();
-        int _maxNumPoints = 0;
-        PinPoint _pinPoint = PinPoint.Both, _nxtPinPoint = PinPoint.Both;
+        public Rope(RopeArgs args)
+        {
+            _segmentLength = args.SegmentLength;
+            MaxLength = args.MaxLength;
+            Start = args.Start;
+            End = args.End;
+            _startMass = args.StartMass;
+            _endMass = args.EndMass;
+            _constrainRuns = args.ConstrainRuns;
+            _resolveCollisionInterval = args.ResolveCollisionInterval;
+            _gravity = args.Gravity;
+            _drag = args.Drag;
+            _bounceFactor = args.BounceFactor;
+            _pointUpdateBatchSize = args.PointUpdateBatchSize;
+            _resolveCollisionsBatchSize = args.ResolveCollisionsBatchSize;
+        }
 
-        public float Len { get; private set; } = 0f;
-        public int NumSegs { get; private set; } = 0;
-        public int NumPoints { get; private set; } = 0;
-        public int NumSticks { get; private set; } = 0;
-        public int NumColliders { get; private set; } = 0;
+        public float Len { get; private set; }
+        public int SegCnt { get; private set; }
+        public int PointCnt { get; private set; }
+        public int StickCnt { get; private set; }
 
         #region Setup Teardown
         public void SetColliders(List<Collider2D> cols)
         {
-            n_colliders = new NativeArray<C_Collider>(cols.Count, Allocator.Persistent);
+            _nColliders = new NativeArray<C_Collider>(cols.Count, Allocator.Persistent);
             List<Vector2> colVerts = new();
-            for (int i = 0; i < cols.Count; i++)
+            for (var i = 0; i < cols.Count; i++)
             {
                 var col = cols[i];
+#if UNITY_EDITOR
                 Debug.Log($"Collider {i}: {col.name}");
-                if (!(col is PolygonCollider2D || col is CircleCollider2D || col is BoxCollider2D))
+#endif
+                if (col is not (PolygonCollider2D or CircleCollider2D or BoxCollider2D))
                 {
                     Debug.LogWarning($"Unsupported collider type: {col.GetType()}");
                     continue;
                 }
-                C_Collider ccol = new()
+                C_Collider cCol = new()
                 {
                     Type = col is CircleCollider2D ? C_ColliderType.Circle : C_ColliderType.Polygon,
                     Center = col.bounds.center,
                     AABB = (col.bounds.min, col.bounds.max)
                 };
 
-                if (col is CircleCollider2D circleCol) ccol.Radius = circleCol.radius * Mathf.Max(circleCol.transform.lossyScale.x, circleCol.transform.lossyScale.y);
-                else if (col is PolygonCollider2D polyCol)
+                switch (col)
                 {
-                    ccol.VertexCount = polyCol.points.Length;
-                    for (int j = 0; j < polyCol.points.Length; j++)
-                        colVerts.Add(polyCol.transform.TransformPoint(polyCol.points[j]));
+                    case CircleCollider2D circleCol:
+                        cCol.Radius = circleCol.radius * Mathf.Max(circleCol.transform.lossyScale.x, circleCol.transform.lossyScale.y);
+                        break;
+                    case PolygonCollider2D polyCol:
+                    {
+                        cCol.VertexCount = polyCol.points.Length;
+                        foreach (var t in polyCol.points)
+                            colVerts.Add(polyCol.transform.TransformPoint(t));
+                        break;
+                    }
+                    case BoxCollider2D boxCol:
+                    {
+                        cCol.VertexCount = 4;
+                        var extents = boxCol.size * 0.5f;
+                        colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(-extents.x, -extents.y)));
+                        colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(extents.x, -extents.y)));
+                        colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(extents.x, extents.y)));
+                        colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(-extents.x, extents.y)));
+                        break;
+                    }
                 }
-                else
-                {
-                    var boxCol = col as BoxCollider2D;
-                    ccol.VertexCount = 4;
-                    Vector2 extents = boxCol.size * 0.5f;
-                    colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(-extents.x, -extents.y)));
-                    colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(extents.x, -extents.y)));
-                    colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(extents.x, extents.y)));
-                    colVerts.Add(boxCol.transform.TransformPoint(boxCol.offset + new Vector2(-extents.x, extents.y)));
-                }
-                n_colliders[i] = ccol;
+                _nColliders[i] = cCol;
             }
-            n_col_vertices = new NativeArray<Vector2>(colVerts.ToArray(), Allocator.Persistent);
-            // foreach (var n_col in n_colliders) Debug.Log($"Collider: {n_col.Type}, Center: {n_col.Center}, Radius: {n_col.Radius}, AABB: {n_col.AABB.Item1}, {n_col.AABB.Item2}");
-            // foreach (var v in n_col_vertices) Debug.Log($"Collider Vertex: {v}");
+            _nColVertices = new NativeArray<Vector2>(colVerts.ToArray(), Allocator.Persistent);
         }
 
         public void Init()
         {
-            int mpc = Mathf.CeilToInt(MaxLength / SegmentLength) + 2;
-            if (!n_activePoints.IsCreated || mpc != _maxNumPoints) n_activePoints = new NativeArray<Point>(mpc, Allocator.Persistent);
-            if (!n_pointForces.IsCreated || mpc != _maxNumPoints) n_pointForces = new NativeArray<(Vector2, bool)>(mpc, Allocator.Persistent);
-            if (!n_sticks.IsCreated || mpc != _maxNumPoints) n_sticks = new NativeArray<Stick>(mpc - 1, Allocator.Persistent);
+            var mpc = Mathf.CeilToInt(MaxLength / _segmentLength) + 2;
+            if (!_nActivePoints.IsCreated || mpc != _maxNumPoints) _nActivePoints = new NativeArray<Point>(mpc, Allocator.Persistent);
+            if (!_nPointForces.IsCreated || mpc != _maxNumPoints) _nPointForces = new NativeArray<(Vector2, bool)>(mpc, Allocator.Persistent);
+            if (!_nSticks.IsCreated || mpc != _maxNumPoints) _nSticks = new NativeArray<Stick>(mpc - 1, Allocator.Persistent);
             _maxNumPoints = mpc;
-            if (_jobHandles == null || _jobHandles.Length < ConstrainRuns * 2 + 1) _jobHandles = new JobHandle[ConstrainRuns * 2 + 1];
-            n_activePoints[0] = new Point { Pos = Start.position, OldPos = Start.position, Pinned = true };
-            n_activePoints[1] = new Point { Pos = End.position, OldPos = End.position, Pinned = true };
-            n_sticks[0] = new Stick
+            if (_jobHandles == null || _jobHandles.Length < _constrainRuns * 2 + 1) _jobHandles = new JobHandle[_constrainRuns * 2 + 1];
+            _nActivePoints[0] = new Point { Pos = Start.position, OldPos = Start.position, Pinned = true, Mass = _startMass };
+            _nActivePoints[1] = new Point { Pos = End.position, OldPos = End.position, Pinned = true, Mass = _endMass };
+            _nSticks[0] = new Stick
             {
                 P0 = 0,
                 P1 = 1,
-                Length = SegmentLength,
+                Length = _segmentLength,
                 MaxOnly = true
             };
-            NumSegs = 1; Len = 0; NumPoints = 2; NumSticks = 1;
+            SegCnt = 1; Len = 0; PointCnt = 2; StickCnt = 1;
         }
 
         public void Dispose()
         {
-            if (n_activePoints.IsCreated) n_activePoints.Dispose();
-            if (n_pointForces.IsCreated) n_pointForces.Dispose();
-            if (n_sticks.IsCreated) n_sticks.Dispose();
-            if (n_colliders.IsCreated) n_colliders.Dispose();
-            if (n_col_vertices.IsCreated) n_col_vertices.Dispose();
+            if (_nActivePoints.IsCreated) _nActivePoints.Dispose();
+            if (_nPointForces.IsCreated) _nPointForces.Dispose();
+            if (_nSticks.IsCreated) _nSticks.Dispose();
+            if (_nColliders.IsCreated) _nColliders.Dispose();
+            if (_nColVertices.IsCreated) _nColVertices.Dispose();
             _jobHandles = null;
         }
         #endregion
 
         #region Workers
-        void Pin(PinPoint nPinPoint)
+        private void Pin(PinPoint nPinPoint)
         {
+#if UNITY_EDITOR
             Debug.Log("Changing pin to " + nPinPoint);
+#endif
             _pinPoint = nPinPoint;
-            var sp = n_activePoints[0];
-            var ep = n_activePoints[NumPoints - 1];
+            var sp = _nActivePoints[0];
+            var ep = _nActivePoints[PointCnt - 1];
             switch (_pinPoint)
             {
                 case PinPoint.Start:
@@ -153,72 +194,68 @@ namespace VerletPhysics
                     ep.Pinned = true;
                     break;
             }
-            n_activePoints[0] = sp;
-            n_activePoints[NumPoints - 1] = ep;
-            Debug.Log($"sp {sp.Pos} {sp.Pinned}, ep {ep.Pos} {ep.Pinned}");
+            _nActivePoints[0] = sp;
+            _nActivePoints[PointCnt - 1] = ep;
         }
 
-        void Extend(float exlength)
+        private void Extend(float exLen)
         {
-            Len = Mathf.Clamp(Len + exlength, 0, MaxLength);
-            if (Len > NumSegs * SegmentLength)
+            Len = Mathf.Clamp(Len + exLen, 0, MaxLength);
+            if (Len <= SegCnt * _segmentLength) return;
+            StickCnt--;
+            var ep = _nActivePoints[--PointCnt];
+
+            while (Len > SegCnt * _segmentLength)
             {
-                NumSticks--;
-                Point ep = n_activePoints[--NumPoints];
-
-                while (Len > NumSegs * SegmentLength)
+                var fLen = Len - SegCnt * _segmentLength;
+                var spawnPos = Vector2.Lerp(_nActivePoints[PointCnt - 1].Pos, ep.Pos, _segmentLength / fLen);
+                _nActivePoints[PointCnt++] = new Point { Pos = spawnPos, OldPos = spawnPos, Pinned = false, Mass = 1f };
+                _nSticks[StickCnt++] = new Stick
                 {
-                    float flength = Len - NumSegs * SegmentLength;
-                    var spawnPos = Vector2.Lerp(n_activePoints[NumPoints - 1].Pos, ep.Pos, SegmentLength / flength);
-                    n_activePoints[NumPoints++] = new Point { Pos = spawnPos, OldPos = spawnPos, Pinned = false };
-                    // Debug.Log($"Extending rope: {spawnPos}, NumSegs: {NumSegs}, Len: {Len}, SegmentLength: {SegmentLength}");
-                    n_sticks[NumSticks++] = new Stick
-                    {
-                        P0 = NumPoints - 2,
-                        P1 = NumPoints - 1,
-                        Length = SegmentLength,
-                        MaxOnly = false
-                    };
-                    NumSegs++;
-                }
-
-                n_activePoints[NumPoints++] = ep;
-                n_sticks[NumSticks++] = new Stick { P0 = NumPoints - 2, P1 = NumPoints - 1, Length = SegmentLength, MaxOnly = true };
+                    P0 = PointCnt - 2,
+                    P1 = PointCnt - 1,
+                    Length = _segmentLength,
+                    MaxOnly = false
+                };
+                SegCnt++;
             }
+
+            _nActivePoints[PointCnt++] = ep;
+            _nSticks[StickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
         }
 
-        void Retract(float retLength)
+        private void Retract(float retLength)
         {
             Len = Mathf.Clamp(Len - retLength, 0, MaxLength);
-            if (Len < (NumSegs - 1) * SegmentLength)
+            if (Len >= (SegCnt - 1) * _segmentLength) return;
+            StickCnt--;
+            var ep = _nActivePoints[--PointCnt];
+
+            while (Len < (SegCnt - 1) * _segmentLength)
             {
-                NumSticks--;
-                Point ep = n_activePoints[--NumPoints];
-
-                while (Len < (NumSegs - 1) * SegmentLength)
-                {
-                    NumPoints--;
-                    NumSticks--;
-                    NumSegs--;
-                }
-
-                n_activePoints[NumPoints++] = ep;
-                n_sticks[NumSticks++] = new Stick { P0 = NumPoints - 2, P1 = NumPoints - 1, Length = SegmentLength, MaxOnly = true };
-                Assert.IsTrue(NumSticks >= 1 && NumSegs >= 1 && NumPoints >= 2, "Rope must have at least one segment and two points.");
+                PointCnt--;
+                StickCnt--;
+                SegCnt--;
             }
+
+            _nActivePoints[PointCnt++] = ep;
+            _nSticks[StickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
+            Assert.IsTrue(StickCnt >= 1 && SegCnt >= 1 && PointCnt >= 2, "Rope must have at least one segment and two points.");
         }
 
-        void AddForces()
+        private void AddForces()
         {
             foreach (var forceJob in _forceQueue)
             {
                 var (index, f, persist) = forceJob;
-                if (index < 0 || index >= NumPoints) Debug.LogWarning($"Index {index} out of range for applying force (Perhaps outdated).");
-                else n_pointForces[index] = (f, persist);
+                if (index < 0 || index >= PointCnt) 
+                    throw new Exception($"Index {index} out of range for applying force (Perhaps outdated).");
+                _nPointForces[index] = (f, persist);
             }
             _forceQueue.Clear();
         }
         #endregion
+        
         #region Interface
         public void QueueExtend(float length)
         {
@@ -235,7 +272,6 @@ namespace VerletPhysics
         public void QueuePin(PinPoint nPinPoint)
         {
             if (_pinPoint == nPinPoint) return;
-            // Debug.Log($"Pinning rope: {nPinPoint}");
             _nxtPinPoint = nPinPoint;
         }
 
@@ -243,9 +279,9 @@ namespace VerletPhysics
 
         public void Draw(LineRenderer lineRenderer)
         {
-            lineRenderer.positionCount = NumPoints;
-            for (int i = 0; i < NumPoints; i++)
-                lineRenderer.SetPosition(i, n_activePoints[i].Pos);
+            lineRenderer.positionCount = PointCnt;
+            for (var i = 0; i < PointCnt; i++)
+                lineRenderer.SetPosition(i, _nActivePoints[i].Pos);
         }
 
         public void StartTick(float deltaTime)
@@ -254,39 +290,37 @@ namespace VerletPhysics
 
             var updatePosJob = new UpdatePosJob
             {
-                ActivePoints = n_activePoints,
-                PointForces = n_pointForces,
-                Gravity = gravity,
+                ActivePoints = _nActivePoints,
+                PointForces = _nPointForces,
+                Gravity = _gravity,
                 DeltaTime = deltaTime,
-                Drag = drag
+                Drag = _drag
             };
-            _jobHandles[0] = updatePosJob.Schedule(NumPoints, PointUpdateBatchSize);
+            _jobHandles[0] = updatePosJob.Schedule(PointCnt, _pointUpdateBatchSize);
 
             var maintainDistJob = new MaintainDistJob
             {
-                Sticks = n_sticks,
-                ActivePoints = n_activePoints
+                Sticks = _nSticks,
+                ActivePoints = _nActivePoints
             };
 
             var resolveCollisionsJob = new ResolveCollisionsJob
             {
-                SegmentLength = SegmentLength,
-                BounceFactor = bounceFactor,
-                ActivePoints = n_activePoints,
-                Colliders = n_colliders,
-                ColVertices = n_col_vertices
+                SegmentLength = _segmentLength,
+                BounceFactor = _bounceFactor,
+                ActivePoints = _nActivePoints,
+                Colliders = _nColliders,
+                ColVertices = _nColVertices
             };
 
-            int j = 1;
-            for (int i = 0; i < ConstrainRuns; i++)
+            var j = 1;
+            for (var i = 0; i < _constrainRuns; i++)
             {
                 _jobHandles[j] = maintainDistJob.Schedule(_jobHandles[j - 1]);
                 j++;
-                if (i % ResolveCollisionInterval == 0 && n_colliders != null && n_colliders.Length > 0)
-                {
-                    _jobHandles[j] = resolveCollisionsJob.Schedule(NumPoints, ResolveCollisionsBatchSize, _jobHandles[j - 1]);
-                    j++;
-                }
+                if (i % _resolveCollisionInterval != 0 || _nColliders.Length <= 0) continue;
+                _jobHandles[j] = resolveCollisionsJob.Schedule(PointCnt, _resolveCollisionsBatchSize, _jobHandles[j - 1]);
+                j++;
             }
             _lastJobInd = j - 1;
         }
@@ -294,7 +328,7 @@ namespace VerletPhysics
         public void CompleteTick(LineRenderer ropeRenderer)
         {
             _jobHandles[_lastJobInd].Complete();
-            for (int i = 0; i < NumPoints; i++) if (!n_pointForces[i].Item2) n_pointForces[i] = (Vector2.zero, false);
+            for (var i = 0; i < PointCnt; i++) if (!_nPointForces[i].Item2) _nPointForces[i] = (Vector2.zero, false);
             AddForces();
             if (_willAdjLen)
             {
@@ -303,18 +337,18 @@ namespace VerletPhysics
                 else Retract(-_lenChange);
             }
 
-            // for (int i = 0; i < NumPoints; i++) Debug.Log($"Point {i}: Pos: {n_activePoints[i].Pos}, OldPos: {n_activePoints[i].OldPos}, Pinned: {n_activePoints[i].Pinned}");
-            EndVel = n_activePoints[NumPoints - 1].Pos - n_activePoints[NumPoints - 1].OldPos;
+            EndVel = _nActivePoints[PointCnt - 1].Pos - _nActivePoints[PointCnt - 1].OldPos;
             if (_nxtPinPoint != _pinPoint) Pin(_nxtPinPoint);
-            MoveTfmAlong(); //FIXME: needs something smoother
+            MoveTfmAlong();
             Draw(ropeRenderer);
         }
         #endregion
+        
         #region Verlet Stages
-        void PinToTfm()
+        private void PinToTfm()
         {
-            var sp = n_activePoints[0];
-            var ep = n_activePoints[NumPoints - 1];
+            var sp = _nActivePoints[0];
+            var ep = _nActivePoints[PointCnt - 1];
             if (sp.Pinned)
             {
                 sp.OldPos = sp.Pos;
@@ -325,22 +359,18 @@ namespace VerletPhysics
                 ep.OldPos = ep.Pos;
                 ep.Pos = End.position;
             }
-            n_activePoints[0] = sp;
-            n_activePoints[NumPoints - 1] = ep;
+            _nActivePoints[0] = sp;
+            _nActivePoints[PointCnt - 1] = ep;
         }
 
-        void MoveTfmAlong()
+        private void MoveTfmAlong()
         {
-            if (!n_activePoints[0].Pinned) Start.position = n_activePoints[0].Pos;
-            if (!n_activePoints[NumPoints - 1].Pinned) End.position = n_activePoints[NumPoints - 1].Pos;
-            // if (!n_activePoints[0].Pinned) Start.position = Vector3.SmoothDamp(Start.position, n_activePoints[0].Pos, ref _startVel, MoveEndsSmoothTime);
-            // else _startVel = Vector3.zero;
-            // if (!n_activePoints[NumPoints - 1].Pinned) End.position = Vector3.SmoothDamp(End.position, n_activePoints[NumPoints - 1].Pos, ref _endVel, MoveEndsSmoothTime);
-            // else _endVel = Vector3.zero;
+            if (!_nActivePoints[0].Pinned) Start.position = _nActivePoints[0].Pos;
+            if (!_nActivePoints[PointCnt - 1].Pinned) End.position = _nActivePoints[PointCnt - 1].Pos;
         }
 
         [BurstCompile]
-        struct UpdatePosJob : IJobParallelFor
+        private struct UpdatePosJob : IJobParallelFor
         {
             public NativeArray<Point> ActivePoints;
             [ReadOnly] public NativeArray<(Vector2, bool)> PointForces;
@@ -350,9 +380,9 @@ namespace VerletPhysics
 
             public void Execute(int index)
             {
-                Point p = ActivePoints[index];
+                var p = ActivePoints[index];
                 if (p.Pinned) return;
-                Vector2 newPos = p.Pos + (p.Pos - p.OldPos) * (1f - Drag) + (1f - Drag) * DeltaTime * DeltaTime * (Gravity + PointForces[index].Item1);
+                var newPos = p.Pos + (p.Pos - p.OldPos) * (1f - Drag) + (1f - Drag) * DeltaTime * DeltaTime * (Gravity + PointForces[index].Item1);
                 p.OldPos = p.Pos;
                 p.Pos = newPos;
                 ActivePoints[index] = p;
@@ -360,26 +390,33 @@ namespace VerletPhysics
         }
 
         [BurstCompile]
-        struct MaintainDistJob : IJob
+        private struct MaintainDistJob : IJob
         {
             [ReadOnly] public NativeArray<Stick> Sticks;
             public NativeArray<Point> ActivePoints;
 
             public void Execute()
             {
-                for (int i = 0; i < Sticks.Length; i++)
+                foreach (var stick in Sticks)
                 {
-                    Stick stick = Sticks[i];
                     Point p0 = ActivePoints[stick.P0], p1 = ActivePoints[stick.P1];
-                    Vector2 delta = p0.Pos - p1.Pos;
-                    float dist = Mathf.Max(delta.magnitude, Const.EPS);
+                    var delta = p0.Pos - p1.Pos;
+                    var dist = Mathf.Max(delta.magnitude, Const.EPS);
 
                     if ((stick.MaxOnly && dist < stick.Length) || (p0.Pinned && p1.Pinned)) return;
-                    float diff = (stick.Length - dist) / dist;
-                    Vector2 offset = (!p0.Pinned && !p1.Pinned ? 0.5f : 1f) * diff * delta;
+                    var diff = (stick.Length - dist) / dist;
+                    var totMass = p0.Mass + p1.Mass;
+                    float massRatio0 = p1.Mass / totMass, massRatio1 = p0.Mass / totMass;
+                    var offset = diff * delta;
+                    
+                    if (!p0.Pinned && !p1.Pinned)
+                    {
+                        p0.Pos += offset * massRatio0;
+                        p1.Pos -= offset * massRatio1;
+                    }
+                    else if (!p0.Pinned) p0.Pos += offset;
+                    else p1.Pos -= offset;
 
-                    if (!p0.Pinned) p0.Pos += offset;
-                    if (!p1.Pinned) p1.Pos -= offset;
                     ActivePoints[stick.P0] = p0;
                     ActivePoints[stick.P1] = p1;
                 }
@@ -387,7 +424,7 @@ namespace VerletPhysics
         }
 
         [BurstCompile]
-        struct ResolveCollisionsJob : IJobParallelFor
+        private struct ResolveCollisionsJob : IJobParallelFor
         {
             public float SegmentLength;
             public float BounceFactor;
@@ -397,16 +434,16 @@ namespace VerletPhysics
 
             public void Execute(int index)
             {
-                Point p = ActivePoints[index];
+                var p = ActivePoints[index];
                 if (p.Pinned) return;
 
-                Vector2 v = p.Pos - p.OldPos;
-                float colRad = SegmentLength * 0.5f;
-                int vi = 0;
+                var v = p.Pos - p.OldPos;
+                var colRad = SegmentLength * 0.5f;
+                var vi = 0;
                 foreach (var col in Colliders)
                 {
-                    Vector2 rectMin = col.AABB.Item1;
-                    Vector2 rectMax = col.AABB.Item2;
+                    var rectMin = col.AABB.Item1;
+                    var rectMax = col.AABB.Item2;
                     rectMin -= Vector2.one * colRad;
                     rectMax += Vector2.one * colRad;
                     if (!CollisionDetection.PointInAABB(p.Pos, rectMin, rectMax))
@@ -415,10 +452,12 @@ namespace VerletPhysics
                         continue;
                     }
 
-                    float depth = 0; Vector2 dn = Vector2.zero;
+                    float depth = 0; 
+                    var dn = Vector2.zero;
                     if (col.Type == C_ColliderType.Polygon)
                     {
-                        var hasCol = CollisionDetection.SATCheck(p.Pos, colRad, new NativePoly() { VertexStart = vi, VertexCount = col.VertexCount, Vertices = ColVertices }, out dn, out depth);
+                        var hasCol = CollisionDetection.SATCheck(p.Pos, colRad, 
+                            new NativePoly() { VertexStart = vi, VertexCount = col.VertexCount, Vertices = ColVertices }, out dn, out depth);
                         vi += col.VertexCount;
                         if (!hasCol) continue;
                     }

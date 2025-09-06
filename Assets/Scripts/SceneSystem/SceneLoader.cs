@@ -46,7 +46,7 @@ namespace Abyss.SceneSystem
                 StartCoroutine(LoadSceneAsync(newScene, rmMasterAftTransit));
             };
 
-            EventManager.StartListening(UIEvents.BlackIn, currLoadWithMaster);
+            EventManager.Subscribe(UIEvents.BlackIn, currLoadWithMaster);
             return true;
         }
 
@@ -73,7 +73,7 @@ namespace Abyss.SceneSystem
 
             if (byPrep)
             {
-                EventManager.StopListening(UIEvents.BlackIn, currLoadWithMaster);
+                EventManager.Unsubscribe(UIEvents.BlackIn, currLoadWithMaster);
                 currLoadWithMaster = null;
             }
 

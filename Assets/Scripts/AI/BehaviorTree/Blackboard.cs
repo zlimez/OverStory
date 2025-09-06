@@ -26,7 +26,7 @@ namespace AI.BehaviorTree
 
                 if (!dataEvents.ContainsKey(varName)) dataEvents[varName] = new RefPair<Action<object>, Action<object>>(null, (obj) => dataEvents[varName].Head?.Invoke(obj)); // Add the params passed to the invoked event to headboard of connected BTs
                 foreach (var eventName in eventNames)
-                    EventManager.StartListening(new GameEvent(eventName), dataEvents[varName].Tail);
+                    EventManager.Subscribe(new GameEvent(eventName), dataEvents[varName].Tail);
             }
         }
 
@@ -37,7 +37,7 @@ namespace AI.BehaviorTree
         public void Teardown()
         {
             foreach (var dataEvent in dataEvents)
-                EventManager.StopListening(new GameEvent(dataEvent.Key), dataEvent.Value.Tail);
+                EventManager.Unsubscribe(new GameEvent(dataEvent.Key), dataEvent.Value.Tail);
         }
     }
 }

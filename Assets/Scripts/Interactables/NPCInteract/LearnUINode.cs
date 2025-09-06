@@ -19,13 +19,13 @@ namespace NPC
                 itemCollection.Add(item);
             EventManager.InvokeEvent(PlayEvents.LearningPostEntered, (tribe, itemCollection));
             _interactEvent = interactEvent;
-            EventManager.StartListening(PlayEvents.LearningPostExited, NextExec);
+            EventManager.Subscribe(PlayEvents.LearningPostExited, NextExec);
         }
 
         void NextExec(object input)
         {
             if (Next != null) Next.Execute(_interactEvent);
-            EventManager.StopListening(PlayEvents.TradePostExited, NextExec);
+            EventManager.Unsubscribe(PlayEvents.TradePostExited, NextExec);
         }
     }
 }

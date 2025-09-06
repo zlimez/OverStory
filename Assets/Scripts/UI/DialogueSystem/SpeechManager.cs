@@ -24,8 +24,8 @@ public class SpeechManager : MonoBehaviour
     {
         if (isForPlayer)
         {
-            EventManager.StartListening(PlayEvents.PlayerSpeak, UseEnqueueDialogue);
-            EventManager.StartListening(PlayEvents.PlayerSpriteFlip, FlipHorizontally);
+            EventManager.Subscribe(PlayEvents.PlayerSpeak, UseEnqueueDialogue);
+            EventManager.Subscribe(PlayEvents.PlayerSpriteFlip, FlipHorizontally);
         }
     }
 
@@ -33,8 +33,8 @@ public class SpeechManager : MonoBehaviour
     {
         if (isForPlayer)
         {
-            EventManager.StopListening(PlayEvents.PlayerSpeak, UseEnqueueDialogue);
-            EventManager.StopListening(PlayEvents.PlayerSpriteFlip, FlipHorizontally);
+            EventManager.Unsubscribe(PlayEvents.PlayerSpeak, UseEnqueueDialogue);
+            EventManager.Unsubscribe(PlayEvents.PlayerSpriteFlip, FlipHorizontally);
         }
     }
 

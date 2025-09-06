@@ -16,10 +16,10 @@ public class BGChanger : MonoBehaviour
     void OnEnable()
     {
         UpdateBackgroundImage(null);
-        EventManager.StartListening(SystemEvents.ChangeCameraBG, UpdateBackgroundImage);
+        EventManager.Subscribe(SystemEvents.ChangeCameraBG, UpdateBackgroundImage);
     }
 
-    void OnDisable() => EventManager.StopListening(SystemEvents.ChangeCameraBG, UpdateBackgroundImage);
+    void OnDisable() => EventManager.Unsubscribe(SystemEvents.ChangeCameraBG, UpdateBackgroundImage);
 
     private void UpdateBackgroundImage(object input)
     {

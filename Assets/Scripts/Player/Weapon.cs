@@ -16,14 +16,14 @@ namespace Abyss.Player
 
         void OnEnable()
         {
-            EventManager.StartListening(PlayEvents.WeaponEquipped, Equip);
-            EventManager.StartListening(PlayEvents.WeaponUnequipped, Unequip);
+            EventManager.Subscribe(PlayEvents.WeaponEquipped, Equip);
+            EventManager.Subscribe(PlayEvents.WeaponUnequipped, Unequip);
         }
 
         void OnDisable()
         {
-            EventManager.StopListening(PlayEvents.WeaponEquipped, Equip);
-            EventManager.StopListening(PlayEvents.WeaponUnequipped, Unequip);
+            EventManager.Unsubscribe(PlayEvents.WeaponEquipped, Equip);
+            EventManager.Unsubscribe(PlayEvents.WeaponUnequipped, Unequip);
         }
 
         void Equip(object obj) // Deduction from inventory is already done by Use() of the weaponitem

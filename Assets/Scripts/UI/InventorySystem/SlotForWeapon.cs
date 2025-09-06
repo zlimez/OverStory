@@ -28,12 +28,12 @@ public class SlotForWeapon : MonoBehaviour
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, InitUpdateWeapon);
+            EventManager.Subscribe(SystemEvents.SystemsReady, InitUpdateWeapon);
         else
         {
             item = GameManager.Instance.PlayerPersistence.WeaponItem;
             UpdateSlot();
-            EventManager.StartListening(PlayEvents.WeaponEquipped, EquipWeapon);
+            EventManager.Subscribe(PlayEvents.WeaponEquipped, EquipWeapon);
         }
     }
 
@@ -41,12 +41,12 @@ public class SlotForWeapon : MonoBehaviour
     {
         item = GameManager.Instance.PlayerPersistence.WeaponItem;
         UpdateSlot();
-        EventManager.StartListening(PlayEvents.WeaponEquipped, EquipWeapon);
-        EventManager.StopListening(SystemEvents.SystemsReady, InitUpdateWeapon);
+        EventManager.Subscribe(PlayEvents.WeaponEquipped, EquipWeapon);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, InitUpdateWeapon);
     }
     void OnDisable()
     {
-        EventManager.StopListening(PlayEvents.WeaponEquipped, EquipWeapon);
+        EventManager.Unsubscribe(PlayEvents.WeaponEquipped, EquipWeapon);
     }
 
     public void ShowTooltip()

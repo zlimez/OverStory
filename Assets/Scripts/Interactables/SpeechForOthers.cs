@@ -25,7 +25,7 @@ namespace Abyss.Interactables
                     InvokeRepeating(nameof(Speak), 0f, intervalTime);
                     _isRepeating = true;
                 }
-                else EventManager.StartListening(SystemEvents.LedgerReady, RepWrapper);
+                else EventManager.Subscribe(SystemEvents.LedgerReady, RepWrapper);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Abyss.Interactables
         {
             InvokeRepeating(nameof(Speak), 0f, intervalTime);
             _isRepeating = true;
-            EventManager.StopListening(SystemEvents.LedgerReady, RepWrapper);
+            EventManager.Unsubscribe(SystemEvents.LedgerReady, RepWrapper);
         }
 
         void OnDisable()

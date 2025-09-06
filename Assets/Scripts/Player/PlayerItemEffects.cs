@@ -22,24 +22,24 @@ public class PlayerItemEffects : MonoBehaviour
 
 	PlayerManager _playerManager;
 
-	void Awake() => _playerManager = GetComponent<PlayerManager>();
+	private void Awake() => _playerManager = GetComponent<PlayerManager>();
 
-	void OnValidate() => Assert.IsTrue(basicHealPortion >= 0 && basicHealPortion <= 1, "Heal portion must be between 0 and 1");
+	private void OnValidate() => Assert.IsTrue(basicHealPortion >= 0 && basicHealPortion <= 1, "Heal portion must be between 0 and 1");
 
-	void OnEnable()
+	private void OnEnable()
 	{
-		EventManager.StartListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
-		EventManager.StartListening(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
-		EventManager.StartListening(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
-		EventManager.StartListening(PlayEvents.LureUsed, PlaceLure);
+		EventManager.Subscribe(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
+		EventManager.Subscribe(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
+		EventManager.Subscribe(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
+		EventManager.Subscribe(PlayEvents.LureUsed, PlaceLure);
 	}
 
-	void OnDisable()
+	private void OnDisable()
 	{
-		EventManager.StopListening(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
-		EventManager.StartListening(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
-		EventManager.StartListening(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
-		EventManager.StopListening(PlayEvents.LureUsed, PlaceLure);
+		EventManager.Unsubscribe(new GameEvent(basicBandageUsed.EventName), UseBasicBandage);
+		EventManager.Subscribe(new GameEvent(goodBandageUsed.EventName), UseGoodBandage);
+		EventManager.Subscribe(new GameEvent(masterBandageUsed.EventName), UseMasterBandage);
+		EventManager.Unsubscribe(PlayEvents.LureUsed, PlaceLure);
 	}
 
 	public void UseBasicBandage(object input = null) => StartCoroutine(Heal(basicHealPortion * PlayerAttr.MaxHealth));

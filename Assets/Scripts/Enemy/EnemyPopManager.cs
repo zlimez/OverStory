@@ -73,8 +73,8 @@ namespace Abyss.Environment.Enemy
             EventManager.InvokeEvent(PlayEvents.FriendlinessPurityChange);
         }
 
-        void OnEnable() => EventManager.StartListening(SystemEvents.TimeBcastEvent, Breed);
-        void OnDisable() => EventManager.StopListening(SystemEvents.TimeBcastEvent, Breed);
+        void OnEnable() => EventManager.Subscribe(SystemEvents.TimeBcastEvent, Breed);
+        void OnDisable() => EventManager.Unsubscribe(SystemEvents.TimeBcastEvent, Breed);
 
         void Breed(object input = null)
         {

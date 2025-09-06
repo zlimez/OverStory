@@ -30,20 +30,20 @@ public class BroadcastManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening(PlayEvents.PlayerIntelChange, PlayerIntelligenceChange2Msg);
-        EventManager.StartListening(PlayEvents.WeaponEquipped, WeaponEquipped2Msg);
-        EventManager.StartListening(PlayEvents.WeaponUnequipped, WeaponUnequipped2Msg);
-        EventManager.StartListening(PlayEvents.PlayerItemChange, PlayerItemChange2Msg);
-        EventManager.StartListening(UIEvents.Message, UseEnqueueMsg);
+        EventManager.Subscribe(PlayEvents.PlayerIntelChange, PlayerIntelligenceChange2Msg);
+        EventManager.Subscribe(PlayEvents.WeaponEquipped, WeaponEquipped2Msg);
+        EventManager.Subscribe(PlayEvents.WeaponUnequipped, WeaponUnequipped2Msg);
+        EventManager.Subscribe(PlayEvents.PlayerItemChange, PlayerItemChange2Msg);
+        EventManager.Subscribe(UIEvents.Message, UseEnqueueMsg);
     }
 
     void OnDisable()
     {
-        EventManager.StopListening(PlayEvents.PlayerIntelChange, PlayerIntelligenceChange2Msg);
-        EventManager.StopListening(PlayEvents.WeaponEquipped, WeaponEquipped2Msg);
-        EventManager.StopListening(PlayEvents.WeaponUnequipped, WeaponUnequipped2Msg);
-        EventManager.StopListening(PlayEvents.PlayerItemChange, PlayerItemChange2Msg);
-        EventManager.StopListening(UIEvents.Message, UseEnqueueMsg);
+        EventManager.Unsubscribe(PlayEvents.PlayerIntelChange, PlayerIntelligenceChange2Msg);
+        EventManager.Unsubscribe(PlayEvents.WeaponEquipped, WeaponEquipped2Msg);
+        EventManager.Unsubscribe(PlayEvents.WeaponUnequipped, WeaponUnequipped2Msg);
+        EventManager.Unsubscribe(PlayEvents.PlayerItemChange, PlayerItemChange2Msg);
+        EventManager.Unsubscribe(UIEvents.Message, UseEnqueueMsg);
     }
 
     void PlayerIntelligenceChange2Msg(object args)

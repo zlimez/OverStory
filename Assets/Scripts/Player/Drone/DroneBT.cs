@@ -76,7 +76,7 @@ public class DroneBT : MonoBT
                 new GotoTargetByCurve(new string[] { "droneTransform", _buildLoc, "mvCurve", "mvType", "mvBy", "mvTime" }),
                 new DroneAdjust(new string[] { "headLight", "transitionTime", "buildIntensity", "buildColor", "buildZRot", "transitionCurve", "droneTransform", "droneSprite" }),
                 new Hover(new string[] { _buildLoc, "buildHoverAmp", "hoverInterval", "droneTransform" })
-            }, new string[] { _buildLoc }, (obj) => { return true; }),
+            }, new string[] { _buildLoc }, (obj) => true),
 
             // new Sequence(new List<Node> {
             //     new CheckVarExists(new string[] { _armLoc }),

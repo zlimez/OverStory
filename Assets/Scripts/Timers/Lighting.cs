@@ -15,8 +15,8 @@ public class Lighting : MonoBehaviour
     IEnumerator _activeTransition;
     int _activePter = -1;
 
-    void OnEnable() => EventManager.StartListening(SystemEvents.TimeBcastEvent, StartTransition);
-    void OnDisable() => EventManager.StopListening(SystemEvents.TimeBcastEvent, StartTransition);
+    void OnEnable() => EventManager.Subscribe(SystemEvents.TimeBcastEvent, StartTransition);
+    void OnDisable() => EventManager.Unsubscribe(SystemEvents.TimeBcastEvent, StartTransition);
 
     void Awake()
     {

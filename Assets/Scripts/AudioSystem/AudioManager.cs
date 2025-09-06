@@ -22,10 +22,10 @@ public class AudioManager : Singleton<AudioManager>
                 break;
             }
 
-        EventManager.StartListening(SystemEvents.SceneTransitStart, ChangeBgm);
+        EventManager.Subscribe(SystemEvents.SceneTransitStart, ChangeBgm);
     }
 
-    void OnDisable() => EventManager.StopListening(SystemEvents.SceneTransitStart, ChangeBgm);
+    void OnDisable() => EventManager.Unsubscribe(SystemEvents.SceneTransitStart, ChangeBgm);
 
     public void PlaySFXClip(AudioClip audioClip, bool loop = false)
     {

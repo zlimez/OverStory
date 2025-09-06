@@ -21,7 +21,7 @@ public class PowerPanel : Interactable
     void OnEnable()
     {
         if (GameManager.Instance == null)
-            EventManager.StartListening(SystemEvents.SystemsReady, Load);
+            EventManager.Subscribe(SystemEvents.SystemsReady, Load);
         else Load();
     }
 
@@ -47,7 +47,7 @@ public class PowerPanel : Interactable
         EventLedger.Instance.Record(new GameEvent(configs[_activeConfig].Tail.EventName));
         inactive.SetActive(false);
         _hasPower = true;
-        EventManager.StopListening(SystemEvents.SystemsReady, Load);
+        EventManager.Unsubscribe(SystemEvents.SystemsReady, Load);
     }
 
     void Activate(int config)
@@ -63,5 +63,5 @@ public class PowerPanel : Interactable
         EventLedger.Instance.Record(new GameEvent(configs[_activeConfig].Tail.EventName));
     }
 
-    void OnDisable() => EventManager.StopListening(SystemEvents.SystemsReady, Load);
+    void OnDisable() => EventManager.Unsubscribe(SystemEvents.SystemsReady, Load);
 }

@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] GameEvent triggerOpenEvent, triggerCloseEvent;
-    [SerializeField] bool isClosed = true;
-    [SerializeField] AnimationCurve curve;
-    [SerializeField] Transform closePos, openPos;
+    [SerializeField] private GameEvent triggerOpenEvent, triggerCloseEvent;
+    [SerializeField] private bool isClosed = true;
+    [SerializeField] private AnimationCurve curve;
+    [SerializeField] private Transform closePos, openPos;
 
-    void OnEnable()
+    private void OnEnable()
     {
-        if (triggerOpenEvent.EventName != "") EventManager.StartListening(triggerOpenEvent, Open);
-        if (triggerCloseEvent.EventName != "") EventManager.StartListening(triggerCloseEvent, Close);
+        if (triggerOpenEvent.EventName != "") EventManager.Subscribe(triggerOpenEvent, Open);
+        if (triggerCloseEvent.EventName != "") EventManager.Subscribe(triggerCloseEvent, Close);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        if (triggerOpenEvent.EventName != "") EventManager.StopListening(triggerOpenEvent, Open);
-        if (triggerCloseEvent.EventName != "") EventManager.StopListening(triggerCloseEvent, Close);
+        if (triggerOpenEvent.EventName != "") EventManager.Unsubscribe(triggerOpenEvent, Open);
+        if (triggerCloseEvent.EventName != "") EventManager.Unsubscribe(triggerCloseEvent, Close);
     }
 
-    void Open(object obj = null)
+    private void Open(object obj = null)
     {
         if (!isClosed) return;
         StartCoroutine(OpenRoutine());
@@ -33,7 +33,7 @@ public class Door : MonoBehaviour
         StartCoroutine(CloseRoutine());
     }
 
-    IEnumerator OpenRoutine()
+    private IEnumerator OpenRoutine()
     {
         isClosed = false;
         float t = 0;
@@ -46,7 +46,7 @@ public class Door : MonoBehaviour
         transform.position = openPos.position;
     }
 
-    IEnumerator CloseRoutine()
+    private IEnumerator CloseRoutine()
     {
         isClosed = true;
         float t = 0;

@@ -26,15 +26,15 @@ namespace Abyss.Environment
         void OnEnable()
         {
             if (EnemyPopManager.Instance == null || !EnemyPopManager.Instance.IsReady)
-                EventManager.StartListening(SystemEvents.EnemyPopManagerReady, Setup);
+                EventManager.Subscribe(SystemEvents.EnemyPopManagerReady, Setup);
             else Setup();
-            EventManager.StartListening(PlayEvents.RestEnd, Setup);
+            EventManager.Subscribe(PlayEvents.RestEnd, Setup);
         }
 
         void OnDisable()
         {
-            EventManager.StopListening(PlayEvents.RestEnd, Setup);
-            EventManager.StopListening(SystemEvents.EnemyPopManagerReady, Setup);
+            EventManager.Unsubscribe(PlayEvents.RestEnd, Setup);
+            EventManager.Unsubscribe(SystemEvents.EnemyPopManagerReady, Setup);
         }
 
         void Setup(object input = null)

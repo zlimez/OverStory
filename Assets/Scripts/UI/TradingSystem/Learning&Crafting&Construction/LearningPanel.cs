@@ -33,14 +33,14 @@ public class LearningSystem : MonoBehaviour
 
     void Start() => learningPanel.SetActive(false);
 
-    void OnEnable() => EventManager.StartListening(PlayEvents.LearningPostEntered, OpenLearning);
-    void OnDisable() => EventManager.StopListening(PlayEvents.LearningPostEntered, OpenLearning);
+    void OnEnable() => EventManager.Subscribe(PlayEvents.LearningPostEntered, OpenLearning);
+    void OnDisable() => EventManager.Unsubscribe(PlayEvents.LearningPostEntered, OpenLearning);
 
     public void CloseLearning()
     {
         IsLearningOpen = false;
         learningPanel.SetActive(false);
-        EventManager.StopListening(UIEvents.SelectItem, Select);
+        EventManager.Unsubscribe(UIEvents.SelectItem, Select);
         GameManager.Instance.UI.Close();
         foreach (var convo in _acquiredConvos) DialogueManager.Instance.SoftStartConvo(convo);
         if (_isFirstSpell)
@@ -79,7 +79,7 @@ public class LearningSystem : MonoBehaviour
         UpdateLearningPanel();
         IsLearningOpen = true;
         learningPanel.SetActive(true);
-        EventManager.StartListening(UIEvents.SelectItem, Select);
+        EventManager.Subscribe(UIEvents.SelectItem, Select);
     }
 
     private void Select(object arg)

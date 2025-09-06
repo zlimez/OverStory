@@ -6,19 +6,23 @@ using Abyss.Settings;
 
 public class FlippablePlatform : MonoBehaviour
 {
-    static readonly int _enemyLayerMask = 1 << (int)Abyss.Settings.Layer.Enemy;
+    private const int EnemyLayerMask = 1 << (int)Abyss.Settings.Layer.Enemy;
+
     [Header("Dynamic Rotation")]
-    [SerializeField] Transform cog;
-    [SerializeField] AnimationCurve retardAccelCurve;
-    [SerializeField] float angularInertia, angularRetardation;
-    [SerializeField][Tooltip("Makes the platform act like seesaw ")] float maxSpringAngularAccel;
-    [SerializeField][Tooltip("When angular velocity and z-angle are below these thresholds platform will return to default stationery state (Radians)")] float stillAngularVelocityThreshold, stillZAngleThreshold;
-    [SerializeField] float playerImpulseDamper = 0.1f, playerVelocityDamper = 0.1f, playerJumpImpulse = 90f;
+    [SerializeField] private Transform cog;
+    [SerializeField] private AnimationCurve retardAccelCurve;
+    [SerializeField] private float angularInertia, angularRetardation;
+    [SerializeField][Tooltip("Makes the platform act like seesaw ")]
+    private float maxSpringAngularAccel;
+    [SerializeField]
+    [Tooltip("When angular velocity and z-angle are below these thresholds platform will return to default stationery state (Radians)")]
+    private float stillAngularVelocityThreshold, stillZAngleThreshold;
+    [SerializeField] private float playerImpulseDamper = 0.1f, playerVelocityDamper = 0.1f, playerJumpImpulse = 90f;
 
     [Header("Hog Interaction")]
-    [SerializeField] float raycastRadius = 2f;
-    [SerializeField] DynamicEvent hogStunEvent, flipEvent, teleportToPwRoomEvent;
-    [SerializeField] Transform hogUnderLoc, playerUnderLoc;
+    [SerializeField] private float raycastRadius = 2f;
+    [SerializeField] private DynamicEvent hogStunEvent, flipEvent, teleportToPwRoomEvent;
+    [SerializeField] private Transform hogUnderLoc, playerUnderLoc;
 
     bool _inContact = false;
     GameObject _player;
@@ -65,27 +69,26 @@ public class FlippablePlatform : MonoBehaviour
             Rigidbody2D rb = _player.GetComponent<Rigidbody2D>();
             angularAccel += rb.mass * Mathf.Abs(Physics2D.gravity.y) * Vector2.Dot(Vector2.down, Vector2.Perpendicular(cog2Cp)) / angularInertia;
             // NOTE: Hog can only brought to contact with the platform by player
-            bool hogOn = false;
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(cog.position, raycastRadius, _enemyLayerMask);
-            foreach (Collider2D collider in colliders)
+            var hogOn = false;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(cog.position, raycastRadius, EnemyLayerMask);
+            foreach (var col in colliders)
             {
-                if (collider.transform.parent.TryGetComponent<HogBT>(out var hogBT))
-                {
-                    hogOn = true;
-                    _hog = collider.transform.parent.gameObject;
-                    break;
-                }
+                if (!col.transform.parent.TryGetComponent<HogBT>(out var hogBt)) continue;
+                hogOn = true;
+                _hog = col.transform.parent.gameObject;
+                break;
             }
 
-            if (hogOn && !_hogInContact)
+            switch (hogOn)
             {
-                _hogInContact = true;
-                EventManager.StartListening(new GameEvent(hogStunEvent.EventName), Flip);
-            }
-            else if (!hogOn && _hogInContact)
-            {
-                _hogInContact = false;
-                EventManager.StopListening(new GameEvent(hogStunEvent.EventName), Flip);
+                case true when !_hogInContact:
+                    _hogInContact = true;
+                    EventManager.Subscribe(new GameEvent(hogStunEvent.EventName), Flip);
+                    break;
+                case false when _hogInContact:
+                    _hogInContact = false;
+                    EventManager.Unsubscribe(new GameEvent(hogStunEvent.EventName), Flip);
+                    break;
             }
         }
 
@@ -108,8 +111,8 @@ public class FlippablePlatform : MonoBehaviour
     void Flip(object inpput = null)
     {
         _hog.GetComponent<HogBT>().StopBT(); ;
-        EventManager.StopListening(new GameEvent(hogStunEvent.EventName), Flip);
-        EventManager.StartListening(UIEvents.BlackIn, TeleportPlayerHog);
+        EventManager.Unsubscribe(new GameEvent(hogStunEvent.EventName), Flip);
+        EventManager.Subscribe(UIEvents.BlackIn, TeleportPlayerHog);
         EventManager.InvokeEvent(new GameEvent(flipEvent.EventName));
     }
 
@@ -118,7 +121,7 @@ public class FlippablePlatform : MonoBehaviour
         _hog.GetComponent<EnemyManager>().Defeat();
         _player.transform.position = playerUnderLoc.position;
         _hog.transform.position = hogUnderLoc.position;
-        EventManager.StopListening(UIEvents.BlackIn, TeleportPlayerHog);
+        EventManager.Unsubscribe(UIEvents.BlackIn, TeleportPlayerHog);
         EventManager.InvokeEvent(new GameEvent(teleportToPwRoomEvent.EventName));
     }
 

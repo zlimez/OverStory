@@ -57,6 +57,6 @@ namespace AI.FSM
             }
         }
 
-        public void Tick(object input = null) { if (_inActions.TryGetValue(CurrState, out var action)) action?.Invoke(input); }
+        public void Tick<T>(T arg = default) { if (_inActions.TryGetValue(CurrState, out var action)) action?.Invoke(arg); }
     }
 }

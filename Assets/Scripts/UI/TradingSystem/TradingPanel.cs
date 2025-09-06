@@ -35,8 +35,8 @@ public class TradingSystem : MonoBehaviour
 
     void Start() => tradingPanel.SetActive(false);
 
-    void OnEnable() => EventManager.StartListening(PlayEvents.TradePostEntered, OpenTrading);
-    void OnDisable() => EventManager.StopListening(PlayEvents.TradePostEntered, OpenTrading);
+    void OnEnable() => EventManager.Subscribe(PlayEvents.TradePostEntered, OpenTrading);
+    void OnDisable() => EventManager.Unsubscribe(PlayEvents.TradePostEntered, OpenTrading);
 
     public void CloseTrading()
     {
@@ -44,7 +44,7 @@ public class TradingSystem : MonoBehaviour
         UpdateTradingArea();
         IsTradingOpen = false;
         tradingPanel.SetActive(false);
-        EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
+        EventManager.Unsubscribe(UIEvents.DraggedItem, DragEnd);
         GameManager.Instance.UI.Close();
         EventManager.InvokeEvent(PlayEvents.TradePostExited);
     }
@@ -55,7 +55,7 @@ public class TradingSystem : MonoBehaviour
         UpdateTradingArea();
         IsTradingOpen = false;
         tradingPanel.SetActive(false);
-        EventManager.StopListening(UIEvents.DraggedItem, DragEnd);
+        EventManager.Unsubscribe(UIEvents.DraggedItem, DragEnd);
         EventManager.InvokeEvent(PlayEvents.TradePostExited);
     }
 
@@ -71,7 +71,7 @@ public class TradingSystem : MonoBehaviour
         UpdateTradingArea();
         IsTradingOpen = true;
         tradingPanel.SetActive(true);
-        EventManager.StartListening(UIEvents.DraggedItem, DragEnd);
+        EventManager.Subscribe(UIEvents.DraggedItem, DragEnd);
     }
 
     void DragEnd(object args)

@@ -1,5 +1,6 @@
 namespace AI.BehaviorTree.Actions
 {
+    // TODO: For variables that are fixed from initialization dont use string retrieval to reduce errors
     public class CheckPlayerInArena : CfAction
     {
         Arena _arena;

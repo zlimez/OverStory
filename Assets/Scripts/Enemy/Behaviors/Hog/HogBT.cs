@@ -16,27 +16,27 @@ public class HogBT : MonoBT
 
     [Header("Charge Settings")]
     // Stun time if during charge the hog hits an obstacle
-    [SerializeField] float stunTime;
-    [SerializeField] float shortRestTime, longRestTime;
-    [SerializeField] float shortChargeupTime, longChargeupTime;
-    [SerializeField] float shortChargeDist, longChargeDist;
-    [SerializeField] float stunRaycastDist;
-    [SerializeField] AnimationCurve chargeCurve;
-    [SerializeField] Aggro aggro;
-    [SerializeField] float chargeSpeed, chargeDamage, chargeDamageCooldown;
-    [SerializeField] GameObject collideVfxParticle;
-    [SerializeField] Pair<Vector2, Vector2> vfxBounds;
-    [SerializeField] Pair<int, int> particlesNumRange;
-    [SerializeField] Pair<float, float> particlesScaleRange;
+    [SerializeField] private float stunTime;
+    [SerializeField] private float shortRestTime, longRestTime;
+    [SerializeField] private float shortChargeupTime, longChargeupTime;
+    [SerializeField] private float shortChargeDist, longChargeDist;
+    [SerializeField] private float stunRaycastDist;
+    [SerializeField] private AnimationCurve chargeCurve;
+    [SerializeField] private Aggro aggro;
+    [SerializeField] private float chargeSpeed, chargeDamage, chargeDamageCooldown;
+    [SerializeField] private GameObject collideVfxParticle;
+    [SerializeField] private Pair<Vector2, Vector2> vfxBounds;
+    [SerializeField] private Pair<int, int> particlesNumRange;
+    [SerializeField] private Pair<float, float> particlesScaleRange;
 
     [Header("Patrol Settings")]
-    [SerializeField] float patrolSpeed;
-    [SerializeField] float waitTime;
+    [SerializeField] private float patrolSpeed;
+    [SerializeField] private float waitTime;
     public Transform[] Waypoints;
 
     [Header("Lure Travel Settings")]
-    [SerializeField] float travelSpeed;
-    [SerializeField] AnimationCurve travelCurve;
+    [SerializeField] private float travelSpeed;
+    [SerializeField] private AnimationCurve travelCurve;
     public Transform PatrolLeft, PatrolRight;
 
     public string SpecyName;
@@ -53,13 +53,13 @@ public class HogBT : MonoBT
         GetComponent<EnemyManager>().OnDefeated += StopBT;
     }
 
-    void OnCollision(Vector3 hitPoint)
+    private void OnCollision(Vector3 hitPoint)
     {
-        for (int i = 0; i < UnityEngine.Random.Range(particlesNumRange.Head, particlesNumRange.Tail); i++)
+        for (var i = 0; i < UnityEngine.Random.Range(particlesNumRange.Head, particlesNumRange.Tail); i++)
         {
             Vector3 pos = new(hitPoint.x + UnityEngine.Random.Range(vfxBounds.Head.x, vfxBounds.Tail.x), hitPoint.y + UnityEngine.Random.Range(vfxBounds.Head.y, vfxBounds.Tail.y), 0);
-            GameObject particle = Instantiate(collideVfxParticle, pos, Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360)));
-            float uniScale = UnityEngine.Random.Range(particlesScaleRange.Head, particlesScaleRange.Tail);
+            var particle = Instantiate(collideVfxParticle, pos, Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360)));
+            var uniScale = UnityEngine.Random.Range(particlesScaleRange.Head, particlesScaleRange.Tail);
             particle.transform.localScale = new Vector3(uniScale, uniScale, uniScale);
             particle.transform.SetParent(transform);
         }
@@ -98,8 +98,8 @@ public class HogBT : MonoBT
             new("stunTime", stunTime / attr.speed),
             new("shortRestTime", shortRestTime / attr.speed),
             new("longRestTime", longRestTime / attr.speed),
-            new("shortChargeupTime", shortChargeupTime / attr.speed),
-            new("longChargeupTime", longChargeupTime / attr.speed),
+            new("shortChargeTime", shortChargeupTime / attr.speed),
+            new("longChargeTime", longChargeupTime / attr.speed),
             new("shortChargeDist", shortChargeDist),
             new("longChargeDist", longChargeDist),
             new("chargeCurve", chargeCurve),
@@ -150,9 +150,9 @@ public class HogBT : MonoBT
                         new Patrol(new string[] { "patrolSpeed", "waypoints", "hog", "waitTime", "hogSprite", "hogAnimator", "hogIdleAnim", "hogWalkAnim" })
                     },
                     new Func<List<object>, float>[] {
-                        (obj) => { return probLongCharge; },
-                        (obj) => { return probShortCharge; },
-                        (obj) => { return probNoAttack; },
+                        (obj) => probLongCharge,
+                        (obj) => probShortCharge,
+                        (obj) => probNoAttack,
                     },
                     new string[][] { new string[] { "target", "hog" }, new string[] { "target", "hog" }, new string[] { "target", "hog" }}
                 )
