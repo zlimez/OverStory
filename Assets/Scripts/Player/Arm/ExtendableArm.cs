@@ -48,7 +48,7 @@ namespace Abyss.Player
 
         private readonly Transform _fist, _diFist, _shoulder;
         private readonly GameObject _fistPh; // PlaceHolder for fist when it is in default state
-        private readonly LineRenderer _ropeRenderer;
+        private readonly LineRenderer _armRenderer;
         private readonly PlayerController _playerCtr;
         public Vector2 TAim { get; private set; } // Not always equal to aim
 
@@ -68,7 +68,6 @@ namespace Abyss.Player
         
         private bool _isHard;
         private bool _hasNewEnd, _willAppImp;
-        private bool _tickToComp;
 
         private Vector2 _newEnd;
         private readonly Rigidbody2D _fistRb;
@@ -86,7 +85,6 @@ namespace Abyss.Player
         private bool Connected { get; set; } = true;
         private Vector2 Anchor => Rope.Start.position;
         public Vector2 AnchorDir => Anchor - (Vector2)Rope.End.position;
-        private bool ShouldDraw => _hardLen > Const.EPS || Rope.Len > Const.EPS;
         #endregion
 
         public ExtendableArm(ArmArgs armArgs)
@@ -96,7 +94,7 @@ namespace Abyss.Player
             _diFist = armArgs.DisconnectedFist;
             _shoulder = armArgs.Shoulder;
             _fistPh = armArgs.FistPlaceholder;
-            _ropeRenderer = armArgs.RopeRenderer;
+            _armRenderer = armArgs.RopeRenderer;
             _playerCtr = armArgs.PlayerCtr;
             _aimResp = armArgs.AimSensitivity;
             _softExtImp = armArgs.SoftExtImpulse;
@@ -125,14 +123,10 @@ namespace Abyss.Player
             AddStateActions();
         }
 
-        public void PartTick(float deltaTime)
+        public void StartStep(float deltaTime)
         {
-            // NOTE: Since one rope tick will only be completed when CompleteTick is called the deltaTime will be shorter than actual
-            if (!_isHard && Connected && CurrState != State.So_CoOg_Lo && !_tickToComp)
-            {
-                _tickToComp = true;
-                Rope.StartTick(deltaTime);
-            }
+            if (!_isHard && Connected && CurrState != State.So_CoOg_Lo)
+                Rope.StartStep(deltaTime);
 
             _fsm.Tick(deltaTime);
             if (_playerCtr.PressingRet) _fsm.ProcessEvent((int)Trigger.Ret, (true, deltaTime));
@@ -158,19 +152,35 @@ namespace Abyss.Player
                 SetAim();
                 _fsm.ProcessEvent((int)Trigger.Aim);
             }
-
-            if (!ShouldDraw || !_isHard) return;
-            _ropeRenderer.positionCount = 2;
-            _ropeRenderer.SetPosition(0, Rope.Start.position);
-            _ropeRenderer.SetPosition(1, Rope.End.position);
         }
 
-        public void CompleteTick()
+        public void Render()
         {
-            if (!_tickToComp) return;
-            _tickToComp = false;
-            Rope.CompleteTick(_ropeRenderer);
+            switch (_isHard)
+            {
+                case true when _hardLen <= Const.EPS:
+                case false when Rope.Len <= Const.EPS:
+                    _armRenderer.positionCount = 0;
+                    return;
+                case true:
+                    _armRenderer.startColor = Color.cyan;
+                    _armRenderer.endColor = Color.cyan;
+
+                    _armRenderer.positionCount = 2;
+                    _armRenderer.SetPosition(0, _fist.position);
+                    _armRenderer.SetPosition(1, _shoulder.position);
+                    break;
+                default:
+                    _armRenderer.startColor = Color.white;
+                    _armRenderer.endColor = Color.white;
+
+                    Rope.Draw(_armRenderer);
+                    break;
+            }
+
         }
+
+        public void CompleteStep() => Rope.CompleteStepIfBegan();
 
         #region Transition Actions
 
@@ -220,7 +230,6 @@ namespace Abyss.Player
 
         private void OnDiKept(object input = null)
         {
-            _ropeRenderer.positionCount = 0;
             Connected = true;
             Rope.Start = _fist;
             Rope.End = _shoulder;
@@ -231,21 +240,15 @@ namespace Abyss.Player
             _diFist.gameObject.SetActive(false);
             EventManager.InvokeEvent(PlayEvents.GetArm, _fist.transform);
         }
-        private void OnAttached(object input = null) { _fist.gameObject.SetActive(false); }
+        private void OnAttached(object input = null) => _fist.gameObject.SetActive(false);
 
         private void OnKept(object input = null)
         {
             _fist.gameObject.SetActive(false);
             _fistPh.SetActive(true);
-            _ropeRenderer.positionCount = 0;
         }
 
-        private void OnHaSoTog(object input = null)
-        {
-            _isHard = !_isHard;
-            _ropeRenderer.startColor = _isHard ? Color.cyan : Color.white;
-            _ropeRenderer.endColor = _isHard ? Color.cyan : Color.white;
-        }
+        private void OnHaSoTog(object input = null) => _isHard = !_isHard;
 
         private void OnSoEx(object input = null)
         {
@@ -273,8 +276,6 @@ namespace Abyss.Player
         {
             _fistRb.isKinematic = true;
             _fistRb.velocity = Vector3.zero;
-            // _fistExt.OnContact = null;
-            // _fistExt.OnCollision = null;
         }
 
         private void SoEx(object input = null)

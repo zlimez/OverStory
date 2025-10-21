@@ -54,11 +54,11 @@ namespace VerletPhysics
         private NativeArray<Vector2> _nColVertices;
         private JobHandle[] _jobHandles;
         private int _lastJobInd;
+        private bool _stepStarted;
         
         public float Width => _segmentLength * 0.5f;
         public Vector2 EndVel { get; private set; } = Vector2.zero;
-        
-        private Vector3 _startVel, _endVel;
+
         private bool _willAdjLen;
         private float _lenChange;
         private int _maxNumPoints;
@@ -84,9 +84,8 @@ namespace VerletPhysics
         }
 
         public float Len { get; private set; }
-        public int SegCnt { get; private set; }
         public int PointCnt { get; private set; }
-        public int StickCnt { get; private set; }
+        private int _stickCnt, _segCnt;
 
         #region Setup Teardown
         public void SetColliders(List<Collider2D> cols)
@@ -156,7 +155,7 @@ namespace VerletPhysics
                 Length = _segmentLength,
                 MaxOnly = true
             };
-            SegCnt = 1; Len = 0; PointCnt = 2; StickCnt = 1;
+            _segCnt = 1; Len = 0; PointCnt = 2; _stickCnt = 1;
         }
 
         public void Dispose()
@@ -201,46 +200,46 @@ namespace VerletPhysics
         private void Extend(float exLen)
         {
             Len = Mathf.Clamp(Len + exLen, 0, MaxLength);
-            if (Len <= SegCnt * _segmentLength) return;
-            StickCnt--;
+            if (Len <= _segCnt * _segmentLength) return;
+            _stickCnt--;
             var ep = _nActivePoints[--PointCnt];
 
-            while (Len > SegCnt * _segmentLength)
+            while (Len > _segCnt * _segmentLength)
             {
-                var fLen = Len - SegCnt * _segmentLength;
+                var fLen = Len - _segCnt * _segmentLength;
                 var spawnPos = Vector2.Lerp(_nActivePoints[PointCnt - 1].Pos, ep.Pos, _segmentLength / fLen);
                 _nActivePoints[PointCnt++] = new Point { Pos = spawnPos, OldPos = spawnPos, Pinned = false, Mass = 1f };
-                _nSticks[StickCnt++] = new Stick
+                _nSticks[_stickCnt++] = new Stick
                 {
                     P0 = PointCnt - 2,
                     P1 = PointCnt - 1,
                     Length = _segmentLength,
                     MaxOnly = false
                 };
-                SegCnt++;
+                _segCnt++;
             }
 
             _nActivePoints[PointCnt++] = ep;
-            _nSticks[StickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
+            _nSticks[_stickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
         }
 
         private void Retract(float retLength)
         {
             Len = Mathf.Clamp(Len - retLength, 0, MaxLength);
-            if (Len >= (SegCnt - 1) * _segmentLength) return;
-            StickCnt--;
+            if (Len >= (_segCnt - 1) * _segmentLength) return;
+            _stickCnt--;
             var ep = _nActivePoints[--PointCnt];
 
-            while (Len < (SegCnt - 1) * _segmentLength)
+            while (Len < (_segCnt - 1) * _segmentLength)
             {
                 PointCnt--;
-                StickCnt--;
-                SegCnt--;
+                _stickCnt--;
+                _segCnt--;
             }
 
             _nActivePoints[PointCnt++] = ep;
-            _nSticks[StickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
-            Assert.IsTrue(StickCnt >= 1 && SegCnt >= 1 && PointCnt >= 2, "Rope must have at least one segment and two points.");
+            _nSticks[_stickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
+            Assert.IsTrue(_stickCnt >= 1 && _segCnt >= 1 && PointCnt >= 2, "Rope must have at least one segment and two points.");
         }
 
         private void AddForces()
@@ -284,8 +283,11 @@ namespace VerletPhysics
                 lineRenderer.SetPosition(i, _nActivePoints[i].Pos);
         }
 
-        public void StartTick(float deltaTime)
+        public void StartStep(float deltaTime)
         {
+            if (_stepStarted) CompleteStepIfBegan();
+            _stepStarted = true;
+
             PinToTfm();
 
             var updatePosJob = new UpdatePosJob
@@ -325,8 +327,10 @@ namespace VerletPhysics
             _lastJobInd = j - 1;
         }
 
-        public void CompleteTick(LineRenderer ropeRenderer)
+        public void CompleteStepIfBegan()
         {
+            if (!_stepStarted) return;
+
             _jobHandles[_lastJobInd].Complete();
             for (var i = 0; i < PointCnt; i++) if (!_nPointForces[i].Item2) _nPointForces[i] = (Vector2.zero, false);
             AddForces();
@@ -340,7 +344,8 @@ namespace VerletPhysics
             EndVel = _nActivePoints[PointCnt - 1].Pos - _nActivePoints[PointCnt - 1].OldPos;
             if (_nxtPinPoint != _pinPoint) Pin(_nxtPinPoint);
             MoveTfmAlong();
-            Draw(ropeRenderer);
+
+            _stepStarted = false;
         }
         #endregion
         
@@ -457,7 +462,7 @@ namespace VerletPhysics
                     if (col.Type == C_ColliderType.Polygon)
                     {
                         var hasCol = CollisionDetection.SATCheck(p.Pos, colRad, 
-                            new NativePoly() { VertexStart = vi, VertexCount = col.VertexCount, Vertices = ColVertices }, out dn, out depth);
+                            new NativePoly { VertexStart = vi, VertexCount = col.VertexCount, Vertices = ColVertices }, out dn, out depth);
                         vi += col.VertexCount;
                         if (!hasCol) continue;
                     }

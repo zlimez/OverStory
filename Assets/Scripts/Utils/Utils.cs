@@ -3,16 +3,16 @@ using System;
 
 namespace Utils
 {
-    public class Const
+    public static class Const
     {
-        public static readonly float EPS = 0.001f;
+        public const float EPS = 0.001f;
     }
 
-    public class ColorFuncs
+    public static class ColorFuncs
     {
         public static Color CubicLerpColor(Color from, Color to, float t)
         {
-            float clampedT = Mathf.Clamp(t, 0, 1);
+            var clampedT = Mathf.Clamp(t, 0, 1);
             return Color.LerpUnclamped(from, to, 1 + Mathf.Pow(clampedT - 1, 3));
         }
 
@@ -24,13 +24,11 @@ namespace Utils
                 return Color.black;
             }
 
-            int r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-            int g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-            int b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+            var r = int.Parse(hex[..2], System.Globalization.NumberStyles.HexNumber);
+            var g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            var b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-            float rf = r / 255.0f;
-            float gf = g / 255.0f;
-            float bf = b / 255.0f;
+            float rf = r / 255.0f, gf = g / 255.0f, bf = b / 255.0f;
 
             return new Color(rf, gf, bf, alpha);
         }
@@ -39,47 +37,47 @@ namespace Utils
 
     public class Rotation
     {
-        public static Quaternion fullXRotation = Quaternion.Euler(360, 0, 0);
-        public static Quaternion fullYRotation = Quaternion.Euler(0, 360, 0);
-        public static Quaternion fullZRotation = Quaternion.Euler(0, 0, 360);
+        public static Quaternion FullXRotation = Quaternion.Euler(360, 0, 0);
+        public static Quaternion FullYRotation = Quaternion.Euler(0, 360, 0);
+        public static Quaternion FullZRotation = Quaternion.Euler(0, 0, 360);
         public static Quaternion CubicLerpRotation(Quaternion from, Quaternion to, float t)
         {
-            float clampedT = Mathf.Clamp(t, 0, 1);
+            var clampedT = Mathf.Clamp(t, 0, 1);
             return Quaternion.Slerp(from, to, 1 + Mathf.Pow(clampedT - 1, 3));
         }
     }
 
-    public class Curves
+    public static class Curves
     {
         public static float GetGradient(AnimationCurve curve, float t, float deltaT = 0.01f)
         {
-            float valueAtT = curve.Evaluate(t);
-            float valueAtTPlusDelta = curve.Evaluate(t + deltaT);
+            var valueAtT = curve.Evaluate(t);
+            var valueAtTPlusDelta = curve.Evaluate(t + deltaT);
             return (valueAtTPlusDelta - valueAtT) / deltaT;
         }
 
 
         public static Vector3 CubicLerpVector(Vector3 from, Vector3 to, float t)
         {
-            float clampedT = Mathf.Clamp(t, 0, 1);
+            var clampedT = Mathf.Clamp(t, 0, 1);
             return Vector3.Lerp(from, to, 1 + Mathf.Pow(clampedT - 1, 3));
         }
 
         public static Vector3 SinLerpVector(Vector3 center, Vector3 amplitude, float t)
         {
-            float clampedT = Mathf.Clamp(t, 0, 1);
+            var clampedT = Mathf.Clamp(t, 0, 1);
             return Mathf.Sin(clampedT * 2 * Mathf.PI) * amplitude + center;
         }
 
         public static Vector3 CosLerpVector(Vector3 center, Vector3 amplitude, float t)
         {
-            float clampedT = Mathf.Clamp(t, 0, 1);
+            var clampedT = Mathf.Clamp(t, 0, 1);
             return Mathf.Cos(clampedT * 2 * Mathf.PI) * amplitude + center;
         }
 
         public static float SquareLerpFloat(float start, float end, float t)
         {
-            float clampedT = Mathf.Clamp(t, 0, 1);
+            var clampedT = Mathf.Clamp(t, 0, 1);
             return Mathf.Pow(clampedT, 2) * (end - start) + start;
         }
 
@@ -89,24 +87,24 @@ namespace Utils
     namespace Tuples
     {
         [Serializable]
-        public struct Pair<U, T>
+        public struct Pair<T1, T2>
         {
-            public Pair(U head, T tail)
+            public Pair(T1 head, T2 tail)
             {
                 Head = head;
                 Tail = tail;
             }
-            public U Head;
-            public T Tail;
+            public T1 Head;
+            public T2 Tail;
         }
 
         [Serializable]
-        public struct Triplet<U, T, Z>
+        public struct Triplet<T1, T2, T3>
         {
-            public U Item1;
-            public T Item2;
-            public Z Item3;
-            public Triplet(U item1, T item2, Z item3)
+            public T1 Item1;
+            public T2 Item2;
+            public T3 Item3;
+            public Triplet(T1 item1, T2 item2, T3 item3)
             {
                 Item1 = item1;
                 Item2 = item2;
@@ -115,28 +113,28 @@ namespace Utils
         }
 
         [Serializable]
-        public class RefPair<U, T>
+        public class RefPair<T1, T2>
         {
             public RefPair() { }
-            public RefPair(U head, T tail)
+            public RefPair(T1 head, T2 tail)
             {
                 Head = head;
                 Tail = tail;
             }
-            public U Head = default;
-            public T Tail = default;
+            public T1 Head;
+            public T2 Tail;
         }
 
         [Serializable]
-        public class RefTriplet<U, T, Z>
+        public class RefTriplet<T1, T2, T3>
         {
-            public U Item1 = default;
-            public T Item2 = default;
-            public Z Item3 = default;
+            public T1 Item1;
+            public T2 Item2;
+            public T3 Item3;
 
             public RefTriplet() { }
 
-            public RefTriplet(U item1, T item2, Z item3)
+            public RefTriplet(T1 item1, T2 item2, T3 item3)
             {
                 Item1 = item1;
                 Item2 = item2;
