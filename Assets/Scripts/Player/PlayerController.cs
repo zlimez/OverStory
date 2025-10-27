@@ -149,7 +149,7 @@ namespace Abyss.Player
 			HandlePassiveAnimChange();
 			AdjustSpriteFacing();
 
-			_mechArm.Render();
+			_mechArm.Render(Time.deltaTime);
 		}
 
 		// TODO: Freeze movement even when grounded but rope at max stretch
@@ -183,7 +183,7 @@ namespace Abyss.Player
 
 
 			if (_mechArm.Repelling) HandleArmRepel();
-			else if (_mechArm.HaExtended) HandleArmHardExtension();
+			else if (_mechArm.HardExtended) HandleArmHardExtension();
 			else if (_isSwinging) Swing();
 			else HandleHorizontalMovement();
 
@@ -605,7 +605,7 @@ namespace Abyss.Player
 		{
 			if (_mechArm.CurrState == ExtendableArm.State.Ha_CoEx_To)
 			{
-				if (_mechArm.VertRepelling) _rb2D.MovePosition(_rb2D.position - armArguments.FixedRetractRate * Time.fixedDeltaTime * _mechArm.TAim);
+				if (_mechArm.VertRepelling) _rb2D.MovePosition(_rb2D.position - armArguments.FixedRetractRate * Time.fixedDeltaTime * _mechArm.CurrAim);
 				else
 				{
 					Vector2 nad = _mechArm.AnchorDir.normalized, perp = Vector2.Perpendicular(nad);
@@ -625,7 +625,7 @@ namespace Abyss.Player
 			{
 				if (_mechArm.VertRepelling)
 				{
-					if (PressingRet) _rb2D.MovePosition(_rb2D.position + armArguments.FixedRetractRate * Time.fixedDeltaTime * _mechArm.TAim);
+					if (PressingRet) _rb2D.MovePosition(_rb2D.position + armArguments.FixedRetractRate * Time.fixedDeltaTime * _mechArm.CurrAim);
 					else _rb2D.velocity = Vector2.zero;
 				}
 				else
@@ -679,7 +679,7 @@ namespace Abyss.Player
 
 			if (_mechArm == null) return;
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawLine(transform.position, transform.position + (Vector3)_mechArm.Aim);
+			Gizmos.DrawLine(transform.position, transform.position + (Vector3)_mechArm.UserAim);
 			Gizmos.color = Color.green;
 			Gizmos.DrawLine(transform.position, 
 				transform.position + (_mechArm.Rope.End.position - 

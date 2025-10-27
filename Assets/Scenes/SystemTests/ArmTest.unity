@@ -7256,6 +7256,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1292223882}
+    - target: {fileID: 1046488856730508313, guid: c4538f33e5ede4a3cac2da3b2f501081,
+        type: 3}
+      propertyPath: m_Name
+      value: Fist (Original)
+      objectReference: {fileID: 0}
     - target: {fileID: 1452385997967439640, guid: c4538f33e5ede4a3cac2da3b2f501081,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7431,6 +7436,16 @@ PrefabInstance:
       propertyPath: armArguments.RopeArguments.Start
       value: 
       objectReference: {fileID: 4228162526528415644}
+    - target: {fileID: 7757439418360459687, guid: c4538f33e5ede4a3cac2da3b2f501081,
+        type: 3}
+      propertyPath: armArguments.RopeArguments.EndMass
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757439418360459687, guid: c4538f33e5ede4a3cac2da3b2f501081,
+        type: 3}
+      propertyPath: armArguments.RopeArguments.StartMass
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7785100936054140392, guid: c4538f33e5ede4a3cac2da3b2f501081,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

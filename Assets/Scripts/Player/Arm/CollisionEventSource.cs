@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ColNotifier : MonoBehaviour
+public class CollisionEventSource : MonoBehaviour
 {
     public Action<Collision2D> OnCollision;
     public Action<Collider2D> OnContact;

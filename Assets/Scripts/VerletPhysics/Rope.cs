@@ -85,7 +85,7 @@ namespace VerletPhysics
 
         public float Len { get; private set; }
         public int PointCnt { get; private set; }
-        private int _stickCnt, _segCnt;
+        private int _stickCnt;
 
         #region Setup Teardown
         public void SetColliders(List<Collider2D> cols)
@@ -155,7 +155,7 @@ namespace VerletPhysics
                 Length = _segmentLength,
                 MaxOnly = true
             };
-            _segCnt = 1; Len = 0; PointCnt = 2; _stickCnt = 1;
+            Len = 0; PointCnt = 2; _stickCnt = 1;
         }
 
         public void Dispose()
@@ -200,13 +200,13 @@ namespace VerletPhysics
         private void Extend(float exLen)
         {
             Len = Mathf.Clamp(Len + exLen, 0, MaxLength);
-            if (Len <= _segCnt * _segmentLength) return;
+            if (Len <= _stickCnt * _segmentLength) return;
             _stickCnt--;
             var ep = _nActivePoints[--PointCnt];
 
-            while (Len > _segCnt * _segmentLength)
+            while (Len > _stickCnt * _segmentLength)
             {
-                var fLen = Len - _segCnt * _segmentLength;
+                var fLen = Len - _stickCnt * _segmentLength;
                 var spawnPos = Vector2.Lerp(_nActivePoints[PointCnt - 1].Pos, ep.Pos, _segmentLength / fLen);
                 _nActivePoints[PointCnt++] = new Point { Pos = spawnPos, OldPos = spawnPos, Pinned = false, Mass = 1f };
                 _nSticks[_stickCnt++] = new Stick
@@ -216,7 +216,6 @@ namespace VerletPhysics
                     Length = _segmentLength,
                     MaxOnly = false
                 };
-                _segCnt++;
             }
 
             _nActivePoints[PointCnt++] = ep;
@@ -226,20 +225,19 @@ namespace VerletPhysics
         private void Retract(float retLength)
         {
             Len = Mathf.Clamp(Len - retLength, 0, MaxLength);
-            if (Len >= (_segCnt - 1) * _segmentLength) return;
+            if (Len >= (_stickCnt - 1) * _segmentLength) return;
             _stickCnt--;
             var ep = _nActivePoints[--PointCnt];
 
-            while (Len < (_segCnt - 1) * _segmentLength)
+            while (Len < (_stickCnt - 1) * _segmentLength)
             {
                 PointCnt--;
                 _stickCnt--;
-                _segCnt--;
             }
 
             _nActivePoints[PointCnt++] = ep;
             _nSticks[_stickCnt++] = new Stick { P0 = PointCnt - 2, P1 = PointCnt - 1, Length = _segmentLength, MaxOnly = true };
-            Assert.IsTrue(_stickCnt >= 1 && _segCnt >= 1 && PointCnt >= 2, "Rope must have at least one segment and two points.");
+            Assert.IsTrue(_stickCnt >= 1 && PointCnt >= 2, "Rope must have at least one segment and two points.");
         }
 
         private void AddForces()
@@ -343,10 +341,14 @@ namespace VerletPhysics
 
             EndVel = _nActivePoints[PointCnt - 1].Pos - _nActivePoints[PointCnt - 1].OldPos;
             if (_nxtPinPoint != _pinPoint) Pin(_nxtPinPoint);
-            MoveTfmAlong();
 
             _stepStarted = false;
         }
+
+        public Vector2 StartPointPos => _nActivePoints[0].Pos;
+        public Vector2 EndPointPos => _nActivePoints[PointCnt - 1].Pos;
+        public bool StartPinned => _nActivePoints[0].Pinned;
+        public bool EndPinned => _nActivePoints[PointCnt - 1].Pinned;
         #endregion
         
         #region Verlet Stages
@@ -366,12 +368,6 @@ namespace VerletPhysics
             }
             _nActivePoints[0] = sp;
             _nActivePoints[PointCnt - 1] = ep;
-        }
-
-        private void MoveTfmAlong()
-        {
-            if (!_nActivePoints[0].Pinned) Start.position = _nActivePoints[0].Pos;
-            if (!_nActivePoints[PointCnt - 1].Pinned) End.position = _nActivePoints[PointCnt - 1].Pos;
         }
 
         [BurstCompile]
@@ -461,7 +457,7 @@ namespace VerletPhysics
                     var dn = Vector2.zero;
                     if (col.Type == C_ColliderType.Polygon)
                     {
-                        var hasCol = CollisionDetection.SATCheck(p.Pos, colRad, 
+                        var hasCol = CollisionDetection.SatCheck(p.Pos, colRad,
                             new NativePoly { VertexStart = vi, VertexCount = col.VertexCount, Vertices = ColVertices }, out dn, out depth);
                         vi += col.VertexCount;
                         if (!hasCol) continue;
