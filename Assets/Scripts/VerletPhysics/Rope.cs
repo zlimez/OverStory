@@ -48,7 +48,7 @@ namespace VerletPhysics
         private readonly int _pointUpdateBatchSize, _resolveCollisionsBatchSize;
 
         private NativeArray<Point> _nActivePoints;
-        private NativeArray<(Vector2, bool)> _nPointForces;
+        private NativeArray<(Vector2 force, bool isPersistent)> _nPointForces;
         private NativeArray<Stick> _nSticks;
         private NativeArray<C_Collider> _nColliders;
         private NativeArray<Vector2> _nColVertices;
@@ -61,10 +61,9 @@ namespace VerletPhysics
 
         private bool _willAdjLen;
         private float _lenChange;
-        private int _maxNumPoints;
         private PinPoint _pinPoint = PinPoint.Both, _nxtPinPoint = PinPoint.Both;
         
-        private readonly List<(int, Vector2, bool)> _forceQueue = new();
+        private readonly List<(int pointIdx, Vector2 force, bool isPersistent)> _forceQueue = new();
 
         public Rope(RopeArgs args)
         {
@@ -140,12 +139,11 @@ namespace VerletPhysics
 
         public void Init()
         {
-            var mpc = Mathf.CeilToInt(MaxLength / _segmentLength) + 2;
-            if (!_nActivePoints.IsCreated || mpc != _maxNumPoints) _nActivePoints = new NativeArray<Point>(mpc, Allocator.Persistent);
-            if (!_nPointForces.IsCreated || mpc != _maxNumPoints) _nPointForces = new NativeArray<(Vector2, bool)>(mpc, Allocator.Persistent);
-            if (!_nSticks.IsCreated || mpc != _maxNumPoints) _nSticks = new NativeArray<Stick>(mpc - 1, Allocator.Persistent);
-            _maxNumPoints = mpc;
-            if (_jobHandles == null || _jobHandles.Length < _constrainRuns * 2 + 1) _jobHandles = new JobHandle[_constrainRuns * 2 + 1];
+            var maxPoints = Mathf.CeilToInt(MaxLength / _segmentLength) + 2;
+            _nActivePoints = new NativeArray<Point>(maxPoints, Allocator.Persistent);
+            _nPointForces = new NativeArray<(Vector2 force, bool isPersistent)>(maxPoints, Allocator.Persistent);
+            _nSticks = new NativeArray<Stick>(maxPoints - 1, Allocator.Persistent);
+            _jobHandles = new JobHandle[_constrainRuns * 2 + 1];
             _nActivePoints[0] = new Point { Pos = Start.position, OldPos = Start.position, Pinned = true, Mass = _startMass };
             _nActivePoints[1] = new Point { Pos = End.position, OldPos = End.position, Pinned = true, Mass = _endMass };
             _nSticks[0] = new Stick
@@ -170,12 +168,12 @@ namespace VerletPhysics
         #endregion
 
         #region Workers
-        private void Pin(PinPoint nPinPoint)
+        private void Pin(PinPoint newPinPoint)
         {
 #if UNITY_EDITOR
-            Debug.Log("Changing pin to " + nPinPoint);
+            Debug.Log("Changing pin to " + newPinPoint);
 #endif
-            _pinPoint = nPinPoint;
+            _pinPoint = newPinPoint;
             var sp = _nActivePoints[0];
             var ep = _nActivePoints[PointCnt - 1];
             switch (_pinPoint)
@@ -204,7 +202,7 @@ namespace VerletPhysics
             _stickCnt--;
             var ep = _nActivePoints[--PointCnt];
 
-            while (Len > _stickCnt * _segmentLength)
+            while (Len > (_stickCnt + 1) * _segmentLength)
             {
                 var fLen = Len - _stickCnt * _segmentLength;
                 var spawnPos = Vector2.Lerp(_nActivePoints[PointCnt - 1].Pos, ep.Pos, _segmentLength / fLen);
@@ -266,11 +264,7 @@ namespace VerletPhysics
             _lenChange = -length;
         }
 
-        public void QueuePin(PinPoint nPinPoint)
-        {
-            if (_pinPoint == nPinPoint) return;
-            _nxtPinPoint = nPinPoint;
-        }
+        public void QueuePin(PinPoint newPinPoint) => _nxtPinPoint = newPinPoint;
 
         public void QueueForce(Vector2 force, int index, bool persist = false) => _forceQueue.Add((index, force, persist));
 
@@ -290,6 +284,7 @@ namespace VerletPhysics
 
             var updatePosJob = new UpdatePosJob
             {
+                PointCnt = PointCnt,
                 ActivePoints = _nActivePoints,
                 PointForces = _nPointForces,
                 Gravity = _gravity,
@@ -300,6 +295,7 @@ namespace VerletPhysics
 
             var maintainDistJob = new MaintainDistJob
             {
+                StickCnt = _stickCnt,
                 Sticks = _nSticks,
                 ActivePoints = _nActivePoints
             };
@@ -308,6 +304,7 @@ namespace VerletPhysics
             {
                 SegmentLength = _segmentLength,
                 BounceFactor = _bounceFactor,
+                PointCnt = PointCnt,
                 ActivePoints = _nActivePoints,
                 Colliders = _nColliders,
                 ColVertices = _nColVertices
@@ -330,7 +327,7 @@ namespace VerletPhysics
             if (!_stepStarted) return;
 
             _jobHandles[_lastJobInd].Complete();
-            for (var i = 0; i < PointCnt; i++) if (!_nPointForces[i].Item2) _nPointForces[i] = (Vector2.zero, false);
+            for (var i = 0; i < PointCnt; i++) if (!_nPointForces[i].isPersistent) _nPointForces[i] = (Vector2.zero, false);
             AddForces();
             if (_willAdjLen)
             {
@@ -373,17 +370,19 @@ namespace VerletPhysics
         [BurstCompile]
         private struct UpdatePosJob : IJobParallelFor
         {
+            public int PointCnt;
             public NativeArray<Point> ActivePoints;
-            [ReadOnly] public NativeArray<(Vector2, bool)> PointForces;
+            [ReadOnly] public NativeArray<(Vector2 force, bool isPersistent)> PointForces;
             public Vector2 Gravity;
             public float DeltaTime;
             public float Drag;
 
             public void Execute(int index)
             {
+                if (index >= PointCnt) return;
                 var p = ActivePoints[index];
                 if (p.Pinned) return;
-                var newPos = p.Pos + (p.Pos - p.OldPos) * (1f - Drag) + (1f - Drag) * DeltaTime * DeltaTime * (Gravity + PointForces[index].Item1);
+                var newPos = p.Pos + (p.Pos - p.OldPos) * (1f - Drag) + (1f - Drag) * DeltaTime * DeltaTime * (Gravity + PointForces[index].force);
                 p.OldPos = p.Pos;
                 p.Pos = newPos;
                 ActivePoints[index] = p;
@@ -393,13 +392,15 @@ namespace VerletPhysics
         [BurstCompile]
         private struct MaintainDistJob : IJob
         {
+            public int StickCnt;
             [ReadOnly] public NativeArray<Stick> Sticks;
             public NativeArray<Point> ActivePoints;
 
             public void Execute()
             {
-                foreach (var stick in Sticks)
+                for (var i = 0; i < StickCnt; i++)
                 {
+                    var stick = Sticks[i];
                     Point p0 = ActivePoints[stick.P0], p1 = ActivePoints[stick.P1];
                     var delta = p0.Pos - p1.Pos;
                     var dist = Mathf.Max(delta.magnitude, Const.EPS);
@@ -429,12 +430,14 @@ namespace VerletPhysics
         {
             public float SegmentLength;
             public float BounceFactor;
+            public int PointCnt;
             public NativeArray<Point> ActivePoints;
             [ReadOnly] public NativeArray<C_Collider> Colliders;
             [ReadOnly] public NativeArray<Vector2> ColVertices;
 
             public void Execute(int index)
             {
+                if (index >= PointCnt) return;
                 var p = ActivePoints[index];
                 if (p.Pinned) return;
 
@@ -443,8 +446,8 @@ namespace VerletPhysics
                 var vi = 0;
                 foreach (var col in Colliders)
                 {
-                    var rectMin = col.AABB.Item1;
-                    var rectMax = col.AABB.Item2;
+                    var rectMin = col.AABB.BtmLeft;
+                    var rectMax = col.AABB.TopRight;
                     rectMin -= Vector2.one * colRad;
                     rectMax += Vector2.one * colRad;
                     if (!CollisionDetection.PointInAABB(p.Pos, rectMin, rectMax))

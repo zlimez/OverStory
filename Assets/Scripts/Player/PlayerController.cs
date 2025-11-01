@@ -11,6 +11,7 @@ using UnityEngine.VFX;
 using UnityEngine.Rendering;
 using VerletPhysics;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 // FIXME: When damaged seems to charge further
 // Boolean states have a priority type of logic build in a wrapper instead of manual tracking
@@ -45,7 +46,7 @@ namespace Abyss.Player
 
 		[Header("Jump")]
 		[SerializeField] private float timeToApex;
-		[SerializeField] private float maxJumpHeight = 5;
+		[SerializeField] private float minJumpDuration = 0.25f, maxJumpHeight = 5;
 		[SerializeField] private float downGravityMult = 2f, upGravityMult = 1f, jumpCutoffMult, defGravMult = 1f, slantRepelGravAcc = 5f;
 		[SerializeField] private float maxFallVelocity = 15f;
 		[SerializeField][Tooltip("Extra time window given to player to jump the moment they leave ground i.e. leave a platform) ")]
@@ -53,7 +54,7 @@ namespace Abyss.Player
 		[SerializeField][Tooltip("If player becomes grounded with this window after a jump command, the jump will take effect")]
 		private float jumpBuffer = 0.1f;
 
-		private float _coyoteCntDwn, _jmpBufferCntDwn, _gravMult = 1;
+		private float _coyoteCntDwn, _jmpBufferCntDwn, _timeSinceJump, _gravMult = 1;
 		private bool _willJmp, _willTakeHit, _pressingJmp;
 		private bool _hasKb;
 		private Vector2 _hitFrm;
@@ -81,26 +82,22 @@ namespace Abyss.Player
 		private float _slashSize;
 
 		[Header("Swing")]
-		[SerializeField][Tooltip("Higher the value greater the penalty multiplier on wiggle force")]
-		private float swingAngDec = 4f;
 		[SerializeField][Tooltip("Magnitude of wiggle when swinging")]
 		private float wiggleForce = 10f;
-		[SerializeField][Tooltip("When checking whether to enter swing state player's vel sqr must be leq this threshold for swinging to take place")]
-		private float maxRemVelSqMag = 2f;
 
 		[Header("Repel")]
 		[SerializeField][Tooltip("Higher the value less the y-velocity carries over when arm first strikes obstacle")]
 		private ClampedFloatParameter repYDamper = new(2, 1, 10);
-		[NonSerialized] public bool RepStart = false;
+		[NonSerialized] public bool RepStart;
 		private float _perpVel; // Used to calc vel perp to repel dir (arm ext)
 
 		public bool PressingRet { get; private set; }
 		public bool PressingLen { get; private set; }
 		public bool PressingAim { get; private set; }
 
-		public bool _isJumping, _isDashing, _isSwinging;
+		private bool _isJumping, _isDashing, _isSwinging;
 		public bool IsAttacking { get; private set; }
-		private bool _isHurting, _isDead, _isResting, _isInVuln, _isGrounded;
+		private bool _isHurting, _isDead, _isResting, _isInvincible, _isGrounded;
 		public Action OnAttackEnded, OnAttemptInteract, OnGrounded;
 
 		private Rigidbody2D _rb2D;
@@ -116,7 +113,7 @@ namespace Abyss.Player
 			_playerSfx = GetComponent<PlayerSfx>();
 			portrait.Initialize();
 
-			Collider2D[] cols = FindObjectsOfType<Collider2D>();
+			var cols = FindObjectsOfType<Collider2D>();
 			List<Collider2D> armCols = new();
 			foreach (var col in cols)
 				if ((1 << col.gameObject.layer & Settings.LayerMask.OBSTACLE_LMASK) > 0) armCols.Add(col);
@@ -142,9 +139,10 @@ namespace Abyss.Player
 
 			if (_coyoteCntDwn > 0) _coyoteCntDwn = Mathf.Max(0, _coyoteCntDwn - Time.deltaTime);
 			if (_jmpBufferCntDwn > 0) _jmpBufferCntDwn = Mathf.Max(0, _jmpBufferCntDwn - Time.deltaTime);
+			if (_isJumping) _timeSinceJump += Time.deltaTime;
 
 			if (_invincibleTtl > 0) _invincibleTtl = Mathf.Max(0, _invincibleTtl - Time.deltaTime);
-			else _isInVuln = false;
+			else _isInvincible = false;
 
 			HandlePassiveAnimChange();
 			AdjustSpriteFacing();
@@ -162,9 +160,9 @@ namespace Abyss.Player
 			if (_isGrounded) OnGrounded?.Invoke();
 			if (!_isSwinging && _mechArm.Swingable && !_isGrounded && (!_isJumping || _isJumping && _rb2D.velocity.y < -0.01f))
 			{
-#if UNITY_EDITOR
-				Debug.Log($"Start swinging anchor sqDist {_mechArm.AnchorDir.sqrMagnitude} rope sqLen {_mechArm.Rope.Len * _mechArm.Rope.Len} grounded {_isGrounded}");
-#endif
+// #if UNITY_EDITOR
+// 				Debug.Log($"Start swinging anchor sqDist {_mechArm.AnchorDir.sqrMagnitude} rope sqLen {_mechArm.Rope.Len * _mechArm.Rope.Len} grounded {_isGrounded}");
+// #endif
 				_isSwinging = true;
 				_rb2D.isKinematic = true;
 				_rb2D.velocity = Vector2.zero;
@@ -172,10 +170,10 @@ namespace Abyss.Player
 			}
 			else if (_isSwinging && (_isGrounded || !_mechArm.Swingable))
 			{
-#if UNITY_EDITOR
-				Debug.Log($"Stop swinging anchor sqDist {_mechArm.AnchorDir.sqrMagnitude} rope sqLen {_mechArm.Rope.Len * _mechArm.Rope.Len} grounded {_isGrounded}");
-#endif
-				_isSwinging = false; // Only when landed
+// #if UNITY_EDITOR
+// 				Debug.Log($"Stop swinging anchor sqDist {_mechArm.AnchorDir.sqrMagnitude} rope sqLen {_mechArm.Rope.Len * _mechArm.Rope.Len} grounded {_isGrounded}");
+// #endif
+				_isSwinging = false;
 				_rb2D.isKinematic = false;
 				if (!_isGrounded) _rb2D.velocity = _mechArm.Rope.EndVel / Time.fixedDeltaTime; // Release preserve momentum
 				else if (_mechArm.Swingable) _mechArm.Rope.QueuePin(Rope.PinPoint.Both); // rope len greater than dist to anchor
@@ -402,7 +400,7 @@ namespace Abyss.Player
 
 		public bool OnHit(bool hasKb, Vector2 from, float kbImpulse)
 		{
-			if (_isHurting || _isDead || _isInVuln) return true;
+			if (_isHurting || _isDead || _isInvincible) return true;
 			_willTakeHit = true;
 			_hasKb = hasKb; _hitFrm = from; _kbImp = kbImpulse;
 			return false;
@@ -420,19 +418,22 @@ namespace Abyss.Player
 		#endregion
 
 		#region Animation Event Handlers
+		[UsedImplicitly]
 		private void DamageEnd()
 		{
 			_isHurting = false;
-			_isInVuln = true;
+			_isInvincible = true;
 			_invincibleTtl = postDmgInvincibleTime;
 		}
 
+		[UsedImplicitly]
 		private void AttackEnd()
 		{
 			IsAttacking = false;
 			OnAttackEnded?.Invoke();
 		}
 
+		[UsedImplicitly]
 		private void DeathEnd() => EventManager.InvokeEvent(PlayEvents.PlayerDeath);
 		#endregion
 
@@ -466,6 +467,7 @@ namespace Abyss.Player
 		{
 			if (!_willJmp) return;
 
+			_timeSinceJump = 0;
 			_willJmp = false;
 			_isJumping = true;
 			_pressingJmp = true;
@@ -573,7 +575,7 @@ namespace Abyss.Player
 				Settings.LayerMask.GROUND_LMASK
 			);
 
-			if (boxHit.collider && _isJumping)
+			if (boxHit.collider && _isJumping && _timeSinceJump >= minJumpDuration)
 			{
 				_isJumping = false;
 				_dashAvail = !_isDashing;

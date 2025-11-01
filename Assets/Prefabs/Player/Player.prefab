@@ -72412,7 +72412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624bfb3afb33e4f9f9cc9da0315b187f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Foot: {fileID: 4446590168576822585}
   armArguments:
     Cam: {fileID: 0}
     Fist: {fileID: 0}
@@ -72439,7 +72438,7 @@ MonoBehaviour:
       Start: {fileID: 0}
       End: {fileID: 6834564572513445741}
       StartMass: 10
-      EndMass: 50
+      EndMass: 15
       ConstrainRuns: 50
       ResolveCollisionInterval: 4
       Gravity: {x: 0, y: -150}
@@ -72454,6 +72453,7 @@ MonoBehaviour:
   walkSpeed: 10
   runSpeed: 15
   timeToApex: 0.4
+  minJumpDuration: 0.25
   maxJumpHeight: 5
   downGravityMult: 2
   upGravityMult: 0.7
@@ -72461,8 +72461,8 @@ MonoBehaviour:
   defGravMult: 1
   slantRepelGravAcc: 10
   maxFallVelocity: 30
+  coyoteTime: 0.1
   jumpBuffer: 0.1
-  preLandJumpBuffer: 0.1
   dashSpeed: 30
   dashTime: 0.2
   knockbackImpulse: 30
@@ -72479,7 +72479,6 @@ MonoBehaviour:
   slashSizeConversion: 4.571429
   swingAngDec: 8
   wiggleForce: 80
-  maxRemVelSqMag: 2
   repYDamper:
     m_OverrideState: 0
     m_Value: 3

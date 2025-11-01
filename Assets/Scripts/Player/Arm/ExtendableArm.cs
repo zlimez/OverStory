@@ -273,7 +273,6 @@ namespace Abyss.Player
         private void OnSoEx(object input = null)
         {
             InitEx();
-            Rope.Init();
             Rope.QueuePin(Rope.PinPoint.Both);
 
             _fistRb.isKinematic = false;

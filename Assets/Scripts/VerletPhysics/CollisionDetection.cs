@@ -7,7 +7,7 @@ namespace VerletPhysics
 
     struct C_Collider
     {
-        public (Vector2, Vector2) AABB;
+        public (Vector2 BtmLeft, Vector2 TopRight) AABB;
         public C_ColliderType Type;
         public Vector2 Center;
         public float Radius;
